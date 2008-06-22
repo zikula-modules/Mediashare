@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<rss version="0.91">
+
+<channel>
+<title>Mediashare albums</title>
+<link><!--[pngetbaseurl|escape:"html"]--></link>
+<description>RSS feed for albums</description>
+<webMaster><!--[pnconfiggetvar name="adminmail"|escape:"html"]--></webMaster>
+
+<!--[foreach from=$albums item=album]-->
+<!--[pnmodurl modname=mediashare func=view aid=$album.id assign=albumUrl]-->
+<item>
+<title><!--[$album.title]--></title>
+<link><!--[$albumUrl|escape]--></link>
+<description><!--[if empty($album.summary)]--><!--[$album.description]--><!--[else]--><!--[$album.summary]--><!--[/if]--></description>
+</item>
+<!--[/foreach]-->
+
+</channel>
+</rss>

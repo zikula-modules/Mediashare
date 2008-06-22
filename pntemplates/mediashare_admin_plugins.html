@@ -1,0 +1,40 @@
+<!--[elfisk_setInitialFocus inputId="mediaDirName"]-->
+<!--[elfisk_loadValues source=$item]-->
+
+<!--[include file="mediashare_adminheader.html"]-->
+
+<!--[mediashare_block]-->
+  <!--[mediashare_header]-->
+    <!--[pnml name=_MSPLUGINS]-->
+  <!--[/mediashare_header]-->
+  <!--[mediashare_body]-->
+
+    <h3><!--[pnml name=_MSMEDIAHANDLERS]--></h3>
+    <p><!--[pnml name=_MSMEDIAHANDLERSINFO]--></p>
+    <ul>
+    <!--[foreach from=$mediaHandlers item=handler]-->
+      <li><!--[$handler.title|escape]-->
+        <ul>
+        <!--[foreach from=$handler.mediaTypes item=type]-->
+          <li><!--[$type.mimeType]--> - <!--[$type.fileType]--></li>
+        <!--[/foreach]-->
+        </ul>
+      </li>
+    <!--[/foreach]-->
+    </ul>
+
+    <h3><!--[pnml name=_MSMEDIASOURCES]--></h3>
+    <p><!--[pnml name=_MSMEDIASOURCESINFO]--></p>
+    <ul>
+    <!--[foreach from=$sources item=source]-->
+      <li><!--[$source.title]--></li>
+    <!--[/foreach]-->
+    </ul>
+
+  <!--[/mediashare_body]-->
+  <!--[mediashare_buttons]-->
+    <!--[elfisk_button name="scanButton" text="_MSSCANFORPLUGINS"]-->
+  <!--[/mediashare_buttons]-->
+<!--[/mediashare_block]-->
+
+<!--[include file="mediashare_adminfooter.html"]-->

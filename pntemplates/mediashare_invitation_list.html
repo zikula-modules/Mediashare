@@ -1,0 +1,42 @@
+<!--[pnml name=_MSINVINVITATIONS assign=title]-->
+<!--[include file="mediashare_editheader.html" albumId=$album.id title=$title mode="edit"]-->
+
+<!--[include file="mediashare_invitationtabs.html"]-->
+
+<h2><!--[pnml name=_MSINVINVLIST]--></h2>
+
+<p><!--[pnml name=_MSINVINVLISTINTRO]--></p>
+
+<input type="hidden" name="albumid" value="<!--[$album.id]-->"/>
+
+<table class="mediashare-grid">
+  <tr>
+    <th></th>
+    <th><!--[pnml name=_MSINVCREATED]--></th>
+    <th><!--[pnml name=_MSINVLINKNAME]--></th>
+    <th><!--[pnml name=_MSINVEXPIRES]--></th>
+    <th><!--[pnml name=_MSINVVIEWS]--></th>
+  </tr>
+<!--[foreach from=$invitations item=invitation]-->
+  <tr>
+    <td><input type="checkbox" name="invitation[]" value="<!--[$invitation.id]-->"/></td>
+    <td><!--[$invitation.created|date_format]--></td>
+    <td><!--[if !empty($invitation.email)]--><!--[$invitation.email]--> (<a href="<!--[pnmodurl modname=mediashare type=invitation func=send iid=$invitation.id]-->"><!--[pnml name=_MSINVRESEND]--></a>)<!--[else]--><!--[if !empty($invitation.subject)]--><!--[$invitation.subject]--><!--[else]--><!--[pnml name=_MSINVLINKONLY]--><!--[/if]--> (<a href="<!--[pnmodurl modname=mediashare type=invitation func=viewlink iid=$invitation.id]-->"><!--[pnml name=_MSINVSHOWLINK]--></a>)<!--[/if]--></td>
+    <td><!--[if !empty($invitation.expires)]--><!--[$invitation.expires|date_format]--><!--[/if]--></td>
+    <td><!--[$invitation.viewCount]--></td>
+  </tr>
+<!--[/foreach]-->
+</table>
+<!--[pnml name=_MSINVPOSSIBLEACTIONS]-->
+<ul>
+  <li>
+    <!--[pnml name=_MSINVSETEXPIRESTO]-->
+    <input type="text" name="expires"/> <!--[pnml name=_MSINVEXPDATEHELP]-->
+    <input type="submit" name="expireButton" value="<!--[pnml name=_OK]-->"/>
+  </li>
+  <li>
+    <input type="submit" name="deleteButton" value="<!--[pnml name=_DELETE]-->"/> <!--[pnml name=_MSINVSELINV]-->
+  </li>
+</ul>
+
+<!--[include file="mediashare_footer.html"]-->

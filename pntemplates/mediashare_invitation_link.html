@@ -1,0 +1,23 @@
+<!--[elfisk_setInitialFocus inputId="subject"]-->
+
+<!--[pnml name=_MSINVINVITATIONS assign=title]-->
+<!--[include file="mediashare_editheader.html" albumId=$album.id title=$title mode="edit"]-->
+
+<!--[include file="mediashare_invitationtabs.html"]-->
+
+<h2><!--[pnml name=_MSINVGETLINK]--></h2>
+
+<!--[if empty($link)]-->
+<p><!--[pnml name=_MSINVGETLINKHELP]--></p>
+<label for="subject"><!--[pnml name=_MSINVLINKNAMELONG]--></label>
+<input name="subject">
+<input type="submit" name="generateButton" value="<!--[pnml name=_MSINVGETTHELINK]-->"/>
+<!--[else]-->
+<p><!--[pnml name=_MSINVHEREISLINK]--></p>
+<div class="mediashare-invlink"><!--[$link]--></div>
+
+<p><a href="<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id]-->"><!--[pnml name=_MSINVNOWBACK]--></a> <!--[pnml name=_MSINVOR]--> <a href="<!--[pnmodurl modname=mediashare type=invitation func=list aid=$album.id]-->"><!--[pnml name=_MSINVTHELIST]--></a>.</p>
+
+<!--[/if]-->
+
+<!--[include file="mediashare_footer.html"]-->

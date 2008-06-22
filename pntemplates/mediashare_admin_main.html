@@ -1,0 +1,166 @@
+<!--[elfisk_setInitialFocus inputId="mediaDirName"]-->
+
+<!--[include file="mediashare_adminheader.html" formEncType='']-->
+
+<!--[mediashare_block]-->
+  <!--[mediashare_header]-->
+    <!--[pnml name=_MSGENERALSETUP]-->
+  <!--[/mediashare_header]-->
+  <!--[mediashare_body]-->
+    <table>
+    <!--[if $openBaseDir != '']-->
+      <tr>
+        <td>
+          <!--[pnml name=_MSOPENBASEDIR]-->
+        </td>
+        <td>
+          <input value="<!--[$openBaseDir|escape]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
+        </td>
+      </tr>
+    <!--[/if]-->
+      <tr>
+        <td>
+          <!--[pnml name=_MSMODULEDIR]-->
+        </td>
+        <td>
+          <input value="<!--[$currentDir|escape]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="mediaDirName"><!--[pnml name=_MSMEDIADIR]--></label> (<i><!--[pnml name=_MSMEDIADIRHELP]--></i>)
+        </td>
+        <td>
+          <!--[elfisk_textInput id="mediaDirName" width="300px" maxLength="200"]--><br/>
+          <!--[if !$mediaDirIsWritable]-->
+            <strong><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
+          <!--[/if]-->
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="tmpDirName"><!--[pnml name=_MSTMPDIR]--></label> (<i><!--[pnml name=_MSTMPDIRHELP]--></i>)
+        </td>
+        <td>
+          <!--[elfisk_textInput id="tmpDirName" width="300px" maxLength="200"]--><br/>
+          <!--[if !$tmpDirIsWritable]-->
+            <strong><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
+          <!--[/if]-->
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="defaultAlbumTemplate"><!--[pnml name=_MSDEFAULTALBUMTEMPLATE]--></label>
+        </td>
+        <td>
+          <!--[mediashare_templateSelector id="defaultAlbumTemplate"]-->
+          <!--[elfisk_button name="templateButton" text="_MSAPPLYGLOBALTEMPLATE" confirmMessage=_MSAPPLYGLOBALTEMPLATECONFIRM]-->
+          <br/>
+          <input type="checkbox" id="allowTemplateOverride" name="allowTemplateOverride" value="1"<!--[if $allowTemplateOverride]--> checked="checked"<!--[/if]-->/>
+          <label for="allowTemplateOverride"><!--[pnml name=_MSALLOWTEMPLATEOVERRIDE]--></label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="thumbnailSize"><!--[pnml name=_MSTHUMBNAILSIZE]--></label>
+        </td>
+        <td>
+          <!--[elfisk_intInput id="thumbnailSize" width="80px" maxLength="10"]-->
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="previewSize"><!--[pnml name=_MSPREVIEWSIZE]--></label>
+        </td>
+        <td>
+          <!--[elfisk_intInput id="previewSize" width="80px" maxLength="10"]-->
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="mediaSizeLimitSingle"><!--[pnml name=_MSSINGLEALLOWEDSIZE]--></label>
+        </td>
+        <td>
+          <!--[elfisk_intInput id="mediaSizeLimitSingle" width="80px" maxLength="10"]-->
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="mediaSizeLimitTotal"><!--[pnml name=_MSTOTALALLOWEDSIZE]--></label>
+        </td>
+        <td>
+          <!--[elfisk_intInput id="mediaSizeLimitTotal" width="80px" maxLength="10"]-->
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <i><!--[pnml name=_MSVFSDIRECTSELECTIONHELP]--></i>
+        </td>
+        <td>
+          <input type="radio" value="fsdirect" id="fsdirect" name="vfs" <!--[if $vfs=='fsdirect']--> checked="checked"<!--[/if]-->/> <label for="fsdirect"><!--[pnml name=_MSVFSDIRECTSELECTION]--></label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <i><!--[pnml name=_MSVFSDBSELECTIONHELP]--></i>
+        </td>
+        <td>
+          <input type="radio" value="db" id="vfsdb" name="vfs" <!--[if $vfs=='db']--> checked="checked"<!--[/if]-->/> <label for="vfsdb"><!--[pnml name=_MSVFSDBSELECTION]--></label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <i><!--[pnml name=_MSSHARPENHELP]--></i>
+        </td>
+        <td>
+          <input type="checkbox" id="enableSharpen" name="enableSharpen" value="1"<!--[if $enableSharpen]--> checked="checked"<!--[/if]-->/> <label for="enableSharpen"><!--[pnml name=_MSSHARPEN]--></label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <i><!--[pnml name=_MSTHUMBNAILSTARTHELP]--></i>
+        </td>
+        <td>
+          <input type="checkbox" id="enableThumbnailStart" name="enableThumbnailStart" value="1"<!--[if $enableThumbnailStart]--> checked="checked"<!--[/if]-->/> <label for="enableThumbnailStart"><!--[pnml name=_MSTHUMBNAILSTART]--></label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="flickrAPIKey"><!--[pnml name=_MSAPIKEYFLICKR]--></label>
+        </td>
+        <td>
+          <!--[elfisk_textInput id="flickrAPIKey" maxLength="100"]--><br/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="smugmugAPIKey"><!--[pnml name=_MSAPIKEYSMUGMUG]--></label>
+        </td>
+        <td>
+          <!--[elfisk_textInput id="smugmugAPIKey" maxLength="100"]--><br/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="photobucketAPIKey"><!--[pnml name=_MSAPIKEYPHOTOBUCKET]--></label>
+        </td>
+        <td>
+          <!--[elfisk_textInput id="photobucketAPIKey" maxLength="100"]--><br/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="picasaAPIKey"><!--[pnml name=_MSAPIKEYPICASA]--></label>
+        </td>
+        <td>
+          <!--[elfisk_textInput id="picasaAPIKey" maxLength="100"]--><br/>
+        </td>
+      </tr>
+    </table>
+  <!--[/mediashare_body]-->
+  <!--[mediashare_buttons]-->
+    <!--[elfisk_button name="saveButton" text="_MSSAVE"]-->
+  <!--[/mediashare_buttons]-->
+<!--[/mediashare_block]-->
+
+<!--[include file="mediashare_adminfooter.html"]-->

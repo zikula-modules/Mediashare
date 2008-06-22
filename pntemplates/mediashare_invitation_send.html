@@ -1,0 +1,62 @@
+<!--[elfisk_setInitialFocus inputId="emails"]-->
+
+<!--[pnml name=_MSINVINVITATIONS assign=title]-->
+<!--[include file="mediashare_editheader.html" albumId=$album.id title=$title mode="edit"]-->
+
+<!--[include file="mediashare_invitationtabs.html"]-->
+
+<h2><!--[pnml name=_MSINVSENDINVITATION]--></h2>
+
+<p><!--[pnml name=_MSINVSENDINTRO]--></p>
+
+<p><a href="<!--[pnmodurl modname=mediashare type=invitation func=link aid=$album.id]-->"><!--[pnml name=_MSINVLINKYOURSELF]--></a>.</p>
+
+<input type="hidden" name="albumid" value="<!--[$album.id]-->"/>
+
+<div class="mediashare-invitations">
+<!--[mediashare_block]-->
+  <!--[mediashare_header]-->
+    <!--[pnml name=_MSINVINVITATION]-->
+  <!--[/mediashare_header]-->
+  <!--[mediashare_body]-->
+
+    <div class="row">
+      <label for="emails"><!--[pnml name=_MSINVEMAILS]--></label> <!--[pnml name=_MSINVEMAILSHELP]--><br/>
+      <textarea id="emails" name="emails" cols="50" rows="4"><!--[$invitation.email]--></textarea>
+    </div>
+
+    <div class="row">
+      <label for="subject"><!--[pnml name=_MSINVSUBJECT]--></label><br/>
+      <input id="subject" name="subject" class="txt" value="<!--[$invitation.subject]-->"/>
+    </div>
+
+    <div class="row">
+      <label for="text"><!--[pnml name=_MSINVINVTEXT]--></label> <!--[pnml name=_MSINVINVTEXTHELP]--><br/>
+      <textarea id="text" name="text" cols="50" rows="10"><!--[$invitation.text]--></textarea>
+    </div>
+
+    <!--[pnml name=_MSINVTEXTINTRO]-->
+
+    <div class="row mediashare-invtext">
+      <!--[pnml name=_MSINVTEXT html=1 url="http://example/example]-->
+    </div>
+
+    <div class="row">
+      <label for="sender"><!--[pnml name=_MSINVSENDER]--></label><br/>
+      <input id="sender" name="sender" value="<!--[$invitation.sender]-->" class="txt"/>
+    </div>
+
+    <div class="row">
+      <label for="expires"><!--[pnml name=_MSINVEXPDATE]--></label> <!--[pnml name=_MSINVEXPDATEHELP]--><br/>
+      <input id="expires" name="expires" value="<!--[$invitation.expires]-->"/>
+    </div>
+
+  <!--[/mediashare_body]-->
+  <!--[mediashare_buttons]-->
+    <!--[elfisk_button name="saveButton" text="_MSSEND"]-->
+    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+  <!--[/mediashare_buttons]-->
+<!--[/mediashare_block]-->
+</div>
+
+<!--[include file="mediashare_footer.html"]-->

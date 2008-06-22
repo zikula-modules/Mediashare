@@ -1,0 +1,44 @@
+<!--[include file=mediashare_include_lightbox.html]-->
+
+<form method="post" action="<!--[pnmodurl modname=mediashare type=edit func=multimovemedia aid=$albumId]-->">
+
+<input type="hidden" name="authid" value="<!--[ pnsecgenauthkey module=mediashare ]-->" />
+
+<div class="mediashare">
+
+  <div class="mediashare-header">
+    <h1><!--[pnml name=_MSHEADERMOVEMULTIITEMS]--></h1>
+  </div>
+
+
+<!--[mediashare_block]-->
+  <!--[mediashare_body]-->
+
+<div class="mediashare-thumbnails">
+<!--[foreach from=$items item=item]-->
+  <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
+  <div class="mediashare-float"><div class="dropshadow">
+   <div class="content" style="width: <!--[$thumbnailSize+20]-->px; height: <!--[$thumbnailSize+30]-->px">
+    <div class="thumbnail">
+      <a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->" rel="lightbox1"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></a>
+    </div>
+    <!--[$item.title]-->
+   </div>
+  </div></div>
+<!--[/foreach]-->
+</div>
+<div class="mediashare-clear"></div>
+
+<label for="newalbumid"><!--[pnml name=_MSMOVESELECTEDTOALBUM]--></label><br/>
+<!--[mediashare_albumSelector albumId=1 name=newalbumid id=newalbumid access="mediashareAccessRequirementAddMedia"]-->
+
+  <!--[/mediashare_body]-->
+  <!--[mediashare_buttons]-->
+    <!--[elfisk_button name="saveButton" text="_MSMOVE"]-->
+    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+  <!--[/mediashare_buttons]-->
+<!--[/mediashare_block]-->
+
+  </div>
+
+</form>

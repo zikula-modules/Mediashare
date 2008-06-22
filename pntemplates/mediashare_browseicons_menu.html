@@ -1,0 +1,24 @@
+<script type="text/javascript" src="modules/mediashare/pnjavascript/edit.js"></script>
+<script type="text/javascript" src="modules/mediashare/pnjavascript/psmenu.js"></script>
+
+<span class="mediashare-menulink">
+  <img src="modules/mediashare/pnimages/imagemenuicon.gif" 
+       class="mediashare-clickable"
+       onclick="contextmenu.album.onClick(this, '<!--[$album.id]-->', event, 'psmenu-album')"
+       onmouseover="this.src='modules/mediashare/pnimages/imagemenuicon_hover.gif'"
+       onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'" alt=""/>
+  <a href="<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id]-->"><!--[pnml name=_MSEDIT]--></a>
+</span>
+
+<div class="psmenu" id="psmenu-album">
+  <ul>
+    <li><img src="modules/mediashare/pnimages/setting.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=editalbum aid=$album.id]-->"><!--[pnml name=_MSEDITALBUM]--></a></li>
+    <li><img src="modules/mediashare/pnimages/add.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=addmedia aid=$album.id]-->"><!--[pnml name=_MSADDMEDIAITEMS]--></a></li>
+
+    <li><img src="modules/mediashare/pnimages/arrange.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=arrange aid=$album.id]-->"><!--[pnml name=_MSARRANGE]--></a></li>
+    <li><img src="modules/mediashare/pnimages/access.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=access aid=$album.id]-->"><!--[pnml name=_MSACCESS]--></a></li>
+    <li><img src="modules/mediashare/pnimages/invite.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=invitation func=send aid=$album.id]-->"><!--[pnml name=_MSINVITE]--></a></li>
+    <li><img src="modules/mediashare/pnimages/move.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=movealbum aid=$album.id]-->"><!--[pnml name=_MSMOVE]--></a></li>
+    <li><img src="modules/mediashare/pnimages/delete.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=deletealbum aid=$album.id]-->"><!--[pnml name=_MSDELETEALBUM]--></a></li>
+  </ul>
+</div>

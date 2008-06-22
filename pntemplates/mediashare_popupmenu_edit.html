@@ -1,0 +1,20 @@
+<div class="psmenu" id="psmenu-media">
+  <ul>
+    <li><img src="modules/mediashare/pnimages/slideshow.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,0)"><!--[pnml name=_MSSLIDESHOWITEM]--></a></li>
+    <li><img src="modules/mediashare/pnimages/setting.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,1)"><!--[pnml name=_MSEDITITEM]--></a></li>
+    <li><img src="modules/mediashare/pnimages/delete.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,2)"><!--[pnml name=_MSDELETEITEM]--></a></li>
+    <li><img src="modules/mediashare/pnimages/greendot.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,3)"><!--[pnml name=_MSSETMAINITEM]--></a></li>
+  </ul>
+</div>
+
+
+<script type="text/javascript">
+  contextmenu.media.actionURLs = 
+    [
+      "<!--[pnmodurl modname=mediashare func=slideshow aid=$album.id mid=$album.mainMediaId back=1]-->",
+      "<!--[pnmodurl modname=mediashare type=edit aid=$album.id func=edititem]-->",
+      "<!--[pnmodurl modname=mediashare type=edit aid=$album.id func=deleteitem]-->",
+      "<!--[pnmodurl modname=mediashare type=edit aid=$album.id func=setmainitem]-->",
+     "dummy"
+    ];
+</script>

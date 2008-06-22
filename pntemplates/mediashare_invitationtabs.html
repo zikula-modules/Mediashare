@@ -1,0 +1,20 @@
+<div class="mediashare-tabs">
+<ul>
+  <!--[capture name=access]-->
+    <a href="<!--[pnmodurl modname=mediashare type=edit func=access aid=$album.id]-->"><!--[pnml name=_MSACCESS]--></a>
+  <!--[/capture]-->
+  <!--[capture name=send]-->
+    <a href="<!--[pnmodurl modname=mediashare type=invitation func=send aid=$album.id]-->"><!--[pnml name=_MSINVITE]--></a>
+  <!--[/capture]-->
+  <!--[capture name=list]-->
+    <a href="<!--[pnmodurl modname=mediashare type=invitation func=list aid=$album.id]-->"><!--[pnml name=_MSINVITATIONS]--></a>
+  <!--[/capture]-->
+
+  <!--[mediashare_tab selected=$accessSelected content=$smarty.capture.access]-->
+  <!--[mediashare_tab selected=$sendSelected content=$smarty.capture.send]-->
+  <!--[mediashare_tab selected=$listSelected content=$smarty.capture.list]-->
+</ul>
+</div>
+<div class="mediashare-tabback">
+  <a href="<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id]-->"><!--[pnml name=_MSBACK]--></a>
+</div>

@@ -1,0 +1,65 @@
+<!--[include file=mediashare_include_lightbox.html]-->
+
+<h1><!--[pnml name=_MSMEDIASHARE]--></h1>
+
+<div class="mediashare-summary">
+  <!--[pnml name=_MSSUMMARYLATEST album=$summary.albumCount media=$summary.mediaCount]-->
+</div>
+
+<h2><!--[pnml name=_MSLATESTMEDIAITEMS]--> <a href="<!--[pnmodurl modname=mediashare func=xmllist order=created orderdir=desc]-->"><img src="modules/mediashare/pnimages/rss.gif" alt="RSS"/></a></h2>
+
+<div class="mediashare-thumbnails">
+ <!--[foreach from=$latestMediaItems item=item]-->
+  <div class="mediashare-float"><div class="dropshadow">
+   <div class="content" style="width: <!--[$thumbnailSize+30]-->px; height: <!--[$thumbnailSize+60]-->px">
+    <div class="thumbnail">
+      <a href="<!--[pnmodurl modname=mediashare func=view aid=$item.album.id mid=$item.media.id]-->"><!--[mediashare_mediaItem src=$item.media.thumbnailRef title=$item.media.title mediaHandler=$item.media.mediaHandler isThumbnail="1" id="media-`$item.media.id`" class="thumbnail"]--></a>
+    </div>
+    <!--[$item.media.title]--> <!--[if $item.media.originalIsImage]--><a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item.media]-->" rel="lightbox1" title="<!--[$item.media.title|escape]-->" class="zoom"><img src="modules/mediashare/pnimages/magnify.gif" alt=""/></a><!--[/if]--><br/>
+    <!--[$item.album.title]--><br/>
+    <!--[$item.media.createdDate|pndate_format]-->
+   </div>
+  </div></div>
+ <!--[/foreach]-->
+</div>
+<div class="mediashare-clear"></div>
+
+<div class="mediashare-latestrss">
+  
+</div>
+
+<h2><!--[pnml name=_MSLATESTALBUMS]--> <a href="<!--[pnmodurl modname=mediashare func=albumxmllist]-->"><img src="modules/mediashare/pnimages/rss.gif" alt="RSS"/></a></h2>
+
+<!--[include file="mediashare_subalbumlist.html" mode="view" subAlbums=$latestAlbums]-->
+
+<div class="mediashare-clear"></div>
+
+
+<table class="mediashare-mostactive">
+ <tr>
+  <td class="left">
+    <h2><!--[pnml name=_MSMOSTACTIVEUSER]--></h2>
+    <ul>
+    <!--[foreach from=$mostActiveUsers item=user]-->
+      <li>
+        <a href="<!--[pnmodurl modname=mediashare func=list uname=$user.uname]-->"><!--[$user.uname]--></a> (<!--[$user.count]-->)
+        <a href="<!--[pnmodurl modname=mediashare func=xmllist order=created orderdir=desc uname=$user.uname]-->"><img src="modules/mediashare/pnimages/rss.gif" alt="RSS"/></a>
+      </li>
+    <!--[/foreach]-->
+    </ul>
+  </td>
+  <td class="right">
+    <h2><!--[pnml name=_MSMOSTACTIVEKEYWORDS]--></h2>
+    <!--[foreach from=$mostActiveKeywords item=keyword]-->
+      <a href="<!--[pnmodurl modname=mediashare func=list key=$keyword.keyword]-->" style="font-size: <!--[$keyword.fontsize]-->%"><!--[$keyword.keyword]--></a>
+    <!--[/foreach]-->
+  </td>
+ </tr>
+</table>
+
+<!--[capture name=rsslinks]-->
+<link rel="alternate" type="application/rss+xml" title="<!--[pnml name=_MSLATESTMEDIAITEMS]--> - RSS" href="<!--[pnmodurl modname=mediashare func=xmllist order=created orderdir=desc]-->">
+<link rel="alternate" type="application/rss+xml" title="<!--[pnml name=_MSLATESTALBUMS]--> - RSS" href="<!--[pnmodurl modname=mediashare func=albumxmllist]-->">
+<!--[/capture]-->
+
+<!--[add_additional_header header=$smarty.capture.rsslinks]-->

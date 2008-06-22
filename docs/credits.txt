@@ -1,0 +1,12 @@
+Mediashare (C) 2005 Jorn Wildt
+==============================
+
+CREDITS
+-------
+
+Lightbox - Lokesh Dhakar (http://www.huddletogether.com/)
+Greybox - Amir Salihefendic (http://orangoo.com/labs/GreyBox/)
+Lots of ideas from Flickr and Gallery.
+Thanks to the various tips and ideas I get from the core developers of PostNuke.
+
+/Jorn Wildt

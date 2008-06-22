@@ -1,0 +1,86 @@
+<tr>
+  <td>
+  </td>
+  <td><em><!--[pnml name=_MS_RANDOMBLOCKHELP]--></em></td>
+</tr>
+
+<tr>
+  <td>
+  </td>
+  <td>
+    <input type="radio" id="radioAll" name="mstype" value="all"<!--[if $type==all]--> checked="checked"<!--[/if]-->"/>
+    <label for="radioAll"><!--[pnml name=_MS_RANDOMBLOCKALLLABEL]--></label>
+  </td>
+</tr>
+<tr>
+  <td>
+  </td>
+  <td>
+    <input type="radio" id="radioLatest" name="mstype" value="latest"<!--[if $type==latest]--> checked="checked"<!--[/if]-->/>
+    <label for="radioLatest"><!--[pnml name=_MS_RANDOMBLOCKLATESTLABEL]--></label>
+  </td>
+</tr>
+<tr>
+  <td>
+  </td>
+  <td>
+    <input type="radio" id="radioTopic" name="mstype" value="topic"<!--[if $type==topic]--> checked="checked"<!--[/if]-->/>
+    <label for="radioTopic"><!--[pnml name=_MS_RANDOMBLOCKTOPICLABEL]--></label>
+  </td>
+</tr>
+<tr>
+  <td>
+  </td>
+  <td>
+    <input type="radio" id="radioAlbum" name="mstype" value="album"<!--[if $type==album]--> checked="checked"<!--[/if]-->/>
+    <label for="radioAlbum"><!--[pnml name=_MS_RANDOMBLOCKALBUMLABEL]--></label>
+  </td>
+</tr>
+<tr>
+  <td>
+    <label for="mstopicId"><!--[pnml name=_MS_RANDOMBLOCKTOPICLABEL]--></label>
+  </td>
+  <td>
+    <!--[elfisk_topicSelector id="mstopicId" selectedValue=$topicId]-->
+  </td>
+</tr>
+<tr>
+  <td>
+    <label for="msalbumId"><!--[pnml name=_MS_RANDOMBLOCKALBUMLABEL]--></label>
+  </td>
+  <td>
+    <!--[mediashare_albumSelector id="msalbumId" albumId=$albumId]-->
+  </td>
+</tr>
+<tr>
+  <td>
+    <label for="cacheTime"><!--[pnml name=_MS_RANDOMBLOCKCACHELABEL]--></label>
+  </td>
+  <td>
+    <input type="text" id="cacheTime" name="cacheTime" value="<!--[$cacheTime]-->"/>
+  </td>
+</tr>
+<tr>
+  <td style="vertical-align: top">
+    <label for="mshtml"><!--[pnml name=_MS_RANDOMBLOCKHTMLLABEL]--></label>
+  </td>
+  <td>
+    <textarea id="mshtml" name="mshtml" cols="40" rows="10"><!--[$html|htmlspecialchars]--></textarea><br/>
+    <a href="modules/mediashare/docs/randomblock/examples.html" target="_new"><!--[pnml name=_MS_RANDOMBLOCKHTMLHELP]--></a>
+  </td>
+</tr>
+<tr>
+  <td>
+  </td>
+  <td>
+    <ul>
+      <li>${originalURL} - <!--[pnml name=_MS_RANDOMBLOCKORIGINALURLHELP]--></li>
+      <li>${previewURL} - <!--[pnml name=_MS_RANDOMBLOCKPREVIEWURLHELP]--></li>
+      <li>${thumbnailURL} - <!--[pnml name=_MS_RANDOMBLOCKTHUMBNAILURLHELP]--></li>
+      <li>${albumURL} - <!--[pnml name=_MS_RANDOMBLOCKALBUMURLHELP]--></li>
+      <li>${title} - <!--[pnml name=_MS_RANDOMBLOCKTITLEHELP]--></li>
+      <li>${albumTitle} - <!--[pnml name=_MS_RANDOMBLOCKALBUMTITLEHELP]--></li>
+      <li>${owner} - <!--[pnml name=_MS_RANDOMBLOCKOWNERHELP]--></li>
+    </ul>
+  </td>
+</tr>

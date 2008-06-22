@@ -1,0 +1,30 @@
+<!--[foreach from=$subAlbums item=subAlbum]-->
+<!--[if $mode=="edit"]-->
+ <!--[pnmodurl modname=mediashare type=edit func=view aid=$subAlbum.id assign=viewUrl]-->
+<!--[else]-->
+ <!--[pnmodurl modname=mediashare func=view aid=$subAlbum.id assign=viewUrl]-->
+<!--[/if]-->
+<div class="mediashare-float" style="width: <!--[$thumbnailSize+40]-->px; height: <!--[$thumbnailSize+60]-->px">
+  <table>
+   <tr>
+    <td>
+      <!--[if $subAlbum.mainMediaItem == null]-->
+       <a href="<!--[$viewUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/album.gif" alt="" id="album-<!--[$subAlbum.id]-->"/></a>
+      <!--[else]-->
+       <a href="<!--[$viewUrl|pnvarprepfordisplay]-->" class="album"><!--[mediashare_mediaItem src=$subAlbum.mainMediaItem.thumbnailRef title=$subAlbum.title mediaHandler=$subAlbum.mainMediaItem.mediaHandler isThumbnail="1" id="album-`$subAlbum.id`" class="thumbnail"]--></a>
+      <!--[/if]-->
+    </td>
+    <!--[if $mode=="edit"]-->
+    <td>
+      <img src="modules/mediashare/pnimages/imagemenuicon.gif" 
+           class="mediashare-clickable"
+           onclick="contextmenu.album.onClick(this,'album-<!--[$subAlbum.id]-->', event, 'psmenu-album')"
+           onmouseover="this.src='modules/mediashare/pnimages/imagemenuicon_hover.gif'"
+           onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'" alt=""/>
+    </td>
+    <!--[/if]-->
+   </tr>
+  </table>
+  <a href="<!--[$viewUrl|pnvarprepfordisplay]-->"><!--[$subAlbum.title]--></a>
+</div>
+<!--[/foreach]-->

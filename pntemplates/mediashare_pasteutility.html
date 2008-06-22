@@ -1,0 +1,60 @@
+function mediashare_paste_getStandardHtml(htmlFormat, mode)
+{
+  var html = null;
+
+  var albumUrl = '<!--[pnmodurl modname=mediashare func=view aid=$mediaItem.parentAlbumId]-->';
+  var displayItemUrl = '<!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id]-->';
+  var originalUrl = '<!--[$originalUrl]-->';
+  var previewUrl = '<!--[$previewUrl]-->';
+  var thumbnailUrl = '<!--[$thumbnailUrl]-->';
+
+  switch (htmlFormat)
+  {
+    case 'thumbnail':
+      if (mode == 'html')
+        html = "<img src=\"" + thumbnailUrl + "\"/>";
+      else
+        html = thumbnailUrl;
+    break;
+    case 'thumbnailPopup':
+      html = "<a href=\"javascript:popupMediaViewer('" + displayItemUrl + "')\">" 
+             + "<img src=\"" + thumbnailUrl + "\"/></a>";
+    break;
+    case 'previewItem':
+      if (mode == 'url')
+        html = previewUrl;
+    break;
+    case 'fullItem':
+      if (mode == 'url')
+        html = originalUrl;
+    break;
+    case 'fullItemURL':
+      if (mode == 'html')
+        html = "<a href=\"" + originalUrl + "\">" + "<!--[$mediaItem.title|escape:javascript]-->" + "</a>";
+      else
+        html = originalUrl;
+    break;
+    case 'fullItemURLPopup':
+      if (mode == 'html')
+        html = "<a href=\"javascript:popupMediaViewer('" + displayItemUrl + "')\">" + "<!--[$mediaItem.title|escape:javascript]-->" + "</a>";
+    break;
+    case 'albumUrl':
+      if (mode == 'html')
+        html = "<a href=\"" + albumUrl + "\">" + "<!--[$mediaItem.title|escape:javascript]-->" + "</a>";
+    break;
+    case 'albumThumbnailURL':
+      if (mode == 'html')
+        html = "<a href=\"" + albumUrl + "\"><img src=\"" + thumbnailUrl + "\"/></a>";
+    break;
+    case 'albumUrlpopup':
+      if (mode == 'html')
+        html = "<a href=\"javascript:popupMediaViewer('" + albumUrl + "')\">" + "<!--[$mediaItem.title|escape:javascript]-->" + "</a>";
+    break;
+    case 'albumThumbnailURLpopup':
+      if (mode == 'html')
+        html = "<a href=\"javascript:popupMediaViewer('" + albumUrl + "')\"><img src=\"" + thumbnailUrl + "\"/></a>";
+    break;
+  }
+
+  return html;
+}

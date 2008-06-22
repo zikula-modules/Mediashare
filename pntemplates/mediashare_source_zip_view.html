@@ -1,0 +1,36 @@
+<!--[elfisk_setInitialFocus inputId="upload1"]-->
+
+<div class="mediashare-info">
+  <!--[pnml name=_MSADDMEDIAINFO html=1 postsize=$post_max_size uploadsize=$upload_max_filesize]-->
+</div>
+
+
+<input type="hidden" name="imagenum" value="<!--[$imageNum]-->"/>
+
+<div class="mediashare-upload">
+ <table>
+  <!--[foreach from=$uploadFields item=fieldId]-->
+
+  <tr class="mediashare-uploadrow">
+   <td><label for="upload<!--[$fieldId]-->"><!--[pnml name=_MSUPLOAD]--> <!--[$fieldId]--></label></td>
+   <td><!--[elfisk_upload id="upload$fieldId" width="400px"]--></td>
+  </tr>
+  <tr class="mediashare-sizerow">
+   <td></td>
+   <td>
+     <label for="width<!--[$fieldId]-->"><!--[pnml name=_MSWIDTH]--></label>
+     <!--[elfisk_intInput id="width$fieldId" width="4em" intValue=""]-->
+     <label for="height<!--[$fieldId]-->"><!--[pnml name=_MSHEIGHT]--></label>
+     <!--[elfisk_intInput id="height$fieldId" width="4em" intValue=""]-->
+     (<!--[pnml name=_MSVIDEOWIDTHHEIGHTHELP]-->)
+   </td>
+  </tr>
+
+  <!--[/foreach]-->
+ </table>
+</div>
+
+<!--[mediashare_buttons]-->
+  <!--[elfisk_button name="saveButton" text="_MSSAVE"]-->
+  <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+<!--[/mediashare_buttons]-->

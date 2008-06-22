@@ -1,0 +1,23 @@
+<!--[pnml name=_MSHEADERADDMEDIAITEMS assign=mltitle]-->
+<!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle includeMenu=0 formEncType="multipart/form-data" mode="edit"]-->
+
+<div class="mediashare-tabs">
+<ul>
+<!--[foreach from=$sources item=source]-->
+  <!--[pnmodurl modname=mediashare func="source_$source.name" func=view assign=url]-->
+  <!--[capture name=link]-->
+    <a href="<!--[pnmodurl modname=mediashare type=edit func=addmedia source=$source.name aid=$album.id]-->"><!--[$source.title]--></a>
+  <!--[/capture]-->
+  <!--[if $source.name==$selectedSource.name]-->
+    <!--[mediashare_tab selected=1 content=$smarty.capture.link]-->
+  <!--[else]-->
+    <!--[mediashare_tab selected=0 content=$smarty.capture.link]-->
+  <!--[/if]-->
+<!--[/foreach]-->
+</ul>
+</div>
+<div class="mediashare-clear"></div>
+<!--[$sourceHtml]-->
+
+
+<!--[include file="mediashare_footer.html"]-->

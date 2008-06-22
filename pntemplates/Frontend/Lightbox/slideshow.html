@@ -1,0 +1,49 @@
+<!--[mediashare_settitle title="`$album.title` :: `$mediaItem.title`"]-->
+
+<!--[include file=mediashare_include_lightbox.html]-->
+<script type="text/javascript" src="modules/mediashare/pntemplates/Frontend/Lightbox/slideshow.js"></script>
+
+<script type="text/javascript">
+var Slideshow = new MediashareSlideshow();
+
+<!--[foreach from=$mediaItems item=item]-->
+Slideshow.AddItem(<!--[$item.id]-->, "<!--[mediashare_mediaUrl src=originalRef mediaItem=$item]-->", "<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->", "<!--[$item.originalMimeType]-->", "<!--[$item.html|escape:javascript]-->", "<!--[$item.title|escape:"javascript"]-->. <!--[$item.description|escape:"javascript"]-->");
+<!--[/foreach]-->
+
+var pnmlStart   = "<!--[pnml name=_MSSTART]-->";
+var pnmlStop    = "<!--[pnml name=_MSSTOP]-->";
+var pnmlSmaller = "<!--[pnml name=_MSSMALLERIMG]-->";
+var pnmlLarger  = "<!--[pnml name=_MSLARGERIMG]-->";
+
+</script>
+
+<!--[if count($mediaItems) > 0]-->
+
+<div class="mediashare-slideshow">
+  <div class="mediashare-menu">
+    <div style="float: left" id="mediaCount"></div>
+    <div style="float: right"><a href="<!--[$quitUrl]-->"><!--[pnml name=_MSQUIT]--></a></div>
+    <a href="#" onclick="Slideshow.HandleSize()" id="slideshowSizeAnchor"><!--[pnml name=_MSSMALLERIMG]--></a>
+    <a href="#" onclick="Slideshow.HandlePrevious()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/back.gif" alt="<!--[pnml name=_MSPREVIOUS]-->"/></a>
+    <a href="#" onclick="Slideshow.HandleToggleStart()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/pause.gif" alt="<!--[pnml name=_MSSTOP]-->" id="slideshowStateImg"/></a>
+    <a href="#" onclick="Slideshow.HandleNext()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/forward.gif" alt="<!--[pnml name=_MSNEXT]-->"/></a>
+    <a href="#" onclick="Slideshow.HandleAdjustSpeed(-1)">-</a>
+    <span id="mediaTimeSpan">5</span>
+    <a href="#" onclick="Slideshow.HandleAdjustSpeed(+1)">+</a>
+  </div>
+  <div id="mediaDisplayBox">
+    <div id="mediaBox">
+      <div id="mediaTitleBox" onmouseover="Slideshow.HandleMouseOverTitle()" onmouseout="Slideshow.HandleMouseOutTitle()" style="display: none"><span id="mediaTitle"></span></div>
+      <div id="mediaItem"></div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+Event.observe(window, 'load', function(){Slideshow.Start(<!--[$mediaId]-->)}, false);
+</script>
+<!--[else]-->
+<div class="mediashare-slideshow">
+  <a href="javascript:history.back()"><!--[pnml name=_MSEMPTYALBUMGOBACK]--></a>
+</div>
+<!--[/if]-->

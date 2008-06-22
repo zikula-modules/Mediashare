@@ -1,0 +1,714 @@
+div.mediashare td.top
+{
+  vertical-align: top;
+}
+
+div.mediashare span.rss
+{
+  font-size: 8px;
+}
+
+div.mediashare span.rss a
+{
+  text-decoration: none;
+}
+
+div.mediashare-clear
+{
+  clear: both;
+}
+
+input.mediashare-readonly
+{
+  border: none;
+  border-bottom: 1px solid #DDD;
+}
+
+/* Header */
+
+div.mediashare-header
+{
+  border: 1px solid black;
+  background-color: #808080;
+  color: #FFF;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding: 5px;
+}
+
+div.mediashare-header h1
+{
+  font-size: 20px;
+  margin: 0px 0px 5px 0px;
+  color: #FFF;
+}
+
+div.mediashare-header a
+{
+  text-decoration: none;
+  color: #FFF;
+}
+
+div.mediashare-header img
+{
+  float: left;
+  height: 45px;
+  margin: 0px 10px 0px 0px;
+  border: 1px solid #333;
+}
+
+/* Menu */
+
+div.mediashare-menu
+{
+  border: 1px solid black;
+  border-top: none;
+  background-color: #808080;
+  padding: 5px;
+}
+
+div.mediashare-menu a
+{
+  text-decoration: none;
+  color: #FFF;
+  margin: 0px 6px;
+}
+
+
+/* Browse icons */
+
+div.mediashare-browseicons
+{
+  margin: 10px 0px 2px 0px;
+}
+
+div.mediashare-browseicons img
+{
+  vertical-align: middle;
+  margin: 0px 6px 0px 10px;
+}
+
+div.mediashare-browseicons a
+{
+  text-decoration: none;
+}
+
+/* Toolbar */
+
+div.mediashare-toolbar
+{
+  border: 1px solid black;
+  border-top: none;
+  background-color: #808080;
+  color: #FFF;
+  margin-bottom: 10px;
+  padding: 2px 10px 2px 10px;
+}
+
+div.mediashare-toolbar input
+{
+  border: 1px outset #808080;
+  background-color: #808080;
+  padding: 3px;
+}
+
+/* Tabs */
+
+div.mediashare-tabs
+{
+  float: left;
+  width: 100%;
+  background: url("tabs-background.gif") repeat-x bottom;
+}
+
+div.mediashare-tabs ul
+{
+  margin: 0px;
+  padding: 0px 0px 0px 10px;
+  list-style: none;
+}
+
+div.mediashare-tabs li
+{
+  float: left;
+  margin: 0px;
+  padding: 2px 4px;
+}
+
+div.mediashare-tabs li.link
+{
+  background-color: #EEE;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+div.mediashare-tabs li.selected
+{
+  background-color: #FFF;
+}
+
+div.mediashare-tabs a
+{
+  display: block;
+  text-decoration: none;
+}
+
+div.mediashare-tabs a:hover
+{
+  text-decoration: underline;
+}
+
+div.mediashare-tabs li.selected a
+{
+  padding-bottom: 1px;
+}
+
+div.mediashare-tabback
+{
+  float: right;
+}
+
+div.mediashare-tabback a
+{
+  text-decoration: none;
+}
+
+/* Album info box (small box with album and it's data - for use with delete and such like) */
+
+div.mediashare-albumInfo
+{
+  padding: 0px;
+  margin: 0px 0px 4px 0px;
+}
+
+div.mediashare-albumInfo img
+{
+  float: left;
+  margin: 0px 10px 0px 0px;
+}
+
+div.mediashare-albumInfo h3
+{
+  margin: 0px 10px 0px 0px;
+}
+
+
+/* Info text (a box with text that introduces what is going on on the page) */
+
+div.mediashare-info
+{
+  margin: 10px 50px;
+  padding: 1px 10px;
+  border: 1px solid #AAA;
+}
+
+
+/* Editing block */
+
+div.mediashare-block
+{
+  border: 1px solid black;
+  width: auto;
+  margin-top: 10px;
+}
+
+
+div.mediashare-block td
+{
+  vertical-align: top;
+}
+
+
+div.mediashare-block div.mediashare-header
+{
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+
+div.mediashare-body
+{
+  padding: 4px;
+}
+
+
+div.mediashare-buttons
+{
+  text-align: right;
+  background-color: #AAA;
+  border-top: 1px solid black;
+}
+
+
+/* Floating block with media item in it */
+
+div.mediashare-float
+{
+  float: left;
+  text-align: center;
+}
+
+div.mediashare-float table td
+{
+  vertical-align: top;
+}
+
+div.mediashare-float div.thumbnail
+{
+  padding: 0px 0px 2px 0px;
+}
+
+div.mediashare-float img.thumbnail
+{
+  border: 1px solid black;
+  /*
+  background-image: url(../pnimages/album_top.gif);
+  background-repeat: no-repeat;
+  background-position: top left;
+  */
+  cursor: hand;
+  cursor: pointer;
+}
+
+div.mediashare-float a.album
+{
+  padding-top: 9px;
+  display: block;
+  float: left;
+  background-image: url(../pnimages/album_top.gif);
+  background-repeat: no-repeat;
+  background-position: top left;
+}
+
+div.mediashare-float img
+{
+  vertical-align: top;
+}
+
+div.mediashare-float a
+{
+  margin: 1px;
+}
+
+
+/* Album or media item informational area */
+
+div.mediashare-data
+{
+}
+
+div.mediashare-data h3
+{
+  margin: 0px 0px 5px 0px;
+  color: #000;
+}
+
+div.mediashare-data h3 a
+{
+  text-decoration: none;
+  color: #000;
+}
+
+div.mediashare-data a:hover
+{
+  text-decoration: underline;
+}
+
+div.mediashare-data div.summary
+{
+  font-style: italic;
+  margin: 5px 0px 10px 0px;
+}
+
+div.mediashare-data div.description
+{
+  margin: 5px 0px 10px 0px;
+}
+
+div.mediashare-data div.author
+{
+  font-size: 90%;
+}
+
+
+div.mediashare-item
+{
+  float: left;
+  padding: 0px;
+  width: auto;
+}
+
+div.mediashare-item img.media,
+div.mediashare-item object.media,
+div.mediashare-item embed.media
+{
+  border: 5px solid #000;
+  margin: 0px;
+  cursor: hand;
+  cursor: pointer;
+}
+
+div.mediashare-item div.mediashare-zoom
+{
+  text-align: center;
+}
+
+div.mediashare-item div.mediashare-zoom a
+{
+  display: block;
+  background-color: #444;
+  color: #FFF;
+  text-decoration: none;
+}
+
+div.mediashare-item div.mediashare-zoom a:hover
+{
+  display: block;
+  background-color: #777;
+  text-decoration: none;
+}
+
+div.mediashare-item span.description
+{
+  font-style: italic;
+}
+
+
+div.mediashare-data div.navigation
+{
+  float: right;
+  margin: 0px;
+  padding: 0px;
+}
+
+div.mediashare-data div.navigation img
+{
+  vertical-align: middle;
+}
+
+
+div.mediashare-footer
+{
+  text-align: center;
+  margin-top: 30px;
+  font-size: 80%;
+}
+
+div.mediashare-footer a
+{
+  color: #777;
+  text-decoration: none;
+}
+
+div.mediashare-userinfo
+{
+  margin-bottom: 0.5em;
+}
+
+div.mediashare-userinfo *
+{
+  vertical-align: middle;
+}
+
+/* Album frontpage */
+
+div.mediashare-album
+{
+  margin: 0px 0px 0px 0px;
+}
+
+div.mediashare-album div.mediashare-item
+{
+  margin: 0px 20px 20px 0px;
+}
+
+/* Media thumbnail list */
+
+div.mediashare-medialist ul.sortkeys
+{
+  list-style: none;
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+}
+
+div.mediashare-medialist ul.sortkeys li
+{
+  display: inline;
+  margin: 0px 4px 0px 4px;
+}
+
+div.mediashare-medialist ul.sortkeys li.selected
+{
+  font-weight: bold;
+}
+
+div.mediashare-medialist h3
+{
+  clear: both;
+  margin: 0px;
+  padding: 20px 0px 0px 0px;
+}
+
+div.mediashare-medialist div.data
+{
+  display: block; 
+  float: left; 
+  width: 400px
+}
+
+div.mediashare-medialist p
+{
+  margin: 0px 0px 1ex 0px;
+}
+
+div.mediashare-medialist img
+{
+  float: left;
+  vertical-align: top;
+  margin-right: 10px;
+}
+
+
+ul.mediashare-upload-list img
+{
+  vertical-align: middle;
+}
+
+tr.mediashare-sizerow td
+{
+  padding-bottom: 1em;
+}
+
+
+div.mediashare-thumbnails
+{
+  padding: 5px 0px 0px 5px;
+}
+
+div.mediashare-thumbnails div.mediashare-float
+{
+  padding: 0px;
+  margin: 0px 20px 15px 0px;
+}
+
+div.mediashare-thumbnails div.dropshadow
+{
+  margin: 0px;
+  padding: 0px;
+  background-image: url(dropshadow.gif);
+  background-repeat: no-repeat;
+  background-position: right bottom;
+}
+
+div.mediashare-thumbnails div.content
+{
+  position: relative;
+  left: -5px;
+  top: -5px;
+
+  border: 1px outset #808080;
+  font-size: 90%;
+  overflow: hidden;
+  padding: 5px 2px 2px 2px;
+}
+
+div.mediashare-thumbnails div.thumbnail
+{
+}
+
+div.mediashare-thumbnails a.zoom img
+{
+  vertical-align: middle;
+}
+
+/* Latest items */
+
+div.mediashare-latestrss
+{
+  float: right;
+}
+
+div.mediashare-latestrss a
+{
+  text-decoration: none;
+}
+
+table.mediashare-mostactive td
+{
+  vertical-align: top;
+  padding: 5px;
+  width: 50%;
+}
+
+table.mediashare-mostactive td.left
+{
+  padding: 5px 10px 0px 0px;
+}
+
+table.mediashare-mostactive td.right
+{
+  padding: 5px 0px 0px 10px;
+}
+
+table.mediashare-mostactive td.right a
+{
+  padding-right: 5px;
+}
+
+
+div.mediashare-invitations textarea,
+div.mediashare-invitations input.txt
+{
+  width: 400px;
+}
+
+div.mediashare-invitations div.row
+{
+  margin: 0px 0px 20px 0px;
+}
+
+div.mediashare-invitations div.mediashare-invtext
+{
+  margin: 0px 0px 0px 20px;
+  width: 400px;
+  font-style: italic;
+}
+
+div.mediashare-invlink
+{
+  text-align: center;
+  font-weight: bold;
+  font-size: 110%;
+  border: 1px solid #333;
+  padding: 6px;
+}
+
+table.mediashare-grid
+{
+  width: 90%;
+  margin-bottom: 10px;
+}
+
+/*=[ Recalculating ]==========================================================*/
+
+div.mediashare-recalc iframe
+{
+  width: 200px;
+  height: 50px;
+  float: right;
+  margin: 0px 0px 10px 10px;
+  border: 1px solid #000;
+}
+
+/*=[ pnForms itemselector ]===================================================*/
+
+div.mediashareItemSelector td.selector
+{
+  padding: 5px 20px 5px 5px;
+  vertical-align: top;
+}
+
+div.mediashareItemSelector td.img
+{
+  vertical-align: middle;
+  text-align: center;
+}
+
+div.mediashareItemSelector td.selector input.file
+{
+  width: 400px;
+}
+
+
+/*=[ Simplefied pages using microformat ideas ]===============================*/
+
+dl.figure
+{
+  list-style: none;
+  margin: 0;
+}
+
+dl.figure dd
+{
+  margin: 0;
+}
+
+div.mediashare-filmstrip
+{
+  border: 1px solid #777;
+  padding: 2px 10px;
+  width: 100%;
+}
+
+div.mediashare-filmstrip table
+{
+  margin: auto;
+}
+
+span.mediashare-filmstrip-info
+{
+  color: #444;
+  font-size: 90%;
+}
+
+/*=[ Menu handling ]==========================================================*/
+
+  /* Surrounding DIV tag */
+div.psmenu 
+{
+  position: absolute;
+  visibility: hidden;
+  font: arial, sans-serif;
+  border-top:       1px solid #D0D0D0;
+  border-left:      1px solid #D0D0D0;
+  border-right:     1px solid black;
+  border-bottom:    1px solid black;
+  background-color: #808080;
+  width: 120px;
+}
+
+div.psmenu ul
+{
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+div.psmenu ul li
+{
+  margin: 0px;
+  padding: 0px;
+  display: inline;
+  white-space: nowrap;
+}
+
+/* IE hack */
+* html div.psmenu ul li
+{
+  display: inline;
+}
+
+div.psmenu li img
+{
+  margin: 4px 0px 0px 4px;
+  float: left;
+  vertical-align: bottom;
+}
+
+div.psmenu li a
+{
+  display: block;
+  text-decoration: none;
+  margin: 0px 0px 0px 20px;
+  padding: 2px;
+  color: #000;
+}
+
+div.psmenu li a:hover
+{
+  background-color: #333;
+  color: #DDD;
+  text-decoration: none;
+}

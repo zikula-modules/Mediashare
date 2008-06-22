@@ -1,0 +1,39 @@
+<!--[mediashare_settitle title="`$album.title` :: `$mediaItem.title`"]-->
+<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$mediaItem.id delay=$delay mode=$mode assign=centerUrl]-->
+
+<div class="mediashare-slideshow">
+
+  <!--[if $mediaItem != null]-->
+
+    <iframe name="mediadisplay" id="mediadisplay" frameborder="0" marginwidth="0px" marginheight="0px" src="<!--[$centerUrl]-->" height="<!--[$mediaItem.previewHeight+150]-->px"></iframe>
+
+    <div class="mediashare-clear"></div>
+
+    <div class="stripframe">
+     <div class="strip" style="height: <!--[$thumbnailSize+30]-->px;">
+
+      <!--[foreach from=$mediaItems item=item]-->
+       <!--[pnmodurl modname="mediashare" func=slideshowcenter aid=$album.id mid=$item.id assign=thumbnailUrl]-->
+       <!--[if $item.id==$mediaItem.id]-->
+         <!--[assign var=class value=selected]-->
+       <!--[else]-->
+         <!--[assign var=class value=""]-->
+       <!--[/if]-->
+       <a href="<!--[$thumbnailUrl|escape]-->" target="mediadisplay">
+        <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail $class"]-->
+       </a>
+      <!--[/foreach]-->
+
+     </div>
+    </div>
+
+  <!--[else]-->
+    <h1><!--[pnml name=_MSNOMAINITEM]--><br/>
+    <a href="<!--[$quitUrl]-->" target="_top"><!--[pnml name=_MSBACK]--></a>
+    </h1>
+  <!--[/if]-->
+
+</div>
+
+<!--[pnmodcallhooks hookobject=item hookaction=display hookid=$mediaId module=mediashare returnurl=$viewUrl]-->
+

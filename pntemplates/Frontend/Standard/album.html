@@ -1,0 +1,86 @@
+<script type="text/javascript" src="modules/mediashare/pnjavascript/view.js"></script>
+
+<!--[mediashare_settitle title="`$album.title` :: `$mediaItem.title`"]-->
+
+<!--[include file="mediashare_viewheader.html" albumId=$album.id title=$album.title]-->
+
+<!--[pnmodurl modname=mediashare func=slideshow aid=$album.id back=1 assign=slideshowUrl]-->
+<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id assign=editAlbumUrl]-->
+<!--[pnmodurl modname=mediashare type=edit func=edititem mid=$mediaItem.id back=browse assign=editItemUrl]-->
+<!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id assign=popupUrl]-->
+<!--[pnmodurl modname=mediashare func=browse aid=$album.id mid=$prevMediaId assign=prevUrl]-->
+<!--[pnmodurl modname=mediashare func=browse aid=$album.id mid=$nextMediaId assign=nextUrl]-->
+
+<!--[include file="mediashare_browseicons.html"]-->
+
+<div class="mediashare-album">
+
+  <!--[if $mediaItem.id > 0]-->
+    <!--[pnmodurl modname=mediashare type=user func=display mid=$mediaItem.id assign=url]-->
+    <div class="mediashare-item">
+      <a href="<!--[$url]-->" target="_blank">
+      <!--[mediashare_mediaItem src=$mediaItem.previewRef title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler class="media" width=$mediaItem.previewWidth height=$mediaItem.previewHeight]--></a><div class="mediashare-clear"></div>
+      <!--[if !$mediaItem.originalIsImage]-->
+      <div class="mediashare-zoom"><a href="<!--[$url]-->" target="_blank"><!--[pnml name=_MSFULLSCREEN]--></a></div>
+      <!--[/if]-->
+      <div style="width: <!--[$mediaItem.previewWidth]-->px;"><!--[$mediaItem.title]-->
+      <!--[if !empty($mediaItem.description)]--><span class="description"><!--[$mediaItem.description]--></span><!--[/if]-->
+      <!--[if $mediaItem.hasKeywords > 0]-->
+        <!--[pnml name=_MSKEYWORDS]-->:
+        <!--[foreach from=$mediaItem.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword]-->"><!--[$keyword]--></a> 
+        <!--[/foreach]-->
+      <!--[/if]-->
+      <!--[if $hasEditAccess]-->
+       <a href="<!--[$editItemUrl|escape]-->"><img src="modules/mediashare/pnimages/edit.gif" alt="<!--[pnml name=_MSEDIT]-->"/></a>
+      <!--[/if]-->
+      </div>
+    </div>
+  <!--[/if]-->  
+
+  <div class="mediashare-data">
+   <!--[if $itemCount > 1]-->
+    <div class="navigation">
+      [<!--[$mediaItemPos]-->/<!--[$itemCount]-->]
+      <a href="<!--[$prevUrl|escape]-->"><img src="modules/mediashare/pnimages/agt_back.gif" alt="<!--[pnml name=_MSPREVIOUS]-->"/></a>
+      <a href="<!--[$nextUrl|escape]-->"><img src="modules/mediashare/pnimages/agt_forward.gif" alt="<!--[pnml name=_MSNEXT]-->"/></a>
+    </div>
+   <!--[/if]-->
+    <!--[if $itemCount > 0]-->
+     <h3><a href="<!--[$slideshowUrl|escape]-->"><!--[$album.title]--></a></h3>
+    <!--[else]-->
+     <h3><!--[$album.title]--></h3>
+    <!--[/if]-->
+    <!--[mediashare_username userId=$album.ownerId assign=ownerName]-->
+    <div class="author"><!--[pnml name=_MSBY]--> <a href="<!--[pnmodurl modname=mediashare func=list uname=$ownerName]-->" title="<!--[pnml name=_MSRESTRICTTOOWNER]-->"><!--[$ownerName]--></a>
+    </div>
+    <div class="summary">
+      <!--[if $album.summary != '']-->
+        <!--[$album.summary]-->
+      <!--[else]-->
+        <!--[$album.description]-->
+      <!--[/if]-->
+    </div>
+    <!--[if $album.summary != '']-->
+      <div class="description"><!--[$album.description]--></div>
+    <!--[/if]-->    
+    
+    <!--[if $album.hasKeywords > 0]-->
+      <!--[pnml name=_MSKEYWORDS]-->: 
+      <!--[foreach from=$album.keywordsArray item=keyword]-->
+        <a href="<!--[pnmodurl modname=mediashare func=list key=$keyword]-->"><!--[$keyword]--></a> 
+      <!--[/foreach]-->
+    <!--[/if]-->
+  </div>
+ <div class="mediashare-clear"></div>
+
+  <div class="mediashare-hooks">
+  <!--[pnmodcallhooks hookobject=item hookaction=display hookid="mediashare-a`$album.id`-m`$mediaItem.id`" module=mediashare]-->
+  </div>
+
+  <!--[include file="mediashare_subalbumlist.html" mode="view"]-->
+  
+</div>
+<br style="clear: both"/>
+
+
+<!--[include file="mediashare_viewfooter.html"]-->

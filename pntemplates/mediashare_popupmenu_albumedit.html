@@ -1,0 +1,19 @@
+<div class="psmenu" id="psmenu-album">
+  <ul>
+    <li><img src="modules/mediashare/pnimages/magnify.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,0)"><!--[pnml name=_MSBROWSEALBUM]--></a></li>
+    <li><img src="modules/mediashare/pnimages/setting.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,1)"><!--[pnml name=_MSEDITALBUM]--></a></li>
+    <li><img src="modules/mediashare/pnimages/delete.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,2)"><!--[pnml name=_MSDELETEALBUM]--></a></li>
+    <li><img src="modules/mediashare/pnimages/move.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,3)"><!--[pnml name=_MSMOVEALBUM]--></a></li>
+  </ul>
+</div>
+
+
+<script type="text/javascript">
+  contextmenu.album.actionURLs = 
+    [
+      "<!--[pnmodurl modname=mediashare func=view]-->",
+      "<!--[pnmodurl modname=mediashare type=edit func=editalbum]-->",
+      "<!--[pnmodurl modname=mediashare type=edit func=deletealbum]-->",
+      "<!--[pnmodurl modname=mediashare type=edit func=movealbum]-->"
+    ];
+</script>

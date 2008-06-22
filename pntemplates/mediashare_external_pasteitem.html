@@ -1,0 +1,54 @@
+<html>
+
+<head>
+<title><!--[pnml name=_MSMEDIASHAREFINDITEM]--></title>
+<!--[if $modCssURL != '']-->
+<link rel="StyleSheet" href="<!--[$modCssURL]-->" type="text/css"/>
+<!--[/if]-->
+<!--[if $themeCssURL != '']-->
+<link rel="StyleSheet" href="<!--[$themeCssURL]-->" type="text/css"/>
+<!--[/if]-->
+<script src="modules/mediashare/pnjavascript/finditem.js" type="text/javascript"></script>
+
+<style>
+body
+{
+  margin: 10px;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<form method="post" action="<!--[pngetcurrenturi]-->" id="selectorForm">
+
+<input type="hidden" value="<!--[$albumId]-->" name="aid"/>
+<input type="hidden" value="<!--[$mediaId]-->" name="mid"/>
+
+<!--[mediashare_block]-->
+  <!--[mediashare_header]-->
+    <!--[pnml name=_MSSELECTFORMAT]-->
+  <!--[/mediashare_header]-->
+  <!--[mediashare_body]-->
+
+
+<!--[mediashare_mediaItem src=$mediaItem.thumbnailRef isThumbnail=1 title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler]-->
+<br/>
+<!--[include file="mediashare_media_`$mediaItem.mediaHandler`_paste.html"]-->
+
+  <!--[/mediashare_body]-->
+  <!--[mediashare_buttons]-->
+    <!--[elfisk_button name="selectButton" text="_MSSELECT" onclick="mediashare.find.selectItem()]-->
+    <!--[elfisk_button name="backButton" text="_MSBACK"]-->
+    <!--[elfisk_button name="cancelButton" text="_MSCANCEL" onclick="mediashare.find.handleCancel()"]-->
+  <!--[/mediashare_buttons]-->
+<!--[/mediashare_block]-->
+
+</form>
+
+</body>
+
+
+</html>

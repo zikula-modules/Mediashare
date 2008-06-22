@@ -1,0 +1,138 @@
+<?php
+// $Id: pnmedia_flashapi.php,v 1.6 2006/03/26 18:01:54 jornlind Exp $
+// =======================================================================
+// Mediashare by Jorn Lind-Nielsen (C) 2005.
+// ----------------------------------------------------------------------
+// For POST-NUKE Content Management System
+// Copyright (C) 2002 by the PostNuke Development Team.
+// http://www.postnuke.com/
+// ----------------------------------------------------------------------
+// LICENSE
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License (GPL)
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WIthOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// To read the license please visit http://www.gnu.org/copyleft/gpl.html
+// =======================================================================
+
+//require_once 'modules/mediashare/mediaHandler.php';
+
+
+class mediashare_flashHandler
+{
+  function getTitle()
+  {
+    return 'Mediashare Flash Handler';
+  }
+
+
+  function getMediaTypes()
+  {
+    return array( 
+      array('mimeType' => 'application/x-shockwave-flash', 'fileType' => 'swf',  
+            'foundMimeType' => 'application/x-shockwave-flash', 'foundFileType' => 'swf')
+      );
+  }
+
+
+  function createPreviews($args, $previews)
+  {
+    $mediaFilename = $args['mediaFilename'];
+    $mimeType = $args['mimeType'];
+    $mediaFileType = $args['fileType'];
+
+    $result = array();
+
+    foreach ($previews as $preview)
+    {
+      if ($preview['isThumbnail'])
+      {
+        copy('modules/mediashare/pnimages/logo_flash_player.png', $preview['outputFilename']);
+        $imPreview = @imagecreatefrompng($preview['outputFilename']);
+        $result[] = array('fileType' => 'png', 
+                          'mimeType' => 'image/png',
+                          'width'    => imagesx($imPreview),
+                          'height'   => imagesy($imPreview),
+                          'bytes'    => filesize($preview['outputFilename']));
+        imagedestroy($imPreview);
+      }
+      else
+      {
+        $width  = $preview['imageSize'];
+        $height = $preview['imageSize'];
+        if (    array_key_exists('width', $args) && (int)$args['width'] > 0
+            &&  array_key_exists('height', $args) && (int)$args['height'] > 0)
+        {
+          $w = (int)$args['width'];
+          $h = (int)$args['height'];
+
+          if ($w < $width  ||  $h < $height)
+          {
+            $width = $w;
+            $height = $h;
+          }
+          else if ($w > $h)
+            $height = ($h/$w) * $height;
+          else
+            $width = ($w/$h) * $width;
+        }
+
+        $result[] = array('fileType'    => $mediaFileType, 
+                          'mimeType'    => $mimeType,
+                          'width'       => $width,
+                          'height'      => $height,
+                          'useOriginal' => true,
+                          'bytes'       => filesize($preview['outputFilename']));
+      }
+    }
+
+    $width  = (array_key_exists('width', $args) && (int)$args['width'] > 0 ? (int)$args['width'] : $preview['imageSize']);
+    $height = (array_key_exists('height', $args) && (int)$args['height'] > 0 ? (int)$args['height'] : $preview['imageSize']);
+
+    $result[] = array('fileType' => $mediaFileType, 
+                      'mimeType' => $mimeType,
+                      'width'    => $width,
+                      'height'   => $height,
+                      'bytes'    => filesize($mediaFilename));
+
+    return $result;
+  }
+
+
+  function getMediaDisplayHtml($url, $width, $height, $id, $args)
+  {
+    //$width="100px"; $height="100px";
+    $widthHtml = ($width == null ? '' : " width=\"$width\"");
+    $heightHtml = ($height == null ? '' : " height=\"$height\"");
+
+    return "<object classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\"
+codebase=\"http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab\"
+$widthHtml$heightHtml id=\"$id\">
+<param name=\"movie\" value=\"$url\">
+<param name=\"quality\" value=\"high\">
+<param name=\"bgcolor\" value=\"#FFFFFF\">
+<embed src=\"$url\" quality=\"high\" bgcolor=\"#FFFFFF\"$widthHtml$heightHtml
+type=\"application/x-shockwave-flash\"
+pluginspage=\"http://www.macromedia.com/go/getflashplayer\">
+</embed>
+</object>";
+  }
+
+
+  // Internal functions
+};
+
+
+function mediashare_media_flashapi_buildHandler($args)
+{
+  return new mediashare_flashHandler();
+}
+
+?>

@@ -1,0 +1,16 @@
+<!--[if empty($mediaItem)]-->
+ <!--[pnmodurl modname=mediashare func=slideshow aid=$album.id back=1 assign=slideshowUrl]-->
+<!--[else]-->
+ <!--[pnmodurl modname=mediashare func=slideshow aid=$album.id mid=$mediaItem.id back=1 assign=slideshowUrl]-->
+<!--[/if]-->
+<div class="mediashare-browseicons">
+  <!--[if $itemCount > 0]-->
+  <a href="<!--[$slideshowUrl]-->"><img src="modules/mediashare/pnimages/slideshow.gif" alt=""><!--[pnml name=_MSSLIDESHOW]--></a>
+  <a href="<!--[pnmodurl modname=mediashare func=thumbnails aid=$album.id]-->"><img src="modules/mediashare/pnimages/thumbnails.gif" alt=""><!--[pnml name=_MSTHUMBNAILS]--></a>
+  <!--[/if]-->
+  <a href="<!--[pnmodurl modname=mediashare func=browse aid=$album.id]-->"><img src="modules/mediashare/pnimages/browse.gif" alt=""><!--[pnml name=_MSBROWSE]--></a>
+  <a href="<!--[pnmodurl modname=mediashare func=latest]-->"><img src="modules/mediashare/pnimages/new.gif" alt=""><!--[pnml name=_MSLATEST]--></a>
+  <!--[if $hasEditAccess]-->
+  <!--[include file=mediashare_browseicons_menu.html]-->
+  <!--[/if]-->
+</div>

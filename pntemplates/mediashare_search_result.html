@@ -1,0 +1,15 @@
+<!--[if $hitCount != 0]-->
+  <!--[pnml name='_MSSEARCHTITLE']-->: <!--[$hitCount]--> <!--[pnml name='_MSSEARCHRESULTS']-->
+  <ul>
+  <!--[foreach from=$result item=item]-->
+    <li><a href="<!--[pnmodurl modname=mediashare aid=$item.albumId mid=$item.mediaId]-->"> <strong><!--[$item.albumTitle|pnvarprepfordisplay]--></strong>:&nbsp;<!--[$item.mediaTitle|pnvarprepfordisplay]--></a>
+    </li>
+  <!--[/foreach]-->
+  </ul>
+  <!--[ pager rowcount=$hitCount limit=$pageSize separator=" " posvar=mediashare_itemindex txt_prev="<<" txt_next=">>" ]-->
+<!--[else]-->
+  <!--[pnml name='_MSSEARCHNONEFOUND']-->
+<!--[/if]-->
+<br />
+<br />
+<br />

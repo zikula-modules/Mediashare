@@ -1,0 +1,58 @@
+<ul class="mediashare-upload-list">
+<!--[foreach from=$statusSet item=status]-->
+
+<li>
+  <!--[$status.message]-->
+  <!--[if $status.ok]-->
+    <img src="modules/mediashare/pnimages/button_ok.gif" alt="<!--[pnml name=_MSOK]-->"/>
+  <!--[else]-->
+    <img src="modules/mediashare/pnimages/button_cancel.gif" alt="<!--[$status.message]-->"/>
+  <!--[/if]-->
+</li>
+
+<!--[/foreach]-->
+</ul>
+
+<table>
+ <!--[foreach from=$items item=item]-->
+  <tr>
+    <td class="top">
+      <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
+      <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]-->
+    </td>
+    <td>
+      <table>
+        <tr>
+          <td>
+            <label for="title-<!--[$item.id]-->"><!--[pnml name=_MSTITLE]--></label>
+          </td>
+          <td>
+            <!--[elfisk_textInput id="title-`$item.id`" width="400px" maxLength="255" text=$item.title]-->
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="keywords-<!--[$item.id]-->"><!--[pnml name=_MSKEYWORDS]--></label>
+          </td>
+          <td>
+            <!--[elfisk_textInput id="keywords-`$item.id`" width="400px" maxLength="255" text=$item.keywords]-->
+          </td>
+        </tr>
+        <tr>
+          <td class="top">
+            <label for="description-<!--[$item.id]-->"><!--[pnml name=_MSDESCRIPTION]--></label>
+          </td>
+          <td>
+            <!--[elfisk_textArea id="description-`$item.id`" width="400px" height="100px" text=$item.description]-->
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+ <!--[/foreach]-->
+</table>
+
+<!--[mediashare_buttons]-->
+  <!--[elfisk_button name="continueButton" text="_MSCONTINUE"]-->
+  <!--[elfisk_button name="moreButton" text="_MSADDMOREITEMS"]-->
+<!--[/mediashare_buttons]-->

@@ -1,0 +1,62 @@
+<select name="htmlFormat" id="htmlFormat">
+
+ <option value="previewItem"><!--[pnml name=_MSINSPREVIEW]--></option>
+ <option value="fullItem"><!--[pnml name=_MSINSFULLITEM]--></option>
+ <option value="thumbnail"><!--[pnml name=_MSINSTHUMBNAIL]--></option>
+ <option value="thumbnailPopup"><!--[pnml name=_MSINSTHUMBNAILPOPUP]--></option>
+ <option value="fullItemURL"><!--[pnml name=_MSINSFULLITEMURL]--></option>
+ <option value="fullItemURLPopup"><!--[pnml name=_MSINSFULLITEMURLPOPUP]--></option>
+ <option value="albumUrl"><!--[pnml name=_MSINSALBUMURL]--></option>
+ <option value="albumThumbnailURL"><!--[pnml name=_MSINSALBUMURLTHUMBNAIL]--></option>
+ <option value="albumUrlpopup"><!--[pnml name=_MSINSALBUMURLPOPUP]--></option>
+ <option value="albumThumbnailURLpopup"><!--[pnml name=_MSINSALBUMURLTHUMBNAILPOPUP]--></option>
+
+</select>
+
+
+<script type="text/javascript">
+
+<!--[include file=mediashare_pasteutility.html]-->
+
+function mediashare_paste_getHtml(mode)
+{
+  var htmlFormat = document.getElementById('htmlFormat').value;
+  var html = null;
+
+  var albumUrl = '<!--[pnmodurl modname=mediashare func=view aid=$mediaItem.parentAlbumId]-->';
+  var displayItemUrl = '<!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id]-->';
+  var originalUrl = '<!--[$originalUrl]-->';
+  var previewUrl = '<!--[$previewUrl]-->';
+  var thumbnailUrl = '<!--[$thumbnailUrl]-->';
+
+  html = mediashare_paste_getStandardHtml(htmlFormat, mode);
+
+  if (html == null)
+  {
+    var url = null;
+
+    switch (htmlFormat)
+    {
+      case 'fullItem':
+        url = originalUrl;
+      break;
+      case 'previewItem':
+        url = previewUrl;
+      break;
+    }
+
+    html = "<object classid=\"clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA\"\n"
++"<param name=\"src\" value=\"" + url + "\"/>\n"
++"<param name=\"AutoStart\" value=\"false\"/>\n"
++"<param name=\"MaintainAspect\" value=\"true\"/>\n"
++"<embed src=\"" + url +"\"\n"
++"autostart=\"false\">\n"
++"maintainaspect=\"true\">\n"
++"</embed>\n"
++"</object>\n";
+  }
+
+  return html;
+}
+
+</script>
