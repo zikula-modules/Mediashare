@@ -43,7 +43,32 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
   }
 
 
+  function getAlbumData()
+  {
+    $images = $this->getRawImages();
+    if (count($images) > 0)
+    {
+      $this->albumData['mainMediaId'] = $images[0]['id'];
+      $this->albumData['mainMediaItem'] = $this->convertImage($images[0]);
+    }
+    return $this->albumData;
+  }
+
+
   function getMediaItems()
+  {
+    $images = $this->getRawImages();
+    for ($i=0,$cou=count($images); $i<$cou; ++$i)
+    {
+      $images[$i] = $this->convertImage($images[$i]);
+    }
+
+    $this->fixMainMedia($images);
+    return $images;
+  }
+
+
+  function getRawImages()
   {
     $data = $this->albumData['extappData']['data'];
     
@@ -73,51 +98,53 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
     //var_dump($images); exit(0);
     $images = $images['photo'];
 
-    for ($i=0,$cou=count($images); $i<$cou; ++$i)
-    {
-      $image = & $images[$i];
-      $images[$i] = array
-        ( 
-          'id'              => $image['id'],
-          'ownerId'         => null,
-          'createdDate'     => null,
-          'modifiedDate'    => null,
-          'createdDateRaw'  => null,
-          'modifiedDateRaw' => null,
-          'title'           => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),
-          'keywordsArray'   => array(),
-          'hasKeywords'     => false,
-          'keywords'        => null,
-          'description'     => '',
-          'caption'         => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),
-          'captionLong'     => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),
-          'parentAlbumId'   => $this->albumId,
-          'mediaHandler'    => 'imagegd',
-          'thumbnailId'     => null,
-          'previewId'       => null,
-          'originalId'      => null,
-          'thumbnailRef'      => $this->flickrApi->buildPhotoURL($image, "square"),
-          'thumbnailMimeType' => 'image/jpeg',
-          'thumbnailWidth'    => null,
-          'thumbnailHeight'   => null,
-          'thumbnailBytes'    => null,
-          'previewRef'        => $this->flickrApi->buildPhotoURL($image, "mediaum"),
-          'previewMimeType'   => 'image/jpeg',
-          'previewWidth'      => 400,
-          'previewHeight'     => null,
-          'previewBytes'      => null,
-          'originalRef'       => $this->flickrApi->buildPhotoURL($image, "large"),
-          'originalMimeType'  => 'image/jpeg',
-          'originalWidth'     => null,
-          'originalHeight'    => null,
-          'originalBytes'     => null,
-          'originalIsImage'   => true,
-          'ownerName'         => null);
-
-      mediashareAddKeywords($image);
-    }
-
     return $images;
+  }
+
+
+  function convertImage(&$image)
+  {
+    $image = array
+      ( 
+        'id'              => $image['id'],
+        'ownerId'         => null,
+        'createdDate'     => null,
+        'modifiedDate'    => null,
+        'createdDateRaw'  => null,
+        'modifiedDateRaw' => null,
+        'title'           => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),
+        'keywordsArray'   => array(),
+        'hasKeywords'     => false,
+        'keywords'        => null,
+        'description'     => '',
+        'caption'         => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),
+        'captionLong'     => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),
+        'parentAlbumId'   => $this->albumId,
+        'mediaHandler'    => 'imagegd',
+        'thumbnailId'     => null,
+        'previewId'       => null,
+        'originalId'      => null,
+        'thumbnailRef'      => $this->flickrApi->buildPhotoURL($image, "square"),
+        'thumbnailMimeType' => 'image/jpeg',
+        'thumbnailWidth'    => null,
+        'thumbnailHeight'   => null,
+        'thumbnailBytes'    => null,
+        'previewRef'        => $this->flickrApi->buildPhotoURL($image, "mediaum"),
+        'previewMimeType'   => 'image/jpeg',
+        'previewWidth'      => 400,
+        'previewHeight'     => null,
+        'previewBytes'      => null,
+        'originalRef'       => $this->flickrApi->buildPhotoURL($image, "large"),
+        'originalMimeType'  => 'image/jpeg',
+        'originalWidth'     => null,
+        'originalHeight'    => null,
+        'originalBytes'     => null,
+        'originalIsImage'   => true,
+        'ownerName'         => null);
+
+    mediashareAddKeywords($image);
+
+    return $image;
   }
 }
 

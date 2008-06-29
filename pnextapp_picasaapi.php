@@ -117,14 +117,25 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
   }
 
   
+  function getAlbumData()
+  {
+    $images = $this->getMediaItems();
+    if (count($images) > 0)
+    {
+      $this->albumData['mainMediaId'] = $images[0]['id'];
+      $this->albumData['mainMediaItem'] = $images[0];
+    }
+    return $this->albumData;
+  }
+
+
   function getMediaItems()
   {
     $data = $this->albumData['extappData']['data'];
 
     if ($images = $this->getCached($data))
-    {
       return $images;
-    }
+
     if (!empty($data['userName'])  &&  empty($data['albumName']))
     {
       $images = $this->picasaApi->getImages($data['userName'], 30, 0, null, null, 'public', '72,400', 800)->getImages();
@@ -134,55 +145,63 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
       $images = $this->picasaApi->getAlbumByName($data['userName'], $data['albumName'], 30, 0, null, null, '72,400', 800)->getImages();
     }
 
-    //var_dump($images); exit(0);
-
     for ($i=0,$cou=count($images); $i<$cou; ++$i)
     {
-      $image = & $images[$i];
-      $thumbUrlMap = $image->getThumbUrlMap();
-
-      $image = array
-        ( 
-          'id'              => (string)$image->getIdNum(),
-          'ownerId'         => null,
-          'createdDate'     => null,
-          'modifiedDate'    => null,
-          'createdDateRaw'  => null,
-          'modifiedDateRaw' => null,
-          'title'           => mb_convert_encoding($image->getTitle(), _CHARSET, 'UTF-8'),
-          'keywordsArray'   => $image->getTags(),
-          'hasKeywords'     => count($image->getTags()) > 0,
-          'keywords'        => implode(',', $image->getTags()),
-          'description'     => mb_convert_encoding($image->getDescription(), _CHARSET, 'UTF-8'),
-          'caption'         => mb_convert_encoding($image->getTitle(), _CHARSET, 'UTF-8'),
-          'captionLong'     => mb_convert_encoding($image->getDescription(), _CHARSET, 'UTF-8'),
-          'parentAlbumId'   => $this->albumName,
-          'mediaHandler'    => 'imagegd',
-          'thumbnailId'     => null,
-          'previewId'       => null,
-          'originalId'      => null,
-          'thumbnailRef'      => (string)$image->getSmallThumb(),
-          'thumbnailMimeType' => 'image/jpeg',
-          'thumbnailWidth'    => 72,
-          'thumbnailHeight'   => null,
-          'thumbnailBytes'    => null,
-          'previewRef'        => (string)$image->getMediumThumb(),
-          'previewMimeType'   => 'image/jpeg',
-          'previewWidth'      => 400,
-          'previewHeight'     => null,
-          'previewBytes'      => null,
-          'originalRef'       => (string)$image->getContent(),
-          'originalMimeType'  => 'image/jpeg',
-          'originalWidth'     => null,
-          'originalHeight'    => null,
-          'originalBytes'     => null,
-          'originalIsImage'   => true,
-          'ownerName'         => null);
+      $images[$i] = $this->convertImage($images[$i]);
     }
 
-    //var_dump($images);
     $this->cache($data, $images);
+
+    $this->fixMainMedia($images);
     return $images;
+  }
+
+  
+  function convertImage(&$image)
+  {
+    $thumbUrlMap = $image->getThumbUrlMap();
+
+    $image = array
+      ( 
+        'id'              => (string)$image->getIdNum(),
+        'ownerId'         => null,
+        'createdDate'     => null,
+        'modifiedDate'    => null,
+        'createdDateRaw'  => null,
+        'modifiedDateRaw' => null,
+        'title'           => mb_convert_encoding($image->getTitle(), _CHARSET, 'UTF-8'),
+        'keywordsArray'   => $image->getTags(),
+        'hasKeywords'     => count($image->getTags()) > 0,
+        'keywords'        => implode(',', $image->getTags()),
+        'description'     => mb_convert_encoding($image->getDescription(), _CHARSET, 'UTF-8'),
+        'caption'         => mb_convert_encoding($image->getTitle(), _CHARSET, 'UTF-8'),
+        'captionLong'     => mb_convert_encoding($image->getDescription(), _CHARSET, 'UTF-8'),
+        'parentAlbumId'   => $this->albumName,
+        'mediaHandler'    => 'imagegd',
+        'thumbnailId'     => null,
+        'previewId'       => null,
+        'originalId'      => null,
+        'thumbnailRef'      => (string)$image->getSmallThumb(),
+        'thumbnailMimeType' => 'image/jpeg',
+        'thumbnailWidth'    => 72,
+        'thumbnailHeight'   => null,
+        'thumbnailBytes'    => null,
+        'previewRef'        => (string)$image->getMediumThumb(),
+        'previewMimeType'   => 'image/jpeg',
+        'previewWidth'      => 400,
+        'previewHeight'     => null,
+        'previewBytes'      => null,
+        'originalRef'       => (string)$image->getContent(),
+        'originalMimeType'  => 'image/jpeg',
+        'originalWidth'     => null,
+        'originalHeight'    => null,
+        'originalBytes'     => null,
+        'originalIsImage'   => true,
+        'ownerName'         => null);
+
+    mediashareAddKeywords($image);
+
+    return $image;
   }
 }
 
