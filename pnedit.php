@@ -91,34 +91,13 @@ function mediashare_edit_view($args)
 
   $render = new elfiskRender('mediashare');
 
-  // Fetch access settings for this album
-  $access = pnModAPIFunc('mediashare', 'user', 'getAlbumAccess',
-                         array('albumId' => $albumId));
-  if ($access === false)
-    return mediashareErrorAPIGet();
-
-  // Fetch access settings for parent album
-  if ($albumId > 1)
-  {
-    $parentAccess = pnModAPIFunc('mediashare', 'user', 'getAlbumAccess',
-                                 array('albumId' => $album['parentAlbumId']));
-  }
-  else
-    $parentAccess = 0;
-  if ($parentAccess === false)
-    return mediashareErrorAPIGet();
-
   $render->caching = false;
   $render->assign('album', $album);
   $render->assign('subAlbums', $subAlbums);
   $render->assign('mediaItems', $items);
-  $render->assign('hasEditAlbumAccess', ($access & mediashareAccessRequirementEditAlbum) != 0);
-  $render->assign('hasEditMediaAccess', ($access & mediashareAccessRequirementEditMedia) != 0);
-  $render->assign('hasAddAlbumAccess', ($access & mediashareAccessRequirementAddAlbum) != 0);
-  $render->assign('hasAddMediaAccess', ($access & mediashareAccessRequirementAddMedia) != 0);
-  $render->assign('hasEditAccessAccess', ($access & mediashareAccessRequirementEditAccess) != 0);
-  $render->assign('hasParentAccess', ($parentAccess & mediashareAccessRequirementEditSomething) != 0);
   $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
+  if (!mediashareAddAccess($render, $album))
+    return mediashareErrorAPIGet();
 
   return $render->fetch('mediashare_edit_view.html');
 }

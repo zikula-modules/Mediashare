@@ -135,8 +135,9 @@ function mediashare_user_browse($args)
   $render->assign('subAlbums', $subAlbums);
   $render->assign('prevMediaId', $prevMediaId);
   $render->assign('nextMediaId', $nextMediaId);
-  $render->assign('hasEditAccess', mediashareAccessAlbum($albumId, mediashareAccessRequirementEditSomething));
   $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
+  if (!mediashareAddAccess($render, $album))
+    return mediashareErrorAPIGet();
 
   $template = pnVarPrepForOS($album['template']);
   $templateFilename = "Frontend/$template/album.html";
@@ -260,11 +261,12 @@ function mediashare_user_slideshow($args)
   $render->assign('albumId', $albumId);
   $render->assign('delay', $delay);
   $render->assign('mode', $mode);
-  $render->assign('hasEditAccess', mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, $viewkey));
   $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
   $render->assign('theme', pnUserGetTheme());
   $render->assign('templateName', "slideshow{$center}.html");
   $render->assign('quitUrl', $quitUrl);
+  if (!mediashareAddAccess($render, $album))
+    return mediashareErrorAPIGet();
 
   $viewURL = pnModUrl('mediashare','user','slideshow', array('mid' => $mediaItem['id']));
 
@@ -324,10 +326,11 @@ function mediashare_user_thumbnails($args)
   $render->assign('album', $album);
   $render->assign('subAlbums', $subAlbums);
   $render->assign('albumId', $albumId);
-  $render->assign('hasEditAccess', mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, $viewkey));
   $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
   $render->assign('itemCount', count($items));
   $render->assign('theme', pnUserGetTheme());
+  if (!mediashareAddAccess($render, $album))
+    return mediashareErrorAPIGet();
 
   $template = pnVarPrepForOS($album['template']);
   $templateFilename = "Frontend/$template/thumbnails.html";

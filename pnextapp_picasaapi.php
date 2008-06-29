@@ -26,12 +26,11 @@ require_once("modules/mediashare/common.php");
 require_once("modules/mediashare/pnincludes/phpPicasa/Picasa.php");
 
 
-class MediasharePicasaAlbum
+class MediasharePicasaAlbum extends MediashareBaseAlbum
 {
   var $cache_dir;
   var $cache_expire;
   var $albumName;
-  var $albumData;
   var $picasaApi;
 
 
@@ -39,16 +38,11 @@ class MediasharePicasaAlbum
   {
     $APIKey = pnModGetVar('mediashare', 'picasaAPIKey');
 
+    $albumData['allowMediaEdit'] = false;
     $this->albumName = $albumName;
     $this->albumData = $albumData;
     $this->picasaApi = new Picasa($APIKey);
     $this->enableCache(pnConfigGetVar('temp'));
-  }
-
-
-  function getAlbumData()
-  { 
-    return $this->albumData;
   }
 
 
@@ -126,7 +120,7 @@ class MediasharePicasaAlbum
   function getMediaItems()
   {
     $data = $this->albumData['extappData']['data'];
-var_dump($data);
+
     if ($images = $this->getCached($data))
     {
       return $images;

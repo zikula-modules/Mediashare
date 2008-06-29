@@ -126,6 +126,41 @@ function mediashareAccessUserRealName()
 }
 
 
+function mediashareAddAccess(&$render, $album)
+{
+  $albumId = $album['id'];
+
+  // Fetch access settings for this album
+  $access = pnModAPIFunc('mediashare', 'user', 'getAlbumAccess',
+                         array('albumId' => $albumId));
+  if ($access === false)
+    return false;
+
+  // Fetch access settings for parent album
+  if ($albumId > 1)
+  {
+    $parentAccess = pnModAPIFunc('mediashare', 'user', 'getAlbumAccess',
+                                 array('albumId' => $album['parentAlbumId']));
+  }
+  else
+    $parentAccess = 0;
+  if ($parentAccess === false)
+    return mediashareErrorAPIGet();
+
+  $access = array('hasEditAlbumAccess'  => ($access & mediashareAccessRequirementEditAlbum) != 0,
+                  'hasEditMediaAccess'  => ($access & mediashareAccessRequirementEditMedia) != 0 && $album['allowMediaEdit'],
+                  'hasAddAlbumAccess'   => ($access & mediashareAccessRequirementAddAlbum) != 0,
+                  'hasAddMediaAccess'   => ($access & mediashareAccessRequirementAddMedia) != 0 && $album['allowMediaEdit'],
+                  'hasEditAccessAccess' => ($access & mediashareAccessRequirementEditAccess) != 0,
+                  'hasAnyEditAccess'    => ($access & mediashareAccessRequirementEditSomething) != 0,
+                  'hasParentAccess'     => ($parentAccess & mediashareAccessRequirementEditSomething) != 0);
+
+  $render->assign('access', $access);
+
+  return true;
+}
+
+
 // =======================================================================
 // Error handling
 // =======================================================================

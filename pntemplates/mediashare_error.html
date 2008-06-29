@@ -1,1 +1,5 @@
-<!--[$errorMessage]-->
+<!--[if empty($errorMessage)]-->
+  Mediashare detected an internal error but did not supply any error message.
+<!--[else]-->
+  <!--[$errorMessage]-->
+<!--[/if]-->

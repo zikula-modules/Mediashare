@@ -656,11 +656,12 @@ span.mediashare-filmstrip-info
 /*=[ Menu handling ]==========================================================*/
 
   /* Surrounding DIV tag */
-div.psmenu 
+#mediashare div.psmenu 
 {
   position: absolute;
   visibility: hidden;
   font: arial, sans-serif;
+  z-index: 100;
   border-top:       1px solid #D0D0D0;
   border-left:      1px solid #D0D0D0;
   border-right:     1px solid black;
@@ -669,14 +670,14 @@ div.psmenu
   width: 120px;
 }
 
-div.psmenu ul
+#mediashare div.psmenu ul
 {
   list-style: none;
   margin: 0px;
   padding: 0px;
 }
 
-div.psmenu ul li
+#mediashare div.psmenu ul li
 {
   margin: 0px;
   padding: 0px;
@@ -685,19 +686,19 @@ div.psmenu ul li
 }
 
 /* IE hack */
-* html div.psmenu ul li
+* html #mediashare div.psmenu ul li
 {
   display: inline;
 }
 
-div.psmenu li img
+#mediashare div.psmenu li img
 {
   margin: 4px 0px 0px 4px;
   float: left;
   vertical-align: bottom;
 }
 
-div.psmenu li a
+#mediashare div.psmenu li a
 {
   display: block;
   text-decoration: none;
@@ -706,7 +707,7 @@ div.psmenu li a
   color: #000;
 }
 
-div.psmenu li a:hover
+#mediashare div.psmenu li a:hover
 {
   background-color: #333;
   color: #DDD;

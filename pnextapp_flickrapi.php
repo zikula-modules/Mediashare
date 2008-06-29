@@ -26,10 +26,8 @@ require_once("modules/mediashare/common.php");
 require_once("modules/mediashare/pnincludes/phpFlickr/phpFlickr.php");
 
 
-class MediashareFlickrAlbum
+class MediashareFlickrAlbum extends MediashareBaseAlbum
 {
-  var $albumId;
-  var $albumData;
   var $flickrApi;
 
 
@@ -37,16 +35,11 @@ class MediashareFlickrAlbum
   {
     $APIKey = pnModGetVar('mediashare', 'flickrAPIKey');
 
+    $albumData['allowMediaEdit'] = false;
     $this->albumId = $albumId;
     $this->albumData = $albumData;
     $this->flickrApi = new phpFlickr($APIKey);
     $this->flickrApi->enableCache('fs', pnConfigGetVar('temp'));
-  }
-
-
-  function getAlbumData()
-  { 
-    return $this->albumData;
   }
 
 
@@ -92,6 +85,8 @@ class MediashareFlickrAlbum
           'createdDateRaw'  => null,
           'modifiedDateRaw' => null,
           'title'           => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),
+          'keywordsArray'   => array(),
+          'hasKeywords'     => false,
           'keywords'        => null,
           'description'     => '',
           'caption'         => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),

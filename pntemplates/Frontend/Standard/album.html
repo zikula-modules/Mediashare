@@ -30,7 +30,7 @@
         <!--[foreach from=$mediaItem.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword]-->"><!--[$keyword]--></a> 
         <!--[/foreach]-->
       <!--[/if]-->
-      <!--[if $hasEditAccess]-->
+      <!--[if $access.hasEditMediaAccess]-->
        <a href="<!--[$editItemUrl|escape]-->"><img src="modules/mediashare/pnimages/edit.gif" alt="<!--[pnml name=_MSEDIT]-->"/></a>
       <!--[/if]-->
       </div>

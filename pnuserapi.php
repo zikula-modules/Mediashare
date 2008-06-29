@@ -29,16 +29,39 @@ require_once("modules/mediashare/common.php");
 // Album class definition
 // =======================================================================
 
-class MediashareAlbum
+class MediashareBaseAlbum
 {
-  var $_albumId;
-  var $_albumData;
+  var $albumId;
+  var $albumData;
 
 
+  function getAlbumData()
+  { 
+    return $this->albumData;
+  }
+
+
+  function fixMainMedia($images)
+  {
+    $mainMediaId = $this->albumData['mainMediaId'];
+    $mainMedia = null;
+    for ($i=0,$cou=count($images); $i<$cou; ++$i)
+    {
+      $image = & $images[$i];
+      if ($image['id'] == $mainMediaId)
+        $mainMedia = $image;
+    }
+    $this->albumData['mainMediaItem'] = $mainMedia;
+  }
+}
+
+
+class MediashareAlbum extends MediashareBaseAlbum
+{
   function MediashareAlbum($albumId, $albumData)
   {
-    $this->_albumId = $albumId;
-    $this->_albumData = $albumData;
+    $this->albumId = $albumId;
+    $this->albumData = $albumData;
   }
 
 
@@ -48,15 +71,9 @@ class MediashareAlbum
   }
 
 
-  function getAlbumData()
-  { 
-    return $this->_albumData;
-  }
-
-
   function getMediaItems()
   {
-    return mediashareGetMediaItemsData(array('albumId' => $this->_albumId));
+    return mediashareGetMediaItemsData(array('albumId' => $this->albumId));
   }
 }
 
@@ -254,6 +271,7 @@ function mediashare_userapi_getAlbumData($args)
     $album['mainMediaItem'] = null;
 
   mediashareAddKeywords($album);
+  $album['allowMediaEdit'] = true;
 
   if ($enableEscape)
     mediashareEscapeAlbum($album, $albumId);

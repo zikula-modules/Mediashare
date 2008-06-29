@@ -13,9 +13,10 @@
 <div class="psmenu" id="psmenu-album">
   <ul>
     <li><img src="modules/mediashare/pnimages/setting.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=editalbum aid=$album.id]-->"><!--[pnml name=_MSEDITALBUM]--></a></li>
+    <!--[if $access.hasAddMediaAccess]-->
     <li><img src="modules/mediashare/pnimages/add.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=addmedia aid=$album.id]-->"><!--[pnml name=_MSADDMEDIAITEMS]--></a></li>
-
     <li><img src="modules/mediashare/pnimages/arrange.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=arrange aid=$album.id]-->"><!--[pnml name=_MSARRANGE]--></a></li>
+    <!--[/if]-->
     <li><img src="modules/mediashare/pnimages/access.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=access aid=$album.id]-->"><!--[pnml name=_MSACCESS]--></a></li>
     <li><img src="modules/mediashare/pnimages/invite.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=invitation func=send aid=$album.id]-->"><!--[pnml name=_MSINVITE]--></a></li>
     <li><img src="modules/mediashare/pnimages/move.gif" alt=""/><a href="<!--[pnmodurl modname=mediashare type=edit func=movealbum aid=$album.id]-->"><!--[pnml name=_MSMOVE]--></a></li>

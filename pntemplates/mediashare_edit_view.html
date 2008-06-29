@@ -12,7 +12,7 @@
 
 <div class="mediashare-albumlist">
 
-  <!--[if $album.id != 1  &&  $hasParentAccess]-->
+  <!--[if $album.id != 1  &&  $access.hasParentAccess]-->
   <div class="mediashare-float" style="width: <!--[$album.thumbnailSize+40]-->px; height: <!--[$album.thumbnailSize+40]-->px">
     <!--[pnmodurl modname=mediashare type=edit func=view aid=$album.parentAlbumId assign=parentUrl]-->
     <a href="<!--[$parentUrl]-->"><img src="modules/mediashare/pnimages/album_up.gif" alt="<!--[pnml name=_MSLEVELUP]-->"/></a>
@@ -35,7 +35,7 @@
              onmouseover="this.src='modules/mediashare/pnimages/imagemenuicon_hover.gif'"
              onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'"/>
         <br/><input type="checkbox" name="selectedMediaId[]" value="<!--[$item.id]-->"/>
-        <!--[if $item.id == $album.mainMediaItem.id]-->
+        <!--[if $item.id == $album.mainMediaId]-->
           <br/><img src="modules/mediashare/pnimages/greendot.gif" title="<!--[pnml name=_MSMAINMEDIAITEM]-->" title="<!--[pnml name=_MSMAINMEDIAITEM]-->"/>
         <!--[/if]-->
       </td>

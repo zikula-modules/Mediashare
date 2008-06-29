@@ -1,22 +1,22 @@
 <div class="mediashare-menu">
   <a href="<!--[pnmodurl modname="mediashare" type="user" func="view" aid=$albumId]-->"><!--[pnml name=_MSBROWSE]--></a>
   <a href="<!--[pnmodurl modname="mediashare" type="user" func="slideshow" aid=$albumId back=1]-->"><!--[pnml name=_MSSLIDESHOW]--></a>
-  <!--[if $hasAddAlbumAccess]-->
+  <!--[if $access.hasAddAlbumAccess]-->
    <a href="<!--[pnmodurl modname="mediashare" type="edit" func="addalbum" aid=$albumId]-->"><!--[pnml name=_MSADDALBUM]--></a>
   <!--[/if]-->
-  <!--[if $hasEditAlbumAccess]-->
+  <!--[if $access.hasEditAlbumAccess]-->
    <a href="<!--[pnmodurl modname="mediashare" type="edit" func="editalbum" aid=$albumId]-->"><!--[pnml name=_MSEDIT]--></a>
   <!--[/if]-->
-  <!--[if $hasAddMediaAccess]-->
+  <!--[if $access.hasAddMediaAccess]-->
    <a href="<!--[pnmodurl modname="mediashare" type="edit" func="addmedia" aid=$albumId]-->"><!--[pnml name=_MSADDMEDIAITEMS]--></a>
   <!--[/if]-->
-  <!--[if $hasAddMediaAccess || $hasEditMediaAccess]-->
+  <!--[if $access.hasAddMediaAccess || $access.hasEditMediaAccess]-->
    <a href="<!--[pnmodurl modname="mediashare" type="edit" func="arrange" aid=$albumId]-->"><!--[pnml name=_MSARRANGE]--></a>
   <!--[/if]-->
-  <!--[if $hasEditAccessAccess]-->
+  <!--[if $access.hasEditAccessAccess]-->
    <a href="<!--[pnmodurl modname="mediashare" type="edit" func="access" aid=$albumId]-->"><!--[pnml name=_MSACCESS]--></a>
   <!--[/if]-->
-  <!--[if $albumId != 1  &&  $hasEditAccessAccess]-->
+  <!--[if $albumId != 1  &&  $access.hasEditAccessAccess]-->
    <a href="<!--[pnmodurl modname="mediashare" type="edit" func="movealbum" aid=$albumId]-->"><!--[pnml name=_MSMOVE]--></a>
   <!--[/if]-->
 </div>

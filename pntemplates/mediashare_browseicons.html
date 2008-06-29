@@ -10,7 +10,7 @@
   <!--[/if]-->
   <a href="<!--[pnmodurl modname=mediashare func=browse aid=$album.id]-->"><img src="modules/mediashare/pnimages/browse.gif" alt=""><!--[pnml name=_MSBROWSE]--></a>
   <a href="<!--[pnmodurl modname=mediashare func=latest]-->"><img src="modules/mediashare/pnimages/new.gif" alt=""><!--[pnml name=_MSLATEST]--></a>
-  <!--[if $hasEditAccess]-->
+  <!--[if $access.hasAnyEditAccess]-->
   <!--[include file=mediashare_browseicons_menu.html]-->
   <!--[/if]-->
 </div>

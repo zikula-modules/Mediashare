@@ -26,36 +26,37 @@ require_once("modules/mediashare/common.php");
 require_once("modules/mediashare/pnincludes/phpSmug/phpSmug.php");
 
 
-class MediashareSmugMugAlbum
+class MediashareSmugMugAlbum extends MediashareBaseAlbum
 {
-  var $_albumId;
-  var $_albumData;
-  var $_smugApi;
+  var $smugApi;
 
 
   function MediashareSmugMugAlbum($albumId, $albumData)
   {
-    $APIKey = pnModGetVar('mediashare', 'smugmugAPIKey');
-
-    $this->_albumId = $albumId;
-    $this->_albumData = $albumData;
-    $this->_smugApi = new phpSmug($APIKey);
-    $this->_smugApi->enableCache('fs', pnConfigGetVar('temp'));
-    $this->_smugApi->login_anonymously();
+    $albumData['allowMediaEdit'] = false;
+    $this->albumId = $albumId;
+    $this->albumData = $albumData;
   }
 
 
-  function getAlbumData()
-  { 
-    return $this->_albumData;
+  function getApi()
+  {
+    if ($this->smugApi == null)
+    {
+      $APIKey = pnModGetVar('mediashare', 'smugmugAPIKey');
+      $this->smugApi = new phpSmug($APIKey);
+      $this->smugApi->enableCache('fs', pnConfigGetVar('temp'));
+      $this->smugApi->login_anonymously();
+    }
+    return $this->smugApi;
   }
 
 
   function getMediaItems()
   {
-    $data = $this->_albumData['extappData']['data'];
+    $data = $this->albumData['extappData']['data'];
 
-    $images = $this->_smugApi->images_get($data['albumId'], $data['albumKey'], true);
+    $images = $this->getApi()->images_get($data['albumId'], $data['albumKey'], true);
 
     for ($i=0,$cou=count($images); $i<$cou; ++$i)
     {
@@ -69,11 +70,13 @@ class MediashareSmugMugAlbum
           'createdDateRaw'  => $image['LastUpdated'],
           'modifiedDateRaw' => $image['LastUpdated'],
           'title'           => mb_convert_encoding($image['Caption'], _CHARSET, 'UTF-8'),
+          'keywordsArray'   => array(),
+          'hasKeywords'     => false,
           'keywords'        => $image['Keywords'],
           'description'     => '',
           'caption'         => mb_convert_encoding($image['Caption'], _CHARSET, 'UTF-8'),
           'captionLong'     => mb_convert_encoding($image['Caption'], _CHARSET, 'UTF-8'),
-          'parentAlbumId'   => $this->_albumId,
+          'parentAlbumId'   => $this->albumId,
           'mediaHandler'    => 'imagegd',
           'thumbnailId'     => null,
           'previewId'       => null,
@@ -97,6 +100,7 @@ class MediashareSmugMugAlbum
           'ownerName'         => null);
     }
 
+    $this->fixMainMedia($images);
     return $images;
   }
 }
