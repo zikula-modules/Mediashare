@@ -53,18 +53,9 @@ function mediashare_user_browse($args)
   if (!pnModAPILoad('mediashare', 'user'))
     return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
 
-  if (!empty($mediaId))
-  {
-      // Check access (use mediaId since album/media combo may not be correct)
-    if (!mediashareAccessItem($mediaId, mediashareAccessRequirementViewSomething))
-      return mediashareErrorPage(__FILE__, __LINE__, _MSNOAUTH);
-  }
-  else
-  {
-      // Check access (use albumId since no mediaId was passed)
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething))
-      return mediashareErrorPage(__FILE__, __LINE__, _MSNOAUTH);
-  }
+    // Check access to album (media ID won't do a difference if not from this album)
+  if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething))
+    return mediashareErrorPage(__FILE__, __LINE__, _MSNOAUTH);
 
     // Fetch current album
   $album = pnModAPIFunc('mediashare', 'user', 'getAlbum',
@@ -86,7 +77,6 @@ function mediashare_user_browse($args)
     return mediashareErrorAPIGet();
 
   // Locate current/prev/next items
-
   if ($mediaId <= 0)
     $mediaId = $album['mainMediaId'];
   $mediaItem = null;
@@ -123,7 +113,9 @@ function mediashare_user_browse($args)
 
     ++$pos;
   }
-  if ($mediaItem == null)
+  if ($mediaItem == null && count($items)>0)
+    $mediaItem = $items[0];
+  else if ($mediaItem == null)
     $mediaItem = array('title' => '', 'description' => '', 'id' => 0);
 
   $render = new pnRender('mediashare');
@@ -165,18 +157,9 @@ function mediashare_user_slideshow($args)
   if (!pnModAPILoad('mediashare', 'user'))
     return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
 
-  if ($mediaId > 0)
-  {
-      // Check access (use mediaId since album/media combo may not be correct)
-    if (!mediashareAccessItem($mediaId, mediashareAccessRequirementViewSomething, $viewkey))
-      return mediashareErrorPage(__FILE__, __LINE__, _MSNOAUTH);
-  }
-  else
-  {
-      // Check access (use albumId since no mediaId was passed)
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething, $viewkey))
-      return mediashareErrorPage(__FILE__, __LINE__, _MSNOAUTH);
-  }
+    // Check access to album (media ID won't do a difference if not from this album)
+  if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething))
+    return mediashareErrorPage(__FILE__, __LINE__, _MSNOAUTH);
 
   // Fetch current album
 

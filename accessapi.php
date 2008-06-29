@@ -144,6 +144,7 @@ class mediashareAccessApi
 
     $dbresult->close();
 
+    $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums', array());
     if (is_array($invitedAlbums)  &&  $invitedAlbums[$albumId])
       $access |= mediashareAccessRequirementView;
 

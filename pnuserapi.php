@@ -579,7 +579,7 @@ function mediashare_userapi_getAlbumList($args)
 
     mediashareAddKeywords($album);
 
-    mediashareEscapeAlbum($album, $albumId);
+    mediashareEscapeAlbum($album, $album['id']);
 
     $albums[] = $album;
   }
@@ -1373,8 +1373,8 @@ function mediashare_userapi_getByKeyword($args)
                       'albumTitle'    => $dbresult->fields[1],
                       'mediaId'       => $dbresult->fields[2],
                       'mediaTitle'    => $dbresult->fields[3],
-                      'caption'       => empty($result->fields[3]) ? $result->fields[4] : $result->fields[3],
-                      'captionLong'   => empty($result->fields[4]) ? $result->fields[3] : $result->fields[4],
+                      'caption'       => empty($dbresult->fields[3]) ? $dbresult->fields[4] : $dbresult->fields[3],
+                      'captionLong'   => empty($dbresult->fields[4]) ? $dbresult->fields[3] : $dbresult->fields[4],
                       'mediaHandler'  => $dbresult->fields[5],
                       'thumbnailRef'  => $dbresult->fields[6]);
   }
@@ -1393,8 +1393,8 @@ function mediashare_userapi_getList($args)
 {
   $keyword    = isset($args['keyword']) ? $args['keyword'] : null;
   $uname      = isset($args['uname']) ? $args['uname'] : null;
-  $albumId    = $args['albumId'];
-  $topicId    = $args['topicId'];
+  $albumId    = isset($args['albumId']) ? $args['albumId'] : null;
+  $topicId    = isset($args['topicId']) ? $args['topicId'] : null;
   $order      = isset($args['order']) ? $args['order'] : null;
   $orderDir   = isset($args['orderDir']) ? $args['orderDir'] : 'asc';
   $recordPos  = isset($args['recordPos']) ? (int)$args['recordPos'] : 0;
@@ -1619,8 +1619,8 @@ function mediashare_userapi_getList($args)
                    'title'          => $dbresult->fields[8],
                    'keywords'       => $dbresult->fields[9],
                    'description'    => $dbresult->fields[10],
-                   'caption'        => empty($result->fields[8]) ? $result->fields[10] : $result->fields[8],
-                   'caption'        => empty($result->fields[10]) ? $result->fields[8] : $result->fields[10],
+                   'caption'        => empty($dbresult->fields[8]) ? $dbresult->fields[10] : $dbresult->fields[8],
+                   'captionLong'    => empty($dbresult->fields[10]) ? $dbresult->fields[8] : $dbresult->fields[10],
                    'mediaHandler'   => $dbresult->fields[11],
                    'thumbnailRef'   => $dbresult->fields[13],
                    'previewRef'        => $dbresult->fields[14],
