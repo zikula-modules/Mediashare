@@ -7,6 +7,10 @@
 require_once('modules/mediashare/pnlang/deu/common.php');
 
 define('_MSALLOWTEMPLATEOVERRIDE', 'Überschreiben der Templates in Alben erlauben?');
+define('_MSAPIKEYFLICKR', 'Flickr API-Key');
+define('_MSAPIKEYSMUGMUG', 'SmugMug API-Key');
+define('_MSAPIKEYPHOTOBUCKET', 'Photobucket API-Key');
+define('_MSAPIKEYPICASA', 'Picasa API-Key');
 define('_MSAPPLYGLOBALTEMPLATE', 'Global zuweisen');
 define('_MSAPPLYGLOBALTEMPLATECONFIRM', 'Alle Album-Templates überschreiben');
 define('_MSDEFAULTALBUMTEMPLATE', 'Standard Album-Template');
