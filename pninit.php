@@ -64,7 +64,7 @@ function mediashare_init()
           $albumColumn[nestedSetLeft] I NOTNULL DEFAULT 0,
           $albumColumn[nestedSetRight] I NOTNULL DEFAULT 0,
           $albumColumn[nestedSetLevel] I NOTNULL DEFAULT 0,
-          $albumColumn[extappURL] C(256)
+          $albumColumn[extappURL] C(255),
           $albumColumn[extappData] C(512)";
 
   $sqlArray = $dict->CreateTableSQL($albumTable, $sql, $taboptarray);
@@ -561,7 +561,7 @@ function mediashare_upgrade_to_3_4_0($oldVersion)
   $albumTable = $pntable['mediashare_albums'];
   $albumColumn = &$pntable['mediashare_albums_column'];
 
-  $columns = "$albumColumn[extappURL] C(256),
+  $columns = "$albumColumn[extappURL] C(255),
               $albumColumn[extappData] C(512)";
   
   $sqlArray = $dict->AddColumnSQL($pntable['mediashare_albums'], $columns);
