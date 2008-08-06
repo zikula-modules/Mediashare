@@ -48,7 +48,6 @@ define('_MSSTOP', 'Stop');
 define('_MSTHUMBNAILS', 'Frimærker');
 define('_MSTITLE', 'Overskrift');
 define('_MSTOP', 'Top');
-define('_MSTOPIC', 'Emne');
 define('_MSUPLOAD', 'Upload');
 define('_MSVIDEOWIDTHHEIGHTHELP', 'Kun nødvendig for videofiler');
 define('_MSVIEW', 'Vis');

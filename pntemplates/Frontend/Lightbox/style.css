@@ -63,5 +63,6 @@ div.mediashare-menu a:hover
   background-color: #444;
   cursor: hand;
   cursor: pointer;
+  z-index: 10;
 }
 

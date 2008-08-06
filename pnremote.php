@@ -240,7 +240,6 @@ function mediashare_remote_newalbum()
                                    'keywords'      => '',
                                    'summary'       => '',
                                    'description'   => $_POST['newAlbumDesc'],
-                                   'topicId'       => null,
                                    'template'      => null,
                                    'parentAlbumId' => $_POST['set_albumName']) );
   if ($newAlbumID === false)

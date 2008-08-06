@@ -6,8 +6,6 @@
 // ------------------------------------------------------------------------------------
 define('_MS_RANDOMBLOCKHELP', 'Vælg blokindhold og eventuelle ekstra parametre.');
 define('_MS_RANDOMBLOCKALLLABEL', 'Vis tilfældigt billede fra alle albums');
-define('_MS_RANDOMBLOCKTOPICLABEL', 'Vis tilfældigt billede for et bestemt emne');
-define('_MS_RANDOMBLOCKTOPIC', '(emne)');
 define('_MS_RANDOMBLOCKALBUMLABEL', 'Vis tilfældigt billede fra et specifikt album');
 define('_MS_RANDOMBLOCKALBUM', '(album)');
 define('_MS_RANDOMBLOCKCACHELABEL', 'Opdateringstid for blok (sek.)(tom = altid)');
@@ -25,5 +23,4 @@ define('_MS_RANDOMBLOCKTITLEHELP', 'Billedets titel');
 define('_MS_RANDOMBLOCKALBUMTITLEHELP', 'Albumets titel');
 define('_MS_RANDOMBLOCKOWNERHELP', 'Navnet på ejeren af billedet');
 
-define('_ELFISKNOTOPIC', 'Intet emne');
 ?>

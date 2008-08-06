@@ -43,46 +43,4 @@ function mediashareUploadErrorMsg($error)
 }
 
 
-function mediasharePNGetTopics($currentTopic)
-{
-  if (!pnModLoad('Topics'))
-    return array();
-
-  list($dbconn) = pnDBGetConn();
-  $pntable = pnDBGetTables();
-
-  pnModDBInfoLoad('Topics');
-
-  $topicsTable  = $pntable['topics'];
-  $topicsColumn = $pntable['topics_column'];
-
-  $sql = "SELECT   $topicsColumn[tid],
-                   $topicsColumn[topictext]
-          FROM     $topicsTable
-          ORDER BY $topicsColumn[topictext]";
-
-  $result = $dbconn->execute($sql);
-
-  if ($dbconn->errorNo() != 0)
-    return mediashareErrorAPI(__FILE__, __LINE__, '"PNGetTopics" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
-
-  $topics = array();
-
-     // Used directly in pnHTML so do not change 'name' to 'text' (although it is topic-text)
-  $topics[] = array('id'        => -1,
-                    'name'      => _PSNOTOPIC,
-                    'selected'  => 0);
-
-  for (; !$result->EOF; $result->MoveNext())
-  {
-    $topics[] = array('id'        => $result->fields[0],
-                      'name'      => $result->fields[1],
-                      'selected'  => ($result->fields[0] == $currentTopic));
-  }
-
-  $result->Close();
-
-  return $topics;
-}
-
 ?>

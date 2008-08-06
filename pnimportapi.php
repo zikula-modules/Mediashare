@@ -80,7 +80,6 @@ function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
                                'summary'        => '',
                                'description'    => $folderData['description'],
                                'ownerId'        => $folderData['owner'],
-                               'topicId'        => $folderData['topic'],
                                'parentAlbumId'  => $mediashareAlbumId));
       if ($id === false)
         return false;

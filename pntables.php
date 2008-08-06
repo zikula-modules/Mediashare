@@ -45,7 +45,6 @@ function & mediashare_pntables()
                                                'keywords'       => 'ms_keywords',
                                                'summary'        => 'ms_summary',
                                                'description'    => 'ms_description',
-                                               'topicId'        => 'ms_topicId',
                                                'template'       => 'ms_template',
                                                'parentAlbumId'  => 'ms_parentAlbumId',
                                                'access'         => 'ms_accesslevel',

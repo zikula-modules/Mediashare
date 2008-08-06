@@ -1,4 +1,4 @@
-<!--[include file=mediashare_include_lightbox.html]-->
+<!--[mediashare_lightbox]-->
 <!--[include file=mediashare_include_greybox.html]-->
 
 <!--[mediashare_settitle title="`$album.title` :: `$mediaItem.title`"]-->
@@ -25,7 +25,7 @@
       <div class="mediashare-zoom"><a href="<!--[$displayUrl]-->" rel="gb_page_center[<!--[$mediaItem.originalWidth]-->,<!--[$mediaItem.originalHeight]-->]" title="<!--[$mediaItem.captionLong]-->"><!--[pnml name=_MSFULLSCREEN]--></a></div>
       <!--[/if]-->
       <div style="width: <!--[$mediaItem.previewWidth]-->px;"><!--[$mediaItem.title]-->
-      <!--[if !empty($mediaItem.description)]--><span class="description"><!--[$mediaItem.description]--></span><!--[/if]-->
+      <!--[if !empty($mediaItem.description)]-->- <span class="description"><!--[$mediaItem.description]--></span><!--[/if]-->
       <!--[if $mediaItem.hasKeywords > 0]-->
         <!--[pnml name=_MSKEYWORDS]-->:
         <!--[foreach from=$mediaItem.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword]-->"><!--[$keyword]--></a> 

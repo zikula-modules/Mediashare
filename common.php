@@ -240,7 +240,6 @@ function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset) 
 		    array ( 'parentAlbumId' => $parentFolderID,
 					'title' => $folderTitle,
 					'description' => '', 
-					'topicId' => pnModGetVar('mediashare', 'defaultTopic'),
 					'keywords' => '',
                     'summary' => ''));
 

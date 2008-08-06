@@ -112,7 +112,6 @@ $mediashare_albumFields =
         'keywords'     => array('type' => 'string'),
         'summary'      => array('type' => 'string'),
         'description'  => array('type' => 'string'),
-        'topicId'      => array('type' => 'int'),
         'template'     => array('type' => 'string'),
         'extappURL'  => array('type' => 'string'));
 
@@ -170,7 +169,6 @@ function mediashareAddAlbum($args)
                                    'keywords'      => pnVarCleanFromInput('keywords'),
                                    'summary'       => pnVarCleanFromInput('summary'),
                                    'description'   => pnVarCleanFromInput('description'),
-                                   'topicId'       => pnVarCleanFromInput('topicId'),
                                    'template'      => pnVarCleanFromInput('template'),
                                    'extappURL'     => pnVarCleanFromInput('extappURL'),
                                    'parentAlbumId' => $parentAlbumId) );

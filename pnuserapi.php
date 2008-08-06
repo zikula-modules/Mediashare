@@ -184,8 +184,6 @@ function mediashare_userapi_getAlbumData($args)
   if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ))
     return mediashareErrorAPI(__FILE__, __LINE__, _MSNOAUTH);
 
-  pnModDBInfoLoad('Topics'); // Ensure DB table info is available
-
   $albumId        = (int)$args['albumId'];
   $countSubAlbums = array_key_exists('countSubAlbums', $args) ? $args['countSubAlbums'] : false;
   $ownerId        = (int)pnUserGetVar('uid');
@@ -195,8 +193,6 @@ function mediashare_userapi_getAlbumData($args)
 
   $albumsTable   = $pntable['mediashare_albums'];
   $albumsColumn  = $pntable['mediashare_albums_column'];
-  $topicsTable   = $pntable['topics'];
-  $topicsColumn  = $pntable['topics_column'];
 
   $sql = "SELECT   $albumsColumn[id],
                    $albumsColumn[ownerId],
@@ -206,9 +202,6 @@ function mediashare_userapi_getAlbumData($args)
                    $albumsColumn[summary],
                    $albumsColumn[description],
                    $albumsColumn[keywords],
-                   $albumsColumn[topicId],
-                   $topicsColumn[topicname],
-                   $topicsColumn[topictext],
                    $albumsColumn[template],
                    $albumsColumn[parentAlbumId],
                    $albumsColumn[viewKey],
@@ -220,8 +213,6 @@ function mediashare_userapi_getAlbumData($args)
                    $albumsColumn[extappURL],
                    $albumsColumn[extappData]
           FROM $albumsTable 
-          LEFT JOIN $topicsTable 
-               ON $albumsColumn[topicId] = $topicsColumn[topicid]
           WHERE    $albumsColumn[id] = $albumId";
 
   //echo "<pre>$sql</pre>\n"; exit(0);
@@ -243,19 +234,16 @@ function mediashare_userapi_getAlbumData($args)
                   'summary'       => $result->fields[5],
                   'description'   => $result->fields[6],
                   'keywords'      => $result->fields[7],
-                  'topicId'       => $result->fields[8],
-                  'topicName'     => $result->fields[9],
-                  'topicText'     => $result->fields[10],
-                  'template'      => $result->fields[11],
-                  'parentAlbumId' => $result->fields[12],
-                  'viewKey'       => $result->fields[13],
-                  'mainMediaId'   => ($result->fields[14] == null ? 0 : $result->fields[14]),
-                  'thumbnailSize'  => $result->fields[15],
-                  'nestedSetLeft'  => (int)$result->fields[16],
-                  'nestedSetRight' => (int)$result->fields[17],
-                  'nestedSetLevel' => (int)$result->fields[18],
-                  'extappURL'      => $result->fields[19],
-                  'extappData'     => unserialize($result->fields[20]),
+                  'template'      => $result->fields[8],
+                  'parentAlbumId' => $result->fields[9],
+                  'viewKey'       => $result->fields[10],
+                  'mainMediaId'   => ($result->fields[11] == null ? 0 : $result->fields[11]),
+                  'thumbnailSize'  => $result->fields[12],
+                  'nestedSetLeft'  => (int)$result->fields[13],
+                  'nestedSetRight' => (int)$result->fields[14],
+                  'nestedSetLevel' => (int)$result->fields[15],
+                  'extappURL'      => $result->fields[16],
+                  'extappData'     => unserialize($result->fields[17]),
                   'imageCount'     => 0 /* FIXME */);
 
   $result->Close();
@@ -309,8 +297,6 @@ function mediashare_userapi_getSubAlbumsData($args)
   if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ))
     return mediashareErrorAPI(__FILE__, __LINE__, _MSNOAUTH);
 
-  pnModDBInfoLoad('Topics'); // Ensure DB table info is available
-
   $albumId = (int)$args['albumId'];
   $ownerId = (int)pnUserGetVar('uid');
   $recursively = (array_key_exists('recursively',$args) ? (bool)$args['recursively'] : false);
@@ -323,8 +309,6 @@ function mediashare_userapi_getSubAlbumsData($args)
 
   $albumsTable   = $pntable['mediashare_albums'];
   $albumsColumn  = $pntable['mediashare_albums_column'];
-  $topicsTable   = $pntable['topics'];
-  $topicsColumn  = $pntable['topics_column'];
 
   $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                      array('albumId' => ($recursively ? null : $albumId),
@@ -360,9 +344,6 @@ function mediashare_userapi_getSubAlbumsData($args)
                    album.$albumsColumn[summary],
                    album.$albumsColumn[description],
                    album.$albumsColumn[keywords],
-                   album.$albumsColumn[topicId],
-                   $topicsColumn[topicname],
-                   $topicsColumn[topictext],
                    album.$albumsColumn[template],
                    album.$albumsColumn[parentAlbumId],
                    album.$albumsColumn[viewKey],
@@ -374,8 +355,6 @@ function mediashare_userapi_getSubAlbumsData($args)
                    album.$albumsColumn[extappURL],
                    album.$albumsColumn[extappData]
           FROM $albumsTable album
-          LEFT JOIN $topicsTable 
-               ON album.$albumsColumn[topicId] = $topicsColumn[topicid]
           WHERE ($accessibleAlbumSql) AND $excludeRestriction $mineSql";
 
   if ($recursively)
@@ -405,19 +384,16 @@ function mediashare_userapi_getSubAlbumsData($args)
                     'summary'       => $result->fields[5],
                     'description'   => $result->fields[6],
                     'keywords'      => $result->fields[7],
-                    'topicId'       => $result->fields[8],
-                    'topicName'     => $result->fields[9],
-                    'topicText'     => $result->fields[10],
-                    'template'      => $result->fields[11],
-                    'parentAlbumId' => $result->fields[12],
-                    'viewKey'       => $result->fields[13],
-                    'mainMediaId'   => ($result->fields[14] == null ? -1 : $result->fields[14]),
-                    'thumbnailSize'  => $result->fields[15],
-                    'nestedSetLeft'  => (int)$result->fields[16],
-                    'nestedSetRight' => (int)$result->fields[17],
-                    'nestedSetLevel' => (int)$result->fields[18],
-                    'extappURL'      => $result->fields[19],
-                    'extappData'     => unserialize($result->fields[20]));
+                    'template'      => $result->fields[8],
+                    'parentAlbumId' => $result->fields[9],
+                    'viewKey'       => $result->fields[10],
+                    'mainMediaId'   => ($result->fields[11] == null ? -1 : $result->fields[11]),
+                    'thumbnailSize'  => $result->fields[12],
+                    'nestedSetLeft'  => (int)$result->fields[13],
+                    'nestedSetRight' => (int)$result->fields[14],
+                    'nestedSetLevel' => (int)$result->fields[15],
+                    'extappURL'      => $result->fields[16],
+                    'extappData'     => unserialize($result->fields[17]));
 
     if ($album['mainMediaId'] > 0) // FIXME: always fetch all main items?
     {
@@ -493,15 +469,11 @@ function mediashare_userapi_getAlbumList($args)
   if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ))
     return mediashareErrorAPI(__FILE__, __LINE__, _MSNOAUTH);
 
-  pnModDBInfoLoad('Topics'); // Ensure DB table info is available
-
   list($dbconn) = pnDBGetConn();
   $pntable = pnDBGetTables();
 
   $albumsTable   = $pntable['mediashare_albums'];
   $albumsColumn  = $pntable['mediashare_albums_column'];
-  $topicsTable   = $pntable['topics'];
-  $topicsColumn  = $pntable['topics_column'];
 
   $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                      array('access'  => $access,
@@ -517,9 +489,6 @@ function mediashare_userapi_getAlbumList($args)
                    album.$albumsColumn[summary],
                    album.$albumsColumn[description],
                    album.$albumsColumn[keywords],
-                   album.$albumsColumn[topicId],
-                   $topicsColumn[topicname],
-                   $topicsColumn[topictext],
                    album.$albumsColumn[template],
                    album.$albumsColumn[parentAlbumId],
                    album.$albumsColumn[viewKey],
@@ -531,8 +500,6 @@ function mediashare_userapi_getAlbumList($args)
                    album.$albumsColumn[extappURL],
                    album.$albumsColumn[extappData]
           FROM $albumsTable album
-          LEFT JOIN $topicsTable 
-               ON album.$albumsColumn[topicId] = $topicsColumn[topicid]
           WHERE ($accessibleAlbumSql)
           ORDER BY album.$albumsColumn[createdDate] DESC";
 
@@ -553,19 +520,16 @@ function mediashare_userapi_getAlbumList($args)
                     'summary'       => $result->fields[5],
                     'description'   => $result->fields[6],
                     'keywords'      => $result->fields[7],
-                    'topicId'       => $result->fields[8],
-                    'topicName'     => $result->fields[9],
-                    'topicText'     => $result->fields[10],
-                    'template'      => $result->fields[11],
-                    'parentAlbumId' => $result->fields[12],
-                    'viewKey'       => $result->fields[13],
-                    'mainMediaId'   => ($result->fields[14] == null ? -1 : $result->fields[14]),
-                    'thumbnailSize'  => (int)$result->fields[15],
-                    'nestedSetLeft'  => (int)$result->fields[16],
-                    'nestedSetRight' => (int)$result->fields[17],
-                    'nestedSetLevel' => (int)$result->fields[18],
-                    'extappURL'      => $result->fields[19],
-                    'extappData'     => unserialize($result->fields[20]));
+                    'template'      => $result->fields[8],
+                    'parentAlbumId' => $result->fields[9],
+                    'viewKey'       => $result->fields[10],
+                    'mainMediaId'   => ($result->fields[11] == null ? -1 : $result->fields[11]),
+                    'thumbnailSize'  => (int)$result->fields[12],
+                    'nestedSetLeft'  => (int)$result->fields[13],
+                    'nestedSetRight' => (int)$result->fields[14],
+                    'nestedSetLevel' => (int)$result->fields[15],
+                    'extappURL'      => $result->fields[16],
+                    'extappData'     => unserialize($result->fields[17]));
 
     if ($album['mainMediaId'] > 0)
     {
@@ -644,8 +608,6 @@ function mediashare_userapi_getMediaItem($args)
     // Check access
   if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ))
     return mediashareErrorAPI(__FILE__, __LINE__, _MSNOAUTH);
-
-  pnModDBInfoLoad('Topics'); // Make sure topic database info is available
 
   $mediaId = (int)$args['mediaId'];
   $ownerId = (int)pnUserGetVar('uid');
@@ -790,8 +752,6 @@ function mediashare_userapi_getMediaItems($args)
 
 function mediashareGetMediaItemsData($args)
 {
-  pnModDBInfoLoad('Topics'); // Ensure DB table info is available
-
   $albumId = (isset($args['albumId']) ? (int)$args['albumId'] : null);
   $mediaIdList = (isset($args['mediaIdList']) ? $args['mediaIdList'] : null);
   $ownerId = (int)pnUserGetVar('uid');
@@ -960,7 +920,6 @@ function mediashare_userapi_getRandomMediaItem($args)
 {
   $mode = (isset($args['mode']) ? $args['mode'] : 'all');
   $albumId = (isset($args['albumId']) ? (int)$args['albumId'] : null);
-  $topicId = (isset($args['topicId']) ? (int)$args['topicId'] : null);
   $latest  = (isset($args['latest']) ? $args['latest'] : false);
 
   list($dbconn) = pnDBGetConn();
@@ -999,10 +958,6 @@ function mediashare_userapi_getRandomMediaItem($args)
   if ($mode == 'album' && $albumId != null)
   {
     $restriction .= " AND album.$albumsColumn[id] = $albumId";
-  }
-  else if ($mode == 'topic' && $topicId != null)
-  {
-    $restriction .= " AND album.$albumsColumn[topicId] = $topicId";
   }
   
   $sql = "SELECT COUNT(*) FROM $mediaTable media
@@ -1394,7 +1349,6 @@ function mediashare_userapi_getList($args)
   $keyword    = isset($args['keyword']) ? $args['keyword'] : null;
   $uname      = isset($args['uname']) ? $args['uname'] : null;
   $albumId    = isset($args['albumId']) ? $args['albumId'] : null;
-  $topicId    = isset($args['topicId']) ? $args['topicId'] : null;
   $order      = isset($args['order']) ? $args['order'] : null;
   $orderDir   = isset($args['orderDir']) ? $args['orderDir'] : 'asc';
   $recordPos  = isset($args['recordPos']) ? (int)$args['recordPos'] : 0;
@@ -1403,7 +1357,6 @@ function mediashare_userapi_getList($args)
   list($dbconn) = pnDBGetConn();
   $pntable = pnDBGetTables();
 
-  pnModDBInfoLoad('Topics'); // Ensure DB table info is available
   pnModDBInfoLoad('User'); // Ensure DB table info is available
 
   $mediaTable     = $pntable['mediashare_media'];
@@ -1654,12 +1607,10 @@ function mediashare_userapi_getListCount($args)
   $keyword    = isset($args['keyword']) ? $args['keyword'] : null;
   $uname      = isset($args['uname']) ? $args['uname'] : null;
   $albumId    = $args['albumId'];
-  $topicId    = $args['topicId'];
 
   list($dbconn) = pnDBGetConn();
   $pntable = pnDBGetTables();
 
-  pnModDBInfoLoad('Topics'); // Ensure DB table info is available
   pnModDBInfoLoad('User'); // Ensure DB table info is available
 
   $mediaTable     = $pntable['mediashare_media'];
@@ -1870,7 +1821,7 @@ function mediashare_userapi_getAllTemplates($args)
   {
     while (($filename=readdir($dh)) !== false)
     {
-      if ($filename != '.'  &&  $filename != '..'  &&  $filename != 'CVS')
+      if ($filename != '.'  &&  $filename != '..'  &&  $filename != 'CVS'  &&  $filename != '.svn')
       {
         $templates[] = array('title' => $filename, 'value' => $filename);
       }

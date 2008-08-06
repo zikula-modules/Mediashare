@@ -48,7 +48,6 @@ define('_MSSTOP', 'Stop');
 define('_MSTHUMBNAILS', 'Thumbnails');
 define('_MSTITLE', 'Title');
 define('_MSTOP', 'Top');
-define('_MSTOPIC', 'Topic');
 define('_MSUPLOAD', 'Upload');
 define('_MSVIDEOWIDTHHEIGHTHELP', 'Only required for video formats');
 define('_MSVIEW', 'View');

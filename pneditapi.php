@@ -62,7 +62,6 @@ function mediashare_editapi_addAlbum(&$args)
             $albumsColumn[keywords],
             $albumsColumn[summary],
             $albumsColumn[description],
-            $albumsColumn[topicId],
             $albumsColumn[template],
             $albumsColumn[parentAlbumId],
             $albumsColumn[thumbnailSize],
@@ -76,7 +75,6 @@ function mediashare_editapi_addAlbum(&$args)
             '" . pnVarPrepForStore($args['keywords']) . "',
             '" . pnVarPrepForStore($args['summary']) . "',
             '" . pnVarPrepForStore($args['description']) . "',
-            " . (int)$args['topicId'] . ",
             '" . pnVarPrepForStore($args['template']) . "',
             " . (int)$args['parentAlbumId'] . ",
             '" . $thumbnailSize . "',
@@ -203,7 +201,6 @@ function mediashare_editapi_updateAlbum(&$args)
             $albumsColumn[summary] = '" . pnVarPrepForStore($args['summary']) . "',
             $albumsColumn[description] = '" . pnVarPrepForStore($args['description']) . "',
             $templateSql
-            $albumsColumn[topicId] = " . (int)$args['topicId'] . ",
             $albumsColumn[extappURL] = '" . pnVarPrepForStore($args['extappURL']) . "',
             $albumsColumn[extappData] = '" . pnVarPrepForStore($args['extappData']) . "'
           WHERE $albumsColumn[id] = $albumId";

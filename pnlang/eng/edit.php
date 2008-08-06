@@ -6,8 +6,6 @@
 
 require_once('modules/mediashare/pnlang/eng/common.php');
 
-define('_ELFISKNOTOPIC', 'No topic');
-
 define('_MSACCESSHELP', 'Here you can assign different access levels to different user groups. <ul><li>Add album means users in the selected group may add new sub-albums to the album.</li><li>Add media means users are allowed to add new media items(*).</li><li>Edit album means users can edit the title, description and other meta-data of the album.</li><li>Edit media means users can edit the title, description and other meta-data of the media item(*).</li></ul>Any of the edit/Add access levels grants also access to the editing view of the album. Users may <em>always</em> edit their own albums and media items independently of the access settings.<br/><br/>(*) As well as re-arrange all media items in the album.');
 define('_MSADDALBUM', 'Add album');
 define('_MSADDITEM', 'Add item');

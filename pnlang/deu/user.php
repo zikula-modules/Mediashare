@@ -14,7 +14,6 @@ define('_MSFILTERCLEAR', 'Filter entfernen (Zeige alle Objekte)');
 define('_MSFILTERITEMSFROM', 'Objekte aus ');
 define('_MSFILTERKEYWORD', 'Objekte getaggt mit ');
 define('_MSFILTERNONE', 'Alle Objekte');
-define('_MSFILTERTOPIC', 'Thema');
 define('_MSFILTERUNAME', 'Objekte von ');
 define('_MSFULLSCREEN', 'Vollbildmodus');
 define('_MSITEMTAGGEDWITH', 'Sie suchen nach Medien-Objekten getaggt mit');

@@ -14,7 +14,6 @@ define('_MSFILTERCLEAR', 'Remove filter (show all items)');
 define('_MSFILTERITEMSFROM', "Items from %user%'s album '%album%'");
 define('_MSFILTERKEYWORD', 'Items tagged with ');
 define('_MSFILTERNONE', 'All items');
-define('_MSFILTERTOPIC', 'Topic');
 define('_MSFILTERUNAME', 'Items by ');
 define('_MSFULLSCREEN', 'View fullscreen');
 define('_MSITEMTAGGEDWITH', 'You have choosen to look for media items tagged with');

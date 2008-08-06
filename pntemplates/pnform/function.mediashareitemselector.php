@@ -183,7 +183,6 @@ class mediashareItemSelector extends pnFormPlugin
                                          'keywords'      => '',
                                          'summary'       => '',
                                          'description'   => '',
-                                         'topicId'       => null,
                                          'template'      => null,
                                          'parentAlbumId' => $albumId) );
         if ($newAlbumID === false)

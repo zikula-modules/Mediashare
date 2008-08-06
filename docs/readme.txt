@@ -77,12 +77,20 @@ Start the same way as width any other PostNuke module:
 
 3) Install and activate the Mediashare module.
 
+If you are using short URLs then you may have to add the line below to your 
+.htaccess file. This ensures media files are found in the right place.
+
+  RewriteRule ^mediashare/.*/mediashare/(.+) mediashare/$1
+
+
 Then make sure the right CSS styles are available. If you are using a Xantia
 theme then everything should be fine - it will automatically load "style.css"
 from the "pnstyle" directory. Otherwise you have to copy the "style.css" data
 into your theme's stylesheet manually.
 
-Then start configuring Mediashare:
+
+CONFIGURATION
+=============
 
 1) Decide if you want to store media files on the local file system or in 
    the database.

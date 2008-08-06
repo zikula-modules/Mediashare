@@ -30,10 +30,6 @@ require_once("modules/mediashare/common-edit.php");
 // -----------------------------------------------------------------------
 function mediashare_init()
 {
-  $modInfo = pnModGetInfo( pnModGetIDFromName('Topics') );
-  if ($modInfo === false)
-    return mediashareInitError(__FILE__, __LINE__, 'Mediashare requires Topics module to be installed');
-
   list($dbconn) = pnDBGetConn();
   $pntable = pnDBGetTables();
 
@@ -54,7 +50,6 @@ function mediashare_init()
           $albumColumn[keywords] C(255) NOTNULL DEFAULT '',
           $albumColumn[summary] X NOTNULL DEFAULT '',
           $albumColumn[description] X NOTNULL DEFAULT '',
-          $albumColumn[topicId] I,
           $albumColumn[template] C(255) NOTNULL DEFAULT 'msslideshow',
           $albumColumn[parentAlbumId] I,
           $albumColumn[access] I1 NOTNULL DEFAULT 0,
@@ -299,9 +294,6 @@ function mediashare_init()
   if (!pnModSetVar('mediashare', 'defaultSlideshowTemplate', 'standard'))
     return mediashareInitError(__FILE__, __LINE__, 'Set module var defaultSlideshowTemplate failed');
 
-  if (!mediashareSetDefaultTopic())
-    return mediashareInitError(__FILE__, __LINE__, 'Failed to set default topic');
-
 
   // Scan for plugins
 
@@ -322,8 +314,7 @@ function mediashare_init()
                     'keywords'      => '',
                     'summary'       => '',
                     'description'   => _MSTOPDESCRIPTION,
-                    'parentAlbumId' => 0,
-                    'topicId'       => 0);
+                    'parentAlbumId' => 0);
   $topId = pnModAPIFunc('mediashare', 'edit', 'addAlbum', $topAlbum);
   if ($topId === false)
     return mediashareInitError(__FILE__, __LINE__, mediashareErrorAPIGet());
@@ -395,16 +386,6 @@ function mediashareCreateInvitationTable(&$dbconn, &$pntable, &$dict, &$taboptar
     return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
 
   return true;
-}
-
-
-function mediashareSetDefaultTopic()
-{
-  $topics = mediasharePNGetTopics(NULL);
-  if ($topics === false  ||  sizeof($topics) == 0)
-    return pnModSetVar('mediashare', 'defaultTopic', '');
-  else
-    return pnModSetVar('mediashare', 'defaultTopic', $topics[0]['id']);
 }
 
 

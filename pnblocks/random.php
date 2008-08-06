@@ -85,8 +85,6 @@ function mediashare_randomblock_display($blockinfo)
 
   if ($vars['type'] == 'album')
     $randomInfo = pnModAPIFunc('mediashare', 'user', 'getRandomMediaItem', array('albumId' => $vars['albumId'], 'mode' => 'album'));
-  else if ($vars['type'] == 'topic')
-    $randomInfo = pnModAPIFunc('mediashare', 'user', 'getRandomMediaItem', array('topicId' => $vars['topicId'], 'mode' => 'topic'));
   else if ($vars['type'] == 'latest')
     $randomInfo = pnModAPIFunc('mediashare', 'user', 'getRandomMediaItem', array('latest' => true, 'mode' => 'latest'));
   else
@@ -174,8 +172,6 @@ function mediashare_randomblock_modify($blockinfo)
     $vars['type'] = 'all';
   if (!isset($vars['albumId']))
     $vars['albumId'] = '';
-  if (!isset($vars['topicId']))
-    $vars['topicId'] = '';
   if (!isset($vars['cacheTime']))
     $vars['cacheTime'] = 30;
   if (!isset($vars['html']))
@@ -194,7 +190,6 @@ function mediashare_randomblock_modify($blockinfo)
 function mediashare_randomblock_update($blockinfo)
 {
   $vars = array('type'       => pnVarCleanFromInput('mstype'),
-                'topicId'    => (int)pnVarCleanFromInput('mstopicId'),
                 'albumId'    => (int)pnVarCleanFromInput('msalbumId'),
                 'cacheTime'  => (int)pnVarCleanFromInput('cacheTime'),
                 'html'       => pnVarCleanFromInput('mshtml'));

@@ -13,7 +13,6 @@ define('_MSFILTERCLEAR', 'Slet filter (vis alt)');
 define('_MSFILTERITEMSFROM', "Mediefiler fra %user%s album '%album'");
 define('_MSFILTERKEYWORD', 'Mediefiler markeret med ');
 define('_MSFILTERNONE', 'Alle mediefiler');
-define('_MSFILTERTOPIC', 'Emne');
 define('_MSFILTERUNAME', 'Mediefiler af ');
 define('_MSFULLSCREEN', 'Fuldskærmsvisning');
 define('_MSITEMTAGGEDWITH', 'Her er de multimediefiler som er markeret med');

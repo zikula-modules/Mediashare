@@ -4,10 +4,8 @@
 // Language:       English
 // Translation by: Jorn Wildt
 // ------------------------------------------------------------------------------------
-define('_MS_RANDOMBLOCKHELP', 'Select one of the following kinds of block content and specify optional album or topic criteria.');
+define('_MS_RANDOMBLOCKHELP', 'Select one of the following kinds of block content and specify optional album criteria.');
 define('_MS_RANDOMBLOCKALLLABEL', 'Show random image from any album');
-define('_MS_RANDOMBLOCKTOPICLABEL', 'Show random image from specific topic');
-define('_MS_RANDOMBLOCKTOPIC', '(topic)');
 define('_MS_RANDOMBLOCKALBUMLABEL', 'Show random image from specific album');
 define('_MS_RANDOMBLOCKALBUM', '(album)');
 define('_MS_RANDOMBLOCKCACHELABEL', 'Update time for block (sec.) (empty = always)');
@@ -25,5 +23,4 @@ define('_MS_RANDOMBLOCKTITLEHELP', 'Image title');
 define('_MS_RANDOMBLOCKALBUMTITLEHELP', 'Album title');
 define('_MS_RANDOMBLOCKOWNERHELP', 'Name of image owner');
 
-define('_ELFISKNOTOPIC', 'No topic');
 ?>

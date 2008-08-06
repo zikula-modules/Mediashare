@@ -253,6 +253,9 @@ function mediashare_user_slideshow($args)
 
   $viewURL = pnModUrl('mediashare','user','slideshow', array('mid' => $mediaItem['id']));
 
+  $render->load_filter('output', 'pagevars');
+  if (pnConfigGetVar('shorturls'))
+      $render->load_filter('output', 'shorturls');
   echo $render->fetch('mediashare_user_slideshow.html');
 
   return true;
@@ -543,7 +546,6 @@ function mediashare_user_list($args)
   $keyword    = mediashareGetStringUrl('key', $args);
   $uname      = mediashareGetStringUrl('uname', $args);
   $albumId    = mediashareGetIntUrl('aid', $args, null);
-  $topicId    = mediashareGetIntUrl('topic', $args, null);
   $order      = mediashareGetStringUrl('order', $args, 'title');
   $orderDir   = mediashareGetStringUrl('orderdir', $args);
   $recordPos  = mediashareGetIntUrl('pos', $args, 0);
@@ -553,12 +555,12 @@ function mediashare_user_list($args)
     return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
 
   $items = pnModAPIFunc('mediashare', 'user', 'getList',
-                        compact('keyword', 'uname', 'albumId', 'topicId', 'order', 'orderDir', 'recordPos'));
+                        compact('keyword', 'uname', 'albumId', 'order', 'orderDir', 'recordPos'));
   if ($items === false)
     return mediashareErrorAPIGet();
 
   $itemCount = pnModAPIFunc('mediashare', 'user', 'getListCount',
-                            compact('keyword', 'uname', 'albumId', 'topicId'));
+                            compact('keyword', 'uname', 'albumId'));
   if ($itemCount === false)
     return mediashareErrorAPIGet();
 
