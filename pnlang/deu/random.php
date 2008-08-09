@@ -3,7 +3,7 @@
 // Translation for Mediashare Random Image block
 // Translation by: Thomas Smiatek / Carsten Volmer
 // ------------------------------------------------------------------------------------
-define('_MS_RANDOMBLOCKHELP', 'Wählen Sie eine der folgenden Arten des Blockinhalts and geben Sie die Album- oder Themenkriterien an.');
+define('_MS_RANDOMBLOCKHELP', 'Wählen Sie eine der folgenden Arten des Blockinhalts and geben Sie die Albumkriterien an.');
 define('_MS_RANDOMBLOCKALLLABEL', 'Zeige Zufallsbild aus beliebigem Album');
 define('_MS_RANDOMBLOCKALBUMLABEL', 'Zeige Zufallsbild aus bestimmtem Album');
 define('_MS_RANDOMBLOCKALBUM', '(Album)');
