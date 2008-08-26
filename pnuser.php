@@ -646,4 +646,18 @@ function mediashare_user_albumxmllist($args)
   return true;
 }
 
+
+// =======================================================================
+// Ext. app. help
+// =======================================================================
+
+function mediashare_user_extapphelp($args)
+{
+  $render = new pnRender('mediashare');
+  $render->assign('albums', null);
+
+  return $render->fetch('mediashare_user_extapphelp.html');
+}
+
+
 ?>

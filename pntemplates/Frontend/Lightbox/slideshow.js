@@ -71,9 +71,9 @@ MediashareSlideshow.prototype =
       }
       
       if (this.currentSize == 'original')
-        imgPreloader.src = this.itemArray[index].originalUrl;
+        imgPreloader.src = document.location.pnbaseURL + this.itemArray[index].originalUrl;
       else
-        imgPreloader.src = this.itemArray[index].previewUrl;
+        imgPreloader.src = document.location.pnbaseURL + this.itemArray[index].previewUrl;
     }
     else
     {

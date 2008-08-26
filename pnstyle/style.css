@@ -24,6 +24,12 @@ input.mediashare-readonly
   border-bottom: 1px solid #DDD;
 }
 
+.mediashare-inputhelp
+{
+  font-size: 90%;
+  font-style: italic;
+}
+
 /* Header */
 
 div.mediashare-header
