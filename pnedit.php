@@ -458,7 +458,7 @@ function mediashare_edit_edititem($args)
   $albumId = $item['parentAlbumId'];
 
   if (isset($_GET['back']) && $_GET['back'] == 'browse')
-    $backUrl = pnModURL('mediashare', 'user', 'view', array('aid' => $albumId, 'mid' => $mediaId));
+    $backUrl = pnModURL('mediashare', 'user', 'browse', array('aid' => $albumId, 'mid' => $mediaId));
   else
     $backUrl = pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId));
 
