@@ -204,19 +204,29 @@ programs (untested).
 
 IMPORTING FROM PHOTOSHARE
 =========================
-You can import from Photoshare and remove the module while still keeping the
-old URLs alive. Medishare will create a table that maps from Photoshare image
-URLs to Mediashare URLs.
+You can import from Photoshare and remove Photoshare's copy of all 
+images while still keeping the old URLs alive. Medishare will create a 
+table that maps from Photoshare image URLs to Mediashare URLs.
 
-1) Go to Medishare's admin page and follow the import instructions.
+1) Go to Mediashare's admin page and follow the import instructions. 
+Albums are imported in alphabetical order. If the import fails, you will 
+need to remove the file or album causing the problem - the next to be 
+imported.
 
 2) Backup Photoshare, it's datafiles, and the database.
 
-3) Remove the whole Photoshare module and it's datafiles.
+3) Do NOT remove or deactivate the Photoshare module from the admin 
+panel. Simply replace the file "photoshare/pnshow.php" with the new copy 
+in "mediashare/photoshare/pnshow.php"
 
-4) Copy the file "medishare/photoshare/pnshow.php" to "photoshare/pnshow.php"
-
-That's all.
+4) You can now remove Photoshare's image directory (if the images were 
+stored in the file system) or the images from the Photoshare tables 
+within the PostNuke database. From your preferred database management 
+tool, you can remove the (prefix)_photoshare_images table, remove the 
+pn_imagedata and pn_thumbnaildata. If you are using MySQL's command 
+line, you need to "alter table (prefix)_photoshare_images drop column 
+pn_imagedata;" then "alter table (prefix)_photoshare_images drop column 
+pn_thumbnaildata;".
 
 
 MODIFYING

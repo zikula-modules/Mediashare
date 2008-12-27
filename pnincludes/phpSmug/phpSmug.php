@@ -320,7 +320,7 @@ class phpSmug {
 					die($this->req->getMessage());
 				} else {
 					$this->error_code = -5;
-					$this->error_msg = $this->req->getMessage();
+					$this->error_msg = ($this->req->getMessage != null ? $this->req->getMessage() : 'No request object');
 					return false;
 				}
             }
