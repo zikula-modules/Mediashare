@@ -71,9 +71,19 @@ MediashareSlideshow.prototype =
       }
       
       if (this.currentSize == 'original')
-        imgPreloader.src = document.location.pnbaseURL + this.itemArray[index].originalUrl;
+      {
+        if (this.itemArray[index].originalUrl.indexOf("mediashare") == 0)
+          imgPreloader.src = document.location.pnbaseURL + this.itemArray[index].originalUrl;
+        else
+          imgPreloader.src = this.itemArray[index].originalUrl;
+      }
       else
-        imgPreloader.src = document.location.pnbaseURL + this.itemArray[index].previewUrl;
+      {
+        if (this.itemArray[index].previewUrl.indexOf("mediashare") == 0)
+          imgPreloader.src = document.location.pnbaseURL + this.itemArray[index].previewUrl;
+        else
+          imgPreloader.src = this.itemArray[index].previewUrl;
+      }
     }
     else
     {
