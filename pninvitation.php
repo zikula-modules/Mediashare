@@ -2,11 +2,7 @@
 // $Id: pninvitation.php,v 1.6 2007/07/27 19:15:59 jornlind Exp $
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
-// ----------------------------------------------------------------------
-// For POST-NUKE Content Management System
-// Copyright (C) 2002 by the PostNuke Development Team.
-// http://www.postnuke.com/
-// ----------------------------------------------------------------------
+// =======================================================================
 
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';

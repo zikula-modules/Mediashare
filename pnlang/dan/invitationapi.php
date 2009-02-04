@@ -1,6 +1,6 @@
 <?php
 // ------------------------------------------------------------------------------------
-// Translation for PostNuke Mediashare module
+// Translation for Mediashare module
 // Translation by: Jorn Wildt
 // ------------------------------------------------------------------------------------
 

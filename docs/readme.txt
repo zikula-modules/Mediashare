@@ -1,7 +1,7 @@
 Mediashare (C) Jorn Wildt 2005
 ==============================
 
-Mediashare is a PostNuke based gallery that enables you to share your images,
+Mediashare is a Zikula based gallery that enables you to share your images,
 videos, flash files and much more on the internet.
 
 Mediashare is a complete rewrite of the code for Photoshare, and it is my hope 
@@ -13,8 +13,7 @@ Jorn Wildt
 
 REQUIREMENTS
 ============
-* PostNuke version .76 or never.
-* PostNuke Topics module (especially relevant for PostNuke .8).
+* Zikula 1.x (or PostNuke version .76 or never)
 * MySQL 4.x
 * PHP's GD library for image manipulation.
 * Rewrite URLs enabled in .htaccess files if you want to store media files
@@ -24,7 +23,7 @@ REQUIREMENTS
 
 FEATURE LIST
 ============
-* Runs on PostNuke systems with SAFE_MODE and OPEN_BASEDIR enabled 
+* Runs on Zikula systems with SAFE_MODE and OPEN_BASEDIR enabled 
   (this allows Mediashare to be installed on sites with quite 
    restricted PHP access).
 * Edit albums and organize albums in albums.
@@ -39,19 +38,19 @@ FEATURE LIST
 * Detailed access control.
 * E-mail invitations with special links for access to locked albums
 * Browsing by keywords (or tags - a'la www.flickr.com).
-* Compatible with Galler Remote Protocol 
+* Compatible with Gallery Remote Protocol 
   (see http://gallery.menalto.com/wiki/Gallery_Remote)
 * Reordering of files by drag and drop.
 * Browse albums and view items in slideshows.
-* PostNuke block for random media items display
+* Zikula block for random media items display
 * Overview page with latest albums, media files, most used keywords and more.
 * File upload size restrictions (both single file as well a grand total).
 * Files can be stored on local file system as well as in the database
 * Modern tableless HTML design and use of Lightbox JavaScript library
-* PostNuke search enabled (also PN .8).
-* PostNuke API compatible.
-* PostNuke pnRender based (thereby templatable).
-* PostNuke hooks aware.
+* Zikula search enabled.
+* Zikula API compatible.
+* Zikula pnRender based (thereby templatable).
+* Zikula hooks aware.
 * Can be used from other modules (like the standard News and Pagesetter)
 * Imports from Photoshare
 
@@ -60,20 +59,20 @@ UPGRADE
 =======
 
 From 2.1.1 to 2.1.2
-* Do a normal PostNuke module upgrade.
+* Do a normal Zikula module upgrade.
 
 From any version to 2.1.1
-* Do a normal PostNuke module upgrade.
+* Do a normal Zikula module upgrade.
 * Goto Mediashare's admin panel (the plugin section) and "scan for plugins".
 
 
 INSTALLATION
 ============
-Start the same way as width any other PostNuke module:
+Start the same way as width any other Zikula module:
 
-1) Copy the files into PostNuke's "modules" directory.
+1) Copy the files into Zikula's "modules" directory.
 
-2) Go to PostNuke's module admin page and regenerate the list.
+2) Go to Zikula's module admin page and regenerate the list.
 
 3) Install and activate the Mediashare module.
 
@@ -107,7 +106,7 @@ CONFIGURATION
 
 1.1) Files on the local file system
 
-     Create a directory named "mediashare" in the main PostNuke directory. Make
+     Create a directory named "mediashare" in the main Zikula directory. Make
      sure this directory is writable by the webserver. This will be the place for
      all the files that you upload.
 
@@ -123,7 +122,7 @@ CONFIGURATION
 
      RewriteRule ^mediashare/(vfsdb/[a-z0-9]+-[a-z]+\.[a-z]+)$ index.php?module=mediashare&type=vfs_db&func=dump&ref=$1 [PT]
 
-     This converts /mediashare/vfsdb/xxxx file references to a PostNuke 
+     This converts /mediashare/vfsdb/xxxx file references to a Zikula 
      function call for Mediashare.
 
 2) Make sure the "Temporary dir." points to a writable directory. This 
@@ -146,7 +145,7 @@ access to create albums.
 
 UNINSTALL
 =========
-First uninstall like any other PostNuke module. Then manually delete all media
+First uninstall like any other Zikula module. Then manually delete all media
 files from the "mediashare" directory.
 
 
@@ -175,7 +174,7 @@ Image URLs are:
 Where xxx is a random identifier (see the security chapter below)
 
 
-You can also use [mediashare] in PostNuke's menu - this leads to the 
+You can also use [mediashare] in Zikula's menu - this leads to the 
 top album.
 
 
@@ -221,7 +220,7 @@ in "mediashare/photoshare/pnshow.php"
 
 4) You can now remove Photoshare's image directory (if the images were 
 stored in the file system) or the images from the Photoshare tables 
-within the PostNuke database. From your preferred database management 
+within the Zikula database. From your preferred database management 
 tool, you can remove the (prefix)_photoshare_images table, remove the 
 pn_imagedata and pn_thumbnaildata. If you are using MySQL's command 
 line, you need to "alter table (prefix)_photoshare_images drop column 
@@ -293,7 +292,7 @@ do the following:
 3) Add a button (or other clickable element) with an "onclick" handler that
    calls mediashareFindItem(inputId, selectorURL). The "inputId" parameter 
    holds the ID of the input from step (2). The selector URL holds the URL to
-   Mediashare's media selector window. You can get this URL from PHP/PostNuke
+   Mediashare's media selector window. You can get this URL from PHP/Zikula
    by calling:
 
      pnModUrl('mediashare', 'external', 'finditem', 
@@ -334,7 +333,7 @@ SECURITY
 ========
 Mediashare bases it's security on three elements:
 
-  1) PostNuke's permission system
+  1) Zikula's permission system
 
   2) Mediashare's access control
 
@@ -348,8 +347,8 @@ Mediashare bases it's security on three elements:
 3 - The last point is for performance reasons, but it depends on the setup. It
 is only used when storing media files in the local file system.
 
-Photoshare depended on PostNuke's permissions when showing a single image. 
-This meant loading both the PostNuke API and the Mediashare API each time an 
+Photoshare depended on Zikula's permissions when showing a single image. 
+This meant loading both the Zikula API and the Mediashare API each time an 
 image was displayed, and then streaming the image data through PHP. This 
 really slowed things down.
 

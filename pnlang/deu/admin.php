@@ -1,6 +1,6 @@
 <?php
 // ------------------------------------------------------------------------------------
-// Translation for PostNuke Mediashare module
+// Translation for Mediashare module
 // Translation by: Daniel Neugebauer / Thomas Smiatek / Carsten Volmer
 // ------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ define('_MSGENERAL', 'Allgemein');
 define('_MSGENERALSETUP', 'Allgemeines Setup');
 define('_MSIMPORT', 'Import');
 define('_MSMEDIADIR', 'Medien-Upload Verzeichnis');
-define('_MSMEDIADIRHELP', "Hier werden ihre Medien-Dateien gespeichert. Achten Sie darauf, dass es sich auf ein 'mediashare'-Verzeichnis im PostNuke-Verzeichnis bezieht und dass Schreibzugriff für den Webserver besteht.");
+define('_MSMEDIADIRHELP', "Hier werden ihre Medien-Dateien gespeichert. Achten Sie darauf, dass es sich auf ein 'mediashare'-Verzeichnis im Zikula-Verzeichnis bezieht und dass Schreibzugriff für den Webserver besteht.");
 define('_MSMEDIAHANDLERS', 'Medien-Treiber');
 define('_MSMEDIAHANDLERSINFO', 'Die untenstehende Liste zeigt die verfügbaren Medien-Handler. Die Plugins erstellen Thumbnails (Vorschaubilder) und stellen die von Ihnen hochgeladenen Dateien dar.');
 define('_MSMEDIASOURCES', 'Medien-Quellen');

@@ -1,6 +1,6 @@
 <?php
 // ------------------------------------------------------------------------------------
-// Translation for PostNuke Mediashare module
+// Translation for Mediashare module
 // Translation by: Jorn Wildt
 // ------------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ define('_MSGENERAL', 'General');
 define('_MSGENERALSETUP', 'General setup');
 define('_MSIMPORT', 'Import');
 define('_MSMEDIADIR', 'Media upload dir.');
-define('_MSMEDIADIRHELP', "This is where your media files are stored. Make sure it corresponds to a directory named 'mediashare' in PostNuke's top directory, and make sure it is writable by the webserver.");
+define('_MSMEDIADIRHELP', "This is where your media files are stored. Make sure it corresponds to a directory named 'mediashare' in Zikula's top directory, and make sure it is writable by the webserver.");
 define('_MSMEDIAHANDLERS', 'Media handlers');
 define('_MSMEDIAHANDLERSINFO', 'The list below shows the available media handlers. These plugins creates thumbnails and takes care of displaying the various media items you add.');
 define('_MSMEDIASOURCES', 'Media sources');
