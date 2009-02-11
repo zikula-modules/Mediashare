@@ -72,7 +72,6 @@ function mediashare_edit_view($args)
     return mediashareErrorAPIGet();
 
   $render = new elfiskRender('mediashare');
-
   $render->caching = false;
   $render->assign('album', $album);
   $render->assign('subAlbums', $subAlbums);

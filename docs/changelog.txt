@@ -15,6 +15,7 @@ Version NEXT
   * Now using PostNuke .8 prototype scripts if available
   * Fixed issues with Zikula's short URL handling
 
+
 Version 3.2.0
 -------------
   * Adding plugins for new Content module
@@ -22,9 +23,11 @@ Version 3.2.0
   * Adding album and media item plugins for the Content module.
   * Bugfix: fixing some language define issues with _MSBACK
 
+
 Version 3.1.1
 -------------
   * Bugfix: removing hardcoded URL in remote API.
+
 
 Version 3.1.0
 -------------
@@ -35,11 +38,13 @@ Version 3.1.0
   * Bugfix: adding missing <embed> tag when pasting Windows Media Player HTML
   * Bugfix: subalbums was shown twice in the thumbnail view
 
+
 Version 3.0.1
 -------------
   * New admin icon from Thomas
   * Bugfix: browse back/fwd goes to thumbnails
   * Bugfix: [ 1774342 ] Hardcoded Script-Refs to www.pn760.dk
+
 
 Version 3.0.0
 -------------

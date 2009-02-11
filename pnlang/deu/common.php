@@ -23,6 +23,7 @@ define('_MSDELETEALBUM', 'Album löschen');
 define('_MSDESCRIPTION', 'Beschreibung');
 define('_MSEDIT', 'Bearbeiten');
 define('_MSEDITALBUM', 'Album bearbeiten');
+define('_MSEXTAPPURLHELPLINK', 'Hier klicken für weitere Informationen.'); 
 define('_MSHEIGHT', 'Höhe');
 define('_MSINVITE', 'Einladen');
 define('_MSINVITATIONS', 'Einladungen');

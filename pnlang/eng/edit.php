@@ -23,7 +23,6 @@ define('_MSEDITSELECTEDITEMS', 'Edit selected items');
 define('_MSEDITMEDIA', 'Edit media');
 define('_MSEXTAPPURL', 'External album URL');
 define('_MSEXTAPPURLHELP', 'Here you can insert a link to external photo albums from Flickr, Picasa and SmugMug.');
-define('_MSEXTAPPURLHELPLINK', 'Click here to read more.');
 define('_MSGROUP', 'Group');
 define('_MSHEADERADDALBUM', 'Add album');
 define('_MSHEADERADDMEDIAITEMS', 'Add media items to album');

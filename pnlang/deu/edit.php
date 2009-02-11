@@ -23,7 +23,6 @@ define('_MSEDITSELECTEDITEMS', 'Gewählte Dateien bearbeiten');
 define('_MSEDITMEDIA', 'Objekt bearbeiten');
 define('_MSEXTAPPURL', 'Externe Album-URL');
 define('_MSEXTAPPURLHELP', 'Hier können Links zu externen Fotoalben, wie beispielsweise Flickr, Picasa oder SmugMug eingefügt werden.'); 
-define('_MSEXTAPPURLHELPLINK', 'Hier klicken für weitere Informationen.'); 
 define('_MSGROUP', 'Gruppe');
 define('_MSHEADERADDALBUM', 'Album hinzufügen');
 define('_MSHEADERADDMEDIAITEMS', 'Dateien zum Album hinzufügen');

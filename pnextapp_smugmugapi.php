@@ -37,7 +37,12 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
   function getAlbumData()
   {
     $images = $this->getRawImages();
-    if (count($images) > 0)
+    if ($images === false)
+    {
+      $this->albumData['mainMediaId'] = null;
+      $this->albumData['mainMediaItem'] = null;
+    }
+    else
     {
       $this->albumData['mainMediaId'] = $images[0]['id'];
       $this->albumData['mainMediaItem'] = $this->convertImage($images[0]);
@@ -49,6 +54,9 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
   function getMediaItems()
   {
     $images = $this->getRawImages();
+    if ($images === false)
+      return array();
+
     for ($i=0,$cou=count($images); $i<$cou; ++$i)
     {
       $images[$i] = $this->convertImage($images[$i]);

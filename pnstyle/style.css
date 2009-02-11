@@ -118,6 +118,13 @@ div.mediashare-toolbar input
   padding: 3px;
 }
 
+/* Album list */
+
+div.mediashare-albumlist
+{
+  margin-top: 8px;
+}
+
 /* Tabs */
 
 div.mediashare-tabs

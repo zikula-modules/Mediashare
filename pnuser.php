@@ -130,7 +130,7 @@ function mediashare_user_slideshow($args)
 {
   $albumId = mediashareGetIntUrl('aid', $args, 1);
   $mediaId = mediashareGetIntUrl('mid', $args, 0);
-  $delay   = mediashareGetIntUrl('delay', $args, 10);
+  $delay   = mediashareGetIntUrl('delay', $args, 5);
   $mode    = mediashareGetStringUrl('mode', $args, 'stopped');
   $viewkey = pnVarCleanFromInput('viewkey');
   $center  = isset($args['center']) ? '_center' : '';
@@ -635,8 +635,12 @@ function mediashare_user_albumxmllist($args)
 
 function mediashare_user_extapphelp($args)
 {
+  $settings = pnModAPIFunc('mediashare', 'user', 'getSettings');
+  if ($settings === false)
+    return mediashareErrorAPIGet();
+
   $render = new pnRender('mediashare');
-  $render->assign('albums', null);
+  $render->assign('settings', $settings);
 
   return $render->fetch('mediashare_user_extapphelp.html');
 }

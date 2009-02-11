@@ -1,7 +1,7 @@
 <!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$prevMediaId assign=prevUrl delay=$delay]-->
 <!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$nextMediaId assign=nextUrl delay=$delay]-->
-<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$nextMediaId assign=nextRunningUrl delay=$delay mode=running]-->
-<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=MEDIAID assign=selectUrl delay=DELAY mode=MODE]-->
+<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$nextMediaId assign=nextRunningUrl delay=$delay mode=running fqurl=1]-->
+<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=MEDIAID assign=selectUrl delay=DELAY mode=MODE fqurl=1]-->
 <!--[mediashare_username userId=$album.ownerId assign=ownerName]-->
 
 <!--[if $mode=="running"]-->
@@ -9,7 +9,6 @@
   slideshowStartup("<!--[$nextRunningUrl]-->", <!--[$delay]-->);
 </script>
 <!--[/if]-->
-
 
 <div class="mediashare-slideshow">
 
@@ -57,7 +56,7 @@
    <div class="description" style="height: <!--[$mediaItem.previewHeight]-->px; overflow: auto"><!--[$mediaItem.description|nl2br]--></div>
  </div>
 
- <div class="mediashare-item"><!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id assign=popupUrl]-->
+ <div class="mediashare-item"><!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id assign=popupUrl fqurl=1]-->
    <!--[mediashare_mediaItem src=$mediaItem.previewRef title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler onclick="popupMediaViewer('$popupUrl')"|pnvarprepfordisplay class="media" width=$mediaItem.previewWidth height=$mediaItem.previewHeight]--></div>
 
 </div>
