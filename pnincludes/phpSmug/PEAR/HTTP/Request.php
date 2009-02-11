@@ -40,7 +40,7 @@
  * @author      Alexey Borzov <avb@php.net>
  * @copyright   2002-2007 Richard Heyes
  * @license     http://opensource.org/licenses/bsd-license.php New BSD License
- * @version     CVS: $Id: Request.php,v 1.1 2008/06/18 19:38:14 jornlind Exp $
+ * @version     CVS: $Id: Request.php,v 1.60 2008/07/21 17:41:56 avb Exp $
  * @link        http://pear.php.net/package/HTTP_Request/ 
  */
 
@@ -67,6 +67,20 @@ define('HTTP_REQUEST_METHOD_PUT',     'PUT',     true);
 define('HTTP_REQUEST_METHOD_DELETE',  'DELETE',  true);
 define('HTTP_REQUEST_METHOD_OPTIONS', 'OPTIONS', true);
 define('HTTP_REQUEST_METHOD_TRACE',   'TRACE',   true);
+/**#@-*/
+
+/**#@+
+ * Constants for HTTP request error codes
+ */ 
+define('HTTP_REQUEST_ERROR_FILE',             1);
+define('HTTP_REQUEST_ERROR_URL',              2);
+define('HTTP_REQUEST_ERROR_PROXY',            4);
+define('HTTP_REQUEST_ERROR_REDIRECTS',        8);
+define('HTTP_REQUEST_ERROR_RESPONSE',        16);  
+define('HTTP_REQUEST_ERROR_GZIP_METHOD',     32);
+define('HTTP_REQUEST_ERROR_GZIP_READ',       64);
+define('HTTP_REQUEST_ERROR_GZIP_DATA',      128);
+define('HTTP_REQUEST_ERROR_GZIP_CRC',       256);
 /**#@-*/
 
 /**#@+
@@ -102,7 +116,7 @@ if (extension_loaded('mbstring') && (2 & ini_get('mbstring.func_overload'))) {
  * @package     HTTP_Request
  * @author      Richard Heyes <richard@phpguru.org>
  * @author      Alexey Borzov <avb@php.net>
- * @version     Release: 1.4.1
+ * @version     Release: 1.4.3
  */
 class HTTP_Request
 {
@@ -572,11 +586,11 @@ class HTTP_Request
     function addFile($inputName, $fileName, $contentType = 'application/octet-stream')
     {
         if (!is_array($fileName) && !is_readable($fileName)) {
-            return PEAR::raiseError("File '{$fileName}' is not readable");
+            return PEAR::raiseError("File '{$fileName}' is not readable", HTTP_REQUEST_ERROR_FILE);
         } elseif (is_array($fileName)) {
             foreach ($fileName as $name) {
                 if (!is_readable($name)) {
-                    return PEAR::raiseError("File '{$name}' is not readable");
+                    return PEAR::raiseError("File '{$name}' is not readable", HTTP_REQUEST_ERROR_FILE);
                 }
             }
         }
@@ -662,17 +676,19 @@ class HTTP_Request
     function sendRequest($saveBody = true)
     {
         if (!is_a($this->_url, 'Net_URL')) {
-            return PEAR::raiseError('No URL given.');
+            return PEAR::raiseError('No URL given', HTTP_REQUEST_ERROR_URL);
         }
 
         $host = isset($this->_proxy_host) ? $this->_proxy_host : $this->_url->host;
         $port = isset($this->_proxy_port) ? $this->_proxy_port : $this->_url->port;
 
-        // 4.3.0 supports SSL connections using OpenSSL. The function test determines
-        // we running on at least 4.3.0
-        if (strcasecmp($this->_url->protocol, 'https') == 0 AND function_exists('file_get_contents') AND extension_loaded('openssl')) {
-            if (isset($this->_proxy_host)) {
-                return PEAR::raiseError('HTTPS proxies are not supported.');
+        if (strcasecmp($this->_url->protocol, 'https') == 0) {
+            // Bug #14127, don't try connecting to HTTPS sites without OpenSSL
+            if (version_compare(PHP_VERSION, '4.3.0', '<') || !extension_loaded('openssl')) {
+                return PEAR::raiseError('Need PHP 4.3.0 or later with OpenSSL support for https:// requests',
+                                        HTTP_REQUEST_ERROR_URL);
+            } elseif (isset($this->_proxy_host)) {
+                return PEAR::raiseError('HTTPS proxies are not supported', HTTP_REQUEST_ERROR_PROXY);
             }
             $host = 'ssl://' . $host;
         }
@@ -792,7 +808,7 @@ class HTTP_Request
 
         // Too many redirects
         } elseif ($this->_allowRedirects AND $this->_redirects > $this->_maxRedirects) {
-            return PEAR::raiseError('Too many redirects');
+            return PEAR::raiseError('Too many redirects', HTTP_REQUEST_ERROR_REDIRECTS);
         }
 
         return true;
@@ -820,6 +836,17 @@ class HTTP_Request
     function getResponseCode()
     {
         return isset($this->_response->_code) ? $this->_response->_code : false;
+    }
+
+    /**
+    * Returns the response reason phrase
+    *
+    * @access public
+    * @return mixed     Response reason phrase, false if not set
+    */
+    function getResponseReason()
+    {
+        return isset($this->_response->_reason) ? $this->_response->_reason : false;
     }
 
     /**
@@ -880,10 +907,14 @@ class HTTP_Request
         $path = $this->_url->path . $querystring;
         $url  = $host . $port . $path;
 
+        if (!strlen($url)) {
+            $url = '/';
+        }
+
         $request = $this->_method . ' ' . $url . ' HTTP/' . $this->_http . "\r\n";
 
         if (in_array($this->_method, $this->_bodyDisallowed) ||
-            (empty($this->_body) && (HTTP_REQUEST_METHOD_POST != $this->_method ||
+            (0 == strlen($this->_body) && (HTTP_REQUEST_METHOD_POST != $this->_method ||
              (empty($this->_postData) && empty($this->_postFiles)))))
         {
             $this->removeHeader('Content-Type');
@@ -905,9 +936,8 @@ class HTTP_Request
             }
         }
 
-        // No post data or wrong method, so simply add a final CRLF
-        if (in_array($this->_method, $this->_bodyDisallowed) || 
-            (HTTP_REQUEST_METHOD_POST != $this->_method && empty($this->_body))) {
+        // Method does not allow a body, simply add a final CRLF
+        if (in_array($this->_method, $this->_bodyDisallowed)) {
 
             $request .= "\r\n";
 
@@ -961,12 +991,17 @@ class HTTP_Request
             $request .= $postdata;
 
         // Explicitly set request body
-        } elseif (!empty($this->_body)) {
+        } elseif (0 < strlen($this->_body)) {
 
             $request .= 'Content-Length: ' .
                         (HTTP_REQUEST_MBSTRING? mb_strlen($this->_body, 'iso-8859-1'): strlen($this->_body)) .
                         "\r\n\r\n";
             $request .= $this->_body;
+
+        // No body: send a Content-Length header nonetheless (request #12900)
+        } else {
+
+            $request .= "Content-Length: 0\r\n\r\n";
         }
         
         return $request;
@@ -1073,7 +1108,7 @@ class HTTP_Request
  * @package     HTTP_Request
  * @author      Richard Heyes <richard@phpguru.org>
  * @author      Alexey Borzov <avb@php.net>
- * @version     Release: 1.4.1
+ * @version     Release: 1.4.3
  */
 class HTTP_Response
 {
@@ -1095,6 +1130,12 @@ class HTTP_Response
     */
     var $_code;
     
+    /**
+    * Response reason phrase
+    * @var string
+    */
+    var $_reason;
+
     /**
     * Response headers
     * @var array
@@ -1163,11 +1204,12 @@ class HTTP_Response
     {
         do {
             $line = $this->_sock->readLine();
-            if (sscanf($line, 'HTTP/%s %s', $http_version, $returncode) != 2) {
-                return PEAR::raiseError('Malformed response.');
+            if (!preg_match('!^(HTTP/\d\.\d) (\d{3})(?: (.+))?!', $line, $s)) {
+                return PEAR::raiseError('Malformed response', HTTP_REQUEST_ERROR_RESPONSE);
             } else {
-                $this->_protocol = 'HTTP/' . $http_version;
-                $this->_code     = intval($returncode);
+                $this->_protocol = $s[1];
+                $this->_code     = intval($s[2]);
+                $this->_reason   = empty($s[3])? null: $s[3];
             }
             while ('' !== ($header = $this->_sock->readLine())) {
                 $this->_processHeader($header);
@@ -1206,7 +1248,7 @@ class HTTP_Response
                     $data = $this->_sock->read(min(4096, $this->_toRead));
                     $this->_toRead -= HTTP_REQUEST_MBSTRING? mb_strlen($data, 'iso-8859-1'): strlen($data);
                 }
-                if ('' == $data) {
+                if ('' == $data && (!$this->_chunkLength || $this->_sock->eof())) {
                     break;
                 } else {
                     $hasBody = true;
@@ -1384,11 +1426,11 @@ class HTTP_Response
         }
         $method = ord(substr($data, 2, 1));
         if (8 != $method) {
-            return PEAR::raiseError('_decodeGzip(): unknown compression method');
+            return PEAR::raiseError('_decodeGzip(): unknown compression method', HTTP_REQUEST_ERROR_GZIP_METHOD);
         }
         $flags = ord(substr($data, 3, 1));
         if ($flags & 224) {
-            return PEAR::raiseError('_decodeGzip(): reserved bits are set');
+            return PEAR::raiseError('_decodeGzip(): reserved bits are set', HTTP_REQUEST_ERROR_GZIP_DATA);
         }
 
         // header is 10 bytes minimum. may be longer, though.
@@ -1396,45 +1438,45 @@ class HTTP_Response
         // extra fields, need to skip 'em
         if ($flags & 4) {
             if ($length - $headerLength - 2 < 8) {
-                return PEAR::raiseError('_decodeGzip(): data too short');
+                return PEAR::raiseError('_decodeGzip(): data too short', HTTP_REQUEST_ERROR_GZIP_DATA);
             }
             $extraLength = unpack('v', substr($data, 10, 2));
             if ($length - $headerLength - 2 - $extraLength[1] < 8) {
-                return PEAR::raiseError('_decodeGzip(): data too short');
+                return PEAR::raiseError('_decodeGzip(): data too short', HTTP_REQUEST_ERROR_GZIP_DATA);
             }
             $headerLength += $extraLength[1] + 2;
         }
         // file name, need to skip that
         if ($flags & 8) {
             if ($length - $headerLength - 1 < 8) {
-                return PEAR::raiseError('_decodeGzip(): data too short');
+                return PEAR::raiseError('_decodeGzip(): data too short', HTTP_REQUEST_ERROR_GZIP_DATA);
             }
             $filenameLength = strpos(substr($data, $headerLength), chr(0));
             if (false === $filenameLength || $length - $headerLength - $filenameLength - 1 < 8) {
-                return PEAR::raiseError('_decodeGzip(): data too short');
+                return PEAR::raiseError('_decodeGzip(): data too short', HTTP_REQUEST_ERROR_GZIP_DATA);
             }
             $headerLength += $filenameLength + 1;
         }
         // comment, need to skip that also
         if ($flags & 16) {
             if ($length - $headerLength - 1 < 8) {
-                return PEAR::raiseError('_decodeGzip(): data too short');
+                return PEAR::raiseError('_decodeGzip(): data too short', HTTP_REQUEST_ERROR_GZIP_DATA);
             }
             $commentLength = strpos(substr($data, $headerLength), chr(0));
             if (false === $commentLength || $length - $headerLength - $commentLength - 1 < 8) {
-                return PEAR::raiseError('_decodeGzip(): data too short');
+                return PEAR::raiseError('_decodeGzip(): data too short', HTTP_REQUEST_ERROR_GZIP_DATA);
             }
             $headerLength += $commentLength + 1;
         }
         // have a CRC for header. let's check
         if ($flags & 1) {
             if ($length - $headerLength - 2 < 8) {
-                return PEAR::raiseError('_decodeGzip(): data too short');
+                return PEAR::raiseError('_decodeGzip(): data too short', HTTP_REQUEST_ERROR_GZIP_DATA);
             }
             $crcReal   = 0xffff & crc32(substr($data, 0, $headerLength));
             $crcStored = unpack('v', substr($data, $headerLength, 2));
             if ($crcReal != $crcStored[1]) {
-                return PEAR::raiseError('_decodeGzip(): header CRC check failed');
+                return PEAR::raiseError('_decodeGzip(): header CRC check failed', HTTP_REQUEST_ERROR_GZIP_CRC);
             }
             $headerLength += 2;
         }
@@ -1444,13 +1486,14 @@ class HTTP_Response
         $dataSize = $tmp[2];
 
         // finally, call the gzinflate() function
-        $unpacked = @gzinflate(substr($data, $headerLength, -8), $dataSize);
+        // don't pass $dataSize to gzinflate, see bugs #13135, #14370
+        $unpacked = gzinflate(substr($data, $headerLength, -8));
         if (false === $unpacked) {
-            return PEAR::raiseError('_decodeGzip(): gzinflate() call failed');
+            return PEAR::raiseError('_decodeGzip(): gzinflate() call failed', HTTP_REQUEST_ERROR_GZIP_READ);
         } elseif ($dataSize != strlen($unpacked)) {
-            return PEAR::raiseError('_decodeGzip(): data size check failed');
+            return PEAR::raiseError('_decodeGzip(): data size check failed', HTTP_REQUEST_ERROR_GZIP_READ);
         } elseif ((0xffffffff & $dataCrc) != (0xffffffff & crc32($unpacked))) {
-            return PEAR::raiseError('_decodeGzip(): data CRC check failed');
+            return PEAR::raiseError('_decodeGzip(): data CRC check failed', HTTP_REQUEST_ERROR_GZIP_CRC);
         }
         if (HTTP_REQUEST_MBSTRING) {
             mb_internal_encoding($oldEncoding);

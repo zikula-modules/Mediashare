@@ -1,311 +1,497 @@
-phpSmug Class 1.0.10
-Written by Colin Seymour
-Project Homepage: http://www.lildude.co.uk/projects/phpSmug/
-Released under GNU Lesser General Public License (http://www.gnu.org/copyleft/lgpl.html)
+phpSmug 2.0.1 - PHP Wrapper for the SmugMug API
+===============================================
 
-For more information about the class and upcoming tools and applications using 
-it, visit http://www.lildude.co.uk/projects/phpsmug/ .
+Written by Colin Seymour
+Project Homepage: http://phpSmug.com/
+
+Released under GNU Lesser General Public License
+(http://www.gnu.org/copyleft/lgpl.html)
+
+For more information about the class and upcoming tools and applications using
+phpSmug, visit `http://phpsmug.com/'.
 
 phpSmug is a PHP wrapper class for the SmugMug API and is based on work done by
-Dan Coulter in phpFlickr (http://www.phpflickr.com).
-
-All of the 1.2.0 API methods have been implemented in phpSmug 1.0.x.  You can 
-see a full list and documentation at: http://smugmug.jot.com/WikiHome/1.2.0
+Dan Coulter in phpFlickr (http://www.phpflickr.com) .
 
 
-Installation:
+********************************************************************************
 
-    Copy the files from the installation package into a folder on your
-    server.  They need to be readable by your web server.  You can put 
-    them into an include folder defined in your php.ini file, if you 
-    like, though it's not required. 
+                                   *WARNING*
 
-Usage:
-    
-    To use phpSmug, all you have to do is include the file in your PHP scripts
-	and create an instance.  For example:
-	
-    	require_once("phpSmug/phpSmug.php");
-		$f = new phpSmug();
+phpSmug 2.0 is *NOT* a drop in replacement for phpSmug 1.0.x of 1.1.x.
+Please ensure you read this document for details on how phpSmug 2.x now
+functions.
 
-    The constructor takes three arguments:
-    -   $APIKey - Required
+********************************************************************************
 
-		This is the API key you have obtained for your application from
-		http://www.smugmug.com/hack/apikeys 
-        
-    -   $AppName - Optional
-		Default: NULL
-		
-		This is the name, version and URL of the application you have built
-		using the phpSmug. There is no required format, but something like:
-		
-			"My Cool App/1.0 (http://my.url.com)"
-			
-		... would be very useful.
-		
-		Whilst this isn't obligatory, it is recommended as it helps SmugMug
-		identify the application that is calling the API in the event one of
-		your users reports a problem on the SmugMug forums.
-    
-    -   $die_on_error - Optional
-		Default: FALSE
-		
-		This takes a boolean value and determines whether the class will die 
-		(aka cease operation) if the API returns an error statement.  Every 
-		method will return false if the API returns an error.  You can access 
-        error messages using the getErrorCode() and getErrorMsg() methods.
 
-		Alternatively, set this to TRUE to display the errors returned by the 
-		API. This is only recommended during the development stages of your
-		application.
 
-    To call a method, remove the "smugmug." part of the name and replace 
-    any fullstops with underscores. For example, instead of smugmug.images.get, 
-	you would call $f->images_get().
+What's New
+==========
 
-    Remember: The function names ARE case sensitive.
-    
-    All functions have their arguments implemented in the list order on 
-    their documentation page (a link to which is included with each 
-    method in the phpSmug class). The only variation is the SessionID does not
-	need to be passed to the methods as it's automatically set when you establish
-	a session.
+For those who've used phpSmug before, things have changed with phpSmug 2.0 and
+hopefully it's for the good and won't be too much trouble to adapt your
+applications for.
 
-	The only exceptions to this are albums_create(), albums_changeSettings(), 
-	and images_upload().
+If you've not used phpSmug before, you can skip this section and move onto the
+*Note Installation:: section below.
 
-	albums_create() and albums_changeSettings() have far too many possible 
-	optional parameters. To pass the optional parameters, use an associative 
-	array for all the options you wish to set.
-	
-	   For example:
-	   $optArgs = array("AlbumTemplateID"=>"5", 
-						"SubCategoryID"=>"20", 
-						"Keywords"=>"cat;pets;dog");
-	   $NewAlbumID = $f->albums_create($Title, $CategoryID, $optArgs); 
-	
-	See the API page for the full list of optional parameters
-	
-	images_upload() does not use the API for uploading, but instead HTTP PUT as
-	recommended by SmugMug at http://smugmug.jot.com/WikiHome/API/Uploading
-	
-	HTTP PUT has been chosen as it's quicker, easier to use and more reliable
-	than the other methods.
-	
-	
-    
-Authentication:
+   * Method Arguments:
 
-	You must use a login method to query SmugMug.  This sets up your session ID
-	required for interaction with the API.
-	
-	login_anonymously() takes no arguments and will allow you to access any
-	public gallery or image.
-	
-    If you wish to access private albums and images, upload or change settings,
-    you will need to login using either login_withPassword() or login_withHash().
+     The general functionality is the same, however the method of passing
+     arguments to methods has changed.
 
-	Both methods will use HTTPS/SSL to ensure your username and password information
-	is encrypted.
+     Now when you pass arguments to a method, you need to pass them either as a
+     series of strings, for example:
 
-	login_withHash() is probably the most secure method as your email and 
-	password can not be determined from the hash.  However, in order to obtain
-	the hash, you need to login at least once using login_withPassword().
-	
+          $f->images_getInfo("ImageID=<value>", "ImageKey=<value>");
 
-Caching:
+     ... or as an array ...
 
-	Caching can be very important to a project as it can drastically improve 
-	the performance of your application. 
-	
-	phpSmug has caching functionality that can cache data to a database or 
-	files, you just need to enable it.
-	
-	It is recommended that caching is enabled immediately after a new phpSmug
-	instance is created, and before any other phpSmug methods are called.
-	
-	To enable caching, use the enableCache() function.
-	
-	The enableCache() function takes 4 arguments:
-	
-		- $type - Required
-		  This is "db" for database or "fs" for filesystem.
-		
-		- $connection - Required
-		  The value for this depends on which caching store you will be using
-		  as defined by $type.
-		
-		  If you're using a database (db), then this a PEAR::DB connection 
-		  string, for example:
-		 	mysql://user:password@server/database
-		
-		  If you're using the local filesystem, this is the folder/directory
-		  that the web server has write access to. This directory must already
-		  exist.
-		
-		  Use absolute paths for best results as relative paths may have 
-		  unexpected behaviour. They'll usually work, you'll just want to test
-		  them.
-		
-		  You may not want to allow the world to view the files that are 
-		  created during caching.  If you want to hide this information, either 
-		  make sure that your permissions are set correctly, or prevent the 
-		  webserver from displaying *.cache files.  
-		
-		  In Apache, you can specify this in the configuration files or in a 
-		  .htaccess file with the following directives:
+          $f->images_getInfo(array("ImageID" => "<value>", "ImageKey" => "<value>"));
 
-			<FilesMatch "\.cache$">
-			   Deny from all
-			</FilesMatch>
+     This is a deliberate design decision to keep things consistent and is
+     actually due to work I've done to ease the development and maintenance of
+     phpSmug.
 
-		  Alternatively, you can specify a directory that is outside of the 
-		  web server's document root.
-		
-		- $cache_expire - Optional
-		  Default: 3600
-		
-		  This is the maximum age of each cache entry in seconds.
-		
-		- $table - Option
-		  Default: smugmug_cache
-		
-		  This is the database table name that will be used for storing the
-		  cached data.  This is only applicable for database (db) caching.
-		
-		  If the table does not exist, phpSmug will attempt to create it.
-		
-	If you have caching enabled, and you make changes, it's a good idea to call
-	clearCache() to refresh the cache so your changes are reflected immediately.
-		
-        
-Uploading:
+     You'll see phpSmug 2.0 is considerably smaller than previous versions.
+     This is because phpSmug now uses PHP 5's `__call()' method to dynamically
+     create the API calls for methods that are not explicitly declared.
 
-	Uploading is very easy.  You can either upload an image from your local
-	system, or from a location on the web using the images_upload() function.
-	
-	You can use this function for both local and remote files as 
-	images_uploadFromURL() just calls images_upload() anyway.
-	
-	In order to upload, you will need to have logged into SmugMug and have the
-	album ID of the album you wish to upload to.
-	
-	Then it's just a matter of calling the method with the various optional
-	parameters.
-	
-	For example, upload a local file using:
-	
-		images_upload(123456, "/path/to/image.jpg");
-		
-    or from a remote site using:
+     As a result of this, phpSmug 2.0 and later will definitely NOT work with
+     PHP4.
 
-		images_upload(123456, "http://my.site.com/image.jpg");
-		
-		OR
-		
-		images_uploadFromURL(123456, "http://my.site.com/image.jpg");
-		
-	You can find a list of optional parameters, like caption and keywords on
-	the API documentation page.
-	
-	
-Replacing Photos:	
+     It also has the added bonus in that you no longer need to have empty
+     arguments in your method calls: you only need to pass what's required or
+     what you need.
 
-	Replacing photos is identical to uploading.  The only difference is you 
-	need to specify the Image ID of the image you wish to replace.
-        
+   * SmugMug API Endpoint Compatibility
 
-Other Notes:
-    1.  Many of the methods have optional arguments.  For these, I have 
-		implemented them in the same order that the SmugMug API documentation 
-		lists them. PHP allows for optional arguments in function calls, but 
-		if you want to use the third optional argument, you have to fill in the 
-		others to the left first. You can use the NULL value in the place of an 
-		actual argument.  For example:
-        
-			$f->images_changeSettings($ImageID, NULL, $Caption);
-			
-		This will change just the image's caption.  NULL here is in place of 
-		specifying the album ID. As no album ID is specified, the image will 
-		remain in the same album.
-			
-    2.  Some people will need to use phpSmug from behind a proxy server.  You
-		can use the setProxy() method to set the appropriate proxy settings.
-		For example:
-			$f = new phpSmug("<API KEY>");
-			$f->setProxy("proxy_server", "8080");
-			
-		All your calls will then pass through the specified proxy on the 
-		specified port.
-		
-		
+     phpSmug 2.0 defaults to using the only stable endpoint provided by
+     SmugMug: the 1.2.0 endpoint.  However, it is fully functional with the
+     later endpoint revisions, unless otherwise documented.
+
+     To use a later version of the endpoint, just set the version when
+     instantiating the instance using `APIver'.
+
+   * All `smugmug.login.*' Methods Handled by a Single `login()' Method
+
+     To simplfy things even further, I've consolidated all the
+     `smugmug.login.*' API methods into a single `login()' method.
+
+     phpSmug will determine which API method you wish to use from the arguments
+     passed when calling the method. If not arguments are passed, phpSmug will
+     login anonymously.
+
+   * phpSmug now throws exceptions on error
+
+     In order to take full advantage of PHP5 functionality and make phpSmug
+     behave more like a proper PHP class, I've removed the "die_on_error"
+     functionality and instead turned to using exceptions. It's up to you as
+     the application developer to catch the exceptions and turn it into
+     something useful for your users.  All the examples supplied with phpSmug
+     now catch the exceptions.
+
+
+
+
+
+Installation
+============
+
+Copy the files from the installation package into a folder on your server.
+They need to be readable by your web server.  You can put them into an include
+folder defined in your php.ini file, if you like, though it's not required.
+
+
+
+
+Usage
+=====
+
+To use phpSmug, all you have to do is include the file in your PHP scripts and
+create an instance.  For example:
+
+     require_once("phpSmug/phpSmug.php");
+     $f = new phpSmug(... arguments go here ...);
+
+The constructor takes up to five arguments depending on which SmugMug API
+endpoint and authentication mechanism you wish to use:
+
+   * `APIKey' - Required for ALL endpoints
+
+     This is the API key you have obtained for your application from
+     `http://www.smugmug.com/hack/apikeys'.
+
+   * `OAuthSecret' - Required for OAuth authentication (1.2.2 endpoint ONLY)
+     Default: NULL
+
+     This is the secret assigned to your API key and is displayed in the
+     Settings tab of the SmugMug Control Panel. If no secret is displayed,
+     select "change" next to the API key your application will use and click
+     "save".  A secret will be generated for you.
+
+     If you are not using OAuth authentication, then you don't need to worry
+     about this argument.
+
+   * `AppName' - Optional
+     Default: NULL
+
+     This is the name, version and URL of the application you have built using
+     the phpSmug. There is no required format, but something like:
+
+          "My Cool App/1.0 (http://my.url.com)"
+
+     ... would be very useful.
+
+     Whilst this isn't obligatory, it is recommended as it helps SmugMug
+     identify the application that is calling the API in the event one of your
+     users reporting a problem on the SmugMug forums.
+
+   * `APIVer' - Optional
+     Default: 1.2.0
+
+     Use this to set the endpoint you wish to use.  The default is 1.2.0 as
+     this is the latest "Stable" endpoint provided by SmugMug.
+
+Arguments to all phpSmug methods must be provided as a series of strings or an
+associative array. For example:
+
+Strings:
+
+     $f = new phpSmug("APIKey=12345678", "AppName=My Cool App/1.0 (http://app.com)", "APIVer=1.2.2");
+
+Associative Array:
+
+     $f = new phpSmug(array("APIKey" => "12345678",
+     	"AppName" => "My Cool App/1.0 (http://app.com)",
+     	"APIVer" => "1.2.2")
+     	);
+
+Naturally, you can predefine the array before instantiating the object and just
+pass the array variable.
+
+phpSmug implements all methods and arguments as documented in the SmugMug API
+documentation (http://wiki.smugmug.net/display/SmugMug/API).
+
+To call a method, remove the "smugmug." part of the name and replace any
+fullstops with underscores. For example, instead of `smugmug.images.get', you
+would call `images_get()'.
+
+Remember: *ALL* function names and arugments *ARE* case sensitive.
+
+There is no need to pass the `SessionID' or `oauth_token*' arguments to the
+various methods as phpSmug will automatically pass these, where applicable,
+unless otherwise documented. The exception is when using phpSmug to go through
+the OAuth authorization process detailed later.
+
+`images_upload()' does not use the API for uploading, but instead HTTP PUT as
+recommended by SmugMug at `http://wiki.smugmug.net/display/SmugMug/Uploading'
+
+HTTP PUT has been chosen as it's quicker, easier to use and more reliable than
+the other methods.
+
+
+
+
+Authentication
+==============
+
+You must authenticate with SmugMug in order to use the API.
+
+With the release of version 1.2.2 of the SmugMug API, there are now two methods
+to authenticate with SmugMug: standard email/password or userid/hash or OAuth.
+phpSmug allows you to implement either method in your application.
+
+
+
+   * Method 1: EmailAddress/Password or UserID/Hash:
+
+     This sets up your session ID required for interaction with the API using
+     this authentication method.
+
+     `login()' without any arguments will log you in anonymously and will allow
+     you to access any public gallery, image or sharegroup.
+
+     If you wish to access private albums and images, upload or change
+     settings, you will need to login by providing either an
+     EmailAddress/Password or UserID/Hash combination to login.
+
+     For example, to login using an email address and password:
+
+          $f->login("EmailAddress=you@domain.com", "Password=secretpassword");
+
+     To login using a UserID and password hash (obtained from a previous
+     Email/Password login):
+
+          $f->login("UserID=<value>", "Hash=<value>");
+
+     Both methods will use HTTPS/SSL to ensure your username and password
+     information is encrypted.
+
+     Using a UserID and hash is probably the most secure method as your email
+     and password can not be determined from the hash.  However, in order to
+     obtain the hash and UserID, you need to login at least once using
+     `login()' with the EmailAddress/Password combination.
+
+
+
+   * Method 2: OAuth:
+
+     This is the most secure of all the methods as your username and password
+     are only ever entered on the SmugMug website.  If you've used Flickr's
+     API, this very similar to the authorisation functionality Flickr uses.
+
+     Authenticating using OAuth is a 3 step process.
+
+   * First, you need to request an unauthorised request token:
+
+          $resp = $f->auth_getRequestToken();
+
+     Once you've obtained the token, you need to use it to direct the user to
+     SmugMug to authorise your application.  You can do this in a variety of
+     ways. It's up to you as the application developer to choose which method
+     suits you. Ultimately, you need to direct the user to
+     `http://api.smugmug.com/services/oauth/authorize.mg' with the required
+     "Access", "Permissions" and the "oauth_token" arguments.
+
+     phpSmug provides a simple method that generates a link you can use for
+     redirection or for the user to click (it also takes care of passing the
+     OAuth token too):
+
+          echo '<a href="'.$f->authorize("Access=[Public|Full]", "Permissions=[Read|Add|Modify]");.'">Authorize</a>';
+
+     "Public" and "Read" are the default options for Access and Permissions
+     respectively, so you can leave them out if you only need these permissions.
+
+     Once the user has authorized your application, you will need to request
+     the access token and access token secret (once again phpSmug takes care of
+     passing the relevant OAuth token):
+
+          $token = $f->auth_getAccessToken();
+
+     You will need to save the token and token secret returned by the
+     `auth_getAccessToken()' call in your own location for later use.
+
+     Once you've saved the token and token secret, you will no longer need to
+     use any of the authentication methods above.  Simply call
+     `setToken("id=<value>", "Secret=<value>")' and pass the token ID and token
+     secret immediately after instantiating your object instance.
+
+     For example:
+
+          $f = new phpSmug(array("APIKey" => "12345678",
+          	"AppName" => "My Cool App/1.0 (http://app.com)",
+          	"APIVer" => "1.2.2")
+          	);
+          $f->setToken("id=<value>", "Secret=<value>");
+
+     By default, phpSmug uses the HMAC-SHA1 signature method. This is the most
+     secure signature method.  If you wish to use PLAINTEXT, simply set the
+     `oauth_signature_method' class variable to `PLAINTEXT'.
+
+          $f->oauth_signature_method = 'PLAINTEXT';
+
+
+
+
+
+Caching
+=======
+
+Caching can be very important to a project as it can drastically improve the
+performance of your application.
+
+phpSmug has caching functionality that can cache data to a database or files,
+you just need to enable it.
+
+It is recommended that caching is enabled immediately after a new phpSmug
+instance is created, and before any other phpSmug methods are called.
+
+To enable caching, use the `enableCache()' function.
+
+The `enableCache()' function takes 4 arguments:
+
+
+   * `type' - Required This is "db" for database or "fs" for filesystem.
+
+
+
+   * `dsn' - Required for type=db This a PEAR::DB DSN connection string, for
+     example:
+
+          mysql://user:password@server/database
+
+
+
+   * `cache_dir' - Required for type=fs
+
+     This is the folder/directory that the web server has write access to. This
+     directory must already exist.
+
+     Use absolute paths for best results as relative paths may have unexpected
+     behaviour. They'll usually work, you'll just want to test them.
+
+     You may not want to allow the world to view the files that are created
+     during caching.  If you want to hide this information, either make sure
+     that your permissions are set correctly, or prevent the webserver from
+     displaying *.cache files.
+
+     In Apache, you can specify this in the configuration files or in a
+     .htaccess file with the following directives:
+
+          <FilesMatch "\.cache$">
+             Deny from all
+          </FilesMatch>
+
+     Alternatively, you can specify a directory that is outside of the web
+     server's document root.
+
+
+
+   * `cache_expire' - Optional
+     Default: 3600
+
+     This is the maximum age of each cache entry in seconds.
+
+
+
+   * `table' - Optional
+     Default: smugmug_cache
+
+     This is the database table name that will be used for storing the cached
+     data.  This is only applicable for database (db) caching and will be
+     ignored if included for filesystem (fs) caching.
+
+     If the table does not exist, phpSmug will attempt to create it.
+
+If you have caching enabled, and you make changes, it's a good idea to call
+`clearCache()' to refresh the cache so your changes are reflected immediately.
+
+
+
+
+Uploading
+=========
+
+Uploading is very easy.  You can either upload an image from your local system,
+or from a location on the web.
+
+In order to upload, you will need to have logged into SmugMug and have the
+album ID of the album you wish to upload to.
+
+Then it's just a matter of calling the method with the various optional
+parameters.
+
+For example, upload a local file using:
+
+     $f->images_upload("AlbumID=123456", "File=/path/to/image.jpg");
+
+... or from a remote site using:
+
+     $f->images_uploadFromURL("AlbumID=123456", "URL=http://my.site.com/image.jpg");
+
+If you want the file to have a specific name on SmugMug, then add the optional
+"FileName" argument.  If you don't specify a filename, the source filename will
+be used.
+
+You can find a list of optional parameters, like caption and keywords on the
+API documentation page.
+
+
+
+
+Replacing Photos
+================
+
+Replacing photos is identical to uploading.  The only difference is you need to
+specify the ImageID of the image you wish to replace.
+
+
+
+
+Other Notes
+===========
+
+   * Some people will need to use phpSmug from behind a proxy server.  You can
+     use the `setProxy()' method to set the appropriate proxy settings.
+
+     For example:
+
+          $f = new phpSmug("APIKey=<value>");
+          $f->setProxy("server=<proxy_server>", "port=<value>");
+
+     All your calls will then pass through the specified proxy on the specified
+     port.
+
+   * If phpSmug encounters an error, or SmugMug returns a "Fail" response, an
+     exception will be thrown and your application will stop executing.
+
+     It is recommended that you configure your application to catch exceptions
+     from phpSmug.
+
+
+
+
+Examples
+========
+
+phpSmug comes with 3 examples to help get you on your way.  All 3 examples
+perform the same thing, just using differing authentication methods.  They all
+show thumbnails of the first album found for the respective authentication
+methods:
+
+   * `example-login.php' illustrates a username/password login
+
+   * `example-anon.php' illustrates an anonymous login
+
+   * `example-oauth.php' illustrates an OAuth login
+
+You can see the anonymous and OAuth login examples in action at
+`http://phpsmug.com/examples'.
+
+
+
 And that's all folks.
 
-Keep up to date on developments and enhancements to phpSmug on the project page
-at http://www.lildude.co.uk/projects/phpsmug/ .
+Keep up to date on developments and enhancements to phpSmug on it's new
+dedicated site at `http://phpsmug.com/'.
 
-If you encounter any problems with phpSmug, please feel free to log a ticket
-at http://dev.lildude.co.uk/phpSmug/newticket .
+If you encounter any problems with phpSmug, please check the list of known
+issues with phpSmug and the API itself at `http://phpsmug.com/bugs/'.  If your
+issue is not there, please leave a comment on the revision page at
+`http://phpSmug.com/phpSmug-2.0.1/'.
 
-Oh, and by all means, please feel free to show your appreciation for phpSmug 
-by making a small donation via the link at http://www.lildude.co.uk/projects/phpsmug/ .
+Oh, and by all means, please feel free to show your appreciation for phpSmug by
+buying me a beer or two (see the sidebar at `http://phpsmug.com').
 
-This document is a compendium of all the documentation available from the project
-page at http://www.lildude.co.uk/projects/phpsmug/docs/ .
+This document is also available online at `http://phpsmug.com/docs/'.
 
-Change History:
+Change History
+==============
 
-1.0.10 - 3 Mar '08
-		-	Re-introduced anonymous method call logging. (Ticket #18)
-		-	enableCache() now checks cache directory is writeable (Ticket #19)
-		-	die_on_error is now acknowledged consistently. If die_on_error is NOT
-			set, it's up to the application developer to check getErrorCode and
-			getErrorMessage after each method call. (Ticket #20)
-		-	Added a clearCache() function to easily empty the cache. (Ticket #22)
-		-	Stopped caching the results of failed method calls when die_on_error
-			is set. (Ticket #23)
+   * 2.0.1 - 7 Nov '08
 
-1.0.9 - 26 Feb '08
-		- 	Removed extra "}" (Ticket #17) - Thanks Erik Anderson for pointing 
-		  	this one out
 
-1.0.8 - 23 Feb '08
-		-	Removed PHP 4 support. 
-		-	Fixed typo in cache() apostrophe escaping when using "db" as the
-			as the cache store (Ticket #15).
-		-	Stopped caching anonymous method calls (Ticket #16).
-		-	Start taking into account the 6 hour SessionID inactivity timeout.
+        * Resolved issue where error code was not passed to Exception() line
+          350 (Ticket #1)
 
-1.0.7 - 10 Feb '08
-		- 	Forgot to take into account the ImageKey returned by image_upload()
-			and image_uploadFromURL(), and AlbumKey returned by album_create().
-			These functions now return an array holding the ID and key. 
-			Thanks to devbobo for pointing this out.
+   * 2.0 - 30 Oct '08
 
-1.0.6 - 9 Feb '08
-		-	Implemented support for the new security changes detailed at
-			http://www.dgrin.com/showthread.php?t=83919
-		- 	Documented phpSmug using phpDoc notation.
 
-1.0.5 - 27 Jan '08
-		-	All login.with* methods now use HTTPS to ensure login information
-			is encrypted.
+        * Removed die_on_error functionality in favour of exceptions
 
-1.0.4 - 4 Jan '08
-		-	Changing caching to ensure more consistent caching (Ticket #11)
-		-	Changed "response" database table field type to LONGTEXT to cater
-			for larger amounts of data. (Ticket #12)
-		-	Fixed issue where apostrophes in cached data are not escaped
-			correctly (Ticket #13)
+        * Remove getErrorCode() and getErrorMsg() functions as no longer
+          provide die_on_error functionality. Error codes and msgs are passed
+          via Exception.
 
-1.0.3 - 17 Dec '07
-		-	Corrected albums_get() argument order to align with that documented in
-			the API docs, thus resolving an issue with the example.php. (Ticket #9)
-		-	Corrected users_getTree() argument order too.
+        * Tidied up PEAR pkgs included to only include the bare minimum (these
+          are provided to ease implementation after all)
 
-1.0.2 - 12 Oct '07
-		-	Made images_uploadFromURL() use the API method and not mine
-		
-1.0.1 - 6 Oct '07
-		-	Initial release
+        * Updated HTTP_Request to 1.4.3
+
+        * Added OAuth support for 1.2.2 endpoint.  Defaults to using HMAC-SHA1
+          as it's the most secure with minimal perf issues.
+
+        * Initial phpSmug 2.0 - Obsoletes ALL previous versions of phpSmug.
+

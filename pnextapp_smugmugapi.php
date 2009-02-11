@@ -26,9 +26,9 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
     if ($this->smugApi == null)
     {
       $APIKey = pnModGetVar('mediashare', 'smugmugAPIKey');
-      $this->smugApi = new phpSmug($APIKey);
-      $this->smugApi->enableCache('fs', pnConfigGetVar('temp'));
-      $this->smugApi->login_anonymously();
+      $this->smugApi = new phpSmug(array('APIKey' => $APIKey));
+      $this->smugApi->login();
+      $this->smugApi->enableCache(array('type' => 'fs', 'cache_dir' => pnConfigGetVar('temp')));
     }
     return $this->smugApi;
   }
@@ -70,7 +70,7 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
   function getRawImages()
   {
     $data = $this->albumData['extappData']['data'];
-    $images = $this->getApi()->images_get($data['albumId'], $data['albumKey'], true);
+    $images = $this->getApi()->images_get(array('AlbumID' => $data['albumId'], 'AlbumKey' => $data['albumKey'], 'Heavy' => true));
     return $images;
   }
 
@@ -85,7 +85,7 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
         'modifiedDate'    => $image['LastUpdated'],
         'createdDateRaw'  => $image['LastUpdated'],
         'modifiedDateRaw' => $image['LastUpdated'],
-        'title'           => mb_convert_encoding($image['Caption'], _CHARSET, 'UTF-8'),
+        'title'           => mb_convert_encoding(empty($image['Caption']) ? $image['Key'] : $image['Caption'], _CHARSET, 'UTF-8'),
         'keywordsArray'   => array(),
         'hasKeywords'     => false,
         'keywords'        => $image['Keywords'],

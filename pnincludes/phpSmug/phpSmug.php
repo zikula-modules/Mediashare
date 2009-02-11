@@ -6,31 +6,22 @@
  *			 without having to worry about the finer details of the API.
  *
  * @author Colin Seymour <lildood@gmail.com>
- * @version 1.0.10
+ * @version 2.0.1
  * @package phpSmug
+ * @license LGPL {@link http://www.gnu.org/copyleft/lgpl.html}
  *
- * Released under GNU Lesser General Public License (http://www.gnu.org/copyleft/lgpl.html)
+ * Released under GNU Lesser General Public License ({@link http://www.gnu.org/copyleft/lgpl.html})
  *
  * For more information about the class and upcoming tools and toys using it,
- * visit {@link http://www.lildude.co.uk/projects/phpsmug/}.
+ * visit {@link http://phpsmug.com/}.
  *
  *     For installation and usage instructions, open the README.txt file 
  *	   packaged with this class. If you don't have a copy, you can refer to the 
  * 	   documentation at:
  * 
- *          {@link http://www.lildude.co.uk/projects/phpsmug/docs/}
+ *          {@link http://phpsmug.com/docs/}
  * 
- *     or grab a copy of the README.txt from:
- * 
- *			{@link http://dev.lildude.co.uk/phpSmug/browser/tag/phpSmug-1.0.7/README.txt?format=raw}
- *
- *     Please raise a ticket for any problems encountered with this class at:
- * 
- *			{@link http://dev.lildude.co.uk/phpSmug/newticket}
- *
- * phpSmug is based on phpFlickr 2.1.0 ({@link http://www.phpflickr.com}) by Dan Coulter
- *
- *
+ * phpSmug is inspired by phpFlickr 2.1.0 ({@link http://www.phpflickr.com}) by Dan Coulter
  **/
 
 /** 
@@ -43,7 +34,7 @@
 $path_delimiter = (strpos(__FILE__, ':') !== false) ? ';' : ':';
 
 /**
- * This will add the packaged PEAR files into the include path for PHP, allowing you
+ *  This will add the packaged PEAR files into the include path for PHP, allowing you
  * to use them transparently.  This will prefer officially installed PEAR files if you
  * have them.  If you want to prefer the packaged files (there shouldn't be any reason
  * to), swap the two elements around the $path_delimiter variable.  If you don't have
@@ -57,26 +48,9 @@ ini_set('include_path', ini_get('include_path') . $path_delimiter . dirname(__FI
  * @package phpSmug
  **/
 class phpSmug {
-	var $version = '1.0.10';
-    var $APIKey;
-	var $PHP = 'http://api.smugmug.com/hack/php/1.2.0/';
-	var $PHPS = 'https://api.smugmug.com/hack/php/1.2.0/';
-	var $Upload = 'http://upload.smugmug.com';     
-	var $req;
-    var $response;
-    var $parsed_response;
-    var $cache = FALSE;
-    var $cache_db = NULL;
-    var $cache_table = NULL;
-    var $cache_dir = NULL;
-    var $cache_expire = NULL;
-    var $die_on_error;
-    var $error_code;
-    var $error_msg;
-	var $SessionID;
-	var $AppName;
-	var $loginType;
-	
+	var $version = '2.0.1';
+	var $cache = FALSE;
+	//var $oauth_signature_method = 'PLAINTEXT';
 	
 	/**
      * When your database cache table hits this many rows, a cleanup
@@ -87,182 +61,206 @@ class phpSmug {
      * You should try to set it high enough that the cleanup only
      * happens every once in a while, so this will depend on the growth
      * of your table.
-     *
+     * 
      * @var integer
-     */
+     **/
     var $max_cache_rows = 1000;
 	
 	/**
 	 * Constructor to set up a phpSmug instance.
 	 * 
-	 * 	The Application Name (AppName) is not obligatory, but it helps 
+	 * The Application Name (AppName) is not obligatory, but it helps 
 	 * SmugMug diagnose any problems users of your application may encounter.
 	 * If you're going to use this, please use a string and include your
 	 * version number and URL as follows.
 	 * For example "My Cool App/1.0 (http://my.url.com)"
 	 *
 	 * The API Key must be set before any calls can be made.  You can
-     * get your own at http://www.smugmug.com/hack/apikeys
+     * get your own at {@link http://www.smugmug.com/hack/apikeys}
+     * 
+     * By default phpSmug will use the latest stable API endpoint, but 
+     * you can over-ride this when instantiating the instance.
 	 *
 	 * @return void
-	 * @param string $APIKey SmugMug API key. You can get your own from http://www.smugmug.com/hack/apikeys
-	 * @param stirng|null $AppName The name and version of your applicaion in the form "AppName/version (URI)" e.g. "My Cool App/1.0 (http://my.url.com)".  This isn't obligatory, but it SmugMug diagnose any problems users of your application may encounter.
-	 * @param boolean|null $die_on_error Cause phpSmug to die when an error is encountered
+	 * @param string $APIKey SmugMug API key. You can get your own from {@link http://www.smugmug.com/hack/apikeys}
+	 * @param string $OAuthSecret SmugMug OAuth Secret. This is only needed if you wish to use OAuth for authentication. Do NOT include this parameter if you are NOT using OAuth.
+	 * @param string $AppName (Optional) Name and version information of your application in the form "AppName/version (URI)" e.g. "My Cool App/1.0 (http://my.url.com)".  This isn't obligatory, but it helps SmugMug diagnose any problems users of your application may encounter.
+	 * @param string $APIVer (Optional) API endpoint you wish to use. Defaults to 1.2.0
 	 **/
-    function phpSmug($APIKey, $AppName = NULL, $die_on_error = FALSE) {
-        $this->APIKey = $APIKey;
-        $this->die_on_error = $die_on_error;
+	function __construct() {
+		$args = phpSmug::processArgs(func_get_args());
+        $this->APIKey = $args['APIKey'];
+		$this->APIVer = (array_key_exists('APIVer', $args)) ? $args['APIVer'] : '1.2.0';
+		if (array_key_exists('OAuthSecret', $args)) {
+			$this->OAuthSecret = $args['OAuthSecret'];
+			// Force 1.2.2 endpoint as OAuth is being used
+			$this->APIVer = '1.2.2';
+		}
 
 		// Set the Application Name
-		$this->AppName = (strlen($AppName)>0) ?  $AppName : 'Unknown Application';
+		$this->AppName = (array_key_exists('AppName', $args)) ?  $args['AppName'] : 'Unknown Application';
 
         // All calls to the API are done via the POST method using the PEAR::HTTP_Request package.
         require_once 'HTTP/Request.php';
         $this->req =& new HTTP_Request();
         $this->req->setMethod(HTTP_REQUEST_METHOD_POST);
-		$this->req->addHeader("User-Agent", "$this->AppName using phpSmug/$this->version");
+		$this->req->addHeader('User-Agent', "{$this->AppName} using phpSmug/{$this->version}");
     }
+	
+	/**
+	 * General debug function used for testing and development of phpSmug. 
+	 *
+	 * Feel free to use this in your own application development.
+	 *
+	 * @return string
+	 * @param mixed $var Any string, object or array you want to display
+	 * @static
+	 **/
+	static function debug($var) {
+		echo '<pre>Debug:';
+		if (is_array($var) || is_object($var)) { print_r($var); } else { echo $var; }
+		echo '</pre>';	
+	}
 	
 	/**
 	 * Function enables caching.
 	 *
-	 * @return void
+	 * @access public
+	 * @return TRUE|string Returns TRUE is caching is enabled successfully, else returns an error and disable caching.
 	 * @param string $type The type of cache to use. It must be either "db" (for database caching) or "fs" (for filesystem).
-	 * @param string $connection When using type "db", this must be a PEAR::DB connection string eg. "mysql://user:password@server/database".  When using type "fs", this must be a folder that the web server has write access to. Use absolute paths for best results.  Relative paths may have unexpected behavior when you include this.  They'll usually work, you'll just want to test them.
-	 * @param integer|null $cache_expire Cache timeout in seconds. This defaults to 3600 seconds (1 hour) if not specified.
-	 * @param string|null $table If using type "db", this is the database table name that will be used.  Defaults to "smugmug_cache".
+	 * @param string $dsn When using type "db", this must be a PEAR::DB connection string eg. "mysql://user:password@server/database".  When using type "fs", this must be a folder that the web server has write access to. Use absolute paths for best results.  Relative paths may have unexpected behavior when you include this.  They'll usually work, you'll just want to test them.
+	 * @param string $cache_dir When using type "fs". this is the directory to use for caching. This directory must exist.
+	 * @param integer $cache_expire Cache timeout in seconds. This defaults to 3600 seconds (1 hour) if not specified.
+	 * @param string $table If using type "db", this is the database table name that will be used.  Defaults to "smugmug_cache".
 	 **/
-	function enableCache($type, $connection, $cache_expire = 3600, $table = 'smugmug_cache') {
-        if ($type == 'db') {
-            require_once 'DB.php';
-            $db =& DB::connect($connection);
-			if (PEAR::isError($db)) {
-				if ($this->die_on_error) {
-					die($db->getMessage());
-				} else {
-					$this->error_code = -1;
-					$this->error_msg = $db->getMessage();
-					$this->cache = FALSE;
-					return false;
-				}
-            }
+	public function enableCache() {
+		$args = phpSmug::processArgs(func_get_args());
+		$this->cache = $args['type'];
+        
+		$this->cache_expire = (array_key_exists('cache_expire', $args)) ? $args['cache_expire'] : '3600';
+		$this->cache_table = (array_key_exists('table', $args)) ? $args['table'] : 'smugmug_cache';
 
+        if ($this->cache == 'db') {
+    		require_once 'DB.php';
+	        $db =& DB::connect($args['dsn']);
+			if (PEAR::isError($db)) {
+				$this->cache = FALSE;
+				return "CACHING DISABLED: {$db->getMessage()} ({$db->getCode()})";
+			}
+			$this->cache_db = $db;
+            
             /*
              * If high performance is crucial, you can easily comment
              * out this query once you've created your database table.
              */
             $db->query("
-                CREATE TABLE IF NOT EXISTS `$table` (
+                CREATE TABLE IF NOT EXISTS `$this->cache_table` (
                     `request` CHAR( 35 ) NOT NULL ,
                     `response` LONGTEXT NOT NULL ,
                     `expiration` DATETIME NOT NULL ,
                     INDEX ( `request` )
                 ) TYPE = MYISAM");
 
-            if ($db->getOne("SELECT COUNT(*) FROM $table") > $this->max_cache_rows) {
-                $db->query("DELETE FROM $table WHERE expiration < DATE_SUB(NOW(), INTERVAL $cache_expire second)");
+            if ($db->getOne("SELECT COUNT(*) FROM $this->cache_table") > $this->max_cache_rows) {
+                $db->query("DELETE FROM $this->cache_table WHERE expiration < DATE_SUB(NOW(), INTERVAL $this->cache_expire SECOND)");
                 $db->query('OPTIMIZE TABLE ' . $this->cache_table);
             }
 
-            $this->cache = 'db';
-            $this->cache_db = $db;
-            $this->cache_table = $table;
-        } elseif ($type == 'fs') {
-	            $this->cache = 'fs';
-	            $connection = realpath($connection);
-	            $this->cache_dir = $connection;
-	            if ($dir = @opendir($this->cache_dir)) {
-					if (is_writeable($this->cache_dir)) {
-	                	while ($file = readdir($dir)) {
-	                    	if (substr($file, -2) == '.cache' && ((filemtime($this->cache_dir . '/' . $file) + $cache_expire) < time()) ) {
-	                        	unlink($this->cache_dir . '/' . $file);
-	                    	}
-	                	}
-					} else {
-						if ($this->die_on_error) {
-							die("Cache Directory \"".$this->cache_dir."\" is not writeable.  Please set the appropriate permissions.");
-						} else {
-							$this->error_code = -3;
-							$this->error_msg = "Cache Directory \"".$this->cache_dir."\" is not writeable.  Please set the appropriate permissions.";
-							$this->cache = FALSE;
-							return false;
-						}
-					}
-	            } else {
-					if($this->die_on_error) {
-						die("Cache Directory \"".$this->cache_dir."\" doesn't exist or is not readable.  Please create this directory and set appropriate permissions.");
-					} else {
-						$this->error_code = -4;
-						$this->error_msg = "Cache Directory \"".$this->cache_dir."\" doesn't exist or is not readable.  Please create this directory and set appropriate permissions.";
-						$this->cache = FALSE;
-						return false;
-					}
+        } elseif ($this->cache ==  'fs') {
+			if (file_exists($args['cache_dir']) && (is_dir($args['cache_dir']))) {
+				$this->cache_dir = realpath($args['cache_dir']);
+				if (is_writeable($this->cache_dir)) {
+					$dir = @opendir($this->cache_dir);
+                	while ($file = readdir($dir)) {
+                    	if (substr($file, -2) == '.cache' && ((filemtime($this->cache_dir . '/' . $file) + $this->cache_expire) < time()) ) {
+                        	unlink($this->cache_dir . '/' . $file);
+                    	}
+                	}
+				} else {
+					$this->cache = FALSE;
+					return "CACHING DISABLED: Cache Directory \"{$this->cache_dir}\" is not writeable.";
 				}
-	        }
-        $this->cache_expire = $cache_expire;
+			} else 	{
+				$this->cache = FALSE;
+				return "CACHING DISABLED: Cache Directory \"{$args['cache_dir']}\" doesn't exist, is a file or is not readable.";
+			}
+		}
+		return TRUE;
     }
 
 	/**
 	 * 	Checks the database or filesystem for a cached result to the request.
 	 *
-	 * @return string|false Unparsed serialized PHP, or false
+	 * @access private
+	 * @return string|FALSE Unparsed serialized PHP, or FALSE
 	 * @param array $request Request to the SmugMug created by one of the later functions in phpSmug.
 	 **/
-    function getCached($request) {
+    private function getCached($request) {
 		$request['SessionID'] = ''; // Unset SessionID
-		$reqhash = md5(serialize($request).$this->loginType);
+		$request['oauth_nonce'] = '';     // --\
+		$request['oauth_signature'] ='';  //    |-Unset OAuth info
+		$request['oauth_timestamp'] = ''; // --/
+       	$reqhash = md5(serialize($request).$this->loginType);
 		$expire = (strpos($request['method'], 'login.with')) ? 21600 : $this->cache_expire;
         if ($this->cache == 'db') {
-            $result = $this->cache_db->getOne("SELECT response FROM " . $this->cache_table . " WHERE request = ? AND DATE_SUB(NOW(), INTERVAL " . (int) $expire . " SECOND) < expiration", $reqhash);
-            if (!empty($result)) {
+            $result = $this->cache_db->getOne('SELECT response FROM ' . $this->cache_table . ' WHERE request = ? AND DATE_SUB(NOW(), INTERVAL ' . (int) $expire . ' SECOND) < expiration', $reqhash);
+			if (!empty($result)) {
                 return $result;
             }
         } elseif ($this->cache == 'fs') {
             $file = $this->cache_dir . '/' . $reqhash . '.cache';
-            if (file_exists($file) && ((filemtime($file) + $expire) > time()) ) {
+			if (file_exists($file) && ((filemtime($file) + $expire) > time()) ) {
 					return file_get_contents($file);
-			}
-       	}
-        return false;
+            }
+        }
+    	return FALSE;
     }
 
 	/**
-	 * Caches the unparsed serialized PHP of a request
+	 * Caches the unparsed serialized PHP of a request. 
 	 *
+	 * @access private
 	 * @return null|false
 	 * @param array $request Request to the SmugMug created by one of the later functions in phpSmug.
-	 * @param string $response
+	 * @param string $response Response from a successful request() method call.
 	 **/
-    function cache($request, $response) {
+    private function cache($request, $response) {
 		$request['SessionID'] = ''; // Unset SessionID
-        $reqhash = md5(serialize($request).$this->loginType);
+		$request['oauth_nonce'] = '';     // --\
+		$request['oauth_signature'] ='';  //    |-Unset OAuth info
+		$request['oauth_timestamp'] = ''; // --/
+		$reqhash = md5(serialize($request).$this->loginType);
         if ($this->cache == 'db') {
             if ($this->cache_db->getOne("SELECT COUNT(*) FROM {$this->cache_table} WHERE request = '$reqhash'")) {
-                $sql = "UPDATE " . $this->cache_table . " SET response = ?, expiration = ? WHERE request = ?";
-                $this->cache_db->query($sql, array($response, strftime("%Y-%m-%d %H:%M:%S"), $reqhash));
+                $sql = 'UPDATE ' . $this->cache_table . ' SET response = ?, expiration = ? WHERE request = ?';
+				$this->cache_db->query($sql, array($response, strftime('%Y-%m-%d %H:%M:%S'), $reqhash));
             } else {
-                $sql = "INSERT INTO " . $this->cache_table . " (request, response, expiration) VALUES ('$reqhash', '" . str_replace("'", "\'", $response) . "', '" . strftime("%Y-%m-%d %H:%M:%S") . "')";
-                $this->cache_db->query($sql);
+				$sql = "INSERT INTO " . $this->cache_table . " (request, response, expiration) VALUES ('$reqhash', '" . strtr($response, "'", "\'") . "', '" . strftime("%Y-%m-%d %H:%M:%S") . "')"; 
+				$this->cache_db->query($sql);
             }
-        } elseif ($this->cache == "fs") {
-            $file = $this->cache_dir . "/" . $reqhash . ".cache";
-            $fstream = fopen($file, "w");
+        } elseif ($this->cache == 'fs') {
+            $file = $this->cache_dir . '/' . $reqhash . '.cache';
+            $fstream = fopen($file, 'w');
             $result = fwrite($fstream,$response);
             fclose($fstream);
             return $result;
         }
-        return false;
+        return FALSE;
     }
 
 	/**
-	 *  Clears the cache.
+	 *  Forcefully clear the cache.
 	 *
-	 * @return string|false
-	 * @since 1.0.10
+	 * This is useful if you've made changes to your SmugMug galleries and want
+	 * to ensure the changes are reflected by your application immediately.
+	 *
+	 * @access public
+	 * @return string|FALSE
+	 * @since 1.1.7
 	 **/
-    function clearCache() {
+    public function clearCache() {
    		if ($this->cache == 'db') {
-	    	$result = $this->cache_db->query("TRUNCATE " . $this->cache_table);
+	    	$result = $this->cache_db->query('TRUNCATE ' . $this->cache_table);
 	    	if (!empty($result)) {
 	        	return $result;
 	    	}
@@ -278,328 +276,160 @@ class phpSmug {
 				return $result;
 	       	}
 	   	}
-		return false;
+		return FALSE;
 	}
 
 	/**
 	 * 	Sends a request to SmugMug's PHP endpoint via POST. If we're calling
-	 *  one of the login.with* methods, we'll use the HTTPS end point to ensure
+	 *  one of the login.with* or auth.get* methods, we'll use the HTTPS end point to ensure
 	 *  things are secure by default
 	 *
+	 * @access private
 	 * @return string Serialized PHP response from SmugMug, or an error.
 	 * @param string $command SmugMug API command to call in the request
-	 * @param array|null $args Array of arguments that form the API call
-	 * @param boolean|null $nocache Set whether the call should be cached or not.
+	 * @param array $args optional Array of arguments that form the API call
+	 * @param boolean $nocache Set whether the call should be cached or not. This isn't actually used, so may be deprecated in the future.
 	 **/
-	function request($command, $args = array(), $nocache = FALSE) {
+	private function request($command, $args = array(), $nocache = FALSE) {
 		$this->req->clearPostData();
         
-		if (strpos($command, 'login.with')) {
-			$this->req->setURL($this->PHPS);
+		if ((strpos($command, 'login.with')) || ((strpos($command, 'auth.get')) && $this->oauth_signature_method == 'PLAINTEXT')) {
+			$proto = "https";
 		} else {
-        	$this->req->setURL($this->PHP);
+			$proto = "http";
+			if ((is_null($this->SessionID)) && (!strpos($command, 'login.anonymously')) && !$this->OAuthSecret) {
+				throw new Exception('Not authenticated. No Session ID or OAuth Token.  Please login or provide an OAuth token.');
+			}
 		}
-		if (substr($command,0,8) != "smugmug.") {
-            $command = "smugmug." . $command;
+		
+		$this->req->setURL("$proto://api.smugmug.com/services/api/php/{$this->APIVer}/");
+		
+        if (substr($command,0,8) != 'smugmug.') {
+            $command = 'smugmug.' . $command;
         }
+
+		$defaultArgs = array('method' => $command,);
+		if (is_null($this->OAuthSecret) || empty($this->OAuthSecret)) {
+			// Use normal login methods
+			$defaultArgs = array_merge($defaultArgs, array('APIKey' => $this->APIKey,
+													'SessionID' => $this->SessionID,
+													'Strict' => 0)
+									   );
+		}
 
         // Process arguments, including method and login data.
-        $args = array_merge(array("method" => $command, "APIKey" => $this->APIKey), $args);
+        $args = array_merge($defaultArgs, $args);
         ksort($args);
+
         if (!($this->response = $this->getCached($args)) || $nocache) {
             foreach ($args as $key => $data) {
-                $auth_sig .= $key . $data;
-                $this->req->addPostData($key, $data);
+                $this->req->addPostData($key, $data, FALSE);
             }
             
-           //Send Requests
-            if (!PEAR::isError($this->req->sendRequest())) {
-                $this->response = $this->req->getResponseBody();
-            } else {
-				if ($this->die_on_error) {
-					die($this->req->getMessage());
+            //Send Requests - HTTP::Request doesn't raise Exceptions, so we must
+			$response = $this->req->sendRequest();
+			if(!PEAR::isError($response) && ($this->req->getResponseCode() == 200)) {
+				$this->response = $this->req->getResponseBody();
+			} else {
+				if ($this->req->getResponseCode() && $this->req->getResponseCode() != 200) {
+					$msg = 'Request failed. HTTP Reason: '.$this->req->getResponseReason();
+					$code = $this->req->getResponseCode();
 				} else {
-					$this->error_code = -5;
-					$this->error_msg = ($this->req->getMessage != null ? $this->req->getMessage() : 'No request object');
-					return false;
+					$msg = 'Request failed: '.$response->getMessage();
+					$code = $response->getCode();
 				}
-            }
-        }
+				throw new Exception($msg, $code);
+			}
+		}
 
 		$this->parsed_response = unserialize($this->response);
-        if ($this->parsed_response['stat'] == 'fail') {
-            if ($this->die_on_error) die("The SmugMug API returned the following error: #{$this->parsed_response['code']} - {$this->parsed_response['message']}");
-            else {
-                $this->error_code = $this->parsed_response['code'];
-                $this->error_msg = $this->parsed_response['message'];
-                $this->parsed_response = FALSE;
-            }
-        } else {
-            $this->error_code = FALSE;
+		if ($this->parsed_response['stat'] == 'fail') {
+			$this->error_code = $this->parsed_response['code'];
+            $this->error_msg = $this->parsed_response['message'];
+			$this->parsed_response = FALSE;
+			throw new Exception("SmugMug API Error for method {$command}: {$this->error_msg}", $this->error_code);
+		} else {
+			$this->error_code = FALSE;
             $this->error_msg = FALSE;
             $this->cache($args, $this->response);
-        }
-        return $this->response;
+		}
+		return $this->response;
     }
 	
 	/**
 	 * Set a proxy for all phpSmug calls
 	 *
+	 * @access public
 	 * @return void
-	 * @param string $server Proxy server in the form http://server
+	 * @param string $server Proxy server
 	 * @param integer $port Proxy server port
 	 **/
-    function setProxy($server, $port) {
-        $this->req->setProxy($server, $port);
+    public function setProxy() {
+		$args = phpSmug::processArgs(func_get_args());
+        $this->req->setProxy($args['server'], $args['port']);
     }
 
 	/**
-	 * Returns the error code of the last call.
+	 * Set Token and Token Secret for use by other methods in phpSmug.
 	 *
-	 * @return integer|false An error code if an error occured, else false
-	 **/
-    function getErrorCode() {
-		return $this->error_code;
-    }
-
-	/**
-	 * Returns the error message of the last call.
+	 * Use this method to pull in the token and token secret obtained during 
+	 * the OAuth authorisation process.
 	 *
-	 * @return string|false An error message if an error occured, else false
-	 **/
-    function getErrorMsg() {
-		return $this->error_msg;
-    }
-	
-	/*
-     * These functions are the direct implementations of SmugMug calls.
-     * For method documentation, including arguments, visit the address
-     * included in a comment in the function.
-	 */
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.login.withPassword+1.2.0
-	 **/
-	function login_withPassword($EmailAddress, $Password) {
-		$this->loginType = 'authd';
-		$this->request('smugmug.login.withPassword', array("EmailAddress" => $EmailAddress, "Password" => $Password));
-		$this->SessionID = $this->parsed_response['Login']['Session']['id'];
-		return $this->parsed_response ? $this->parsed_response['Login'] : FALSE;
-	}
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.login.withHash+1.2.0
-	 **/
-	function login_withHash($UserID, $PasswordHash) {
-		$this->loginType = 'authd';
-		$this->request('smugmug.login.withHash', array("UserID" => $UserID, "PasswordHash" => $PasswordHash));
-		$this->SessionID = $this->parsed_response['Login']['Session']['id'];
-		return $this->parsed_response ? $this->parsed_response['Login'] : FALSE;
-	}
-	
-	/**
-	 * @return array|false 
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.login.anonymously+1.2.0
-	 **/
-	function login_anonymously() {
-		$this->loginType = 'anon';
-		$this->request('smugmug.login.anonymously');
-		$this->SessionID = $this->parsed_response['Login']['Session']['id'];
-		return $this->parsed_response ? $this->parsed_response['Login'] : FALSE;
-	}
-	
-	/**
+	 * If OAuth is being used, this method MUST be called so phpSmug knows about
+	 * the token and token secret.
+	 *
+	 * NOTE: It's up to the application developer using phpSmug to store the Access
+	 * token and token secret in a location convenient for their application.
+	 * phpSmug can not do this as all storage and caching done by phpSmug is 
+	 * of a temporary nature.
+	 *
+	 * @access public
 	 * @return void
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.logout+1.2.0
+	 * @param string $id Token ID returned by auth_getAccessToken()
+	 * @param string $Secret Token secret returned by auth_getAccessToken()
 	 **/
-	function logout() {
-		$this->request('smugmug.logout', array("SessionID" => $this->SessionID));
-		return $this->parsed_response ? $this->parsed_response['Logout']['Successful'] : FALSE;
+	public function setToken() {
+		 $args = phpSmug::processArgs(func_get_args());
+		 $this->oauth_token = $args['id'];
+		 $this->oauth_token_secret = $args['Secret'];
 	}
-	
+	 
 	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.users.getTree+1.2.0
-	 **/
-	function users_getTree($NickName = NULL, $Heavy = FALSE, $SitePassword = NULL) {
-		$this->request('smugmug.users.getTree', array("SessionID" => $this->SessionID, "NickName" => $NickName, "Heavy" => $Heavy, "SitePassword" => $SitePassword));
-		return $this->parsed_response ? $this->parsed_response['Categories'] : FALSE;
-	}
-
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.users.getTransferStats+1.2.0
-	 **/
-	function users_getTransferStats($Month, $Year) {
-		$this->request('smugmug.users.getTransferStats', array("SessionID" => $this->SessionID, "Month" => intval($Month), "Year" => intval($Year)));
-		return $this->parsed_response ? $this->parsed_response['Albums'] : FALSE;
-	}
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.albums.get+1.2.0
-	 **/	
-	function albums_get($NickName = NULL, $Heavy = FALSE, $SitePassword = NULL) {
-        $this->request('smugmug.albums.get', array("SessionID" => $this->SessionID, "NickName" => $NickName, "Heavy" => $Heavy, "SitePassword" => $SitePassword));
-        return $this->parsed_response ? $this->parsed_response['Albums'] : FALSE;
-    }
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.albums.getInfo+1.2.0
-	 **/
-	function albums_getInfo($AlbumID, $AlbumKey, $Password = NULL, $SitePassword = NULL) {
-	    $this->request('smugmug.albums.getInfo', array("SessionID" => $this->SessionID, "AlbumID" => intval($AlbumID), "AlbumKey" => $AlbumKey, "Password" => $Password, "SitePassword" => $SitePassword));
-        return $this->parsed_response ? $this->parsed_response['Album'] : FALSE;
-    }
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.albums.getStats+1.2.0
-	 **/
-	function albums_getStats($AlbumID, $Month, $Year, $Heavy = FALSE) {
-		$this->request('smugmug.albums.getStats', array("SessionID" => $this->SessionID, "AlbumID" => intval($AlbumID), "Month" => intval($Month), "Year" => intval($Year), "Heavy" => $Heavy));
-		return $this->parsed_response ? $this->parsed_response['Album'] : FALSE;
-	}
-	
-	/**
-	 * 	I've broken away from the standard format for this function as there
-	 * 	are just soooo many optional parameters. To pass the optional
-	 * 	parameters, use an associative array for all the options you wish
-	 * 	to set.
+	 * Single login function for all non-OAuth logins.
 	 * 
-	 * 	For example:
-	 * 	    $NewAlbumID = $f->albums_create($SessionID, $Title, $CategoryID, array("AlbumTemplateID"=>"5", "SubCategoryID"=>"20", "Keywords"=>"cat,pets,dog")); 
-	 * 		
-	 * 	See the API page for the full list of optional parameters
-	 *  
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.albums.create+1.2.0
-	 **/
-	function albums_create($Title, $CategoryID, $OptArgs = NULL) {
-		$this->request('smugmug.albums.create', array_merge(array("SessionID" => $this->SessionID, "Title" => $Title, "CategoryID" => $CategoryID), $OptArgs));
-		return $this->parsed_response ? $this->parsed_response['Album'] : FALSE;
-	}
-	
-	/**
-	 * 	I've broken away from the standard format for this function as there
-	 *  are just soooo many optional parameters. See {@link albums_create()} for more details.
+	 * I've created this function to try and get things consistent across the 
+	 * entire phpSmug 2.x functionality.  
 	 * 
-	 * @return string|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.albums.changeSettings+1.2.0
-	 **/
-	function albums_changeSettings($AlbumID, $OptArgs = NULL) {
-		$this->request('smugmug.albums.changeSettings', array_merge(array("SessionID" => $this->SessionID, "AlbumID" => $AlbumID), $OptArgs));
-		return $this->parsed_response ? $this->parsed_response['stat'] : FALSE;
-	}
-	
-	/**
-	 * @return string|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.albums.reSort+1.2.0
-	 **/
-	function albums_reSort($AlbumID, $By, $Direction) {
-		/*  */
-		$this->request('smugmug.albums.reSort', array("SessionID" => $this->SessionID, "AlbumID" => $AlbumID, "By" => $By, "Direction" => $Direction));
-		return $this->parsed_response ? $this->parsed_response['stat'] : FALSE;
-	}
-	
-	/**
-	 * @return string|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.albums.delete+1.2.0
-	 **/
-	function albums_delete($AlbumID) {
-		$this->request('smugmug.albums.delete', array("SessionID" => $this->SessionID, "AlbumID" => $AlbumID));
-		return $this->parsed_response ? $this->parsed_response['stat'] : FALSE;
-	}
-	
-	/**
+	 * This method will determine the login type from the arguments provided. If 
+	 * no arguments are provide, anonymous login will be used.
+	 *
+	 * @access public
 	 * @return array|false
+	 * @param string $EmailAddress The user's email address
+	 * @param string $Password The user's password.
+	 * @param string $UserID The user's ID obtained from a previous login using EmailAddress/Password
+	 * @param string $PasswordHash The user's password hash obtained from a previous login using EmailAddress/Password
 	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.albumtemplates.get +1.2.0
 	 **/
-	function albumtemplates_get() {
-		$this->request('smugmug.albumtemplates.get', array("SessionID" => $this->SessionID));
-		return $this->parsed_response ? $this->parsed_response['AlbumTemplates'] : FALSE;
-	}
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.images.get+1.2.0
-	 **/
-	function images_get($AlbumID, $AlbumKey, $Heavy = FALSE, $Password = NULL, $SitePassword = NULL) {
-		$this->request('smugmug.images.get', array("SessionID" => $this->SessionID, "AlbumID" => intval($AlbumID), "AlbumKey" => $AlbumKey, "Heavy" => $Heavy, "Password" => $Password, "SitePassword" => $SitePassword));
-		return $this->parsed_response ? $this->parsed_response['Images'] : FALSE;
-	}
-	
-	/**
-	 * NOTE: Whilst the API page details various options for the TemplateID, 
-	 * they don't seem to have any effect.  The AlbumURL always remains the 
-	 * same. It's probably of no use other than to the actual SmugMug site at 
-	 * the moment. It's been implemented anyway.
-	 * 
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.images.getURLs+1.2.0
-	 **/
-	function images_getURLs($ImageID, $ImageKey, $TemplateID = NULL, $Password = NULL, $SitePassword = NULL) {
-		$this->request('smugmug.images.getURLs', array("SessionID" => $this->SessionID, "ImageID" => intval($ImageID), "ImageKey" => $ImageKey, "TemplateID" => intval($TemplateID), "Password" => $Password, "SitePassword" => $SitePassword));
-		return $this->parsed_response ? $this->parsed_response['Image'] : FALSE;
-	}
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.images.getInfo+1.2.0
-	 **/
-	function images_getInfo($ImageID, $ImageKey, $Password = NULL, $SitePassword = NULL) {
-		$this->request('smugmug.images.getInfo', array("SessionID" => $this->SessionID, "ImageID" => intval($ImageID), "ImageKey" => $ImageKey, "Password" => $Password, "SitePassword" => $SitePassword));
-		return $this->parsed_response ? $this->parsed_response['Image'] : FALSE;
-	}
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.images.getEXIF+1.2.0
-	 **/
-	function images_getEXIF($ImageID, $ImageKey, $Password = NULL, $SitePassword = NULL) {
-		$this->request('smugmug.images.getEXIF', array("SessionID" => $this->SessionID, "ImageID" => intval($ImageID), "ImageKey" => $ImageKey, "Password" => $Password, "SitePassword" => $SitePassword));
-		return $this->parsed_response ? $this->parsed_response['Image'] : FALSE;
-	}
-	
-	/**
-	 * @return boolean
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.images.changeSettings+1.2.0
-	 **/
-	function images_changeSettings($ImageID, $AlbumID = NULL, $Caption = NULL, $Keywords = NULL) {
-		$this->request('smugmug.images.changeSettings', array("SessionID" => $this->SessionID, "ImageID" => $ImageID, "AlbumID" => $AlbumID, "Caption" => $Caption, "Keywords" => $Keywords));
-		return $this->parsed_response ? $this->parsed_response['Image'] : FALSE;
-	}
-	
-	/**
-	 * @return boolean
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.images.changePosition+1.2.0
-	 **/
-	function images_changePosition($ImageID, $Position) {
-		$this->request('smugmug.images.changePosition', array("SessionID" => $this->SessionID, "ImageID" => $ImageID, "Position" => $Position));
-		return $this->parsed_response ? $this->parsed_response['Image'] : FALSE;
+	public function login() {
+		if (func_get_args()) {
+			$args = phpSmug::processArgs(func_get_args());
+			if (array_key_exists('EmailAddress', $args)) {
+				// Login with password
+				$this->request('smugmug.login.withPassword', array('EmailAddress' => $args['EmailAddress'], 'Password' => $args['Password']));
+			} else if (array_key_exists('UserID', $args)) {
+				// Login with hash
+				$this->request('smugmug.login.withHash', array('UserID' => $args['UserID'], 'PasswordHash' => $args['PasswordHash']));
+			}
+			$this->loginType = 'authd';
+			
+		} else {
+			// Anonymous login
+			$this->loginType = 'anon';
+			$this->request('smugmug.login.anonymously');
+		}
+		$this->SessionID = $this->parsed_response['Login']['Session']['id'];
+		return $this->parsed_response ? $this->parsed_response['Login'] : FALSE;
 	}
 	
 	/**
@@ -609,205 +439,271 @@ class phpSmug {
 	 * I've chosen to go with the HTTP PUT method as it is quicker, simpler
 	 * and more reliable than using the API or POST methods.
 	 * 
+	 * @access public
 	 * @return array|false
+	 * @param integer $AlbumID The AlbumID the image is to be uploaded to
+	 * @param string $File The path to the local file that is being uploaded
+	 * @param string $FileName (Optional) The filename to give the file on upload
+	 * @param mixed $arguments (Optional) Additional arguments. See SmugMug API documentation.
 	 * @uses request
-	 * @link http://smugmug.jot.com/WikiHome/API/Uploading 
+	 * @link http://wiki.smugmug.com/display/SmugMug/Uploading 
 	 **/
-	function images_upload($AlbumID, $File, $Caption = NULL, $Keywords = NULL, $Latitude = NULL, $Longitude = NULL, $Altitude = NULL, $ImageID = NULL) {
-		$fp = fopen ($File, "r");
-		$data = '';
-		while (!feof($fp)) {
-		  $data .= fread($fp, 8192);
+	public function images_upload() {
+		$args = phpSmug::processArgs(func_get_args());
+		if (!$args['File']) {
+			throw new Exception('No upload file specified.');
 		}
-		fclose($fp);
+		
+		// Set FileName, if one isn't provided in the method call
+		if (!$args['FileName']) $args['FileName'] = basename($args['File']);
+		// OAuth Stuff
+		if ($this->OAuthSecret) {
+			$sig = $this->generate_signature('Upload', array('FileName' => $args['FileName']));
+		}
+		
+		if (is_file($args['File'])) {
+			$fp = fopen($args['File'], 'r');
+			$data = fread($fp, filesize($args['File']));
+			fclose($fp);
+		} else {
+			throw new Exception("File doesn't exist: {$args['File']}");
+		}
 
 		$upload_req =& new HTTP_Request();
         $upload_req->setMethod(HTTP_REQUEST_METHOD_PUT);
 		$upload_req->setHttpVer(HTTP_REQUEST_HTTP_VER_1_1);
 		$upload_req->clearPostData();
 		
-		$FileName = basename($File);
+		$upload_req->addHeader('User-Agent', "{$this->AppName} using phpSmug/{$this->version}");
+		$upload_req->addHeader('Content-MD5', md5_file($args['File']));
+		$upload_req->addHeader('Connection', 'keep-alive');
 
-		/* For some reason things go a bit TU when I set this - I think it's a problem with the HTTP::Request
-		$upload_req->addHeader("Content-Length", $ContentLength); */
-		$upload_req->addHeader("User-Agent", "$this->AppName using phpSmug/$this->version");
-		$upload_req->addHeader("Content-MD5", md5_file($File));
-		$upload_req->addHeader("X-Smug-SessionID", $this->SessionID);
-		$upload_req->addHeader("X-Smug-Version", $this->version);
-		$upload_req->addHeader("X-Smug-ResponseType", "PHP");
-		$upload_req->addHeader("X-Smug-AlbumID", $AlbumID);
-		$upload_req->addHeader("Connection", "keep-alive");
-		$upload_req->addHeader("X-Smug-Filename", $FileName); // This is actually optional, but we may as well use what we're given
+		if ($this->loginType == 'authd') { 
+			$upload_req->addHeader('X-Smug-SessionID', $this->SessionID);
+		} else {
+			$upload_req->addHeader('Authorization', 'OAuth realm="http://api.smugmug.com/",
+				oauth_consumer_key="'.$this->APIKey.'",
+				oauth_token="'.$this->oauth_token.'",
+				oauth_signature_method="'.$this->oauth_signature_method.'",
+				oauth_signature="'.urlencode($sig).'",
+				oauth_timestamp="'.$this->oauth_timestamp.'",
+				oauth_version="1.0",
+				oauth_nonce="'.$this->oauth_nonce.'"');
+		}
+			
+		$upload_req->addHeader('X-Smug-Version', $this->APIVer);
+		$upload_req->addHeader('X-Smug-ResponseType', 'PHP');
+		$upload_req->addHeader('X-Smug-AlbumID', $args['AlbumID']);
+		$upload_req->addHeader('X-Smug-Filename', basename($args['FileName'])); // This is actually optional, but we may as well use what we're given
 		
 		/* Optional Headers */
-		(isset($ImageID)) ? $upload_req->addHeader("X-Smug-ImageID", $ImageID) : false;
-		(isset($Caption)) ? $upload_req->addHeader("X-Smug-Caption", $Caption) : false;
-		(isset($Keywords)) ? $upload_req->addHeader("X-Smug-Keywords", $Keywords) : false;
-		(isset($Latitude)) ? $upload_req->addHeader("X-Smug-Latitude", $Latitude) : false;
-		(isset($Longitude)) ? $upload_req->addHeader("X-Smug-Longitude", $Longitude) : false;
-		(isset($Altitude)) ? $upload_req->addHeader("X-Smug-Altitude", $Altitude) : false;
+		(isset($args['ImageID'])) ? $upload_req->addHeader('X-Smug-ImageID', $args['ImageID']) : false;
+		(isset($args['Caption'])) ? $upload_req->addHeader('X-Smug-Caption', $args['Caption']) : false;
+		(isset($args['Keywords'])) ? $upload_req->addHeader('X-Smug-Keywords', $args['Keywords']) : false;
+		(isset($args['Latitude'])) ? $upload_req->addHeader('X-Smug-Latitude', $args['Latitude']) : false;
+		(isset($args['Longitude'])) ? $upload_req->addHeader('X-Smug-Longitude', $args['Longitude']) : false;
+		(isset($args['Altitude'])) ? $upload_req->addHeader('X-Smug-Altitude', $args['Altitude']) : false;
 
-		$upload_req->setURL($this->Upload . "/".$FileName);
+		$upload_req->setURL('http://api.smugmug.com/'.$args['FileName']);
+		$upload_req->setBody($data);
 
-		$result = $upload_req->setBody($data);
-
-	    if (PEAR::isError($result)) {
-			if ($this->die_on_error) {
-		        die($result->getMessage());
+        //Send Requests - HTTP::Request doesn't raise Exceptions, so we must
+		$response = $upload_req->sendRequest();
+		if(!PEAR::isError($response) && ($upload_req->getResponseCode() == 200)) {
+			$this->response = $upload_req->getResponseBody();
+		} else {
+			if ($upload_req->getResponseCode() && $upload_req->getResponseCode() != 200) {
+				$msg = 'Upload failed. HTTP Reason: '.$upload_req->getResponseReason();
+				$code = $upload_req->getResponseCode();
 			} else {
-				$this->error_code = -6;
-				$this->error_msg = $result->getMessage();
-				return false;
+				$msg = 'Upload failed: '.$response->getMessage();
+				$code = $response->getCode();
 			}
-	    }
-
-		// Send Requests
-	    if (!PEAR::isError($upload_req->sendRequest())) {
-	        $this->response = $upload_req->getResponseBody();
-	    } else {
-			if ($this->die_on_error) {
-			        die($upload_req->getMessage());
-			} else {
-					$this->error_code = -7;
-					$this->error_msg = $upload_req->getMessage();
-					return false;
-			}
-	    }
-	
+			throw new Exception($msg, $code);
+		}
+		
+		// For some reason the return string is formatted with \n and extra space chars.  Remove these.
+		$replace = array('\n', '\t', '  ');
+		$this->response = str_replace($replace, '', $this->response);
 		$this->parsed_response = unserialize($this->response);
-        if ($this->parsed_response['stat'] == 'fail') {
-            if ($this->die_on_error) die("The SmugMug API returned the following error: #{$this->parsed_response['code']} - {$this->parsed_response['message']}");
-            else {
-                $this->error_code = $this->parsed_response['code'];
-                $this->error_msg = $this->parsed_response['message'];
-                $this->parsed_response = FALSE;
-            }
-        } else {
-            $this->error_code = FALSE;
+		
+		if ($this->parsed_response['stat'] == 'fail') {
+			$this->error_code = $this->parsed_response['code'];
+            $this->error_msg = $this->parsed_response['message'];
+			$this->parsed_response = FALSE;
+			throw new Exception("SmugMug API Error for method {$command}: {$this->error_msg}", $this->error_code);
+		} else {
+			$this->error_code = FALSE;
             $this->error_msg = FALSE;
-        }
+            $this->cache($args, $this->response);
+		}
 		return $this->parsed_response ? $this->parsed_response['Image'] : FALSE;
 	}
 	
 	/**
-	 * @return array|false
+	 * Dynamic method handler.  This function handles all SmugMug method calls
+	 * not explicitly implemented by phpSmug.
+	 * 
+ 	 * @access public
+	 * @return array|string|TRUE
 	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.images.uploadFromURL+1.2.0
+	 * @param string $method The SmugMug method you want to call, but with "." replaced by "_"
+	 * @param mixed $arguments The params to be passed to the relevant API method. See SmugMug API docs for more details.
 	 **/
-	function images_uploadFromURL($AlbumID, $URL, $Caption = NULL, $Keywords = NULL, $Latitude = NULL, $Longitude = NULL, $Altitude = NULL, $ByteCount = NULL, $MD5Sum = NULL) {
-		$this->request('smugmug.images.uploadFromURL', array("SessionID" => $this->SessionID, "AlbumID" => $AlbumID, "URL" => $URL, "Caption" => $Caption, "Keywords" => $Keywords, "Latitude" => $Latitude, "Longitude" => $Longitude, "Altitude" => $Altitude, "ByteCount" => $ByteCount, "MD5Sum" => $MD5Sum));
-		return $this->parsed_response ? $this->parsed_response['Image'] : FALSE;
-	}
-	
-	/**
-	 * @return string|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.images.delete+1.2.0
-	 **/
-	function images_delete($ImageID) {
-		$this->request('smugmug.images.delete', array("SessionID" => $this->SessionID, "ImageID" => intval($ImageID)));
-		return $this->parsed_response ? $this->parsed_response['stat'] : FALSE;	
-	}
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.images.getStats+1.2.0
-	 **/
-	function images_getStats($ImageID, $Month) {
-		$this->request('smugmug.images.getStats', array("SessionID" => $this->SessionID, "ImageID" => intval($ImageID), "Month" => intval($Month)));
-		return $this->parsed_response ? $this->parsed_response['Image'] : FALSE;
-	}
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.categories.get+1.2.0
-	 **/
-	function categories_get($NickName = NULL, $SitePassword = NULL) {
-		$this->request('smugmug.categories.get', array("SessionID" => $this->SessionID, "NickName" => $NickName, "SitePassword" => $SitePassword));
-		return $this->parsed_response ? $this->parsed_response['Categories'] : FALSE;
-	}
-	
-	/**
-	 * @return integer|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.categories.create+1.2.0
-	 **/
-	function categories_create($Name) {
-		$this->request('smugmug.categories.create', array("SessionID" => $this->SessionID, "Name" => $Name));
-		return $this->parsed_response ? $this->parsed_response['Category']['id'] : FALSE;
-	}
-	
-	/**
-	 * @return string|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.categories.delete+1.2.0
-	 **/
-	function categories_delete($CategoryID) {
-		$this->request('smugmug.categories.delete', array("SessionID" => $this->SessionID, "CategoryID" => $CategoryID));
-		return $this->parsed_response ? $this->parsed_response['stat'] : FALSE;
-	}
-	
-	/**
-	 * @return string|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.categories.rename+1.2.0
-	 **/
-	function categories_rename($CategoryID, $Name) {
-		$this->request('smugmug.categories.rename', array("SessionID" => $this->SessionID, "CategoryID" => $CategoryID, "Name" => $Name));
-		return $this->parsed_response ? $this->parsed_response['stat'] : FALSE;
-	}
-	
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.subcategories.get+1.2.0
-	 **/
-	function subcategories_get($CategoryID, $NickName = NULL, $SitePassword = NULL) {
-		$this->request('smugmug.subcategories.get', array("SessionID" => $this->SessionID, "CategoryID" => intval($CategoryID), "NickName" => $NickName, "SitePassword" => $SitePassword));
-		return $this->parsed_response ? $this->parsed_response['SubCategories'] : FALSE;
-	}
+	public function __call($method, $arguments) {
+		$method = strtr($method, '_', '.');
+		$args = array();
+		foreach ($arguments as $arg) {
+			if (is_array($arg)) {
+				$args = array_merge($args, $arg);
+			} else {
+				$exp = explode('=', $arg, 2);
+				$args[$exp[0]] = $exp[1];
+			}
+		}
+		if ($this->OAuthSecret) {
+			$sig = $this->generate_signature($method, $args);
+			$oauth_params = array (
+				'oauth_version' => '1.0',
+				'oauth_nonce' => $this->oauth_nonce,
+				'oauth_timestamp' => $this->oauth_timestamp,
+				'oauth_consumer_key' => $this->APIKey,
+				'oauth_signature_method' => $this->oauth_signature_method,
+				'oauth_signature' => $sig
+				);
+			
+			// Only getRequestToken won't have a token when using OAuth
+			if ($method != 'auth.getRequestToken') {
+				$oauth_params = array_merge($oauth_params, array('oauth_token' => $this->oauth_token));	
+			}
+			$args = array_merge($args, $oauth_params);
+		}
 
-	/**
-	 * @return array|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.subcategories.getAll+1.2.0
-	 **/
-	function subcategories_getAll($NickName = NULL, $SitePassword = NULL) {
-		$this->request('smugmug.subcategories.getAll', array("SessionID" => $this->SessionID, "NickName" => $NickName, "SitePassword" => $SitePassword));
-		return $this->parsed_response ? $this->parsed_response['SubCategories'] : FALSE;
+		$this->request($method, $args);
+		// pop off the "stat" and "method" parts of the array
+		if (is_array($this->parsed_response)) $output = array_pop($this->parsed_response);
+		
+		$output = (count($output) == '1' && is_array($output)) ? array_shift($output) : $output;
+		/* Automatically set token if calling getRequestToken */
+		if ($method == 'auth.getRequestToken') {
+			$this->setToken($output);
+		}
+
+		return (strstr($output, 'smugmug.')) ? NULL : $output;
 	}
 	
-	/**
-	 * @return integer|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.subcategories.create+1.2.0
-	 **/
-	function subcategories_create($Name, $CategoryID) {
-		$this->request('smugmug.subcategories.create', array("SessionID" => $this->SessionID, "Name" => $Name, "CategoryID" => $CategoryID));
-		return $this->parsed_response ? $this->parsed_response['Subcategory']['id'] : FALSE;
-	}
-	
-	/**
-	 * @return string|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.subcategories.delete+1.2.0
-	 **/
-	function subcategories_delete($SubCategoryID) {
-		$this->request('smugmug.subcategories.delete', array("SessionID" => $this->SessionID, "SubCategoryID" => $SubCategoryID));
-		return $this->parsed_response ? $this->parsed_response['stat'] : FALSE;
-	}
-	
-	/**
-	 * @return string|false
-	 * @uses request
-	 * @link http://wiki.smugmug.com/display/SmugMug/smugmug.subcategories.rename+1.2.0
-	 **/
-	function subcategories_rename($SubCategoryID, $Name) {
-		$this->request('smugmug.subcategories.rename', array("SessionID" => $this->SessionID, "Name" => $Name, "SubCategoryID" => $SubCategoryID));
-		return $this->parsed_response ? $this->parsed_response['stat'] : FALSE;
-	}
+	 /**
+	  * Return the authorisation URL.
+	  *
+	  * @access public
+	  * @return string 
+	  * @param string $Access The required level of access. Defaults to "Public"
+	  * @param string $Permissions The required permissions.  Defaults to "Read"
+	  **/
+	 public function authorize() {
+		 $args = phpSmug::processArgs(func_get_args());
+		 $perms = (array_key_exists('Permissions', $args)) ? $args['Permissions'] : 'Public';
+		 $access = (array_key_exists('Access', $args)) ? $args['Access'] : 'Read';
+ 		 return "http://api.smugmug.com/services/oauth/authorize.mg?Access=$access&Permissions=$perms&oauth_token={$this->oauth_token}";
+	 }
+	 
+
+	 /**
+	  * Static function to encode a string according to RFC3986.
+	  *
+	  * This is a requirement of implementing OAuth
+	  *
+	  * @static
+	  * @access private
+	  * @return string
+	  * @param string $string The string requiring encoding
+	  **/
+	 private static function urlencodeRFC3986($string) {
+		return str_replace('%7E', '~', rawurlencode($string));
+	 }
+
+	 /**
+	   * Method that generates the OAuth signature
+	   *
+	   * In order for this method to correctly generate a signature, setToken()
+	   * MUST be called to set the token and token secret within the instance of
+	   * phpSmug.
+	   *
+	   * @return string
+	   * @access private
+	   * @param string $apicall The API method.
+	   * @param mixed $apiargs The arguments passed to the API method.
+	   **/
+	  private function generate_signature($apicall, $apiargs = NULL) {
+		$this->oauth_timestamp = time();
+		$this->oauth_nonce = md5(time() . mt_rand());
+
+		if ($apicall != 'Upload') {
+			if (substr($apicall,0,8) != 'smugmug.') {
+				$apicall = 'smugmug.' . $apicall;
+			}
+		}
+		if ($this->oauth_signature_method == 'PLAINTEXT') {
+			return phpSmug::urlencodeRFC3986($this->OAuthSecret).'&'.phpSmug::urlencodeRFC3986($this->oauth_token_secret);
+		} else {
+			$this->oauth_signature_method = 'HMAC-SHA1';
+			$encKey = phpSmug::urlencodeRFC3986($this->OAuthSecret) . '&' . phpSmug::urlencodeRFC3986($this->oauth_token_secret);
+			$endpoint = ($apicall == 'Upload') ? 'http://api.smugmug.com/'.$apiargs['FileName'] : 'http://api.smugmug.com/services/api/php/'.$this->APIVer.'/';
+			$method = ($apicall == 'Upload') ? 'PUT' : 'POST';
+			$params = array (
+				'oauth_version' => '1.0',
+				'oauth_nonce' => $this->oauth_nonce,
+				'oauth_timestamp' => $this->oauth_timestamp,
+				'oauth_consumer_key' => $this->APIKey,
+				'oauth_signature_method' => $this->oauth_signature_method
+				);
+			if ($apicall != 'Upload') $params = array_merge($params, array('method' => $apicall));
+			$params = (!empty($this->oauth_token)) ? array_merge($params, array('oauth_token' => $this->oauth_token)) : $params;
+			if ($apicall != 'Upload') $params = (!empty($apiargs)) ? array_merge($params, $apiargs) : $params;
+		    $keys = array_map(array('phpSmug', 'urlencodeRFC3986'), array_keys($params));
+		    $values = array_map(array('phpSmug', 'urlencodeRFC3986'), array_values($params));
+		    $params = array_combine($keys, $values);
+		    // Sort by keys (natsort)
+		    uksort($params, 'strnatcmp');
+			$pairs = array();
+			foreach ($params as $key=>$value ) {
+			  if (is_array($value)) {
+			    natsort($value);
+			    foreach ($value as $v2) {
+					$pairs[] = "$key=$v2";
+			    }
+			  } else {
+			    $pairs[] = "$key=$value";
+			  }
+			}
+
+			$string = implode('&', $pairs);
+			$base_string = $method . '&' . phpSmug::urlencodeRFC3986($endpoint) . '&' .  phpSmug::urlencodeRFC3986($string);
+			$sig = base64_encode( hash_hmac('sha1', $base_string, $encKey, true));
+			return $sig;
+		}
+	 }
+	  
+	  /**
+	   * Process arguments passed to method
+	   *
+	   * @static
+	   * @return array
+	   * @param array Arguments taken from a function by func_get_args()
+	   * @access private
+	   **/
+	  private static function processArgs($arguments) {
+		   	$args = array();
+			foreach ($arguments as $arg) {
+				if (is_array($arg)) {
+					$args = array_merge($args, $arg);
+				} else {
+					$exp = explode('=', $arg, 2);
+					$args[$exp[0]] = $exp[1];
+				}
+			}
+			return $args;
+	  }
+	   
 }
-
 ?>
