@@ -1,15 +1,15 @@
 <!--[mediashare_settitle title="`$album.title` :: `$mediaItem.title`"]-->
 <!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$mediaItem.id delay=$delay mode=$mode assign=centerUrl]-->
 
-<div class="mediashare-slideshow">
+<div class="mediashare-slideshow" style="position: absolute; width: 100%; height: 100%; left: 0; top:0">
 
   <!--[if $mediaItem != null]-->
 
-    <iframe name="mediadisplay" id="mediadisplay" frameborder="0" marginwidth="0px" marginheight="0px" src="<!--[$centerUrl]-->" height="<!--[$mediaItem.previewHeight+150]-->px"></iframe>
+    <iframe name="mediadisplay" id="mediadisplay" frameborder="0" marginwidth="0px" marginheight="0px" src="<!--[$centerUrl]-->" height="75%"></iframe>
 
     <div class="mediashare-clear"></div>
 
-    <div class="stripframe">
+    <div class="stripframe" style="position: absolute; bottom: 0; left: 0">
      <div class="strip" style="height: <!--[$thumbnailSize+30]-->px;">
 
       <!--[foreach from=$mediaItems item=item]-->
