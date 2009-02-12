@@ -190,7 +190,10 @@ mediashare.itemSelector.gotItems = function(response, baseId, updateListOnly)
 
     if (result.mediaItems.length > 0)
     {
-      $(baseId+'_img').src = 'mediashare/' + result.mediaItems[0].thumbnailRef;
+      if (result.mediaItems[0].isExternal)
+        $(baseId+'_img').src = result.mediaItems[0].thumbnailRef;
+      else
+        $(baseId+'_img').src = 'mediashare/' + result.mediaItems[0].thumbnailRef;
       $(baseId+'_img').show();
     }
     else
@@ -210,5 +213,8 @@ mediashare.itemSelector.handleError = function(response)
 mediashare.itemSelector.itemChanged = function(itemSelector, baseId)
 {
   var selectedItemRef = $F(itemSelector);
-  $(baseId+'_img').src = 'mediashare/' + mediashare.itemSelector.items[baseId][itemSelector.selectedIndex].thumbnailRef;
+  if (mediashare.itemSelector.items[baseId][itemSelector.selectedIndex].isExternal)
+    $(baseId+'_img').src = mediashare.itemSelector.items[baseId][itemSelector.selectedIndex].thumbnailRef;
+  else
+    $(baseId+'_img').src = 'mediashare/' + mediashare.itemSelector.items[baseId][itemSelector.selectedIndex].thumbnailRef;
 }

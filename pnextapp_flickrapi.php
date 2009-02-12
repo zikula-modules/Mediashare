@@ -89,6 +89,7 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
     $image = array
       ( 
         'id'              => $image['id'],
+        'isExternal'      => true,
         'ownerId'         => null,
         'createdDate'     => null,
         'modifiedDate'    => null,
@@ -102,7 +103,7 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
         'caption'         => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),
         'captionLong'     => mb_convert_encoding($image['title'], _CHARSET, 'UTF-8'),
         'parentAlbumId'   => $this->albumId,
-        'mediaHandler'    => 'imagegd',
+        'mediaHandler'    => 'extapp',
         'thumbnailId'     => null,
         'previewId'       => null,
         'originalId'      => null,

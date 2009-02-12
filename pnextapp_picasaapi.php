@@ -146,6 +146,7 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
     $image = array
       ( 
         'id'              => (string)$image->getIdNum(),
+        'isExternal'      => true,
         'ownerId'         => null,
         'createdDate'     => null,
         'modifiedDate'    => null,
@@ -159,7 +160,7 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
         'caption'         => mb_convert_encoding($image->getTitle(), _CHARSET, 'UTF-8'),
         'captionLong'     => mb_convert_encoding($image->getDescription(), _CHARSET, 'UTF-8'),
         'parentAlbumId'   => $this->albumName,
-        'mediaHandler'    => 'imagegd',
+        'mediaHandler'    => 'extapp',
         'thumbnailId'     => null,
         'previewId'       => null,
         'originalId'      => null,

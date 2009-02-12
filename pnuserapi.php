@@ -138,10 +138,11 @@ function mediashare_userapi_hasItemAccess($args)
 
 function mediashare_userapi_getAlbum($args)
 {
-  $album = mediashare_userapi_getAlbumObject($args);
+  return mediashare_userapi_getAlbumData($args);
+/*  $album = mediashare_userapi_getAlbumObject($args);
   if ($album === false)
     return $album;
-  return $album->getAlbumData();
+  return $album->getAlbumData();*/
 }
 
 
@@ -260,11 +261,11 @@ function mediashare_userapi_getAllAlbums($args)
 function mediashare_userapi_getSubAlbums($args)
 {
   $albums = mediashare_userapi_getSubAlbumsData($args);
-  for ($i=0,$cou=count($albums); $i<$cou; ++$i)
+  /*for ($i=0,$cou=count($albums); $i<$cou; ++$i)
   {
     $album = mediashareGetAlbumInstance($albums[$i]['id'], $albums[$i]);
     $albums[$i] = $album->getAlbumData();
-  }
+  }*/
   return $albums;
 }
 
@@ -722,13 +723,14 @@ function mediashare_userapi_getMediaItems($args)
   if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ))
     return mediashareErrorAPI(__FILE__, __LINE__, _MSNOAUTH);
 
-  if (isset($args['albumId']))
+  /*if (isset($args['albumId']))
   {
     $album = mediashare_userapi_getAlbumObject($args);
     return $album->getMediaItems();
   }
   else
-    return mediashareGetMediaItemsData($args);
+    return mediashareGetMediaItemsData($args);*/
+  return mediashareGetMediaItemsData($args);
 }
 
 
@@ -833,6 +835,7 @@ function mediashareGetMediaItemsData($args)
   for (; !$result->EOF; $result->MoveNext())
   {
     $item = array( 'id'              => $result->fields[0],
+                   'isExternal'      => false,
                    'ownerId'         => $result->fields[1],
                    'createdDate'     => strftime(_MSDATEFORMAT, $result->fields[2]),
                    'modifiedDate'    => strftime(_MSDATEFORMAT, $result->fields[3]),

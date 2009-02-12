@@ -90,6 +90,11 @@ function mediashare_editapi_addAlbum(&$args)
   if ($ok === false)
     return false;
 
+  $ok = pnModAPIFunc('mediashare', 'edit', 'fetchExternalImages',
+                     array('albumId' => $newAlbumId));
+  if ($ok === false)
+    return false;
+
   return $newAlbumId;
 }
 
@@ -196,6 +201,11 @@ function mediashare_editapi_updateAlbum(&$args)
                      array('itemId'   => $albumId,
                            'type'     => 'album',
                            'keywords' => $args['keywords']));
+  if ($ok === false)
+    return false;
+
+  $ok = pnModAPIFunc('mediashare', 'edit', 'fetchExternalImages',
+                     array('albumId' => $albumId));
   if ($ok === false)
     return false;
 
@@ -1680,3 +1690,84 @@ function mediashare_editapi_extappLocateApp(&$args)
 
   $args['extappData'] = serialize($args['extappData']);
 }
+
+
+function mediashare_editapi_fetchExternalImages($args)
+{
+  $album = pnModAPIFunc('mediashare', 'user', 'getAlbumObject', $args);
+  if ($album === false)
+    return false;
+  $albumId = $album->albumId;
+
+  $mediaItems = $album->getMediaItems(); // FIXME: don't get album, get extapp instead
+
+  $existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
+  if ($existingMediaItems === false)
+    return false;
+
+  $existingMediaItemsMap = array();
+  foreach ($existingMediaItems as $item)
+    if ($item['mediaHandler'] == 'extapp')
+      $existingMediaItemsMap[$item['originalRef']] = 1;
+
+  foreach ($mediaItems as $item)
+  {
+    if ($item['mediaHandler'] == 'extapp')
+    {
+      if (!isset($existingMediaItemsMap[$item['originalRef']]))
+      {
+        $thumbnail = array('fileRef' => $item['thumbnailRef'],
+                           'mimeType' => $item['thumbnailMimeType'],
+                           'width' => $item['thumbnailWidth'],
+                           'height' => $item['thumbnailHeight'],
+                           'bytes' => $item['thumbnailBytes']);
+
+        $preview = array('fileRef' => $item['previewRef'],
+                         'mimeType' => $item['previewMimeType'],
+                         'width' => $item['previewWidth'],
+                         'height' => $item['previewHeight'],
+                         'bytes' => $item['previewBytes']);
+
+        $original = array('fileRef' => $item['originalRef'],
+                          'mimeType' => $item['originalMimeType'],
+                          'width' => $item['originalWidth'],
+                          'height' => $item['originalHeight'],
+                          'bytes' => $item['originalBytes']);
+
+        $newItem = array('albumId' => $albumId,
+                         'thumbnail' => $thumbnail,
+                         'preview' => $preview,
+                         'original' => $original,
+                         'title' => $item['title'],
+                         'keywords' => $item['keywords'],
+                         'description' => $item['description'],
+                         'mediaHandler' => $item['mediaHandler']);
+
+        $ok = pnModAPIFunc('mediashare', 'edit', 'storeMediaItem', $newItem);
+        if ($ok == false)
+          return false;
+      }
+
+      // Unset to indicate that we found this in extapp items
+      unset($existingMediaItemsMap[$item['originalRef']]);
+    }
+  }
+
+  foreach ($existingMediaItems as $item)
+  {
+    if ($item['mediaHandler'] == 'extapp')
+    {
+      if (isset($existingMediaItemsMap[$item['originalRef']]))
+      {
+        // Was not found in extapp items - remove it
+        $ok = pnModAPIFunc('mediashare', 'edit', 'deleteMediaItem',
+                           array('mediaId' => $item['id']));
+        if ($ok === false)
+          return false;
+      }
+    }
+  }
+
+  return true;
+}
+

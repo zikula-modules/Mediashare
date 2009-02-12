@@ -28,7 +28,7 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
       $APIKey = pnModGetVar('mediashare', 'smugmugAPIKey');
       $this->smugApi = new phpSmug(array('APIKey' => $APIKey));
       $this->smugApi->login();
-      $this->smugApi->enableCache(array('type' => 'fs', 'cache_dir' => pnConfigGetVar('temp')));
+      //$this->smugApi->enableCache(array('type' => 'fs', 'cache_dir' => pnConfigGetVar('temp')));
     }
     return $this->smugApi;
   }
@@ -80,6 +80,7 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
     return array
       ( 
         'id'              => $image['id'],
+        'isExternal'      => true,
         'ownerId'         => null,
         'createdDate'     => $image['LastUpdated'],
         'modifiedDate'    => $image['LastUpdated'],
@@ -93,20 +94,20 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
         'caption'         => mb_convert_encoding($image['Caption'], _CHARSET, 'UTF-8'),
         'captionLong'     => mb_convert_encoding($image['Caption'], _CHARSET, 'UTF-8'),
         'parentAlbumId'   => $this->albumId,
-        'mediaHandler'    => 'imagegd',
+        'mediaHandler'    => 'extapp',
         'thumbnailId'     => null,
         'previewId'       => null,
         'originalId'      => null,
         'thumbnailRef'      => $image['TinyURL'],
         'thumbnailMimeType' => 'image/jpeg',
-        'thumbnailWidth'    => null,
-        'thumbnailHeight'   => null,
-        'thumbnailBytes'    => null,
+        'thumbnailWidth'    => 0,
+        'thumbnailHeight'   => 0,
+        'thumbnailBytes'    => 0,
         'previewRef'        => $image['SmallURL'],
         'previewMimeType'   => 'image/jpeg',
         'previewWidth'      => 400,
-        'previewHeight'     => null,
-        'previewBytes'      => null,
+        'previewHeight'     => 0,
+        'previewBytes'      => 0,
         'originalRef'       => $image['LargeURL'],
         'originalMimeType'  => 'image/jpeg',
         'originalWidth'     => $image['Width'],
