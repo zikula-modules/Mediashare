@@ -25,7 +25,8 @@ function mediashare_editapi_addAlbum(&$args)
     $args['template'] = pnModGetVar('mediashare', 'defaultAlbumTemplate');
 
   // Parse extapp URL and add extapp data
-  mediashare_editapi_extappLocateApp($args);
+  if (!mediashare_editapi_extappLocateApp($args))
+    return false;
 
   list($dbconn) = pnDBGetConn();
   $pntable = pnDBGetTables();
@@ -165,7 +166,8 @@ function mediashare_editapi_updateAlbum(&$args)
   $albumId = (int)$args['albumId'];
 
   // Parse extapp URL and add extapp data
-  mediashare_editapi_extappLocateApp($args);
+  if (!mediashare_editapi_extappLocateApp($args))
+    return false;
 
   list($dbconn) = pnDBGetConn();
   $pntable = pnDBGetTables();
@@ -763,6 +765,8 @@ function mediashare_editapi_ensureMainAlbumId($args)
   if (!isset($args['mediaId']))
     return mediashareErrorAPI(__FILE__, __LINE__, 'Missing mediaId in mediashare_userapi_ensureMainAlbumId');
 
+  $forceUpdate = isset($args['forceUpdate']) && $args['forceUpdate'];
+
     // Check access
   if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT))
     return mediashareErrorAPI(__FILE__, __LINE__, _MSNOAUTH);
@@ -778,9 +782,12 @@ function mediashare_editapi_ensureMainAlbumId($args)
 
   $sql = "UPDATE $albumsTable
             SET $albumsColumn[mainMediaId] = $mediaId
-          WHERE     $albumsColumn[id] = $albumId
-                AND $albumsColumn[mainMediaId] IS NULL";
+          WHERE $albumsColumn[id] = $albumId";
+
+  if (!$forceUpdate)
+    $sql .= " AND $albumsColumn[mainMediaId] IS NULL";
   
+  //echo "<pre>$sql</pre>"; exit(0);
   $dbconn->execute($sql);
   if ($dbconn->errorNo() != 0)
     return mediashareErrorAPI(__FILE__, __LINE__, '"getFirstItemInAlbum" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
@@ -1676,6 +1683,7 @@ function mediashare_editapi_extappGetApps(&$args)
 function mediashare_editapi_extappLocateApp(&$args)
 {
   $args['extappData'] = null;
+  $ok = false;
   
   $appNames = mediashare_editapi_extappGetApps($args);
   foreach ($appNames as $appName)
@@ -1684,11 +1692,17 @@ function mediashare_editapi_extappLocateApp(&$args)
     if ($data != null)
     {
       $args['extappData'] = array('appName' => $appName, 'data' => $data);
+      $ok = true;
       break;
     }
   }
 
   $args['extappData'] = serialize($args['extappData']);
+
+  if (!$ok)
+    return mediashareErrorAPI(__FILE__, __LINE__, "Unrecognized URL: $args[extappURL]");
+
+  return true;
 }
 
 
@@ -1700,6 +1714,9 @@ function mediashare_editapi_fetchExternalImages($args)
   $albumId = $album->albumId;
 
   $mediaItems = $album->getMediaItems(); // FIXME: don't get album, get extapp instead
+  if ($mediaItems === false)
+    return false;
+
   $existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
   if ($existingMediaItems === false)
     return false;
@@ -1709,6 +1726,7 @@ function mediashare_editapi_fetchExternalImages($args)
     if ($item['mediaHandler'] == 'extapp')
       $existingMediaItemsMap[$item['originalRef']] = 1;
 
+  $mainMediaItemId = null;
   foreach ($mediaItems as $item)
   {
     if ($item['mediaHandler'] == 'extapp')
@@ -1742,9 +1760,12 @@ function mediashare_editapi_fetchExternalImages($args)
                          'description' => $item['description'],
                          'mediaHandler' => $item['mediaHandler']);
 
-        $ok = pnModAPIFunc('mediashare', 'edit', 'storeMediaItem', $newItem);
-        if ($ok == false)
+        $id = pnModAPIFunc('mediashare', 'edit', 'storeMediaItem', $newItem);
+        if ($id === false)
           return false;
+
+        if ($mainMediaItemId === null)
+          $mainMediaItemId = $id;
       }
 
       // Unset to indicate that we found this in extapp items
@@ -1765,6 +1786,24 @@ function mediashare_editapi_fetchExternalImages($args)
           return false;
       }
     }
+  }
+
+  // Set main item
+  
+  // Fetch again to see what is available
+  $existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
+  if ($existingMediaItems === false)
+    return false;
+
+  if (count($existingMediaItems) > 0)
+  {
+    $ok = pnModAPIFunc('mediashare', 'edit', 'ensureMainAlbumId',
+                       array('albumId' => $albumId,
+                             'mediaId' => $existingMediaItems[0]['id'],
+                             'forceUpdate' => true));
+
+    if ($ok === false)
+      return false;
   }
 
   return true;

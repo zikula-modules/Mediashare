@@ -730,10 +730,10 @@ class Picasa {
 	}
 
 	
-    public function getAlbumByName($username, $albumName, $maxResults=null, $startIndex=null, $keywords=null, $tags=null, $thumbsize=null, $imgmax=null) {
+    public function getAlbumByName($username, $albumName, $maxResults=null, $startIndex=null, $keywords=null, $tags=null, $thumbsize=null, $imgmax=null, $authkey=null) {
         // http://picasaweb.google.com/data/feed/base/user/JornWildt/albumid/5211245194634210977?alt=rss&kind=photo&authkey=viWYwWJTyJQ&hl=da
 		$query = Picasa::$BASE_QUERY_URL . '/user/'.$username . '/album/'.$albumName;
-		$query.='?kind=photo'.Picasa::buildQueryParams($maxResults, $startIndex, $keywords, $tags, null, $thumbsize, $imgmax).'&authkey=viWYwWJTyJQ';
+		$query.='?kind=photo'.Picasa::buildQueryParams($maxResults, $startIndex, $keywords, $tags, null, $thumbsize, $imgmax, null, $authkey);
 		$album = null;
 		try {
 			$album = new Picasa_Album($query, null, $this->contextArray); 
@@ -1791,7 +1791,7 @@ $fileContents
 	 * @param string location  The location that the image was taken.
 	 * @return string          A string with optional query parameters strung together with ampersands.
 	 */
-	protected static function buildQueryParams($maxResults=null, $startIndex=null, $keywords=null, $tags=null, $visibility=null, $thumbsize=null, $imgmax=null, $location=null) {
+	protected static function buildQueryParams($maxResults=null, $startIndex=null, $keywords=null, $tags=null, $visibility=null, $thumbsize=null, $imgmax=null, $location=null, $authkey=null) {
 		$query = '';
 
 		if ($maxResults != null) {
@@ -1823,6 +1823,9 @@ $fileContents
 		}
 		if ($location != null) {
 		    	$query .= '&l='.$location;
+		}
+		if ($authkey != null) {
+		    	$query .= '&authkey='.$authkey;
 		}
 		return $query;
 	}

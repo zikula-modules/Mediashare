@@ -127,7 +127,7 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
   {
     $images = $this->getRawImages();
     if ($images === false)
-      return array();
+      return false;
 
     for ($i=0,$cou=count($images); $i<$cou; ++$i)
     {
@@ -169,13 +169,20 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
   {
     $data = $this->albumData['extappData']['data'];
 
-    if (!empty($data['userName'])  &&  empty($data['albumName']))
+    try
     {
-      $images = $this->getApi()->getImages($data['userName'], 30, 0, null, null, 'public', '72,400', 800)->getImages();
+      if (!empty($data['userName'])  &&  empty($data['albumName']))
+      {
+        $images = $this->getApi()->getImages($data['userName'], 30, 0, null, null, 'public', '72,400', 800)->getImages();
+      }
+      else if (!empty($data['userName'])  &&  !empty($data['albumName']))
+      {
+        $images = $this->getApi()->getAlbumByName($data['userName'], $data['albumName'], 30, 0, null, null, '72,400', 800, $data['authkey'])->getImages();
+      }
     }
-    else if (!empty($data['userName'])  &&  !empty($data['albumName']))
+    catch (Exception $e)
     {
-      $images = $this->getApi()->getAlbumByName($data['userName'], $data['albumName'], 30, 0, null, null, '72,400', 800)->getImages();
+      return mediashareErrorAPI(__FILE__, __LINE__, "The supplied URL resulted in an error.");
     }
 
     return $images;
@@ -234,8 +241,6 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
 
 function mediashare_extapp_picasaapi_parseURL($args)
 {
-  // Album: http://picasaweb.google.com/GisseDk/PrinsesseRagnhildIDokVedOrskov
-
   $r = '/picasaweb.google.com\/([-a-zA-Z0-9_.]+)\/([-a-zA-Z0-9_.]+)(\?authkey=([a-zA-Z0-9]+))?.*/';
   if (preg_match($r, $args['url'], $matches))
   {
