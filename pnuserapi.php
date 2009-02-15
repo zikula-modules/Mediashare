@@ -17,12 +17,6 @@ class MediashareBaseAlbum
   var $albumData;
 
 
-  function getAlbumData()
-  { 
-    return $this->albumData;
-  }
-
-
   function fixMainMedia($images)
   {
     $mainMediaId = $this->albumData['mainMediaId'];
@@ -139,10 +133,6 @@ function mediashare_userapi_hasItemAccess($args)
 function mediashare_userapi_getAlbum($args)
 {
   return mediashare_userapi_getAlbumData($args);
-/*  $album = mediashare_userapi_getAlbumObject($args);
-  if ($album === false)
-    return $album;
-  return $album->getAlbumData();*/
 }
 
 
@@ -261,11 +251,6 @@ function mediashare_userapi_getAllAlbums($args)
 function mediashare_userapi_getSubAlbums($args)
 {
   $albums = mediashare_userapi_getSubAlbumsData($args);
-  /*for ($i=0,$cou=count($albums); $i<$cou; ++$i)
-  {
-    $album = mediashareGetAlbumInstance($albums[$i]['id'], $albums[$i]);
-    $albums[$i] = $album->getAlbumData();
-  }*/
   return $albums;
 }
 

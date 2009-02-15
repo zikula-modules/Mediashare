@@ -18,7 +18,7 @@ function mediashare_ajax_getitems($args)
   foreach ($items as $item)
   {
     $mediaItems[] = array('id' => $item['id'],
-                          'isExternal' => $item['isExternal'],
+                          'isExternal' => $item['mediaHandler'] == 'extapp',
                           'thumbnailRef' => $item['thumbnailRef'],
                           'previewRef' => $item['previewRef'],
                           'title' => $item['title']);

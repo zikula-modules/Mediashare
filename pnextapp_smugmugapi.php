@@ -62,7 +62,6 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
     return array
       ( 
         'id'              => $image['id'],
-        'isExternal'      => true,
         'ownerId'         => null,
         'createdDate'     => $image['LastUpdated'],
         'modifiedDate'    => $image['LastUpdated'],

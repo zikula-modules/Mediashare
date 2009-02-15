@@ -55,7 +55,7 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
     if (empty($data['set']))
     {
       $search = array();
-      $search['per_page'] = 30;
+      $search['per_page'] = 100;
 
       if (!empty($data['userName']))
       {
@@ -87,7 +87,6 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
     $image = array
       ( 
         'id'              => $image['id'],
-        'isExternal'      => true,
         'ownerId'         => null,
         'createdDate'     => null,
         'modifiedDate'    => null,

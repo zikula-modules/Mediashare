@@ -79,7 +79,6 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
     $image = array
       ( 
         'id'              => (string)$image->getIdNum(),
-        'isExternal'      => true,
         'ownerId'         => null,
         'createdDate'     => null,
         'modifiedDate'    => null,
