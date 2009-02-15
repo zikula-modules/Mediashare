@@ -117,7 +117,7 @@ function mediashare_init()
     // Create the table
   $sql = "$mediastoreColumn[id] I NOTNULL AUTOINCREMENT KEY,
           $mediastoreColumn[mimeType] C(100) NOTNULL,
-          $mediastoreColumn[fileRef] C(50) NOTNULL,
+          $mediastoreColumn[fileRef] C(300) NOTNULL,
           $mediastoreColumn[width] I2 NOTNULL,
           $mediastoreColumn[height] I2 NOTNULL,
           $mediastoreColumn[bytes] I NOTNULL";
@@ -404,6 +404,8 @@ function mediashare_upgrade($oldVersion)
     case '3.3.0':
       $ok = $ok && mediashare_upgrade_to_3_4_0($oldVersion);
     case '3.4.0':
+    case '3.4.1':
+      $ok = $ok && mediashare_upgrade_to_3_4_1($oldVersion);
       // future
   }
 
@@ -528,6 +530,33 @@ function mediashare_upgrade_to_3_4_0($oldVersion)
               $albumColumn[extappData] C(512)";
   
   $sqlArray = $dict->AddColumnSQL($pntable['mediashare_albums'], $columns);
+  $result = $dict->ExecuteSQLArray($sqlArray);
+
+    // Check for an error with the database code
+  if ($result != 2)
+    return mediashareInitError(__FILE__, __LINE__, 'Add columns failed ' . ': ' . 
+                              $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+
+  return true;
+}
+
+
+function mediashare_upgrade_to_3_4_1($oldVersion)
+{
+  $newVersion = '3.4.1';
+  
+  list($dbconn) = pnDBGetConn();
+  $pntable = pnDBGetTables();
+
+  $dict = NewDataDictionary($dbconn);
+  $taboptarray = pnDBGetTableOptions();
+
+  $storeTable = $pntable['mediashare_mediastore'];
+  $storeColumn = &$pntable['mediashare_mediastore_column'];
+
+  $columns = "$storeColumn[fileRef] C(300)";
+  
+  $sqlArray = $dict->AlterColumnSQL($storeTable, $columns);
   $result = $dict->ExecuteSQLArray($sqlArray);
 
     // Check for an error with the database code

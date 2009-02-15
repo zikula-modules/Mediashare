@@ -1700,7 +1700,6 @@ function mediashare_editapi_fetchExternalImages($args)
   $albumId = $album->albumId;
 
   $mediaItems = $album->getMediaItems(); // FIXME: don't get album, get extapp instead
-
   $existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
   if ($existingMediaItems === false)
     return false;

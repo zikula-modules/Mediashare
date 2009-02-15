@@ -37,7 +37,7 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
   function getAlbumData()
   {
     $images = $this->getRawImages();
-    if ($images === false)
+    if (empty($images))
     {
       $this->albumData['mainMediaId'] = null;
       $this->albumData['mainMediaItem'] = null;

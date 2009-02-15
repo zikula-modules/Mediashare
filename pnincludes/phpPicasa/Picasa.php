@@ -66,7 +66,7 @@ class Picasa {
 	 * @static
 	 * @access protected
 	 */
-	protected static $BASE_QUERY_URL = 'http://picasaweb.google.com/data/feed/api';
+	protected static $BASE_QUERY_URL = 'http://picasaweb.google.com/data/feed/base';
 
 	/**
 	 * The base for queries that use the "entry" path instead of the "feed" path.  It's not clear
@@ -731,8 +731,9 @@ class Picasa {
 
 	
     public function getAlbumByName($username, $albumName, $maxResults=null, $startIndex=null, $keywords=null, $tags=null, $thumbsize=null, $imgmax=null) {
+        // http://picasaweb.google.com/data/feed/base/user/JornWildt/albumid/5211245194634210977?alt=rss&kind=photo&authkey=viWYwWJTyJQ&hl=da
 		$query = Picasa::$BASE_QUERY_URL . '/user/'.$username . '/album/'.$albumName;
-		$query.='?kind=photo'.Picasa::buildQueryParams($maxResults, $startIndex, $keywords, $tags, null, $thumbsize, $imgmax);
+		$query.='?kind=photo'.Picasa::buildQueryParams($maxResults, $startIndex, $keywords, $tags, null, $thumbsize, $imgmax).'&authkey=viWYwWJTyJQ';
 		$album = null;
 		try {
 			$album = new Picasa_Album($query, null, $this->contextArray); 
@@ -741,6 +742,7 @@ class Picasa {
 		}
 		return $album;
 	}
+
 
 	/**
 	 * Retrieves an Album as an Entry as opposed to a Feed.  
@@ -1563,7 +1565,7 @@ $fileContents
 	 *
 	 */
 	public static function getExceptionFromInvalidQuery ($url, $contextArray) {
-echo $url;
+
 		$host=Picasa::$PICASA_URL;
 		$startHost = strpos($url, $host);
 	    	if ($startHost === false) {
@@ -1577,27 +1579,25 @@ echo $url;
 			$header = $contextArray['http']['header'];
 		}
 		$fp = fsockopen($host, 80);
-        if ($fp)
-        {
-          fputs($fp, "GET $path HTTP/1.1\r\n");
-          fputs($fp, "Host: $host\r\n");
-          fputs($fp, $header);
+		fputs($fp, "GET $path HTTP/1.1\r\n");
+		fputs($fp, "Host: $host\r\n");
+		fputs($fp, $header);
 
-          $break = false;
-          $buf = "";
-          while (!$break && !feof($fp)) {
-              $buf = @fgets($fp);
-              if (strcmp($buf, "Connection: Close\r\n") == 0) {
-                  @fgets($fp);
-                  @fgets($fp);
-                  $buf = @fgets($fp);
-                  $break = true;
-              } else {
-                  $buf="";
-              }
-          }
-          fclose($fp);
-        }
+		$break = false;
+		$buf = "";
+		while (!$break && !feof($fp)) {
+			$buf = @fgets($fp);
+			if (strcmp($buf, "Connection: Close\r\n") == 0) {
+				@fgets($fp);
+				@fgets($fp);
+				$buf = @fgets($fp);
+				$break = true;
+			} else {
+				$buf="";
+			}
+		}
+		fclose($fp);
+
 		if (strcmp($buf, "") == 0) {
 			return new Picasa_Exception("An unknown error has occured.", null, $url);
 		} else {

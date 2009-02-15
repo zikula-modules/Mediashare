@@ -12,19 +12,26 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
 {
   var $cache_dir;
   var $cache_expire;
-  var $albumName;
   var $picasaApi;
 
 
-  function MediasharePicasaAlbum($albumName, $albumData)
+  function MediasharePicasaAlbum($albumId, $albumData)
   {
-    $APIKey = pnModGetVar('mediashare', 'picasaAPIKey');
-
     $albumData['allowMediaEdit'] = false;
-    $this->albumName = $albumName;
+    $this->albumId = $albumId;
     $this->albumData = $albumData;
-    $this->picasaApi = new Picasa($APIKey);
-    $this->enableCache(pnConfigGetVar('temp'));
+  }
+
+
+  function getApi()
+  {
+    if ($this->picasaApi == null)
+    {
+      $APIKey = pnModGetVar('mediashare', 'picasaAPIKey');
+      $this->picasaApi = new Picasa($APIKey);
+      //$this->enableCache(pnConfigGetVar('temp'));
+    }
+    return $this->picasaApi;
   }
 
 
@@ -102,10 +109,15 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
   function getAlbumData()
   {
     $images = $this->getMediaItems();
-    if (count($images) > 0)
+    if (empty($images))
+    {
+      $this->albumData['mainMediaId'] = null;
+      $this->albumData['mainMediaItem'] = null;
+    }
+    else
     {
       $this->albumData['mainMediaId'] = $images[0]['id'];
-      $this->albumData['mainMediaItem'] = $images[0];
+      $this->albumData['mainMediaItem'] = $this->convertImage($images[0]);
     }
     return $this->albumData;
   }
@@ -113,6 +125,19 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
 
   function getMediaItems()
   {
+    $images = $this->getRawImages();
+    if ($images === false)
+      return array();
+
+    for ($i=0,$cou=count($images); $i<$cou; ++$i)
+    {
+      $images[$i] = $this->convertImage($images[$i]);
+    }
+
+    $this->fixMainMedia($images);
+    return $images;
+
+/*
     $data = $this->albumData['extappData']['data'];
 
     if ($images = $this->getCached($data))
@@ -135,6 +160,24 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
     $this->cache($data, $images);
 
     $this->fixMainMedia($images);
+    return $images;
+    */
+  }
+
+
+  function getRawImages()
+  {
+    $data = $this->albumData['extappData']['data'];
+
+    if (!empty($data['userName'])  &&  empty($data['albumName']))
+    {
+      $images = $this->getApi()->getImages($data['userName'], 30, 0, null, null, 'public', '72,400', 800)->getImages();
+    }
+    else if (!empty($data['userName'])  &&  !empty($data['albumName']))
+    {
+      $images = $this->getApi()->getAlbumByName($data['userName'], $data['albumName'], 30, 0, null, null, '72,400', 800)->getImages();
+    }
+
     return $images;
   }
 
@@ -159,7 +202,7 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
         'description'     => mb_convert_encoding($image->getDescription(), _CHARSET, 'UTF-8'),
         'caption'         => mb_convert_encoding($image->getTitle(), _CHARSET, 'UTF-8'),
         'captionLong'     => mb_convert_encoding($image->getDescription(), _CHARSET, 'UTF-8'),
-        'parentAlbumId'   => $this->albumName,
+        'parentAlbumId'   => $this->albumId,
         'mediaHandler'    => 'extapp',
         'thumbnailId'     => null,
         'previewId'       => null,
@@ -167,18 +210,18 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
         'thumbnailRef'      => (string)$image->getSmallThumb(),
         'thumbnailMimeType' => 'image/jpeg',
         'thumbnailWidth'    => 72,
-        'thumbnailHeight'   => null,
-        'thumbnailBytes'    => null,
+        'thumbnailHeight'   => 0,
+        'thumbnailBytes'    => 0,
         'previewRef'        => (string)$image->getMediumThumb(),
         'previewMimeType'   => 'image/jpeg',
         'previewWidth'      => 400,
-        'previewHeight'     => null,
-        'previewBytes'      => null,
+        'previewHeight'     => 0,
+        'previewBytes'      => 0,
         'originalRef'       => (string)$image->getContent(),
         'originalMimeType'  => 'image/jpeg',
-        'originalWidth'     => null,
-        'originalHeight'    => null,
-        'originalBytes'     => null,
+        'originalWidth'     => 0,
+        'originalHeight'    => 0,
+        'originalBytes'     => 0,
         'originalIsImage'   => true,
         'ownerName'         => null);
 
@@ -193,18 +236,20 @@ function mediashare_extapp_picasaapi_parseURL($args)
 {
   // Album: http://picasaweb.google.com/GisseDk/PrinsesseRagnhildIDokVedOrskov
 
-  $r = '/picasaweb.google.com\/([-a-zA-Z0-9_]+)\/([-a-zA-Z0-9_]+)/';
+  $r = '/picasaweb.google.com\/([-a-zA-Z0-9_.]+)\/([-a-zA-Z0-9_.]+)(\?authkey=([a-zA-Z0-9]+))?.*/';
   if (preg_match($r, $args['url'], $matches))
   {
     return array('userName' => $matches[1],
-                 'albumName' => $matches[2]);
+                 'albumName' => $matches[2],
+                 'authkey' => $matches[4]);
   }
 
-  $r = '/picasaweb.google.com\/([-a-zA-Z0-9_]+)\/?/';
+  $r = '/picasaweb.google.com\/([-a-zA-Z0-9_.]+)\/?/';
   if (preg_match($r, $args['url'], $matches))
   {
     return array('userName' => $matches[1],
-                 'albumName' => null);
+                 'albumName' => null,
+                 'authkey' => null);
   }
 
   return null;

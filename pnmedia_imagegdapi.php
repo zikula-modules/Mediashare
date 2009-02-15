@@ -88,6 +88,7 @@ class mediashare_imageHandlerGD
     $style = " style=\"$widthHtml$heightHtml\"";
     $title = (isset($args['title']) ? $args['title'] : '');
 
+    $url = pnGetBaseURI() . '/' . $url;
     $html = "<img src=\"$url\"$style$idHtml title=\"$title\" alt=\"$title\"$onclickHtml$classHtml/>";
     
     if (isset($args['url']))
