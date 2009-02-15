@@ -15,31 +15,29 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
 
   function MediashareFlickrAlbum($albumId, $albumData)
   {
-    $APIKey = pnModGetVar('mediashare', 'flickrAPIKey');
-
     $albumData['allowMediaEdit'] = false;
     $this->albumId = $albumId;
     $this->albumData = $albumData;
-    $this->flickrApi = new phpFlickr($APIKey);
-    $this->flickrApi->enableCache('fs', pnConfigGetVar('temp'));
   }
 
 
-  function getAlbumData()
+  function getApi()
   {
-    $images = $this->getRawImages();
-    if (count($images) > 0)
+    if ($this->flickrApi == null)
     {
-      $this->albumData['mainMediaId'] = $images[0]['id'];
-      $this->albumData['mainMediaItem'] = $this->convertImage($images[0]);
+      $APIKey = pnModGetVar('mediashare', 'flickrAPIKey');
+      $this->flickrApi = new phpFlickr($APIKey);
     }
-    return $this->albumData;
+    return $this->flickrApi;
   }
 
 
   function getMediaItems()
   {
     $images = $this->getRawImages();
+    if ($images === false)
+      return false;
+
     for ($i=0,$cou=count($images); $i<$cou; ++$i)
     {
       $images[$i] = $this->convertImage($images[$i]);
@@ -61,7 +59,7 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
 
       if (!empty($data['userName']))
       {
-         $user = $this->flickrApi->urls_lookupUser($this->albumData['extappURL']);
+         $user = $this->getApi()->urls_lookupUser($this->albumData['extappURL']);
          $search['user_id'] = $user['id'];
       }
 
@@ -69,12 +67,12 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
       {
         $search['tags'] = $data['tag'];
       }
-      $images = $this->flickrApi->photos_search($search);
+      $images = $this->getApi()->photos_search($search);
     }
     else
     {
       $setId = $data['set'];
-      $images = $this->flickrApi->photosets_getPhotos($setId);
+      $images = $this->getApi()->photosets_getPhotos($setId);
     }
 
     //var_dump($images); exit(0);
@@ -107,17 +105,17 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
         'thumbnailId'     => null,
         'previewId'       => null,
         'originalId'      => null,
-        'thumbnailRef'      => $this->flickrApi->buildPhotoURL($image, "square"),
+        'thumbnailRef'      => $this->getApi()->buildPhotoURL($image, "square"),
         'thumbnailMimeType' => 'image/jpeg',
         'thumbnailWidth'    => 0,
         'thumbnailHeight'   => 0,
         'thumbnailBytes'    => 0,
-        'previewRef'        => $this->flickrApi->buildPhotoURL($image, "mediaum"),
+        'previewRef'        => $this->getApi()->buildPhotoURL($image, "mediaum"),
         'previewMimeType'   => 'image/jpeg',
         'previewWidth'      => 400,
         'previewHeight'     => 0,
         'previewBytes'      => 0,
-        'originalRef'       => $this->flickrApi->buildPhotoURL($image, "large"),
+        'originalRef'       => $this->getApi()->buildPhotoURL($image, "large"),
         'originalMimeType'  => 'image/jpeg',
         'originalWidth'     => 0,
         'originalHeight'    => 0,

@@ -28,26 +28,8 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
       $APIKey = pnModGetVar('mediashare', 'smugmugAPIKey');
       $this->smugApi = new phpSmug(array('APIKey' => $APIKey));
       $this->smugApi->login();
-      //$this->smugApi->enableCache(array('type' => 'fs', 'cache_dir' => pnConfigGetVar('temp')));
     }
     return $this->smugApi;
-  }
-
-
-  function getAlbumData()
-  {
-    $images = $this->getRawImages();
-    if (empty($images))
-    {
-      $this->albumData['mainMediaId'] = null;
-      $this->albumData['mainMediaItem'] = null;
-    }
-    else
-    {
-      $this->albumData['mainMediaId'] = $images[0]['id'];
-      $this->albumData['mainMediaItem'] = $this->convertImage($images[0]);
-    }
-    return $this->albumData;
   }
 
 
