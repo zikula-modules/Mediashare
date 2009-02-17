@@ -63,8 +63,8 @@ psmenu.openMenu = function(evt, listener, menuDivElement, pos)
   }
 
   menuDivElement.style.visibility = "visible";
-  menuDivElement.style.left = pos.left + "px";
-  menuDivElement.style.top = pos.top + "px";
+  menuDivElement.style.left = "0px";
+  menuDivElement.style.top = "0px";
   psmenu.currentMenuDivElement = menuDivElement;
   psmenu.currentListener = listener;
 

@@ -327,6 +327,8 @@ contextmenu.onClick = function(element, itemId, evt, menuId, context)
   var menuDivElement = document.getElementById(menuId);
 
   var pos = getPositionOfElement(element);
+  
+  element.parentNode.appendChild(menuDivElement); 
 
   psmenu.openMenu(evt, context, menuDivElement, pos);
 

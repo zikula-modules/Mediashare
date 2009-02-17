@@ -1682,13 +1682,17 @@ function mediashare_editapi_extappGetApps(&$args)
 
 function mediashare_editapi_extappLocateApp(&$args)
 {
+  $url = $args['extappURL'];
+  if (empty($url))
+    return true;
+
   $args['extappData'] = null;
   $ok = false;
   
   $appNames = mediashare_editapi_extappGetApps($args);
   foreach ($appNames as $appName)
   {
-    $data = pnModAPIFunc('mediashare', "extapp_$appName", 'parseURL', array('url' => $args['extappURL']));
+    $data = pnModAPIFunc('mediashare', "extapp_$appName", 'parseURL', array('url' => $url));
     if ($data != null)
     {
       $args['extappData'] = array('appName' => $appName, 'data' => $data);
@@ -1700,7 +1704,7 @@ function mediashare_editapi_extappLocateApp(&$args)
   $args['extappData'] = serialize($args['extappData']);
 
   if (!$ok)
-    return mediashareErrorAPI(__FILE__, __LINE__, "Unrecognized URL: $args[extappURL]");
+    return mediashareErrorAPI(__FILE__, __LINE__, pnMl('_MSUNRECOGNIZEDURL', array('url' => $url)));
 
   return true;
 }
