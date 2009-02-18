@@ -1,156 +1,103 @@
+<!--[* $Id *]-->
 <!--[elfisk_setInitialFocus inputId="mediaDirName"]-->
+<!--[include file="mediashare_admin_header.html" formEncType='']-->
 
-<!--[include file="mediashare_adminheader.html" formEncType='']-->
+<h2><!--[pnml name=_MSGENERALSETUP]--></h2>
 
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[pnml name=_MSGENERALSETUP]-->
-  <!--[/mediashare_header]-->
-  <!--[mediashare_body]-->
-    <table>
+<fieldset>
+    <legend><!--[pnml name=_MSGENERALSETUP]--></legend>
     <!--[if $openBaseDir != '']-->
-      <tr>
-        <td>
-          <!--[pnml name=_MSOPENBASEDIR]-->
-        </td>
-        <td>
-          <input value="<!--[$openBaseDir|escape]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
-        </td>
-      </tr>
+    <div class="pn-adminformrow">
+        <label><!--[pnml name=_MSOPENBASEDIR]--></label>
+        <input value="<!--[$openBaseDir|escape]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
+    </div>
     <!--[/if]-->
-      <tr>
-        <td>
-          <!--[pnml name=_MSMODULEDIR]-->
-        </td>
-        <td>
-          <input value="<!--[$currentDir|escape]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="mediaDirName"><!--[pnml name=_MSMEDIADIR]--></label> (<em><!--[pnml name=_MSMEDIADIRHELP]--></em>)
-        </td>
-        <td>
-          <!--[elfisk_textInput id="mediaDirName" width="300px" maxLength="200"]--><br/>
-          <!--[if !$mediaDirIsWritable]-->
-            <strong><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
-          <!--[/if]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="tmpDirName"><!--[pnml name=_MSTMPDIR]--></label> (<em><!--[pnml name=_MSTMPDIRHELP]--></em>)
-        </td>
-        <td>
-          <!--[elfisk_textInput id="tmpDirName" width="300px" maxLength="200"]--><br/>
-          <!--[if !$tmpDirIsWritable]-->
-            <strong><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
-          <!--[/if]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="defaultAlbumTemplate"><!--[pnml name=_MSDEFAULTALBUMTEMPLATE]--></label>
-        </td>
-        <td>
-          <!--[mediashare_templateSelector id="defaultAlbumTemplate"]-->
-          <!--[elfisk_button name="templateButton" text="_MSAPPLYGLOBALTEMPLATE" confirmMessage=_MSAPPLYGLOBALTEMPLATECONFIRM]-->
-          <br/>
-          <input type="checkbox" id="allowTemplateOverride" name="allowTemplateOverride" value="1"<!--[if $allowTemplateOverride]--> checked="checked"<!--[/if]-->/>
-          <label for="allowTemplateOverride"><!--[pnml name=_MSALLOWTEMPLATEOVERRIDE]--></label>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="thumbnailSize"><!--[pnml name=_MSTHUMBNAILSIZE]--></label>
-        </td>
-        <td>
-          <!--[elfisk_intInput id="thumbnailSize" width="80px" maxLength="10"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="previewSize"><!--[pnml name=_MSPREVIEWSIZE]--></label>
-        </td>
-        <td>
-          <!--[elfisk_intInput id="previewSize" width="80px" maxLength="10"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="mediaSizeLimitSingle"><!--[pnml name=_MSSINGLEALLOWEDSIZE]--></label>
-        </td>
-        <td>
-          <!--[elfisk_intInput id="mediaSizeLimitSingle" width="80px" maxLength="10"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="mediaSizeLimitTotal"><!--[pnml name=_MSTOTALALLOWEDSIZE]--></label>
-        </td>
-        <td>
-          <!--[elfisk_intInput id="mediaSizeLimitTotal" width="80px" maxLength="10"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <em><!--[pnml name=_MSVFSDIRECTSELECTIONHELP]--></em>
-        </td>
-        <td>
-          <input type="radio" value="fsdirect" id="fsdirect" name="vfs" <!--[if $vfs=='fsdirect']--> checked="checked"<!--[/if]-->/> <label for="fsdirect"><!--[pnml name=_MSVFSDIRECTSELECTION]--></label>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <em><!--[pnml name=_MSVFSDBSELECTIONHELP]--></em>
-        </td>
-        <td>
-          <input type="radio" value="db" id="vfsdb" name="vfs" <!--[if $vfs=='db']--> checked="checked"<!--[/if]-->/> <label for="vfsdb"><!--[pnml name=_MSVFSDBSELECTION]--></label>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <em><!--[pnml name=_MSSHARPENHELP]--></em>
-        </td>
-        <td>
-          <input type="checkbox" id="enableSharpen" name="enableSharpen" value="1"<!--[if $enableSharpen]--> checked="checked"<!--[/if]-->/> <label for="enableSharpen"><!--[pnml name=_MSSHARPEN]--></label>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <em><!--[pnml name=_MSTHUMBNAILSTARTHELP]--></em>
-        </td>
-        <td>
-          <input type="checkbox" id="enableThumbnailStart" name="enableThumbnailStart" value="1"<!--[if $enableThumbnailStart]--> checked="checked"<!--[/if]-->/> <label for="enableThumbnailStart"><!--[pnml name=_MSTHUMBNAILSTART]--></label>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <em>Mediashare can display photos from external photo applications. To do so you must get an API key from the applications you want to use.</em>
-          <a href="<!--[pnmodurl modname=mediashare func=extapphelp]-->" target="_blank"><!--[pnml name=_MSEXTAPPURLHELPLINK]--></a>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="flickrAPIKey"><!--[pnml name=_MSAPIKEYFLICKR]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textInput id="flickrAPIKey" maxLength="100"]--><br/>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="smugmugAPIKey"><!--[pnml name=_MSAPIKEYSMUGMUG]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textInput id="smugmugAPIKey" maxLength="100"]--><br/>
-        </td>
-      </tr>
-    </table>
-  <!--[/mediashare_body]-->
-  <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="_MSSAVE"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
+    <div class="pn-adminformrow">
+        <label><!--[pnml name=_MSMODULEDIR]--></label>
+        <input value="<!--[$currentDir|escape]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
+    </div>
+    <div class="pn-adminformrow">
+        <label for="mediaDirName"><!--[pnml name=_MSMEDIADIR]--></label>
+        <!--[elfisk_textInput id="mediaDirName" width="300px" maxLength="200"]-->
+        <div class="ms-adminhint pn-informationmsg"><!--[pnml name=_MSMEDIADIRHELP]--></div>
+        <!--[if !$mediaDirIsWritable]-->
+        <strong><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
+        <!--[/if]-->
+    </div>
+    <div class="pn-adminformrow">
+        <label for="tmpDirName"><!--[pnml name=_MSTMPDIR]--></label>
+        <!--[elfisk_textInput id="tmpDirName" width="300px" maxLength="200"]--><br/>
+        <div class="ms-adminhint pn-informationmsg"><!--[pnml name=_MSTMPDIRHELP]--></div>
+        <!--[if !$tmpDirIsWritable]-->
+        <strong><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
+        <!--[/if]-->
+    </div>
+    <div class="pn-adminformrow">
+        <label for="defaultAlbumTemplate"><!--[pnml name=_MSDEFAULTALBUMTEMPLATE]--></label>
+        <ul>
+            <li>
+                <!--[mediashare_templateSelector id="defaultAlbumTemplate"]-->
+                <!--[elfisk_button name="templateButton" text="_MSAPPLYGLOBALTEMPLATE" confirmMessage=_MSAPPLYGLOBALTEMPLATECONFIRM]-->
+            </li>
+            <li>
+                <input type="checkbox" id="allowTemplateOverride" name="allowTemplateOverride" value="1"<!--[if $allowTemplateOverride]--> checked="checked"<!--[/if]-->/>
+                <label for="allowTemplateOverride"><!--[pnml name=_MSALLOWTEMPLATEOVERRIDE]--></label>
+            </li>
+        </ul>
+    </div>
+    <div class="pn-adminformrow">
+        <label for="thumbnailSize"><!--[pnml name=_MSTHUMBNAILSIZE]--></label>
+        <!--[elfisk_intInput id="thumbnailSize" width="80px" maxLength="10"]-->
+    </div>
+    <div class="pn-adminformrow">
+        <label for="previewSize"><!--[pnml name=_MSPREVIEWSIZE]--></label>
+        <!--[elfisk_intInput id="previewSize" width="80px" maxLength="10"]-->
+    </div>
+    <div class="pn-adminformrow">
+        <label for="mediaSizeLimitSingle"><!--[pnml name=_MSSINGLEALLOWEDSIZE]--></label>
+        <!--[elfisk_intInput id="mediaSizeLimitSingle" width="80px" maxLength="10"]-->
+    </div>
+    <div class="pn-adminformrow">
+        <label for="mediaSizeLimitTotal"><!--[pnml name=_MSTOTALALLOWEDSIZE]--></label>
+        <!--[elfisk_intInput id="mediaSizeLimitTotal" width="80px" maxLength="10"]-->
+    </div>
+    <div class="pn-adminformrow">
+        <label for="fsdirect"><!--[pnml name=_MSVFSDIRECTSELECTION]--></label>
+        <input type="radio" value="fsdirect" id="fsdirect" name="vfs" <!--[if $vfs=='fsdirect']--> checked="checked"<!--[/if]-->/>
+        <div class="ms-adminhint pn-warningmsg"><!--[pnml name=_MSVFSDIRECTSELECTIONHELP]--></div>
+    </div>
+    <div class="pn-adminformrow">
+        <label for="vfsdb"><!--[pnml name=_MSVFSDBSELECTION]--></label>
+        <input type="radio" value="db" id="vfsdb" name="vfs" <!--[if $vfs=='db']--> checked="checked"<!--[/if]-->/>
+        <div class="ms-adminhint pn-warningmsg"><!--[pnml name=_MSVFSDBSELECTIONHELP]--></div>
+    </div>
+    <div class="pn-adminformrow">
+        <label for="enableSharpen"><!--[pnml name=_MSSHARPEN]--></label>
+        <input type="checkbox" id="enableSharpen" name="enableSharpen" value="1"<!--[if $enableSharpen]--> checked="checked"<!--[/if]-->/>
+        <div class="ms-adminhint pn-warningmsg"><!--[pnml name=_MSSHARPENHELP]--></div>
+    </div>
+    <div class="pn-adminformrow">
+        <label for="enableThumbnailStart"><!--[pnml name=_MSTHUMBNAILSTART]--></label>
+        <input type="checkbox" id="enableThumbnailStart" name="enableThumbnailStart" value="1"<!--[if $enableThumbnailStart]--> checked="checked"<!--[/if]-->/>
+        <div class="ms-adminhint pn-informationmsg"><!--[pnml name=_MSTHUMBNAILSTARTHELP]--></div>
+    </div>
+</fieldset>
 
-<!--[include file="mediashare_adminfooter.html"]-->
+<fieldset>
+    <legend>API-Keys</legend>
+    <div class="pn-informationmsg">Mediashare can display photos from external photo applications. To do so you must get an API key from the applications you want to use. <a href="<!--[pnmodurl modname=mediashare func=extapphelp]-->"><!--[pnml name=_MSEXTAPPURLHELPLINK]--></a></div>
+    <div class="pn-adminformrow">
+        <label for="flickrAPIKey"><!--[pnml name=_MSAPIKEYFLICKR]--></label>
+        <!--[elfisk_textInput id="flickrAPIKey" maxLength="100"]-->
+    </div>
+    <div class="pn-adminformrow">
+        <label for="smugmugAPIKey"><!--[pnml name=_MSAPIKEYSMUGMUG]--></label>
+        <!--[elfisk_textInput id="smugmugAPIKey" maxLength="100"]-->
+    </div>
+</fieldset>
+
+<div class="pn-adminformrow pn-adminformbuttons">
+    <!--[elfisk_button name="saveButton" text="_MSSAVE"]-->
+</div>
+
+<!--[include file="mediashare_admin_footer.html"]-->

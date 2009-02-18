@@ -1,40 +1,39 @@
+<!--[* $Id *]-->
 <!--[elfisk_setInitialFocus inputId="mediaDirName"]-->
 <!--[elfisk_loadValues source=$item]-->
 
-<!--[include file="mediashare_adminheader.html"]-->
+<!--[include file="mediashare_admin_header.html"]-->
 
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[pnml name=_MSPLUGINS]-->
-  <!--[/mediashare_header]-->
-  <!--[mediashare_body]-->
-
-    <h3><!--[pnml name=_MSMEDIAHANDLERS]--></h3>
+<h2><!--[pnml name=_MSPLUGINS]--></h2>
+<fieldset>
+    <legend><!--[pnml name=_MSMEDIAHANDLERS]--></legend>
     <p><!--[pnml name=_MSMEDIAHANDLERSINFO]--></p>
-    <ul>
-    <!--[foreach from=$mediaHandlers item=handler]-->
-      <li><!--[$handler.title|escape]-->
-        <ul>
-        <!--[foreach from=$handler.mediaTypes item=type]-->
-          <li><!--[$type.mimeType]--> - <!--[$type.fileType]--></li>
+    <dl>
+        <!--[foreach from=$mediaHandlers item=handler]-->
+        <dt><!--[$handler.title|escape]--></dt>
+        <dd>
+            <ul>
+                <!--[foreach from=$handler.mediaTypes item=type]-->
+                <li><!--[$type.mimeType]--> - <!--[$type.fileType]--></li>
+                <!--[/foreach]-->
+            </ul>
+        </dd>
         <!--[/foreach]-->
-        </ul>
-      </li>
-    <!--[/foreach]-->
-    </ul>
+    </dl>
+</fieldset>
 
-    <h3><!--[pnml name=_MSMEDIASOURCES]--></h3>
+<fieldset>
+    <legend><!--[pnml name=_MSMEDIASOURCES]--></legend>
     <p><!--[pnml name=_MSMEDIASOURCESINFO]--></p>
     <ul>
-    <!--[foreach from=$sources item=source]-->
-      <li><!--[$source.title]--></li>
-    <!--[/foreach]-->
+        <!--[foreach from=$sources item=source]-->
+        <li><!--[$source.title]--></li>
+        <!--[/foreach]-->
     </ul>
+</fieldset>
 
-  <!--[/mediashare_body]-->
-  <!--[mediashare_buttons]-->
+<div class="pn-adminformrow pn-adminformbuttons">
     <!--[elfisk_button name="scanButton" text="_MSSCANFORPLUGINS"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
+</div>
 
-<!--[include file="mediashare_adminfooter.html"]-->
+<!--[include file="mediashare_admin_footer.html"]-->

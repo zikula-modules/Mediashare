@@ -1,7 +1,18 @@
-<!--[pnml name=_MSIMPMAIN assign=mltitle]-->
-<!--[include file="mediashare_adminheader.html"]-->
+<!--[* $Id *]-->
+<!--[ pnml name="_MSIMPORT" assign=title ]-->
+<!--[ pnpagesetvar name=title value=$title ]-->
+<!--[ pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css" ]-->
 
-<br/>
-<a href="<!--[pnmodurl modname=mediashare type=import func=photoshare]-->"><!--[pnml name=_MSIMPPHOTOSHARE]--></a>
+<div class="pn-adminbox">
+    <h1><!--[ pnml name="_MSMEDIASHARE" ]--></h1>
+    <div class="pn-menu"><!--[moduleadminlinks modname=mediashare]--></div>
+</div>
 
-<!--[include file="mediashare_adminfooter.html"]-->
+<div class="mediashare pn-admincontainer pn-clearfix">
+    <h2><!--[$title]--></h2>
+
+    <ul>
+        <li><a href="<!--[pnmodurl modname=mediashare type=import func=photoshare]-->"><!--[pnml name=_MSIMPPHOTOSHARE]--></a></li>
+    </ul>
+
+</div>

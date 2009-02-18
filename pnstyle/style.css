@@ -727,3 +727,10 @@ span.mediashare-filmstrip-info
   color: #DDD;
   text-decoration: none;
 }
+
+/*=[ Admin-Interface ]==========================================================*/
+
+div.pn-adminformrow .pn-warningmsg.ms-adminhint,
+div.pn-adminformrow .pn-informationmsg.ms-adminhint {
+    margin-left:26em;
+}

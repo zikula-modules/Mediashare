@@ -1,83 +1,85 @@
-<!--[include file="mediashare_adminheader.html"]-->
+<!--[* $Id *]-->
+<!--[include file="mediashare_admin_header.html"]-->
 
-<h1><!--[pnml name=_MSREC_PAGETITLE]--></h1>
+<h2><!--[pnml name=_MSREC_PAGETITLE]--></h2>
 
 <div class="mediashare-recalc">
-  <iframe id="mediashareFrame" frameborder="0" scrolling="no">
-  </iframe>
+    <iframe id="mediashareFrame" frameborder="0" scrolling="no">
+    </iframe>
 
-  <p><!--[pnml name=_MSREC_INTRO]--></p>
+    <p><!--[pnml name=_MSREC_INTRO]--></p>
 
-  <button type="button" onclick="mediashareRecalcStart()"><!--[pnml name=_MSSTART]--></button>
-  <button type="button" onclick="mediashareRecalcPause()"><!--[pnml name=_MSPAUSE]--></button>
+    <div class="pn-adminformrow pn-adminformbuttons">
+        <button style="border:1px solid; padding:3px;" type="button" onclick="mediashareRecalcStart()"><!--[pnml name=_MSSTART]--></button>
+        <button style="border:1px solid; padding:3px;" type="button" onclick="mediashareRecalcPause()"><!--[pnml name=_MSPAUSE]--></button>
+    </div>
 
-  <div class="mediashare-recalclist">
-<!--[foreach from=$allItems item=item]-->
-    <input type="checkbox" id="cbok-<!--[$item.media.id]-->" checked="checked"/>
-    <input type="checkbox" id="cbitem-<!--[$item.media.id]-->" disabled="disabled"/>
-    <a href="<!--[pnmodurl modname=mediashare func=view aid=$item.album.id mid=$item.media.id]-->"><!--[$item.media.title]--></a><br/>
-<!--[/foreach]-->
-  </div>
-
+    <div class="mediashare-recalclist">
+        <!--[foreach from=$allItems item=item]-->
+        <input type="checkbox" id="cbok-<!--[$item.media.id]-->" checked="checked"/>
+        <input type="checkbox" id="cbitem-<!--[$item.media.id]-->" disabled="disabled"/>
+        <a href="<!--[pnmodurl modname=mediashare func=view aid=$item.album.id mid=$item.media.id]-->"><!--[$item.media.title]--></a><br/>
+        <!--[/foreach]-->
+    </div>
 </div>
 
 <script type="text/javascript">
-var mediashareAllItems =
-[
-<!--[foreach from=$allItems item=item]-->
-  <!--[pnmodurl modname=mediashare type=admin func=recalcitem id=$item.media.id assign=url]-->
-  { id: <!--[$item.media.id]-->, url: "<!--[$url]-->" },
-<!--[/foreach]-->
-  { id: null }
-];
+    var mediashareAllItems =
+    [
+    <!--[foreach from=$allItems item=item]-->
+    <!--[pnmodurl modname=mediashare type=admin func=recalcitem id=$item.media.id assign=url]-->
+    { id: <!--[$item.media.id]-->, url: "<!--[$url]-->" },
+    <!--[/foreach]-->
+    { id: null }
+    ];
 
-var mediashareRecalcIndex = 0;
-var mediashareRecalcPaused = false;
+    var mediashareRecalcIndex = 0;
+    var mediashareRecalcPaused = false;
 
-function mediashareRecalcStart()
-{
-  mediashareRecalcPaused = false;
-  mediashareRecalc();
-}
-
-
-function mediashareRecalcPause()
-{
-  mediashareRecalcPaused = true;
-}
-
-
-function mediashareRecalc()
-{
-  if (!mediashareRecalcPaused)
-  {
-    var okcheckbox = document.getElementById("cbok-"+mediashareAllItems[mediashareRecalcIndex].id);
-
-    if (mediashareAllItems[mediashareRecalcIndex].url != null)
+    function mediashareRecalcStart()
     {
-      if (okcheckbox.checked)
-      {
-        var iframe = document.getElementById("mediashareFrame");
-        iframe.src = mediashareAllItems[mediashareRecalcIndex].url;
-      }
-      else
-      {
+        mediashareRecalcPaused = false;
+        mediashareRecalc();
+    }
+
+
+    function mediashareRecalcPause()
+    {
+        mediashareRecalcPaused = true;
+    }
+
+
+    function mediashareRecalc()
+    {
+    if (!mediashareRecalcPaused)
+    {
+        var okcheckbox = document.getElementById("cbok-"+mediashareAllItems[mediashareRecalcIndex].id);
+
+        if (mediashareAllItems[mediashareRecalcIndex].url != null)
+        {
+            if (okcheckbox.checked)
+            {
+                var iframe = document.getElementById("mediashareFrame");
+                iframe.src = mediashareAllItems[mediashareRecalcIndex].url;
+            }
+            else
+                {
+                    ++mediashareRecalcIndex;
+                    mediashareRecalc();
+                }
+            }
+        }
+    }
+
+    // Called from code in iframe when recalc finished
+    function mediashareNext()
+    {
+        var checkbox = document.getElementById("cbitem-"+mediashareAllItems[mediashareRecalcIndex].id);
+        checkbox.checked = true;
         ++mediashareRecalcIndex;
         mediashareRecalc();
-      }
     }
-  }
-}
-
-// Called from code in iframe when recalc finished
-function mediashareNext()
-{
-  var checkbox = document.getElementById("cbitem-"+mediashareAllItems[mediashareRecalcIndex].id);
-  checkbox.checked = true;
-  ++mediashareRecalcIndex;
-  mediashareRecalc();
-}
 
 </script>
 
-<!--[include file="mediashare_adminfooter.html"]-->
+<!--[include file="mediashare_admin_footer.html"]-->

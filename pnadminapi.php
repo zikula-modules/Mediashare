@@ -7,6 +7,24 @@
 require_once("modules/mediashare/common-edit.php");
 
 
+/**
+ * get available admin panel links
+ *
+ * @return array array of admin links
+ */
+function mediashare_adminapi_getlinks()
+{
+    $links = array();
+    if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
+        $links[] = array('url' => pnModURL('mediashare', 'user',   'view'),    'text' => _MSBROWSE);
+        $links[] = array('url' => pnModURL('mediashare', 'admin',  'main'),    'text' => _MSGENERAL);
+        $links[] = array('url' => pnModURL('mediashare', 'admin',  'plugins'), 'text' => _MSPLUGINS);
+        $links[] = array('url' => pnModURL('mediashare', 'import', 'main'),    'text' => _MSIMPORT);
+        $links[] = array('url' => pnModURL('mediashare', 'admin',   'recalc'), 'text' => _MSREC_RECALCULATE);
+    }
+    return $links;
+}
+
 // =======================================================================
 // Scan for all media
 // =======================================================================

@@ -1,21 +1,30 @@
-<!--[include file="mediashare_adminheader.html"]-->
+<!--[* $Id *]-->
+<!--[ pnml name="_MSIMPORT" assign=title ]-->
+<!--[ pnpagesetvar name=title value=$title ]-->
+<!--[ pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css" ]-->
 
-<form method="post" action="<!--[pngetcurrenturi]-->">
+<div class="pn-adminbox">
+    <h1><!--[ pnml name="_MSMEDIASHARE" ]--></h1>
+    <div class="pn-menu"><!--[moduleadminlinks modname=mediashare]--></div>
+</div>
 
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[pnml name=_MSIMPPHOTOSHARE]-->
-  <!--[/mediashare_header]-->
-  <!--[mediashare_body]-->
-    <!--[pnml name=_MSIMPPHOTOSHAREHELP html=1]-->
-  <!--[/mediashare_body]-->
-  <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="importButton" text="_MSIMPORT"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
+<div class="mediashare pn-admincontainer pn-clearfix">
 
+    <h2><!--[pnml name=_MSIMPPHOTOSHARE]--></h2>
 
-</form>
+    <form class="pn-adminform" method="post" action="<!--[pngetcurrenturi]-->">
+        <fieldset>
+            <legend><!--[pnml name=_MSIMPPHOTOSHARE]--></legend>
+            <div class="pn-adminformrow">
+                <!--[pnml name=_MSIMPPHOTOSHAREHELP html=1]-->
+            </div>
+        </fieldset>
 
-<!--[include file="mediashare_adminfooter.html"]-->
+        <div class="pn-adminformrow pn-adminformbuttons">
+            <!--[elfisk_button name="importButton" text="_MSIMPORT"]-->
+            <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+        </div>
+
+    </form>
+
+</div>
