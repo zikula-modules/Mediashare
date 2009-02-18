@@ -11,5 +11,4 @@ define('_MSEVERYBODY', 'Jeder');
 define('_MSMEDIAITEMTOOBIG', 'Datei zu groß');
 define('_MSMEDIAITEMEXEEDQUOTA', 'Medienobjekt zu groß - Gesamt-Speicherplatz würde überschritten');
 define('_MSTOPDESCRIPTION', 'Dies ist das Top-Album (von dem es nur eins geben kann). Sie können den Titel und andere Eigenschaften verändern.');
-
-?>
+define('_MSUNRECOGNIZEDURL', 'Unbekannte URL %url%'); 
