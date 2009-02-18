@@ -19,18 +19,18 @@
     <div class="pn-adminformrow">
         <label for="mediaDirName"><!--[pnml name=_MSMEDIADIR]--></label>
         <!--[elfisk_textInput id="mediaDirName" width="300px" maxLength="200"]-->
-        <div class="ms-adminhint pn-informationmsg"><!--[pnml name=_MSMEDIADIRHELP]--></div>
         <!--[if !$mediaDirIsWritable]-->
-        <strong><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
+        <strong class="ms-adminhint ms-red"><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
         <!--[/if]-->
+        <div class="ms-adminhint pn-informationmsg"><!--[pnml name=_MSMEDIADIRHELP]--></div>
     </div>
     <div class="pn-adminformrow">
         <label for="tmpDirName"><!--[pnml name=_MSTMPDIR]--></label>
         <!--[elfisk_textInput id="tmpDirName" width="300px" maxLength="200"]--><br/>
-        <div class="ms-adminhint pn-informationmsg"><!--[pnml name=_MSTMPDIRHELP]--></div>
         <!--[if !$tmpDirIsWritable]-->
-        <strong><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
+        <strong class="ms-adminhint ms-red"><!--[pnml name=_MSDIRNOTWRITABLE]--></strong>
         <!--[/if]-->
+        <div class="ms-adminhint pn-informationmsg"><!--[pnml name=_MSTMPDIRHELP]--></div>
     </div>
     <div class="pn-adminformrow">
         <label for="defaultAlbumTemplate"><!--[pnml name=_MSDEFAULTALBUMTEMPLATE]--></label>

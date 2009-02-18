@@ -468,8 +468,8 @@ div.mediashare-medialist h3
 
 div.mediashare-medialist div.data
 {
-  display: block; 
-  float: left; 
+  display: block;
+  float: left;
   width: 400px
 }
 
@@ -671,7 +671,7 @@ span.mediashare-filmstrip-info
 /*=[ Menu handling ]==========================================================*/
 
   /* Surrounding DIV tag */
-#mediashare div.psmenu 
+#mediashare div.psmenu
 {
   position: absolute;
   visibility: hidden;
@@ -731,7 +731,9 @@ span.mediashare-filmstrip-info
 
 /*=[ Admin-Interface ]==========================================================*/
 
-div.pn-adminformrow .pn-warningmsg.ms-adminhint,
-div.pn-adminformrow .pn-informationmsg.ms-adminhint {
+div.pn-adminformrow .ms-adminhint {
     margin-left:26em;
+}
+div.pn-adminformrow .ms-red {
+    color:red;
 }
