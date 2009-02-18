@@ -42,7 +42,8 @@ div.mediashare-header
   padding: 5px;
 }
 
-div.mediashare-header h1
+div.mediashare-header h1,
+div.mediashare-header h2
 {
   font-size: 20px;
   margin: 0px 0px 5px 0px;

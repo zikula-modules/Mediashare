@@ -1,59 +1,60 @@
-<!--[elfisk_setInitialFocus inputId="title"]-->
+<!--[* $Id *]-->
+<!--[ elfisk_setInitialFocus inputId="title" ]-->
+<!--[ pnml name=_MSEDITACCESS assign=mltitle ]-->
+<!--[ include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit" ]-->
+<!--[ include file="mediashare_invitationtabs.html" ]-->
 
-<!--[pnml name=_MSEDITACCESS assign=mltitle]-->
-<!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit"]-->
-
-<!--[include file="mediashare_invitationtabs.html"]-->
-
-<h2><!--[pnml name=_MSEDITACCESS]--></h2>
+<h3><!--[pnml name=_MSEDITACCESS]--></h3>
 
 <input type="hidden" name="albumId" value="<!--[$album.id]-->"/>
 
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[pnml name=_MSACCESS]-->
-  <!--[/mediashare_header]-->
-  <!--[mediashare_body]-->
-    <table>
-     <tr>
-      <th><!--[pnml name=_MSGROUP]--></th>
-      <th><!--[pnml name=_MSVIEW]--></th>
-      <th><!--[pnml name=_MSADDALBUM]--></th>
-      <th><!--[pnml name=_MSADDMEDIA]--></th>
-      <th><!--[pnml name=_MSEDITALBUM]--></th>
-      <th><!--[pnml name=_MSEDITMEDIA]--></th>
-     </tr>
-    <!--[foreach from=$access item=accessRow]-->
-     <tr>
-      <td><!--[$accessRow.groupName]--></td>
-      <td>
-       <input type="checkbox" value="1" name="accessView<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessView]--> checked="checked"<!--[/if]-->>
-      </td>
-      <td>
-       <input type="checkbox" value="1" name="accessAddAlbum<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessAddAlbum]--> checked="checked"<!--[/if]-->>
-      </td>
-      <td>
-       <input type="checkbox" value="1" name="accessAddMedia<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessAddMedia]--> checked="checked"<!--[/if]-->>
-      </td>
-      <td>
-       <input type="checkbox" value="1" name="accessEditAlbum<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessEditAlbum]--> checked="checked"<!--[/if]-->>
-      </td>
-      <td>
-       <input type="checkbox" value="1" name="accessEditMedia<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessEditMedia]--> checked="checked"<!--[/if]-->>
-      </td>
-     </tr>
-    <!--[/foreach]-->
+<fieldset>
+    <legend><!--[pnml name=_MSACCESS]--></legend>
+
+    <div class="pn-informationmsg">
+        <!--[pnml name=_MSACCESSHELP html=1]-->
+    </div>
+
+    <table class="pn-admintable">
+        <thead>
+            <tr>
+                <th><!--[pnml name=_MSGROUP]--></th>
+                <th><!--[pnml name=_MSVIEW]--></th>
+                <th><!--[pnml name=_MSADDALBUM]--></th>
+                <th><!--[pnml name=_MSADDMEDIA]--></th>
+                <th><!--[pnml name=_MSEDITALBUM]--></th>
+                <th><!--[pnml name=_MSEDITMEDIA]--></th>
+            </tr>
+        </thead>
+        <!--[foreach from=$access item=accessRow]-->
+        <tbody>
+            <tr class="<!--[cycle values="pn-odd,pn-even"]-->">
+                <td><!--[$accessRow.groupName]--></td>
+                <td>
+                    <input type="checkbox" value="1" name="accessView<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessView]--> checked="checked"<!--[/if]--> />
+                </td>
+                <td>
+                    <input type="checkbox" value="1" name="accessAddAlbum<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessAddAlbum]--> checked="checked"<!--[/if]--> />
+                </td>
+                <td>
+                    <input type="checkbox" value="1" name="accessAddMedia<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessAddMedia]--> checked="checked"<!--[/if]--> />
+                </td>
+                <td>
+                    <input type="checkbox" value="1" name="accessEditAlbum<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessEditAlbum]--> checked="checked"<!--[/if]--> />
+                </td>
+                <td>
+                    <input type="checkbox" value="1" name="accessEditMedia<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessEditMedia]--> checked="checked"<!--[/if]--> />
+                </td>
+            </tr>
+            <!--[/foreach]-->
+        </tbody>
     </table>
 
-  <!--[/mediashare_body]-->
-  <!--[mediashare_buttons]-->
+</fieldset>
+
+<div class="pn-adminformrow pn-adminformbuttons">
     <!--[elfisk_button name="saveButton" text="_MSSAVE"]-->
     <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
-
-<div class="mediashare-info">
-  <!--[pnml name=_MSACCESSHELP html=1]-->
 </div>
 
 <!--[include file="mediashare_footer.html"]-->
