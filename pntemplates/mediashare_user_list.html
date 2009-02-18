@@ -1,54 +1,53 @@
+<!--[* $Id *]-->
 <h2><!--[$filterText]--></h2>
 
-<div class="mediashare mediashare-medialist">
+<div class="mediashare mediashare-medialist pn-clearfix">
 
- <p><a href="<!--[pnmodurl modname=mediashare func=list order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOALBUM]-->">
- <!--[pnml name=_MSFILTERCLEAR]--></a></p>
+    <p><a href="<!--[pnmodurl modname=mediashare func=list order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOALBUM]-->">
+    <!--[pnml name=_MSFILTERCLEAR]--></a></p>
 
- <!--[pnml name=_MSSORTBY]-->:
- <ul class="sortkeys">
-   <li<!--[$orderTitleClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=title]-->"><!--[pnml name=_MSSORTTITLE]--></a></li>
-   <li<!--[$orderUnameClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=uname]-->"><!--[pnml name=_MSSORTOWNER]--></a></li>
-   <li<!--[$orderCreatedClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=created orderdir=desc]-->"><!--[pnml name=_MSSORTCREATEDDATE]--></a></li>
-   <li<!--[$orderModifiedClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=modified orderdir=desc]-->"><!--[pnml name=_MSSORTMODIFIEDDATE]--></a></li>
- </ul>
+    <!--[pnml name=_MSSORTBY]-->:
+    <ul class="sortkeys">
+        <li<!--[$orderTitleClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=title]-->"><!--[pnml name=_MSSORTTITLE]--></a></li>
+        <li<!--[$orderUnameClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=uname]-->"><!--[pnml name=_MSSORTOWNER]--></a></li>
+        <li<!--[$orderCreatedClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=created orderdir=desc]-->"><!--[pnml name=_MSSORTCREATEDDATE]--></a></li>
+        <li<!--[$orderModifiedClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=modified orderdir=desc]-->"><!--[pnml name=_MSSORTMODIFIEDDATE]--></a></li>
+    </ul>
 
-<!--[foreach from=$items item=item]-->
+    <!--[foreach from=$items item=item]-->
 
- <h3><!--[$item.media.title]--></h3>
+    <h3><!--[$item.media.title]--></h3>
 
- <a href="<!--[pnmodurl modname=mediashare func=browse aid=$item.album.id mid=$item.media.id]-->">
- <!--[mediashare_mediaItem src=$item.media.thumbnailRef title=$item.media.title mediaHandler=$item.media.mediaHandler isThumbnail="1" id="media-`$item.media.id`" class="thumbnail" style="vertical-align: top"]--></a>
+    <a href="<!--[pnmodurl modname=mediashare func=browse aid=$item.album.id mid=$item.media.id]-->">
+    <!--[mediashare_mediaItem src=$item.media.thumbnailRef title=$item.media.title mediaHandler=$item.media.mediaHandler isThumbnail="1" id="media-`$item.media.id`" class="thumbnail" style="vertical-align: top"]--></a>
 
- <div class="data">
-  <!--[if $item.media.description != '']-->
-  <p><!--[$item.media.description]--></p>
-  <!--[/if]-->
+    <div class="data">
+        <!--[if $item.media.description != '']-->
+        <p><!--[$item.media.description]--></p>
+        <!--[/if]-->
 
-  <!--[pnml name=_MSALBUM]-->: <a href="<!--[pnmodurl modname=mediashare func=list aid=$item.album.id order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOALBUM]-->">
-   <!--[$item.album.title]--></a>.<br/>
+        <!--[pnml name=_MSALBUM]-->: <a href="<!--[pnmodurl modname=mediashare func=list aid=$item.album.id order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOALBUM]-->">
+        <!--[$item.album.title]--></a>.<br/>
 
-  <!--[if $item.media.hasKeywords != 0]-->
-   <!--[pnml name=_MSKEYWORDS]-->:
-   <!--[foreach from=$item.media.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOKEY]-->"><!--[$keyword]--></a> 
-   <!--[pnml name=_MSRSSBYKEYWORD assign=keywordrss]-->
-   <!--[mediashare_rss title="`$keyword`: $keywordrss" urlParam="key" urlValue=$keyword mode=text]-->
-   <!--[/foreach]--><br/>
-  <!--[/if]-->
+        <!--[if $item.media.hasKeywords != 0]-->
+        <!--[pnml name=_MSKEYWORDS]-->:
+        <!--[foreach from=$item.media.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOKEY]-->"><!--[$keyword]--></a>
+        <!--[pnml name=_MSRSSBYKEYWORD assign=keywordrss]-->
+        <!--[mediashare_rss title="`$keyword`: $keywordrss" urlParam="key" urlValue=$keyword mode=text]-->
+        <!--[/foreach]--><br/>
+        <!--[/if]-->
 
-  <!--[pnml name=_MSADDED]--> <!--[$item.media.createdDateRaw|date_format:"%Y-%d-%m"]-->
-  <!--[pnml name=_MSBY]-->
-  <a href="<!--[pnmodurl modname=mediashare func=list uname=$item.media.ownerName order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOOWNER]-->">
-   <!--[mediashare_username userId=$item.media.ownerId]--></a>
-   <!--[if isset($mediaItem)]-->
-    <!--[pnml name=_MSRSSBYPERSON assign=personrss]--><!--[mediashare_rss title="`$item.media.ownerName`: $personrss" urlParam="uname" urlValue=$mediaItem.ownerName mode=text]-->.
-   <!--[/if]-->
-  </div>
+        <!--[pnml name=_MSADDED]--> <!--[$item.media.createdDateRaw|pndate_format]-->
+        <!--[pnml name=_MSBY]-->
+        <a href="<!--[pnmodurl modname=mediashare func=list uname=$item.media.ownerName order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOOWNER]-->">
+        <!--[mediashare_username userId=$item.media.ownerId]--></a>
+        <!--[if isset($mediaItem)]-->
+        <!--[pnml name=_MSRSSBYPERSON assign=personrss]--><!--[mediashare_rss title="`$item.media.ownerName`: $personrss" urlParam="uname" urlValue=$mediaItem.ownerName mode=text]-->.
+        <!--[/if]-->
+    </div>
 
-<!--[/foreach]-->
+    <!--[/foreach]-->
 
-<div class="mediashare-clear"></div>
+</div>
 
 <!--[pager show=page firstpos=$pos rowcount=$itemCount limit=5 posvar=pos shift=1]-->
- 
-</div>

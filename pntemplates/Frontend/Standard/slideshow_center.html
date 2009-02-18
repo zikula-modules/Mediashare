@@ -1,3 +1,4 @@
+<!--[* $Id *]-->
 <!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$prevMediaId assign=prevUrl delay=$delay]-->
 <!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$nextMediaId assign=nextUrl delay=$delay]-->
 <!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$nextMediaId assign=nextRunningUrl delay=$delay mode=running fqurl=1]-->
@@ -6,57 +7,57 @@
 
 <!--[if $mode=="running"]-->
 <script type="text/javascript">
-  slideshowStartup("<!--[$nextRunningUrl]-->", <!--[$delay]-->);
+    slideshowStartup("<!--[$nextRunningUrl]-->", <!--[$delay]-->);
 </script>
 <!--[/if]-->
 
 <div class="mediashare-slideshow">
 
-  <div class="mediashare-menu">
-   <table>
-    <tr>
-     <td>
-      <a href="<!--[$prevUrl]-->" target="mediadisplay"><!--[pnml name=_MSPREVIOUS]--></a>
-      <a href="<!--[$nextUrl]-->" target="mediadisplay"><!--[pnml name=_MSNEXT]--></a>
-      <select onchange="onchangeSlideshowIndex(this, '<!--[$selectUrl|pnvarprepfordisplay]-->', '<!--[$delay]-->')" style="width: 200px">
-        <!--[foreach from=$mediaItems item=item]-->
-          <option value="<!--[$item.id]-->" <!--[if $item.id==$mediaItem.id]-->selected="selected"<!--[/if]-->><!--[$item.title]--></option>
-        <!--[/foreach]-->
-      </select>
-      <button type="button" onclick="slideshowStop()" id="slideshowStopButton"<!--[if $mode!="running"]--> disabled="disabled"<!--[/if]-->><!--[pnml name=_MSSTOP]--></button>
-      <button type="button" onclick="slideshowStart('<!--[$nextRunningUrl|pnvarprepfordisplay]-->', <!--[$delay]-->)" id="slideshowStartButton"<!--[if $mode=="running"]--> disabled="disabled"<!--[/if]-->><!--[pnml name=_MSSTART]--></button>
-      <!--[pnml name=_MSDELAY]-->
-      <select onchange="onchangeSlideshowDelay(this, '<!--[$selectUrl|pnvarprepfordisplay]-->', '<!--[$mediaItem.id]-->')">
-        <option value="2" <!--[if $delay==2]-->selected="selected"<!--[/if]-->>2</option>
-        <option value="5" <!--[if $delay==5]-->selected="selected"<!--[/if]-->>5</option>
-        <option value="10" <!--[if $delay==10]-->selected="selected"<!--[/if]-->>10</option>
-        <option value="15" <!--[if $delay==15]-->selected="selected"<!--[/if]-->>15</option>
-        <option value="20" <!--[if $delay==20]-->selected="selected"<!--[/if]-->>20</option>
-        <option value="30" <!--[if $delay==30]-->selected="selected"<!--[/if]-->>30</option>
-      </select>
-      <!--[pnml name=_MSSEC]-->
-     </td>
-     <td style="text-align: right">
-       <a href="<!--[$quitUrl]-->" target="_top"><!--[pnml name=_MSQUIT]--></a>
-     </td>
-    </tr>
-   </table>
-  </div>
+    <div class="mediashare-menu">
+        <table>
+            <tr>
+                <td>
+                    <a href="<!--[$prevUrl]-->" target="mediadisplay"><!--[pnml name=_MSPREVIOUS]--></a>
+                    <a href="<!--[$nextUrl]-->" target="mediadisplay"><!--[pnml name=_MSNEXT]--></a>
+                    <select onchange="onchangeSlideshowIndex(this, '<!--[$selectUrl|pnvarprepfordisplay]-->', '<!--[$delay]-->')" style="width: 200px">
+                        <!--[foreach from=$mediaItems item=item]-->
+                        <option value="<!--[$item.id]-->" <!--[if $item.id==$mediaItem.id]-->selected="selected"<!--[/if]-->><!--[$item.title]--></option>
+                        <!--[/foreach]-->
+                    </select>
+                    <button type="button" onclick="slideshowStop()" id="slideshowStopButton"<!--[if $mode!="running"]--> disabled="disabled"<!--[/if]-->><!--[pnml name=_MSSTOP]--></button>
+                    <button type="button" onclick="slideshowStart('<!--[$nextRunningUrl|pnvarprepfordisplay]-->', <!--[$delay]-->)" id="slideshowStartButton"<!--[if $mode=="running"]--> disabled="disabled"<!--[/if]-->><!--[pnml name=_MSSTART]--></button>
+                    <!--[pnml name=_MSDELAY]-->
+                    <select onchange="onchangeSlideshowDelay(this, '<!--[$selectUrl|pnvarprepfordisplay]-->', '<!--[$mediaItem.id]-->')">
+                        <option value="2" <!--[if $delay==2]-->selected="selected"<!--[/if]-->>2</option>
+                        <option value="5" <!--[if $delay==5]-->selected="selected"<!--[/if]-->>5</option>
+                        <option value="10" <!--[if $delay==10]-->selected="selected"<!--[/if]-->>10</option>
+                        <option value="15" <!--[if $delay==15]-->selected="selected"<!--[/if]-->>15</option>
+                        <option value="20" <!--[if $delay==20]-->selected="selected"<!--[/if]-->>20</option>
+                        <option value="30" <!--[if $delay==30]-->selected="selected"<!--[/if]-->>30</option>
+                    </select>
+                    <!--[pnml name=_MSSEC]-->
+                </td>
+                <td style="text-align: right">
+                    <a href="<!--[$quitUrl]-->" target="_top"><!--[pnml name=_MSQUIT]--></a>
+                </td>
+            </tr>
+        </table>
+    </div>
 
- <div class="mediashare-data">
-   <h3><!--[$mediaItem.title]--></h3>
-   <div class="author">
-     <!--[mediashare_username userId=$mediaItem.ownerId assign=ownerUName]-->
-     <!--[pnml name=_MSBY]--> 
-     <a href="<!--[pnmodurl modname=mediashare func=list uname=$ownerUName]-->" title="<!--[pnml name=_MSRESTRICTTOOWNER]-->" target="_top"><!--[mediashare_username userId=$mediaItem.ownerId]--></a>.
-     <!--[if $hasEditAccess]-->
-       [ <a href="<!--[pnmodurl modname=mediashare type=edit func=edititem aid=$album.id mid=$mediaItem.id]-->" target="_top"><!--[pnml name=_MSEDIT]--></a> ]
-     <!--[/if]-->
-   </div>
-   <div class="description" style="height: <!--[$mediaItem.previewHeight]-->px; overflow: auto"><!--[$mediaItem.description|nl2br]--></div>
- </div>
+    <div class="mediashare-data">
+        <h3><!--[$mediaItem.title]--></h3>
+        <div class="author">
+            <!--[mediashare_username userId=$mediaItem.ownerId assign=ownerUName]-->
+            <!--[pnml name=_MSBY]-->
+            <a href="<!--[pnmodurl modname=mediashare func=list uname=$ownerUName]-->" title="<!--[pnml name=_MSRESTRICTTOOWNER]-->" target="_top"><!--[mediashare_username userId=$mediaItem.ownerId]--></a>.
+            <!--[if $hasEditAccess]-->
+            [ <a href="<!--[pnmodurl modname=mediashare type=edit func=edititem aid=$album.id mid=$mediaItem.id]-->" target="_top"><!--[pnml name=_MSEDIT]--></a> ]
+            <!--[/if]-->
+        </div>
+        <div class="description" style="height: <!--[$mediaItem.previewHeight]-->px; overflow: auto"><!--[$mediaItem.description|nl2br]--></div>
+    </div>
 
- <div class="mediashare-item"><!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id assign=popupUrl fqurl=1]-->
-   <!--[mediashare_mediaItem src=$mediaItem.previewRef title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler onclick="popupMediaViewer('$popupUrl')"|pnvarprepfordisplay class="media" width=$mediaItem.previewWidth height=$mediaItem.previewHeight]--></div>
+    <div class="mediashare-item"><!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id assign=popupUrl fqurl=1]-->
+    <!--[mediashare_mediaItem src=$mediaItem.previewRef title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler onclick="popupMediaViewer('$popupUrl')"|pnvarprepfordisplay class="media" width=$mediaItem.previewWidth height=$mediaItem.previewHeight]--></div>
 
 </div>

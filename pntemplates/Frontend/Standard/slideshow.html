@@ -1,39 +1,39 @@
-<!--[mediashare_settitle title="`$album.title` :: `$mediaItem.title`"]-->
-<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$mediaItem.id delay=$delay mode=$mode assign=centerUrl]-->
+<!--[* $Id *]-->
+<!--[ pnpagesetvar name=title value="`$album.title` :: `$mediaItem.title`" ]-->
+<!--[ pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$mediaItem.id delay=$delay mode=$mode assign=centerUrl ]-->
 
 <div class="mediashare-slideshow" style="position: absolute; width: 100%; height: 100%; left: 0; top:0">
 
-  <!--[if $mediaItem != null]-->
+    <!--[if $mediaItem != null]-->
 
     <iframe name="mediadisplay" id="mediadisplay" frameborder="0" marginwidth="0px" marginheight="0px" src="<!--[$centerUrl]-->" height="75%"></iframe>
 
     <div class="mediashare-clear"></div>
 
     <div class="stripframe" style="position: absolute; bottom: 0; left: 0">
-     <div class="strip" style="height: <!--[$thumbnailSize+30]-->px;">
+        <div class="strip" style="height: <!--[$thumbnailSize+30]-->px;">
 
-      <!--[foreach from=$mediaItems item=item]-->
-       <!--[pnmodurl modname="mediashare" func=slideshowcenter aid=$album.id mid=$item.id assign=thumbnailUrl]-->
-       <!--[if $item.id==$mediaItem.id]-->
-         <!--[assign var=class value=selected]-->
-       <!--[else]-->
-         <!--[assign var=class value=""]-->
-       <!--[/if]-->
-       <a href="<!--[$thumbnailUrl|escape]-->" target="mediadisplay">
-        <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail $class"]-->
-       </a>
-      <!--[/foreach]-->
+            <!--[foreach from=$mediaItems item=item]-->
+            <!--[pnmodurl modname="mediashare" func=slideshowcenter aid=$album.id mid=$item.id assign=thumbnailUrl]-->
+            <!--[if $item.id==$mediaItem.id]-->
+            <!--[assign var=class value=selected]-->
+            <!--[else]-->
+            <!--[assign var=class value=""]-->
+            <!--[/if]-->
+            <a href="<!--[$thumbnailUrl|escape]-->" target="mediadisplay">
+                <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail $class"]-->
+            </a>
+            <!--[/foreach]-->
 
-     </div>
+        </div>
     </div>
 
-  <!--[else]-->
+    <!--[else]-->
     <h1><!--[pnml name=_MSNOMAINITEM]--><br/>
-    <a href="<!--[$quitUrl]-->" target="_top"><!--[pnml name=_MSBACK]--></a>
+        <a href="<!--[$quitUrl]-->" target="_top"><!--[pnml name=_MSBACK]--></a>
     </h1>
-  <!--[/if]-->
+    <!--[/if]-->
 
 </div>
 
 <!--[pnmodcallhooks hookobject=item hookaction=display hookid=$mediaId module=mediashare returnurl=$viewUrl]-->
-

@@ -1,13 +1,14 @@
+<!--[* $Id *]-->
 <!--[ pnpageaddvar name="stylesheet" value="modules/mediashare/pnstyle/style.css" ]-->
 
 <strong><!--[pnml name=_MSALBUM]-->: <!--[$album.title]--></strong>
 <div class="mediashare-filmstrip">
- <table>
-  <tr>
-  <!--[foreach from=$mediaItems item=item]-->
-   <td><a href="<!--[pnmodurl modname=mediashare func=slideshow aid=$item.parentAlbumId mid=$item.id back=1]-->"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></a></td>
-  <!--[/foreach]-->
-  </tr>
- </table>
+    <table>
+        <tr>
+            <!--[foreach from=$mediaItems item=item]-->
+            <td><a href="<!--[pnmodurl modname=mediashare func=slideshow aid=$item.parentAlbumId mid=$item.id back=1]-->"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></a></td>
+            <!--[/foreach]-->
+        </tr>
+    </table>
 </div>
 <span class="mediashare-filmstrip-info"><!--[pnml name=_MSCLICKTOBROWSE count=$itemCount]--></span>
