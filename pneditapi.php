@@ -1717,7 +1717,7 @@ function mediashare_editapi_fetchExternalImages($args)
     return false;
   $albumId = $album->albumId;
 
-  //$mediaItems = $album->getMediaItems(); // FIXME: don't get album, get extapp instead
+  $mediaItems = $album->getMediaItems(); // FIXME: don't get album, get extapp instead
   if ($mediaItems === false)
     return false;
 
