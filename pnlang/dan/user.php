@@ -10,7 +10,7 @@ define('_MSADDED', 'Tilføjet');
 define('_MSDELAY', 'Pause');
 define('_MSEMPTYALBUMGOBACK', 'Der er ikke nogen mediefiler i dette album. Klik her for at returnere til forrige side.');
 define('_MSFILTERCLEAR', 'Slet filter (vis alt)');
-define('_MSFILTERITEMSFROM', "Mediefiler fra %user%s album '%album'");
+define('_MSFILTERITEMSFROM', "Mediefiler fra %user%s album '%album%'");
 define('_MSFILTERKEYWORD', 'Mediefiler markeret med ');
 define('_MSFILTERNONE', 'Alle mediefiler');
 define('_MSFILTERUNAME', 'Mediefiler af ');
