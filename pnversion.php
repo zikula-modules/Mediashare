@@ -2,9 +2,9 @@
 // $Id: pnversion.php,v 1.19 2008/06/18 19:38:12 jornlind Exp $
 $modversion['name'] = 'mediashare';
 $modversion['version'] = '3.4.1';
-$modversion['description'] = 'Media sharing and gallery';
+$modversion['displayname'] = _MS_DISPLAYNAME;
+$modversion['description'] = _MS_DESCRIPTION;
 $modversion['credits'] = 'docs/credits.txt';
-//$modversion['help'] = 'docs/...';
 $modversion['changelog'] = 'docs/changelog.txt';
 $modversion['license'] = 'docs/copying.txt';
 $modversion['official'] = 0;
