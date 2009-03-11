@@ -1,7 +1,7 @@
 <?php
 // $Id: pnversion.php,v 1.19 2008/06/18 19:38:12 jornlind Exp $
 $modversion['name'] = 'mediashare';
-$modversion['version'] = '3.4.1';
+$modversion['version'] = '3.4.2';
 $modversion['displayname'] = _MS_DISPLAYNAME;
 $modversion['description'] = _MS_DESCRIPTION;
 $modversion['credits'] = 'docs/credits.txt';

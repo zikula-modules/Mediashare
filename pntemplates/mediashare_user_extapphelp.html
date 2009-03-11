@@ -4,9 +4,6 @@
 <p>With Mediashare you can link-in albums from various external sources. You simply copy the album URL from your favorite photo application
 and insert it into Mediashare's album settings. After this you will see all the external photos as if they were uploaded to Mediashare.</p>
 
-<p>To use this feature, you <em>must</em> get an API key from the various photo applications. These API keys can be written into
-Mediashare's admin settings.</p>
-
 <!--[if !empty($settings.flickrAPIKey)]-->
 <h3>Flickr</h3>
 
@@ -19,6 +16,9 @@ Mediashare's admin settings.</p>
     <li>Photo: http://www.flickr.com/photos/USERNAME/PHOTO-ID/in/set-SET-ID/</li>
     <li>User: http://www.flickr.com/photos/USERNAME/</li>
 </ul>
+
+<p>To use this feature, you must get an API key from Flickr. This key can be written into
+Mediashare's admin settings.</p>
 <!--[/if]-->
 
 
@@ -33,15 +33,18 @@ Mediashare's admin settings.</p>
     <li>Popular: http://USERNAME.smugmug.com/popular/#SOME-ID</li>
     <li>Keyword: http://USERNAME.smugmug.com/keyword/KEYWORD#SOME-ID</li>
 </ul>
+
+<p>To use this feature, you must get an API key from SmugMug. This key can be written into
+Mediashare's admin settings.</p>
+
 <!--[/if]-->
 
 
-<!--[if !empty($settings.picasaAPIKey)]-->
 <h3>Picasa</h3>
 
 <p>You can use the following URLs from Picasa:</p>
 
 <ul>
+    <li>User: http://picasaweb.google.com/USERNAME</li>
     <li>Album: http://picasaweb.google.com/USERNAME/ALBUMNAME</li>
 </ul>
-<!--[/if]-->

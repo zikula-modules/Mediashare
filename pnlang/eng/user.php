@@ -36,6 +36,7 @@ define('_MSSORTMODIFIEDDATE', 'Last modified date');
 define('_MSSORTOWNER', 'Owner');
 define('_MSSORTTITLE', 'Title');
 define('_MSSEC', 'Sec');
+define('_MSSHOWTITLE', 'Show title');
 define('_MSSUMMARYLATEST', 'There are %album% albums available in all and %media% media items.');
 
 ?>

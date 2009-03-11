@@ -35,6 +35,7 @@ define('_MSSORTMODIFIEDDATE', 'Sidst redigeret dato');
 define('_MSSORTOWNER', 'Ejer');
 define('_MSSORTTITLE', 'Overskrift');
 define('_MSSEC', 'Sek.');
+define('_MSSHOWTITLE', 'Vis overskrift');
 define('_MSSUMMARYLATEST', 'Der er %album% albums i alt og %media% mediefiler.');
 
 ?>

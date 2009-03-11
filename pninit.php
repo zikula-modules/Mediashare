@@ -292,6 +292,9 @@ function mediashare_init()
   if (!pnModAPILoad('mediashare', 'edit', true))
     return mediashareInitError(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
 
+  if (!pnModAPILoad('mediashare', 'user', true))
+    return mediashareInitError(__FILE__, __LINE__, 'Failed to load Mediashare user API');
+
   $topAlbum = array('title'         => _MSTOP,
                     'keywords'      => '',
                     'summary'       => '',
@@ -306,6 +309,9 @@ function mediashare_init()
                            'usersMayAddAlbum' => true));
   if ($ok === false)
     return mediashareInitError(__FILE__, __LINE__, mediashareErrorAPIGet());
+
+  if (!mediashareCreateMediashareUpdateNestedSetValues())
+    return false;
 
     // Initialisation successful
   return true;
@@ -366,6 +372,77 @@ function mediashareCreateInvitationTable(&$dbconn, &$pntable, &$dict, &$taboptar
   // appropriate error message and return
   if ($result != 2)
     return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+
+  return true;
+}
+
+
+function mediashareCreateMediashareUpdateNestedSetValues()
+{
+  list($dbconn) = pnDBGetConn();
+  $pntable = pnDBGetTables();
+
+  $albumsTable = $pntable['mediashare_albums'];
+  $albumsColumn = &$pntable['mediashare_albums_column'];
+
+  $procSql = "
+create procedure mediashareUpdateNestedSetValuesRec(albumId int, level int, inout count int)
+begin
+  declare done int default 0;
+  declare nleft int;
+  declare nright int;
+  declare subAlbumId int;
+
+  declare albumsCur cursor for 
+    select $albumsColumn[id]
+    from $albumsTable
+    where $albumsColumn[parentAlbumId] = albumId
+    order by ms_title;
+
+  declare continue handler for sqlstate '02000' set done = 1;
+
+  set max_sp_recursion_depth = 100;
+
+  open albumsCur;
+
+  set nleft = count;
+  set count = count + 1;
+
+  repeat
+    fetch albumsCur into subAlbumId;
+    if not done then
+      call mediashareUpdateNestedSetValuesRec(subAlbumId, level+1, count);
+    end if;
+  until done end repeat;
+
+  close albumsCur;
+
+  set nright = count;
+  set count = count + 1;
+
+  update $albumsTable set
+    $albumsColumn[nestedSetLeft] = nleft,
+    $albumsColumn[nestedSetRight] = nright,
+    $albumsColumn[nestedSetLevel] = level
+  where $albumsColumn[id] = albumId;
+end
+";
+
+  $dbconn->execute($procSql);
+  if ($dbconn->errorNo() != 0)
+    return mediashareInitError(__FILE__, __LINE__, 'Create procedure mediashareUpdateNestedSetValuesRec failed: ' . $dbconn->ErrorMsg() . ' while executing' . $procSql);
+
+  $procSql = "
+create procedure mediashareUpdateNestedSetValues()
+begin
+  declare count int default 0;
+  call mediashareUpdateNestedSetValuesRec(0,0,count);
+end
+";
+
+  $dbconn->execute($procSql);
+  if ($dbconn->errorNo() != 0)
+    return mediashareInitError(__FILE__, __LINE__, 'Create procedure mediashareUpdateNestedSetValues failed: ' . $dbconn->ErrorMsg() . ' while executing' . $procSql);
 
   return true;
 }
@@ -568,6 +645,12 @@ function mediashare_upgrade_to_3_4_1($oldVersion)
 }
 
 
+function mediashare_upgrade_to_3_4_2($oldVersion)
+{
+  return mediashareCreateMediashareUpdateNestedSetValues();
+}
+
+
 // -----------------------------------------------------------------------
 // Module delete
 // -----------------------------------------------------------------------
@@ -718,7 +801,7 @@ function mediashare_delete()
 function mediashareInitError($file, $line, $msg)
 {
   pnSessionSetVar('errormsg', "$file($line): $msg");
-
+echo "<pre>$file($line): $msg</pre>";
   return false;
 }
 

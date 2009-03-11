@@ -36,8 +36,8 @@ div.mediashare-menu a:hover
 
 #slideshowSizeAnchor
 {
-  float: left;
-  display: block;
+  xfloat: left;
+  xdisplay: block;
   font-size: 12px;
   margin-left: 30px;
   margin-top: 3px;

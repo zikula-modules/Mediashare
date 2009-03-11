@@ -42,7 +42,7 @@ MediashareSlideshow.prototype =
   ShowItem: function(index)
   {
     var t = this;
-    Element.hide('mediaTitleBox');
+    this.UpdateTitleState(false);//Element.hide('mediaTitleBox');
     new Effect.Fade('mediaItem', { duration: 0.4, to: 0.01, afterFinish: function() { t.ShowItem2(index); } });
   },
 
@@ -111,7 +111,7 @@ MediashareSlideshow.prototype =
     
     Element.setInnerHTML('mediaCount', (index+1) + "/" + this.itemArray.length);
 
-    new Effect.Appear(titleBox, { duration: 0.9, to: 0.6 } );
+    this.UpdateTitleState(true);//new Effect.Appear(titleBox, { duration: 0.9, to: 0.6 } );
   },
 
 
@@ -173,6 +173,12 @@ MediashareSlideshow.prototype =
   },
 
 
+  HandleToggleTitle: function()
+  {
+    this.UpdateTitleState(null);
+  },
+
+
   HandleNextTimeStep: function()
   {
     this.Next();
@@ -213,15 +219,17 @@ MediashareSlideshow.prototype =
   },
 
    
-  HandleMouseOverTitle: function()
+  UpdateTitleState: function(doDisplay)
   {
-    new Effect.Fade('mediaTitleBox', { duration: 0.2, to: 0.01 } );
-  },
-
-   
-  HandleMouseOutTitle: function()
-  {
-    new Effect.Appear('mediaTitleBox', { duration: 0.2, to: 0.6 } );
+    var checkbox = $('slideshowToggleTitle');
+    if (!checkbox.checked || doDisplay == false)
+    {
+      new Effect.Fade('mediaTitleBox', { duration: 0.2, to: 0.01 } );
+    }
+    else if (checkbox.checked || doDisplay == true)
+    {
+      new Effect.Appear('mediaTitleBox', { duration: 0.2, to: 0.6 } );
+    }
   }
 }
 

@@ -102,14 +102,25 @@ function mediashare_editapi_addAlbum(&$args)
 
 function mediashare_editapi_updateNestedSetValues(&$args)
 {
-  $albumId = 0;
-  $count = 0;
-  $level = 0;
-
   list($dbconn) = pnDBGetConn();
   $pntable = pnDBGetTables();
 
-  return mediashareUpdateNestedSetValues_Rec($albumId, $level, $count, $dbconn, $pntable);
+  if (true)
+  {
+    $sql = "call mediashareUpdateNestedSetValues()";
+    $dbconn->execute($sql);
+    if ($dbconn->errorNo() != 0)
+      return mediashareErrorAPI(__FILE__, __LINE__, '"calling mediashareUpdateNestedSetValues()" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    return true;
+  }
+  else
+  {
+    $albumId = 0;
+    $count = 0;
+    $level = 0;
+
+    return mediashareUpdateNestedSetValues_Rec($albumId, $level, $count, $dbconn, $pntable);
+  }
 }
 
 
