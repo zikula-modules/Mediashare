@@ -801,7 +801,6 @@ function mediashare_delete()
 function mediashareInitError($file, $line, $msg)
 {
   pnSessionSetVar('errormsg', "$file($line): $msg");
-echo "<pre>$file($line): $msg</pre>";
   return false;
 }
 
