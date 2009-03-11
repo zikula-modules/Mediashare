@@ -36,6 +36,7 @@ define('_MSSORTMODIFIEDDATE', 'Letztes Bearbeitungsdatum');
 define('_MSSORTOWNER', 'Besitzer');
 define('_MSSORTTITLE', 'Titel');
 define('_MSSEC', 'Sekunden');
+define('_MSSHOWTITLE', 'Titel anzeigen'); 
 define('_MSSUMMARYLATEST', 'Es stehen %album% Alben zur Verfügung mit insgesamt %media% Medien-Objekten.');
 
 ?>
