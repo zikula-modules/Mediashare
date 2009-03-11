@@ -4,6 +4,7 @@
 <script type="text/javascript" src="modules/mediashare/pntemplates/Frontend/Lightbox/slideshow.js"></script>
 
 <script type="text/javascript">
+//<![CDATA[
     var Slideshow = new MediashareSlideshow();
 
     <!--[foreach from=$mediaItems item=item]-->
@@ -15,6 +16,7 @@
     var pnmlSmaller = "<!--[pnml name=_MSSMALLERIMG]-->";
     var pnmlLarger  = "<!--[pnml name=_MSLARGERIMG]-->";
     var baseURL     = "<!--[pngetbaseurl]-->";
+//]]>
 </script>
 
 <!--[if count($mediaItems) > 0]-->
@@ -22,7 +24,7 @@
 <div class="mediashare-slideshow">
   <div class="mediashare-menu">
     <div style="float: left" id="mediaCount"></div>
-    <div style="float: right"><a href="<!--[$quitUrl]-->"><!--[pnml name=_MSQUIT]--></a></div>
+    <div style="float: right"><a href="<!--[$quitUrl|escape:html]-->"><!--[pnml name=_MSQUIT]--></a></div>
     <div style="float: left">
       <a href="#" onclick="Slideshow.HandleSize()" id="slideshowSizeAnchor"><!--[pnml name=_MSSMALLERIMG]--></a>
       | <label for="slideshowToggleTitle"><!--[pnml name=_MSSHOWTITLE]--></label> <input type="checkbox" checked="checked" id="slideshowToggleTitle" onclick="Slideshow.HandleToggleTitle()"/>
@@ -43,7 +45,9 @@
 </div>
 
 <script type="text/javascript">
+//<![CDATA[
     Event.observe(window, 'load', function(){Slideshow.Start(<!--[$mediaId]-->)}, false);
+//]]>
 </script>
 <!--[else]-->
 <div class="mediashare-slideshow">

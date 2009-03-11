@@ -9,7 +9,7 @@ function smarty_function_mediashare_mediaUrl($params, &$smarty)
   if (array_key_exists('assign', $params))
     $smarty->assign($params['assign'], $result);
   else
-    return $result;
+    return DataUtil::formatForDisplay($result);
 }
 
 ?>
