@@ -1410,12 +1410,6 @@ function mediashare_editapi_getUserInfo(&$args)
 // Keywords update
 // =======================================================================
 
-function mediashareStripKeywords($keywords)
-{
-  return preg_replace('/[^a-z0-9_-ζψεΖΨΕλόοφδιϊσα ]/i', '', $keywords);
-}
-
-
 function mediashare_editapi_updateKeywords(&$args)
 {
   $itemId   = (int)$args['itemId'];

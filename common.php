@@ -189,6 +189,17 @@ function mediashareErrorAPIGet()
   return $smarty->fetch('mediashare_error.html');
 }
 
+
+// =======================================================================
+// Other
+// =======================================================================
+
+function mediashareStripKeywords($keywords)
+{
+  return preg_replace('/[^\w ]/i', '', $keywords);
+}
+
+
 function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset) {
 	// End of recursion?
 	if ($folderOffset == sizeof($folders) - 1)

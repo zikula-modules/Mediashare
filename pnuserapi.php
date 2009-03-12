@@ -1210,7 +1210,7 @@ function mediashare_userapi_getSummary($args)
 
 function mediashareAddKeywords(&$item)
 {
-  $k = trim($item['keywords']);
+  $k = trim(mediashareStripKeywords($item['keywords']));
   if (strlen($k) > 0)
   {
     $item['keywordsArray'] = preg_split("/[\s,]+/", $k);

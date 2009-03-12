@@ -11,7 +11,8 @@ Version NEXT
   * Added ability to add album in the pnForms media-item selector.
   * Added permission checks in the pnForms media-item selector.
   * New admin icon.
-  * Fixed performance of updating nested set values (moved to stored procedure).
+  * Fix #9 - Fixed performance of updating nested set values (moved to stored procedure).
+  * Fix #45 - keywords not working with 'umlaute'
   * Fixed a bug in the photoshare conversion file (pnshow.php).
   * Fixed missing delete of invitations table when removing module.
   * Now using PostNuke .8 prototype scripts if available.
