@@ -428,9 +428,8 @@ begin
 end
 ";
 
+  // Ignore errors
   $dbconn->execute($procSql);
-  if ($dbconn->errorNo() != 0)
-    return mediashareInitError(__FILE__, __LINE__, 'Create procedure mediashareUpdateNestedSetValuesRec failed: ' . $dbconn->ErrorMsg() . ' while executing' . $procSql);
 
   $procSql = "
 create procedure mediashareUpdateNestedSetValues()
@@ -440,9 +439,8 @@ begin
 end
 ";
 
+  // Ignore errors
   $dbconn->execute($procSql);
-  if ($dbconn->errorNo() != 0)
-    return mediashareInitError(__FILE__, __LINE__, 'Create procedure mediashareUpdateNestedSetValues failed: ' . $dbconn->ErrorMsg() . ' while executing' . $procSql);
 
   return true;
 }
@@ -647,7 +645,9 @@ function mediashare_upgrade_to_3_4_1($oldVersion)
 
 function mediashare_upgrade_to_3_4_2($oldVersion)
 {
-  return mediashareCreateMediashareUpdateNestedSetValues();
+  mediashareCreateMediashareUpdateNestedSetValues();
+  // Ignore stored procedure creation failure
+  return true;
 }
 
 

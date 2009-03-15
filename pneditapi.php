@@ -105,6 +105,9 @@ function mediashare_editapi_updateNestedSetValues(&$args)
   list($dbconn) = pnDBGetConn();
   $pntable = pnDBGetTables();
 
+  // MySQL switch
+  // MySQL 5 (true) - Use stored procedure mediashareUpdateNestedSetValues
+  // MySQL 4 (false) - use PHP
   if (true)
   {
     $sql = "call mediashareUpdateNestedSetValues()";

@@ -58,6 +58,14 @@ FEATURE LIST
 UPGRADE
 =======
 
+To 3.4.2
+* Do a normal upgrade
+* Try to create a new album - if it fails with the message
+  "calling mediashareUpdateNestedSetValues() failed" then you probably have
+  MySQL version 4.x - and Mediashare works best with MySQL 5.x. To fix this,
+  open file pneditapi.php and search for "MySQL switch" and then 
+  change (true) to (false).
+
 From 2.1.1 to 2.1.2
 * Do a normal Zikula module upgrade.
 
@@ -76,16 +84,16 @@ Start the same way as width any other Zikula module:
 
 3) Install and activate the Mediashare module.
 
+4) Try to create a new album - if it fails with the message
+   "calling mediashareUpdateNestedSetValues() failed" then you probably have
+   MySQL version 4.x - and Mediashare works best with MySQL 5.x. To fix this,
+   open file pneditapi.php and search for "MySQL switch" and then 
+   change (true) to (false).
+
 If you are using short URLs then you may have to add the line below to your 
 .htaccess file. This ensures media files are found in the right place.
 
   RewriteRule ^mediashare/.*/mediashare/(.+) mediashare/$1
-
-
-Then make sure the right CSS styles are available. If you are using a Xantia
-theme then everything should be fine - it will automatically load "style.css"
-from the "pnstyle" directory. Otherwise you have to copy the "style.css" data
-into your theme's stylesheet manually.
 
 
 CONFIGURATION

@@ -19,6 +19,8 @@ Version NEXT
   * Fixed issues with Zikula's short URL handling.
   * Fixed menu positions.
 
+Please check upgrade instructions in readme.txt!
+
 
 Version 3.2.0
 -------------
