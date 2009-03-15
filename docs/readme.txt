@@ -60,11 +60,10 @@ UPGRADE
 
 To 3.4.2
 * Do a normal upgrade
-* Try to create a new album - if it fails with the message
-  "calling mediashareUpdateNestedSetValues() failed" then you probably have
-  MySQL version 4.x - and Mediashare works best with MySQL 5.x. To fix this,
-  open file pneditapi.php and search for "MySQL switch" and then 
-  change (true) to (false).
+* If you are using MySQL 5.x then open the file pneditapi.php and search for 
+  "MySQL switch" and then change (false) to (true). This will improve 
+  performance of album creation by using stored procedures instead of PHP for
+  nested set values calculation.
 
 From 2.1.1 to 2.1.2
 * Do a normal Zikula module upgrade.

@@ -108,7 +108,7 @@ function mediashare_editapi_updateNestedSetValues(&$args)
   // MySQL switch
   // MySQL 5 (true) - Use stored procedure mediashareUpdateNestedSetValues
   // MySQL 4 (false) - use PHP
-  if (true)
+  if (false)
   {
     $sql = "call mediashareUpdateNestedSetValues()";
     $dbconn->execute($sql);
