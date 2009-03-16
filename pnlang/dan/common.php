@@ -10,6 +10,7 @@ define('_MSNOAUTH', 'Du har ikke adgang til denne funktion');
 define('_MSBADAUTHKEY', 'Du har ikke adgang til denne funktion');
 
 define('_MSACCESS', 'Adgang');
+define('_MSADDALBUM', 'Tilføj album');
 define('_MSADDMEDIAITEMS', 'Tilføj mediefiler');
 define('_MSALBUM', 'Album');
 define('_MSALBUMS', 'Albums');

@@ -85,9 +85,13 @@ function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args) {
 
     $args['mimeType'] = '';
     if ( function_exists('mime_content_type') )
+    {
     	$args['mimeType'] = mime_content_type($tmpfilename);
-    if ( $args['mimeType'] == '' )
-    	$args['mimeType'] = 'image/jpeg'; //EM à modifier 
+        if (empty($args['mimeType']))
+    	    $args['mimeType'] = mime_content_type($imageName);
+    }
+    if (empty($args['mimeType']))
+    	$args['mimeType'] = mediashareGetMimeType($imageName);
 
     $args['uploadFilename'] = $tmpfilename;
 	$args['fileSize'] = $zipSize;
@@ -106,6 +110,27 @@ function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args) {
 
 	return $status;
 }
+
+
+function mediashareGetMimeType($filename)
+{
+  $i = strpos($filename, '.');
+  if ($i >= 0)
+  {
+    $ext = strtolower(substr($filename, $i+1));
+    if ($ext == 'gif')
+      return 'image/gif';
+    if ($ext == 'jpg')
+      return 'image/jpeg';
+    if ($ext == 'jpeg')
+      return 'image/jpeg';
+    if ($ext == 'png')
+      return 'image/png';
+  }
+
+  return 'unknown';
+}
+
 
 function mediashareSourceZipUpload(& $args) {
 	if (!pnSecConfirmAuthKey())

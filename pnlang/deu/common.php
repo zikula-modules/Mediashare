@@ -10,6 +10,7 @@ define('_MSNOAUTH', 'Sie haben keinen Zugriff auf diese Funktion.');
 define('_MSBADAUTHKEY', 'Unbekannter Autentifizierungsschlüssel: Das gleiche Formular kann nicht zweimal abgeschickt werden.');
 
 define('_MSACCESS', 'Zugriff');
+define('_MSADDALBUM', 'Album hinzufügen');
 define('_MSADDMEDIAITEMS', 'Objekt hinzufügen');
 define('_MSALBUM', 'Album');
 define('_MSALBUMS', 'Alben');

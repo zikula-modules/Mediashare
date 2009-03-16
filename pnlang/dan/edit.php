@@ -7,7 +7,6 @@
 require_once('modules/mediashare/pnlang/dan/common.php');
 
 define('_MSACCESSHELP', 'Her kan du tildele forskellige adgangsniveauer til forskellige brugergrupper. <ul><li>Tilføj album betyder at brugere i den valgte gruppe kan tilføje nye underalbums til albummet.</li><li>Tilføje mediefiler betyder at brugere kan tilføje nye multimediefiler.</li><li>Rediger album betyder at brugere kan redigere overskift,  beskrivelse og andet meta-data om albummet.</li><li>Rediger mediefil betyder at brugere kan redigere overskrift, beskrivelse og andet meta-data om multimediafilen(*).</li></ul>Man kan altid redigere/tilføje til sit eget album og multimediefiler.<br/><br/>(*) Kan også redigere rækkefølgen af multimediefilerne i albummet.');
-define('_MSADDALBUM', 'Tilføj album');
 define('_MSADDITEM', 'Tilføj mediefil');
 define('_MSADDMEDIA', 'Tilføj mediefil');
 define('_MSADDMOREITEMS', 'Tilføj flere');

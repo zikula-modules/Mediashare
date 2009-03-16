@@ -7,7 +7,6 @@
 require_once('modules/mediashare/pnlang/deu/common.php');
 
 define('_MSACCESSHELP', 'Hier können Sie unterschiedliche Zugriffsrechte für verschiedene Gruppen festlegen.<ul><li>"Album hinzufügen" bedeutet, dass Nutzer der gewählten Gruppe dem Album neue Unteralben hinzufügen können.</li><li>"Medien hinzufügen" bedeutet, dass Nutzer neue Medienobjekte hinzufügen können(*).</li><li>"Album bearbeiten" bedeutet, dass Nutzer Titel, Beschreibung und andere Meta-Daten des Albums ändern können.</li><li>Objekt bearbeiten bedeutet, dass Nutzer Titel, Beschreibung und andere Meta-Daten der Medien-Dateien ändern können(*).</li></ul>Jeder Zugriffslevel (Hinzufügen/Bearbeiten) bietet ebenfalls Zugriff auf die "Bearbeiten"-Ansicht des Albums.  Nutzer können <em>immer</em> ihre eigenen Alben und Media-Dateien (unabhängig von den Zugriffsrechten) bearbeiten.<br/><br/>(*) Auch das Verschieben der Media-Dateien im Album ist möglich.');
-define('_MSADDALBUM', 'Album hinzufügen');
 define('_MSADDITEM', 'Objekt hinzufügen');
 define('_MSADDMEDIA', 'Objekt hinzufügen');
 define('_MSADDMOREITEMS', 'Weitere hinzufügen');

@@ -10,6 +10,7 @@ define('_MSNOAUTH', 'You do not have access to this feature');
 define('_MSBADAUTHKEY', 'Unknown authentication key: you cannot submit the same form twice.');
 
 define('_MSACCESS', 'Access');
+define('_MSADDALBUM', 'Add album');
 define('_MSADDMEDIAITEMS', 'Add media');
 define('_MSALBUM', 'Album');
 define('_MSALBUMS', 'Albums');

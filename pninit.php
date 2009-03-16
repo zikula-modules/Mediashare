@@ -789,6 +789,12 @@ function mediashare_delete()
   pnModDelVar('mediashare', 'defaultAlbumTemplate');
   pnModDelVar('mediashare', 'defaultSlideshowTemplate');
 
+  $sql = "drop procedure mediashareUpdateNestedSetValuesRec";
+  $dbconn->execute($sql);
+
+  $sql = "drop procedure mediashareUpdateNestedSetValues";
+  $dbconn->execute($sql);
+
     // Deletion always successful
   return true;
 }
