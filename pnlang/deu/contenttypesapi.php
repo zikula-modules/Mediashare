@@ -15,6 +15,8 @@ define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMLABEL', 'Mediashare Objekt');
 define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMTITLE', 'Mediashare Objekt');
 define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMDESCR', 'Einzelnes Mediashare-Objekt mit Albumlink anzeigen.');
 define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMALBUMLINK', 'Albumlink einbinden');
+define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMTEXT', 'Text');
+define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMTEXTHELP', '(leer lassen, wenn der Objekttitel angezeigt werden soll oder einen Punkt eingeben, um keinen Text anzuzeigen)');
 define('_MEDIASHARE_CONTENTENTTYPE_NOMEDIA', 'Kein Objekt ausgewählt');
 
 ?>
