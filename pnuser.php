@@ -118,6 +118,8 @@ function mediashare_user_browse($args)
   if (!$render->template_exists($templateFilename))
     $templateFilename = "Frontend/Standard/album.html";
 
+  PageUtil::addVar('stylesheet', 'modules/mediashare/pntemplates/Frontend/' . $template . '/style.css');
+
   return $render->fetch($templateFilename);
 }
 
@@ -396,6 +398,7 @@ function mediashare_user_simpledisplay($args)
   $mediaId = mediashareGetIntUrl('mid', $args, 0);
   $showAlbumLink = isset($args['showAlbumLink']) ? $args['showAlbumLink'] : false;
   $containerWidth = isset($args['containerWidth']) ? $args['containerWidth'] : 'auto';
+  $text = isset($args['text']) ? $args['text'] : '';
 
   if (!pnModAPILoad('mediashare', 'user'))
     return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
@@ -407,6 +410,11 @@ function mediashare_user_simpledisplay($args)
   if ($mediaItem === false)
     return mediashareErrorAPIGet();
 
+  if ($text == '.')
+    $text = '';
+  else if (empty($text))
+    $text = $mediaItem['title'];
+
   $albumId = $mediaItem['parentAlbumId'];
 
     // Check access
@@ -417,6 +425,7 @@ function mediashare_user_simpledisplay($args)
   $render->caching = false;
   $render->assign('mediaItem', $mediaItem);
   $render->assign('showAlbumLink', $showAlbumLink);
+  $render->assign('text', $text);
   $render->assign('width', $containerWidth=='wauto' ? null : '100%');
 
   $csssrc = ThemeUtil::getModuleStylesheet('mediashare');

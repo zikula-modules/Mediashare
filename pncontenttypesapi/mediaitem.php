@@ -4,6 +4,7 @@ class mediashare_contenttypesapi_mediaItemPlugin extends contentTypeBase
 {
   var $mediaItemId;
   var $showAlbumLink = true;
+  var $text;
 
   function getModule() { return 'mediashare'; }
   function getName() { return 'mediaitem'; }
@@ -15,6 +16,7 @@ class mediashare_contenttypesapi_mediaItemPlugin extends contentTypeBase
   {
     $this->mediaItemId = $data['mediaItemId'];
     $this->showAlbumLink = isset($data['showAlbumLink']) ? $data['showAlbumLink'] : true;
+    $this->text = isset($data['text']) ? $data['text'] : '';
   }
 
   
@@ -24,6 +26,7 @@ class mediashare_contenttypesapi_mediaItemPlugin extends contentTypeBase
       return pnModFunc('mediashare', 'user', 'simpledisplay', 
                        array('mid' => $this->mediaItemId,
                              'showAlbumLink' => $this->showAlbumLink,
+                             'text' => $this->text,
                              'containerWidth' => $this->styleWidth));
     return '';
   }
@@ -36,6 +39,7 @@ class mediashare_contenttypesapi_mediaItemPlugin extends contentTypeBase
       return pnModFunc('mediashare', 'user', 'simpledisplay', 
                        array('mid' => $this->mediaItemId,
                              'showAlbumLink' => $this->showAlbumLink,
+                             'text' => $this->text,
                              'containerWidth' => $this->styleWidth));
     }
     return _MEDIASHARE_CONTENTENTTYPE_NOMEDIA;
@@ -45,7 +49,8 @@ class mediashare_contenttypesapi_mediaItemPlugin extends contentTypeBase
   function getDefaultData()
   { 
     return array('mediaItemId' => null,
-                 'showAlbumLink' => true);
+                 'showAlbumLink' => true,
+                 'text' => '');
   }
 
   

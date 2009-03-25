@@ -142,20 +142,20 @@ class mediashareItemSelector extends pnFormPlugin
 
     if ($this->enableUpload)
     {
-      $html .= "<tr><td colspan=\"2\" class=\"selector\">\n";
+      $html .= "<tr><td colspan=\"2\"><div class=\"selector\" style=\"display: block\">\n";
+
       $html .= _MSSELECTORUPLOAD . '<br/>';
       $html .= "<label for=\"{$this->id}_upload\">" . _MSUPLOAD . "</label>\n";
       $html .= "<input type=\"file\" id=\"{$this->id}_upload\" name=\"{$this->inputName}_upload\" class=\"file\"/>\n";
-      $html .= "</td></tr>\n";
-    }
 
-    if ($this->enableAddAlbum)
-    {
-      $html .= "<tr><td colspan=\"2\" class=\"selector\">\n";
-      $html .= _MSSELECTORADDALBUM . '<br/>';
-      $html .= "<label for=\"{$this->id}_newalbum\">" . _MSALBUM . "</label>\n";
-      $html .= "<input type=\"text\" id=\"{$this->id}_newalbum\" name=\"{$this->inputName}_newalbum\"/>\n";
-      $html .= "</td></tr>\n";
+      if ($this->enableAddAlbum)
+      {
+        $html .= '<br/>' . _MSSELECTORADDALBUM . '<br/>';
+        $html .= "<label for=\"{$this->id}_newalbum\">" . _MSALBUM . "</label>\n";
+        $html .= "<input type=\"text\" id=\"{$this->id}_newalbum\" name=\"{$this->inputName}_newalbum\"/>\n";
+      }
+
+      $html .= "</div></td></tr>\n";
     }
 
     $html .= "</table>\n";

@@ -15,6 +15,8 @@ define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMLABEL', 'Vælg Mediashare mediefil');
 define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMTITLE', 'Mediashare mediefil');
 define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMDESCR', 'Viser en enkelt Mediashare mediefil med link til album.');
 define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMALBUMLINK', 'Medtag link til album');
+define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMTEXT', 'Tekst');
+define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMTEXTHELP', '(lad feltet være tomt for at anvende mediafilens titel eller skriv et enkelt punktum for blank tekst)');
 define('_MEDIASHARE_CONTENTENTTYPE_NOMEDIA', 'Der er ikke valgt nogen mediefil.');
 
 ?>

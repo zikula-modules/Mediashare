@@ -15,6 +15,8 @@ define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMLABEL', 'Select Mediashare item');
 define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMTITLE', 'Mediashare item');
 define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMDESCR', 'Display a single Mediashare item with link to album.');
 define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMALBUMLINK', 'Include link to album');
+define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMTEXT', 'Text');
+define('_MEDIASHARE_CONTENTENTTYPE_MEDIAITEMTEXTHELP', '(leave as blank to use media item title or write a single dot for blank text)');
 define('_MEDIASHARE_CONTENTENTTYPE_NOMEDIA', 'No media item selected');
 
 ?>
