@@ -84,26 +84,9 @@ class mediashareItemSelector extends pnFormPlugin
       $selectedAlbumId = (count($albums) > 0 ? $albums[0]['id'] : null);
     }
 
-    $html .= "<td class=\"selector\">\n";
-    $html .= "<label for=\"{$this->id}_album\">" . _MSALBUM . "</label><br/>";
-    $html .= "<select id=\"{$this->id}_album\" name=\"{$this->inputName}_album\" onchange=\"mediashare.itemSelector.albumChanged(this,'{$this->id}')\">\n";
-    foreach ($albums as $album)
-    {
-      $title = '';
-      for ($i=1,$cou=(int)$album['nestedSetLevel']; $i<$cou; ++$i)
-        $title .= '+ ';
-      if ($selectedAlbumId == $album['id'])
-        $selected = ' selected="selected"';
-      else
-        $selected = '';
-      $html .= "<option value=\"$album[id]\"$selected>" . $title . DataUtil::formatForDisplay($album['title']) . "</option>\n";
-    }
-    $html .= "</select><br/>\n";
-
     $imgSrc = null;
+    $itemOptionsHtml = '';
 
-    $html .= "<label for=\"{$this->id}_item\">" . _MSMEDIAITEM . "</label><br/> ";
-    $html .= "<select id=\"{$this->id}_item\" name=\"$this->inputName\" onchange=\"mediashare.itemSelector.itemChanged(this,'{$this->id}')\">\n";
     if ($selectedAlbumId != null)
     {
       $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $selectedAlbumId));
@@ -120,12 +103,10 @@ class mediashareItemSelector extends pnFormPlugin
         else
           $selected = '';
 
-        $html .= "<option value=\"$item[id]\"$selected>" . DataUtil::formatForDisplay($item['title']) . "</option>\n";
+        $itemOptionsHtml .= "<option value=\"$item[id]\"$selected>" . DataUtil::formatForDisplay($item['title']) . "</option>\n";
       }
     }
-    $html .= "</select>";
 
-    $html .= "</td>\n";
     $html .= "<td class=\"img\" style=\"height: {$thumbnailSize}px; width: {$thumbnailSize}px;\">\n";
 
     if ($imgSrc != null)
@@ -138,11 +119,38 @@ class mediashareItemSelector extends pnFormPlugin
     }
     $html .= "<img id=\"{$this->id}_img\" src=\"$imgSrc\" alt=\"\"$imgStyle/><br/>\n";
 
+    $html .= "</td>\n";
+    $html .= "<td class=\"selector\">\n";
+
+    $html .= "<label for=\"{$this->id}_album\">" . _MSALBUM . "</label><br/>";
+    $html .= "<select id=\"{$this->id}_album\" name=\"{$this->inputName}_album\" onchange=\"mediashare.itemSelector.albumChanged(this,'{$this->id}')\">\n";
+    foreach ($albums as $album)
+    {
+      $title = '';
+      for ($i=1,$cou=(int)$album['nestedSetLevel']; $i<$cou; ++$i)
+        $title .= '+ ';
+      if ($selectedAlbumId == $album['id'])
+        $selected = ' selected="selected"';
+      else
+        $selected = '';
+      $html .= "<option value=\"$album[id]\"$selected>" . $title . DataUtil::formatForDisplay($album['title']) . "</option>\n";
+    }
+    $html .= "</select><br/>\n";
+
+    $html .= "<label for=\"{$this->id}_item\">" . _MSMEDIAITEM . "</label><br/> ";
+    $html .= "<select id=\"{$this->id}_item\" name=\"$this->inputName\" onchange=\"mediashare.itemSelector.itemChanged(this,'{$this->id}')\">\n";
+    if ($selectedAlbumId != null)
+    {
+      $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $selectedAlbumId));
+      $html .= $itemOptionsHtml;
+    }
+    $html .= "</select>";
+
     $html .= "</td></tr>\n";
 
     if ($this->enableUpload)
     {
-      $html .= "<tr><td colspan=\"2\"><div class=\"selector\" style=\"display: block\">\n";
+      $html .= "<tr><td colspan=\"2\"><a href=\"javascript:void(0)\" id=\"mediashare_upload_collapse\">" . _MSUPLOAD. "</a><div id=\"mediashare_upload\">\n";
 
       $html .= _MSSELECTORUPLOAD . '<br/>';
       $html .= "<label for=\"{$this->id}_upload\">" . _MSUPLOAD . "</label>\n";

@@ -1,7 +1,3 @@
-// =======================================================================
-// Photoshare by Jorn Lind-Nielsen (C) 2002.
-// =======================================================================
-
 var currentImage   = null;  // Points to the selected image when only one image is selected
 var selectedImages = {};    // Contains set of selected images
 var imageCount     = 0;     // Number of selected images

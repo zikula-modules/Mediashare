@@ -153,7 +153,23 @@ mediashare.itemSelector.onLoad = function(baseId)
                           parameters: pars, 
                           onSuccess: function(response) { mediashare.itemSelector.gotItems(response,baseId,true); },
                           onFailure: mediashare.itemSelector.handleError});
+
+  Event.observe('mediashare_upload_collapse', 'click', mediashare.itemSelector.uploadClick);
+  $('mediashare_upload_collapse').addClassName('pn-toggle-link');
+  mediashare.itemSelector.uploadClick();
 }
+
+
+mediashare.itemSelector.uploadClick = function()
+{
+  if ($('mediashare_upload_collapse').style.display != "none") {
+      Element.removeClassName.delay(0.9, $('mediashare_upload_collapse'), 'pn-toggle-link-open');
+  } else {
+      $('mediashare_upload_collapse').addClassName('pn-toggle-link-open');
+  }
+  switchdisplaystate('mediashare_upload');
+}
+
 
 mediashare.itemSelector.albumChanged = function(albumSelector, baseId)
 {
