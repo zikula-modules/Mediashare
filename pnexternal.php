@@ -119,9 +119,18 @@ function mediashare_external_pasteitem($args)
   $render->assign('albumId', $albumId);
   $render->assign('mediaId', $mediaId);
   $render->assign('mediaItem', $mediaItem);
-  $render->assign('thumbnailUrl', "mediashare/$mediaItem[thumbnailRef]");
-  $render->assign('previewUrl', "mediashare/$mediaItem[previewRef]");
-  $render->assign('originalUrl', "mediashare/$mediaItem[originalRef]");
+  if ($mediaItem['mediaHandler'] != 'extapp')
+  {
+    $render->assign('thumbnailUrl', "mediashare/$mediaItem[thumbnailRef]");
+    $render->assign('previewUrl', "mediashare/$mediaItem[previewRef]");
+    $render->assign('originalUrl', "mediashare/$mediaItem[originalRef]");
+  }
+  else
+  {
+    $render->assign('thumbnailUrl', "$mediaItem[thumbnailRef]");
+    $render->assign('previewUrl', "$mediaItem[previewRef]");
+    $render->assign('originalUrl', "$mediaItem[originalRef]");
+  }
   $render->assign('mode', $mode);
 
   echo $render->fetch('mediashare_external_pasteitem.html');

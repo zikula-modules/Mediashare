@@ -14,6 +14,7 @@ Version NEXT
   * Fix #9 - Fixed performance of updating nested set values (moved to stored procedure).
   * Fix #45 - keywords not working with 'umlaute'
   * Fix #7 - cannot upload zip-file with gif
+  * Fix #70 - mediashare plugin for scribite is not working with flickr
   * Fixed a bug in the photoshare conversion file (pnshow.php).
   * Fixed missing delete of invitations table when removing module.
   * Now using PostNuke .8 prototype scripts if available.

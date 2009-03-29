@@ -93,7 +93,7 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
         'originalMimeType'  => 'image/jpeg',
         'originalWidth'     => $image['Width'],
         'originalHeight'    => $image['Height'],
-        'originalBytes'     => $image['Size'],
+        'originalBytes'     => 0,
         'originalIsImage'   => true,
         'ownerName'         => null);
   }
