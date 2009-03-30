@@ -38,7 +38,7 @@ define('_MSINVSETEXPIRESTO', 'Sæt udløbsdatoen til');
 define('_MSINVSHOWLINK', 'vis link');
 define('_MSINVSUBJECTTEXT', 'Hey! Se mine billeder');
 define('_MSINVSUBJECT', 'Emne');
-define('_MSINVTEXT', '<p>Følg linket nedenfor (klik på det eller kopier det over i din webbrowser)</p> <p>%url%</p>');
+define('_MSINVTEXT', '<p>Følg linket nedenfor (klik på det eller kopier det over i din webbrowser)</p> <p><a href="%url%">%url%</a></p>');
 define('_MSINVTEXTINTRO', 'Nedenstående tekst bliver tilføjet til din invitation');
 define('_MSINVTHELIST', 'invitationslisten');
 define('_MSINVVIEWS', 'Visninger');

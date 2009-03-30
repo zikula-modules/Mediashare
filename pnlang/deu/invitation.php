@@ -39,7 +39,7 @@ define('_MSINVSETEXPIRESTO',     'Verfallsdatum für ausgwählte Einladungen setze
 define('_MSINVSHOWLINK',         'Link anzeigen');
 define('_MSINVSUBJECTTEXT',      'Hallo! Meine neuesten Bilder stehen online bereit');
 define('_MSINVSUBJECT',          'Betreff');
-define('_MSINVTEXT',             '<p>Einfach den folgenden Einladungslink anklicken oder manuell in die Adresszeile des Browsers kopieren.</p><p>%url%</p>');
+define('_MSINVTEXT',             '<p>Einfach den folgenden Einladungslink anklicken oder manuell in die Adresszeile des Browsers kopieren.</p><p><a href="%url%">%url%</a></p>');
 define('_MSINVTEXTINTRO',        'Der nachfolgenden Text wird der Einladung beigefügt');
 define('_MSINVTHELIST',          'die Einladungsliste');
 define('_MSINVVIEWS',            'Aufrufe');

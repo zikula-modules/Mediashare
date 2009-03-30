@@ -35,11 +35,11 @@ function mediashare_invitationapi_sendInvitation(&$args)
       $message .= "\n\n";
 
       $invitationUrl = pnModUrl('mediashare', 'invitation', 'open',
-                                array('inv' => $invitationId));
+                                array('inv' => $invitationId),
+                                false, false, true);
 
       $message .= str_replace('%url%', $invitationUrl, _MSINVTEXT);
-      $message = str_replace('<p>', '', $message);
-      $message = str_replace('</p>', "\n\n", $message);
+      $message = str_replace("\n", '<br/>', $message);
 
       $ok = pnModAPIFunc('Mailer', 'user', 'sendmessage',
                          array('toaddress'    => $email,
@@ -47,7 +47,7 @@ function mediashare_invitationapi_sendInvitation(&$args)
                                'fromaddress'  => $args['senderemail'],
                                'subject'      => $args['subject'],
                                'body'         => $message,
-                               'html'         => false));
+                               'html'         => true));
       if ($ok === false)
         return mediashareErrorAPI(__FILE__, __LINE__, 'Some error occured while trying to send invitation');
     }
@@ -142,11 +142,11 @@ function mediashare_invitationapi_resendInvitation(&$args)
       $message .= "\n\n";
 
       $invitationUrl = pnModUrl('mediashare', 'invitation', 'open',
-                                array('inv' => $invitation['key']));
+                                array('inv' => $invitation['key']),
+                                false, false, true);
 
       $message .= str_replace('%url%', $invitationUrl, _MSINVTEXT);
-      $message = str_replace('<p>', '', $message);
-      $message = str_replace('</p>', "\n\n", $message);
+      $message = str_replace("\n", '<br/>', $message);
 
       $ok = pnModAPIFunc('Mailer', 'user', 'sendmessage',
                          array('toaddress'    => $email,
@@ -154,7 +154,7 @@ function mediashare_invitationapi_resendInvitation(&$args)
                                'fromaddress'  => $args['senderemail'],
                                'subject'      => $args['subject'],
                                'body'         => $message,
-                               'html'         => false));
+                               'html'         => true));
       if ($ok === false)
         return mediashareErrorAPI(__FILE__, __LINE__, 'Some error occured while trying to send invitation');
     }

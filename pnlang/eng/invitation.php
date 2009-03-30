@@ -38,7 +38,7 @@ define('_MSINVSETEXPIRESTO', 'Set expire date on selected invitations to');
 define('_MSINVSHOWLINK', 'show link');
 define('_MSINVSUBJECTTEXT', 'Hi! See my new pictures');
 define('_MSINVSUBJECT', 'Subject');
-define('_MSINVTEXT', '<p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p>%url%</p>');
+define('_MSINVTEXT', '<p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%url%">%url%</a></p>');
 define('_MSINVTEXTINTRO', 'The text below will be appended to your invitation');
 define('_MSINVTHELIST', 'the invitation list');
 define('_MSINVVIEWS', 'Views');
