@@ -154,6 +154,9 @@ class mediashare_imageHandlerGD
     $isTrueColor = false;
     $thumbnail = $this->createEmptyImage($resizedXSize, $resizedYSize, $mimeType, $isTrueColor);
 
+    imagealphablending($thumbnail, false);
+    imagesavealpha($thumbnail, true);
+
     $white = imagecolorallocate($thumbnail, 255, 255, 255); // First allocated - becomes background
     $gray = imagecolorallocate($thumbnail, 100, 100, 100);
 
@@ -162,7 +165,6 @@ class mediashare_imageHandlerGD
     {
       if (!@imagecopyresampled($thumbnail,$im, 0,0, 0,0, $resizedXSize, $resizedYSize, $xs,$ys))
         mediashareImageCopyResampleBicubic($thumbnail, $im, 0,0, 0,0, $resizedXSize, $resizedYSize, $xs,$ys);
-        // FIXME
     }
     else
       imagecopyresized($thumbnail,$im, 0,0, 0,0, $resizedXSize, $resizedYSize, $xs,$ys);
