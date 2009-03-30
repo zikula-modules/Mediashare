@@ -137,7 +137,8 @@ function mediashare_invitation_link($args)
       return mediashareErrorAPIGet();
 
     $link = pnModUrl('mediashare', 'invitation', 'open',
-                     array('inv' => $invitationId));
+                     array('inv' => $invitationId),
+                     false, false, true);
   }
 
   if (!pnModAPILoad('mediashare', 'user'))
