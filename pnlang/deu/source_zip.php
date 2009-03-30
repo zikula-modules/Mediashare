@@ -1,11 +1,12 @@
 <?php
 // ------------------------------------------------------------------------------------
 // Translation for Mediashare module
-// Translation by: Thomas Smiatek
+// Translation by: Thomas Smiatek / Carsten Volmer
+// $Id$
 // ------------------------------------------------------------------------------------
 
 require_once('modules/mediashare/pnlang/deu/source.php');
 
-define('_MSADDMEDIAINFO', '<p>Hier können Zip-Dateien über den Browser hochgeladen werden.</p><p>Sie können bis zu %uploadsize% kbytes pro Datei hochladen. Diese Upload-Beschränkungen können durch eine Limitierung des Gesamt-Speicherplatzes weiter eingeschränkt sein.</p><p>Sie werden auf der nächsten Seite dazu aufgefordert, Beschreibungen, Schlüsselworte etc. zu den Objekten einzufügen.</p>');
+define('_MSADDMEDIAINFO', '<p>Hier können Zip-Dateien über den Browser hinzugefügt werden.</p><p>Es können bis zu %uploadsize% KBytes pro Datei hochgeladen werden. Diese Upload-Beschränkungen können durch eine Limitierung des Gesamtspeicherplatzes weiter eingeschränkt sein.</p><p>Auf den nächsten Seiten wird man dazu aufgefordert, Beschreibungen, Schlüsselworte, etc. zu ergänzen.</p>');
 
 ?>

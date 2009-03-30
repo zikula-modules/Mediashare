@@ -1,8 +1,9 @@
 <?php
 // ------------------------------------------------------------------------------------
 // Translation for Mediashare module
-// Translation by: Thomas Smiatek
+// Translation by: Thomas Smiatek / Carsten Volmer
+// $Id$
 // ------------------------------------------------------------------------------------
 
-define('_MSSEARCH', 'Mediendateien');
-define('_MSMEDIAINALBUM', 'Mediendatei in Album: ');
+define('_MSSEARCH', 'Medien');
+define('_MSMEDIAINALBUM', 'Medien in Album: ');
