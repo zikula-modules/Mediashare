@@ -14,7 +14,6 @@ define('_MSINSALBUMURL', 'Album link');
 define('_MSINSALBUMURLTHUMBNAIL', 'Album link as thumbnail');
 define('_MSINSALBUMURLPOPUP', 'Album link (popup)');
 define('_MSINSALBUMURLTHUMBNAILPOPUP', 'Album link as thumbnail (popup)');
-
 define('_MSUNKNOWNITEMFORMAT', 'Unknown media format');
 
 ?>

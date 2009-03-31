@@ -4,17 +4,15 @@ Mediashare (C) Jorn Wildt 2005
 Mediashare is a Zikula based gallery that enables you to share your images,
 videos, flash files and much more on the internet.
 
-Mediashare is a complete rewrite of the code for Photoshare, and it is my hope 
-that it will be faster, easier to use, and easier to modify and extend than
-Photoshare ever was.
+I hope you find this application usefull for your website.
 
 Jorn Wildt
 
 
 REQUIREMENTS
 ============
-* Zikula 1.x (or PostNuke version .76 or never)
-* MySQL 4.x
+* Zikula 1.x
+* MySQL 4.x (MySQL 5.x performs better)
 * PHP's GD library for image manipulation.
 * Rewrite URLs enabled in .htaccess files if you want to store media files
   in the database. This requires an Apache web server (although some plugins
@@ -37,7 +35,7 @@ FEATURE LIST
   - PDF
 * Detailed access control.
 * E-mail invitations with special links for access to locked albums
-* Browsing by keywords (or tags - a'la www.flickr.com).
+* Browsing by keywords (or tags - a'la Flickr).
 * Compatible with Gallery Remote Protocol 
   (see http://gallery.menalto.com/wiki/Gallery_Remote)
 * Reordering of files by drag and drop.
@@ -55,10 +53,10 @@ FEATURE LIST
 * Imports from Photoshare
 
 
-UPGRADE
-=======
+SPECIAL UPGRADE INSTRUCTIONS
+============================
 
-To 3.4.2
+To 4.0.0
 * Do a normal upgrade
 * If you are using MySQL 5.x then open the file pneditapi.php and search for 
   "MySQL switch" and then change (false) to (true). This will improve 

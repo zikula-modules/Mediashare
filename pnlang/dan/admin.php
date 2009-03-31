@@ -7,6 +7,10 @@
 require_once('modules/mediashare/pnlang/dan/common.php');
 
 define('_MSALLOWTEMPLATEOVERRIDE', 'Tillad skabelonvalg pr. album?');
+define('_MSAPIKEYFLICKR', 'Flickr API key');
+define('_MSAPIKEYSMUGMUG', 'SmugMug API key');
+define('_MSAPIKEYPHOTOBUCKET', 'Photobucket API key');
+define('_MSAPIKEYPICASA', 'Picasa API key');
 define('_MSAPPLYGLOBALTEMPLATE', 'Sæt alle');
 define('_MSAPPLYGLOBALTEMPLATECONFIRM', 'Overskriv alle albumskabeloner');
 define('_MSDEFAULTALBUMTEMPLATE', 'Standard albumvisning');

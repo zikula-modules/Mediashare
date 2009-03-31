@@ -162,13 +162,13 @@ class mediashareAccessApi
     
     if (is_array($invitedAlbums) && ($access & mediashareAccessRequirementView) == mediashareAccessRequirementView)
     {
-      foreach ($invitedAlbums as $albumId => $ok)
+      foreach ($invitedAlbums as $invAlbumId => $ok)
       {
         if ($ok)
         {
           if (!empty($invitedSql))
             $invitedSql .= ',';
-          $invitedSql .= (int)$albumId;
+          $invitedSql .= (int)$invAlbumId;
         }
       }
     }

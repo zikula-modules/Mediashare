@@ -4,8 +4,10 @@
 // Translation by: Jorn Wildt
 // ------------------------------------------------------------------------------------
 
-define('_MSSEARCHNONEFOUND', 'Mediashare: Nothing matched your search');
-define('_MSSEARCHRESULTS', 'item(s) found');
+require_once('modules/mediashare/pnlang/dan/common.php');
+
+define('_MSSEARCHNONEFOUND', 'Mediashare: der blev ikke fundet nogen matchende mediefiler');
+define('_MSSEARCHRESULTS', 'mediefiler');
 define('_MSSEARCHTITLE', 'Mediashare');
 
 ?>

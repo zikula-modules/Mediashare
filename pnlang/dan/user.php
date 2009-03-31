@@ -7,6 +7,7 @@
 require_once('modules/mediashare/pnlang/dan/common.php');
 
 define('_MSADDED', 'Tilføjet');
+define('_MSCLICKTOBROWSE', 'Klik på billedet for slideshow (%count% photos)');
 define('_MSDELAY', 'Pause');
 define('_MSEMPTYALBUMGOBACK', 'Der er ikke nogen mediefiler i dette album. Klik her for at returnere til forrige side.');
 define('_MSFILTERCLEAR', 'Slet filter (vis alt)');

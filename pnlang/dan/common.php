@@ -24,6 +24,7 @@ define('_MSDELETEALBUM', 'Slet album');
 define('_MSDESCRIPTION', 'Beskrivelse');
 define('_MSEDIT', 'Rediger');
 define('_MSEDITALBUM', 'Rediger album');
+define('_MSEXTAPPURLHELPLINK', 'Klik her for at læse mere.');
 define('_MSHEIGHT', 'Højde');
 define('_MSINVITE', 'Inviter');
 define('_MSINVITATIONS', 'Invitationer');

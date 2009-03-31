@@ -5,7 +5,7 @@
 // ------------------------------------------------------------------------------------
 
 require_once('modules/mediashare/pnlang/dan/common.php');
-require_once('modules/mediashare/pnlang/dan/import.php');
+require_once('modules/mediashare/pnlang/dan/admin.php');
 
 define('_MSGENERAL', 'Generelt');
 define('_MSIMPBACKTOADMIN', 'Tilbage til administrationen');

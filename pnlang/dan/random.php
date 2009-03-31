@@ -1,8 +1,8 @@
 <?php
 // ------------------------------------------------------------------------------------
-// Translation for Photoshare Random Image block
-// Language:              English
-// Translation by:        Jorn Lind-Nielsen
+// Translation for Mediashare Random Image block
+// Language:       Dansk
+// Translation by: Jorn Wildt
 // ------------------------------------------------------------------------------------
 define('_MS_RANDOMBLOCKHELP', 'Vælg blokindhold og eventuelle ekstra parametre.');
 define('_MS_RANDOMBLOCKALLLABEL', 'Vis tilfældigt billede fra alle albums');

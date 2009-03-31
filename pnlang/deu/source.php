@@ -7,6 +7,4 @@
 
 require_once('modules/mediashare/pnlang/deu/common.php');
 
-define('_MSVIDEOWIDTHHEIGHTHELP', 'Nur bei Videoformate notwendig');
-
 ?>

@@ -1,8 +1,8 @@
 Mediashare (C) 2005 Jorn Wildt
 ==============================
 
-Version NEXT
-------------
+Version 4.0
+-----------
   * Added embedding of Flickr, SmugMug, and Picasa albums.
   * Added some missing danish translations.
   * Added a missing line-break after plugin-tabs.
@@ -17,11 +17,12 @@ Version NEXT
   * Fix #52 - alpha transparency in PNGs
   * Fix #70 - mediashare plugin for scribite is not working with flickr
   * Fix #72 - missing baseurl in invitation-mail
+  * Fixed incorrect invitation album access (could not see other public albums)
   * Fixed a bug in the photoshare conversion file (pnshow.php).
   * Fixed missing delete of invitations table when removing module.
-  * Now using PostNuke .8 prototype scripts if available.
   * Fixed issues with Zikula's short URL handling.
   * Fixed menu positions.
+  * Now using Zikula prototype scripts.
 
 Please check upgrade instructions in readme.txt!
 

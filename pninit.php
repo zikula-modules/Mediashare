@@ -481,6 +481,8 @@ function mediashare_upgrade($oldVersion)
     case '3.4.0':
     case '3.4.1':
       $ok = $ok && mediashare_upgrade_to_3_4_1($oldVersion);
+    case '3.4.2':
+    case '4.0.0':
       // future
   }
 
