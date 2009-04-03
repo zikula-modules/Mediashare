@@ -15,6 +15,9 @@ require_once("modules/mediashare/common-edit.php");
 function mediashare_adminapi_getlinks()
 {
     $links = array();
+    
+    pnModLangLoad('mediashare', 'admin');
+    
     if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         $links[] = array('url' => pnModURL('mediashare', 'user',   'view'),    'text' => _MSBROWSE);
         $links[] = array('url' => pnModURL('mediashare', 'admin',  'main'),    'text' => _MSGENERAL);
