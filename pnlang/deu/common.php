@@ -50,7 +50,7 @@ define('_MSSTART',                 'Start');
 define('_MSSTOP',                  'Stop');
 define('_MSTHUMBNAILS',            'Thumbnails');
 define('_MSTITLE',                 'Titel');
-define('_MSTOP',                   'Stop');
+define('_MSTOP',                   'Top');
 define('_MSUPLOAD',                'Upload');
 define('_MSVIDEOWIDTHHEIGHTHELP',  'Nur für Videoformate notwendig');
 define('_MSVIEW',                  'Ansehen');
