@@ -1,12 +1,12 @@
 <!--[* $Id *]-->
-<!--[ pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css" ]-->
+<!--[pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css"]-->
 <!--[if isset($formEncType)  &&  $formEncType!='']-->
 <form method="post" class="pn-adminform" action="<!--[pngetcurrenturi]-->" enctype="<!--[$formEncType]-->">
 <!--[else]-->
 <form method="post" class="pn-adminform" action="<!--[pngetcurrenturi]-->">
 <!--[/if]-->
 
-    <input type="hidden" name="authid" value="<!--[ pnsecgenauthkey module=mediashare ]-->" />
+    <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=mediashare]-->" />
     
     <div class="mediashare" id="mediashare">
     

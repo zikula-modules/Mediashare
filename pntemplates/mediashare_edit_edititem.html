@@ -1,11 +1,11 @@
 <!--[elfisk_setInitialFocus inputId="title"]-->
 
-<!--[pnml name=_MSHEADEREDITITEM assign=mltitle]-->
+<!--[gt text="Edit item" assign=mltitle]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle formEncType="multipart/form-data" mode="edit"]-->
 
 <!--[mediashare_block]-->
   <!--[mediashare_header]-->
-    <!--[pnml name=_MSEDITITEM]-->
+    <!--[gt text="Edit item"]-->
   <!--[/mediashare_header]-->
   <!--[mediashare_body]-->
     <table>
@@ -16,7 +16,7 @@
       </tr>
       <tr>
         <td>
-          <label for="title"><!--[pnml name=_MSTITLE]--></label>
+          <label for="title"><!--[gt text="Title"]--></label>
         </td>
         <td>
           <!--[elfisk_textInput id="title" width="400px" maxLength="255"]-->
@@ -24,7 +24,7 @@
       </tr>
       <tr>
         <td>
-          <label for="keywords"><!--[pnml name=_MSKEYWORDS]--></label>
+          <label for="keywords"><!--[gt text="Keywords"]--></label>
         </td>
         <td>
           <!--[elfisk_textInput id="keywords" width="400px" maxLength="255"]-->
@@ -32,34 +32,34 @@
       </tr>
       <tr>
         <td>
-          <label for="description"><!--[pnml name=_MSDESCRIPTION]--></label>
+          <label for="description"><!--[gt text="Description"]--></label>
         </td>
         <td>
           <!--[elfisk_textArea id="description" width="400px" height="100px"]-->
         </td>
       </tr>
       <tr>
-       <td><label for="upload"><!--[pnml name=_MSOPTUPLOAD]--></label></td>
+       <td><label for="upload"><!--[gt text="Optional new media file"]--></label></td>
        <td>
          <!--[elfisk_upload id="upload" width="400px"]--><br/>
-         <em><!--[pnml name=_MSREFRESHAFTERUPLOAD]--></em>
+         <em><!--[gt text="You may have to force a reload of the next page when replacing media item!"]--></em>
        </td>
       </tr>
       <tr>
        <td></td>
        <td>
-         <label for="width"><!--[pnml name=_MSWIDTH]--></label>
+         <label for="width"><!--[gt text="Width"]--></label>
          <!--[elfisk_intInput id="width" width="4em" intValue=""]-->
-         <label for="height"><!--[pnml name=_MSHEIGHT]--></label>
+         <label for="height"><!--[gt text="Height"]--></label>
          <!--[elfisk_intInput id="height" width="4em" intValue=""]-->
-         (<!--[pnml name=_MSVIDEOWIDTHHEIGHTHELP]-->)
+         (<!--[gt text="Only required for video formats"]-->)
         </td>
       </tr>
     </table>
   <!--[/mediashare_body]-->
   <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="_MSSAVE"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+    <!--[elfisk_button name="saveButton" text="Save"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
   <!--[/mediashare_buttons]-->
 <!--[/mediashare_block]-->
 

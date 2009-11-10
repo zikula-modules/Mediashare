@@ -1,28 +1,28 @@
 <!--[* $Id *]-->
-<!--[ pnml name="_MSIMPORT" assign=title ]-->
-<!--[ pnpagesetvar name=title value=$title ]-->
-<!--[ pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css" ]-->
+<!--[gt text="Import" assign=title]-->
+<!--[pnpagesetvar name=title value=$title]-->
+<!--[pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css"]-->
 
 <div class="pn-adminbox">
-    <h1><!--[ pnml name="_MSMEDIASHARE" ]--></h1>
+    <h1><!--[gt text="Mediashare"]--></h1>
     <div class="pn-menu"><!--[moduleadminlinks modname=mediashare]--></div>
 </div>
 
 <div class="mediashare pn-admincontainer pn-clearfix">
 
-    <h2><!--[pnml name=_MSIMPPHOTOSHARE]--></h2>
+    <h2><!--[gt text="Import albums and images from Photoshare"]--></h2>
 
     <form class="pn-adminform" method="post" action="<!--[pngetcurrenturi]-->">
         <fieldset>
-            <legend><!--[pnml name=_MSIMPPHOTOSHARE]--></legend>
+            <legend><!--[gt text="Import albums and images from Photoshare"]--></legend>
             <div class="pn-adminformrow">
-                <!--[pnml name=_MSIMPPHOTOSHAREHELP html=1]-->
+                <!--[gt text="<strong>Importing from Photoshare takes a long time</strong> since all images has to be loaded and converted. Your web server probably kills PHP before importing is finished. Please just re-submit this page until you return to Mediashare (keep clicking refresh as long as you get a white screen or an error message). html=1"]-->
             </div>
         </fieldset>
 
         <div class="pn-adminformrow pn-adminformbuttons">
-            <!--[elfisk_button name="importButton" text="_MSIMPORT"]-->
-            <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+            <!--[elfisk_button name="importButton" text="Import"]-->
+            <!--[elfisk_button name="cancelButton" text="Cancel"]-->
         </div>
 
     </form>

@@ -1,60 +1,60 @@
 <!--[elfisk_setInitialFocus inputId="emails"]-->
 
-<!--[pnml name=_MSINVINVITATIONS assign=title]-->
+<!--[gt text="Invitations" assign=title]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$title mode="edit"]-->
 
 <!--[include file="mediashare_invitationtabs.html"]-->
 
-<h2><!--[pnml name=_MSINVSENDINVITATION]--></h2>
+<h2><!--[gt text="Send invitation"]--></h2>
 
-<p><!--[pnml name=_MSINVSENDINTRO]--></p>
+<p><!--[gt text="Please enter the e-mail address of the people you want to invite to this album. When you press "Send" they will receive an e-mail with a link that grants them access to view this album without logging in to the website. You can optionally set an expires date for this invitation. After this date the link won't be valid any more."]--></p>
 
-<p><a href="<!--[pnmodurl modname=mediashare type=invitation func=link aid=$album.id]-->"><!--[pnml name=_MSINVLINKYOURSELF]--></a>.</p>
+<p><a href="<!--[pnmodurl modname=mediashare type=invitation func=link aid=$album.id]-->"><!--[gt text="If you want to send the link yourself then click here to generate it"]--></a>.</p>
 
 <input type="hidden" name="albumid" value="<!--[$album.id]-->"/>
 
 <div class="mediashare-invitations">
 <!--[mediashare_block]-->
   <!--[mediashare_header]-->
-    <!--[pnml name=_MSINVINVITATION]-->
+    <!--[gt text="Invitation"]-->
   <!--[/mediashare_header]-->
   <!--[mediashare_body]-->
 
     <div class="row">
-      <label for="emails"><!--[pnml name=_MSINVEMAILS]--></label> <!--[pnml name=_MSINVEMAILSHELP]--><br/>
+      <label for="emails"><!--[gt text="E-mails"]--></label> <!--[gt text="(separate with comma, semicolon, newline or whitespace)"]--><br/>
       <textarea id="emails" name="emails" cols="50" rows="4"><!--[$invitation.email]--></textarea>
     </div>
 
     <div class="row">
-      <label for="subject"><!--[pnml name=_MSINVSUBJECT]--></label><br/>
+      <label for="subject"><!--[gt text="Subject"]--></label><br/>
       <input id="subject" name="subject" class="txt" value="<!--[$invitation.subject]-->"/>
     </div>
 
     <div class="row">
-      <label for="text"><!--[pnml name=_MSINVINVTEXT]--></label> <!--[pnml name=_MSINVINVTEXTHELP]--><br/>
+      <label for="text"><!--[gt text="Invitation text"]--></label> <!--[gt text="(this will be included in the e-mail invitation)"]--><br/>
       <textarea id="text" name="text" cols="50" rows="10"><!--[$invitation.text]--></textarea>
     </div>
 
-    <!--[pnml name=_MSINVTEXTINTRO]-->
+    <!--[gt text="The text below will be appended to your invitation"]-->
 
     <div class="row mediashare-invtext">
-      <!--[pnml name=_MSINVTEXT html=1 url="http://example/example]-->
+      <!--[gt text="<p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%url%">%url%</a></p> html=1 url="]-->
     </div>
 
     <div class="row">
-      <label for="sender"><!--[pnml name=_MSINVSENDER]--></label><br/>
+      <label for="sender"><!--[gt text="Sender"]--></label><br/>
       <input id="sender" name="sender" value="<!--[$invitation.sender]-->" class="txt"/>
     </div>
 
     <div class="row">
-      <label for="expires"><!--[pnml name=_MSINVEXPDATE]--></label> <!--[pnml name=_MSINVEXPDATEHELP]--><br/>
+      <label for="expires"><!--[gt text="Expire date"]--></label> <!--[gt text="(yyyy-mm-dd)"]--><br/>
       <input id="expires" name="expires" value="<!--[$invitation.expires]-->"/>
     </div>
 
   <!--[/mediashare_body]-->
   <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="_MSSEND"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+    <!--[elfisk_button name="saveButton" text="Send"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
   <!--[/mediashare_buttons]-->
 <!--[/mediashare_block]-->
 </div>

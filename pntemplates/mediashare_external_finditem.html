@@ -1,7 +1,7 @@
 <html>
 
 <head>
-<title><!--[pnml name=_MSMEDIASHAREFINDITEM]--></title>
+<title><!--[gt text="Mediashare - Find item"]--></title>
 <!--[if $modCssURL != '']-->
 <link rel="StyleSheet" href="<!--[$modCssURL]-->" type="text/css"/>
 <!--[/if]-->
@@ -31,14 +31,14 @@ body
 
 <!--[mediashare_block]-->
   <!--[mediashare_header]-->
-    <!--[pnml name=_MSSELECTITEM]-->
+    <!--[gt text="Select item"]-->
   <!--[/mediashare_header]-->
   <!--[mediashare_body]-->
 
 <table>
  <tr>
   <td>
-   <label for="keywords"><!--[pnml name=_MSALBUM]--></label>
+   <label for="keywords"><!--[gt text="Album"]--></label>
   </td>
   <td>
     <!--[mediashare_albumSelector albumId=$albumId onchange="mediashare.find.onFolderChanged(this)" onlyMine=$onlyMine]-->
@@ -46,7 +46,7 @@ body
  </tr>
  <tr>
   <td>
-   <label for="keywords"><!--[pnml name=_MSMEDIAITEM]--></label>
+   <label for="keywords"><!--[gt text="Media item"]--></label>
   </td>
   <td>
     <!--[mediashare_itemSelector albumId=$albumId mediaId=$mediaId onchange="mediashare.find.onItemChanged(this)" fetchSelectedInto=mediaItem]-->
@@ -70,7 +70,7 @@ body
  <tr>
   <td>
  <!--[if $hasEditAccess]-->
-   <label for="upload"><!--[pnml name=_MSUPLOAD]--></label>
+   <label for="upload"><!--[gt text="Upload"]--></label>
   </td>
   <td>
     <input type="file" id="upload" name="upload" style="width: 400px;"/>
@@ -83,8 +83,8 @@ body
 
   <!--[/mediashare_body]-->
   <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="selectButton" text="_MSSELECT"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL" onclick="mediashare.find.handleCancel()"]-->
+    <!--[elfisk_button name="selectButton" text="Select"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel" onclick="mediashare.find.handleCancel()"]-->
   <!--[/mediashare_buttons]-->
 <!--[/mediashare_block]-->
 

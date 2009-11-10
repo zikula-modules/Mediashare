@@ -4,7 +4,7 @@
 <li>
   <!--[$status.message]-->
   <!--[if $status.ok]-->
-    <img src="modules/mediashare/pnimages/button_ok.gif" alt="<!--[pnml name=_MSOK]-->"/>
+    <img src="modules/mediashare/pnimages/button_ok.gif" alt="<!--[gt text="Ok"]-->"/>
   <!--[else]-->
     <img src="modules/mediashare/pnimages/button_cancel.gif" alt="<!--[$status.message]-->"/>
   <!--[/if]-->
@@ -24,7 +24,7 @@
       <table>
         <tr>
           <td>
-            <label for="title-<!--[$item.id]-->"><!--[pnml name=_MSTITLE]--></label>
+            <label for="title-<!--[$item.id]-->"><!--[gt text="Title"]--></label>
           </td>
           <td>
             <!--[elfisk_textInput id="title-`$item.id`" width="400px" maxLength="255" text=$item.title]-->
@@ -32,7 +32,7 @@
         </tr>
         <tr>
           <td>
-            <label for="keywords-<!--[$item.id]-->"><!--[pnml name=_MSKEYWORDS]--></label>
+            <label for="keywords-<!--[$item.id]-->"><!--[gt text="Keywords"]--></label>
           </td>
           <td>
             <!--[elfisk_textInput id="keywords-`$item.id`" width="400px" maxLength="255" text=$item.keywords]-->
@@ -40,7 +40,7 @@
         </tr>
         <tr>
           <td class="top">
-            <label for="description-<!--[$item.id]-->"><!--[pnml name=_MSDESCRIPTION]--></label>
+            <label for="description-<!--[$item.id]-->"><!--[gt text="Description"]--></label>
           </td>
           <td>
             <!--[elfisk_textArea id="description-`$item.id`" width="400px" height="100px" text=$item.description]-->
@@ -53,6 +53,6 @@
 </table>
 
 <!--[mediashare_buttons]-->
-  <!--[elfisk_button name="continueButton" text="_MSCONTINUE"]-->
-  <!--[elfisk_button name="moreButton" text="_MSADDMOREITEMS"]-->
+  <!--[elfisk_button name="continueButton" text="Continue"]-->
+  <!--[elfisk_button name="moreButton" text="Add more"]-->
 <!--[/mediashare_buttons]-->

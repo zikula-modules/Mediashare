@@ -2,12 +2,12 @@
 
 <form method="post" action="<!--[pnmodurl modname=mediashare type=edit func=multideletemedia aid=$albumId]-->">
 
-<input type="hidden" name="authid" value="<!--[ pnsecgenauthkey module=mediashare ]-->" />
+<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=mediashare]-->" />
 
 <div class="mediashare">
 
   <div class="mediashare-header">
-    <h1><!--[pnml name=_MSHEADERDELETEMULTIITEMS]--></h1>
+    <h1><!--[gt text="Delete multiple items"]--></h1>
   </div>
 
 
@@ -31,8 +31,8 @@
 
   <!--[/mediashare_body]-->
   <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="_MSDELETE"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+    <!--[elfisk_button name="saveButton" text="Delete"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
   <!--[/mediashare_buttons]-->
 <!--[/mediashare_block]-->
 

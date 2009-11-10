@@ -1,7 +1,7 @@
 <tr>
   <td>
   </td>
-  <td><em><!--[pnml name=_MS_RANDOMBLOCKHELP]--></em></td>
+  <td><em><!--[gt text="Select one of the following kinds of block content and specify optional album criteria."]--></em></td>
 </tr>
 
 <tr>
@@ -9,7 +9,7 @@
   </td>
   <td>
     <input type="radio" id="radioAll" name="mstype" value="all"<!--[if $type==all]--> checked="checked"<!--[/if]-->"/>
-    <label for="radioAll"><!--[pnml name=_MS_RANDOMBLOCKALLLABEL]--></label>
+    <label for="radioAll"><!--[gt text="Show random image from any album"]--></label>
   </td>
 </tr>
 <tr>
@@ -17,7 +17,7 @@
   </td>
   <td>
     <input type="radio" id="radioLatest" name="mstype" value="latest"<!--[if $type==latest]--> checked="checked"<!--[/if]-->/>
-    <label for="radioLatest"><!--[pnml name=_MS_RANDOMBLOCKLATESTLABEL]--></label>
+    <label for="radioLatest"><!--[gt text="Show random image from latest album"]--></label>
   </td>
 </tr>
 <tr>
@@ -25,12 +25,12 @@
   </td>
   <td>
     <input type="radio" id="radioAlbum" name="mstype" value="album"<!--[if $type==album]--> checked="checked"<!--[/if]-->/>
-    <label for="radioAlbum"><!--[pnml name=_MS_RANDOMBLOCKALBUMLABEL]--></label>
+    <label for="radioAlbum"><!--[gt text="Show random image from specific album"]--></label>
   </td>
 </tr>
 <tr>
   <td>
-    <label for="msalbumId"><!--[pnml name=_MS_RANDOMBLOCKALBUMLABEL]--></label>
+    <label for="msalbumId"><!--[gt text="Show random image from specific album"]--></label>
   </td>
   <td>
     <!--[mediashare_albumSelector id="msalbumId" albumId=$albumId]-->
@@ -38,7 +38,7 @@
 </tr>
 <tr>
   <td>
-    <label for="cacheTime"><!--[pnml name=_MS_RANDOMBLOCKCACHELABEL]--></label>
+    <label for="cacheTime"><!--[gt text="Update time for block (sec.) (empty = always)"]--></label>
   </td>
   <td>
     <input type="text" id="cacheTime" name="cacheTime" value="<!--[$cacheTime]-->"/>
@@ -46,11 +46,11 @@
 </tr>
 <tr>
   <td style="vertical-align: top">
-    <label for="mshtml"><!--[pnml name=_MS_RANDOMBLOCKHTMLLABEL]--></label>
+    <label for="mshtml"><!--[gt text="HTML to wrap image in"]--></label>
   </td>
   <td>
     <textarea id="mshtml" name="mshtml" cols="40" rows="10"><!--[$html|htmlspecialchars]--></textarea><br/>
-    <a href="modules/mediashare/docs/randomblock/examples.html" target="_new"><!--[pnml name=_MS_RANDOMBLOCKHTMLHELP]--></a>
+    <a href="modules/mediashare/docs/randomblock/examples.html" target="_new"><!--[gt text="The following variables can be used in the HTML code:"]--></a>
   </td>
 </tr>
 <tr>
@@ -58,13 +58,13 @@
   </td>
   <td>
     <ul>
-      <li>${originalURL} - <!--[pnml name=_MS_RANDOMBLOCKORIGINALURLHELP]--></li>
-      <li>${previewURL} - <!--[pnml name=_MS_RANDOMBLOCKPREVIEWURLHELP]--></li>
-      <li>${thumbnailURL} - <!--[pnml name=_MS_RANDOMBLOCKTHUMBNAILURLHELP]--></li>
-      <li>${albumURL} - <!--[pnml name=_MS_RANDOMBLOCKALBUMURLHELP]--></li>
-      <li>${title} - <!--[pnml name=_MS_RANDOMBLOCKTITLEHELP]--></li>
-      <li>${albumTitle} - <!--[pnml name=_MS_RANDOMBLOCKALBUMTITLEHELP]--></li>
-      <li>${owner} - <!--[pnml name=_MS_RANDOMBLOCKOWNERHELP]--></li>
+      <li>${originalURL} - <!--[gt text="URL to full size image (to be used in SRC element of IMG tag)"]--></li>
+      <li>${previewURL} - <!--[gt text="URL to preview image (to be used in SRC element of IMG tag)"]--></li>
+      <li>${thumbnailURL} - <!--[gt text="URL to thumbnail image (to be used in SRC element of IMG tag)"]--></li>
+      <li>${albumURL} - <!--[gt text="URL to album viewer"]--></li>
+      <li>${title} - <!--[gt text="Image title"]--></li>
+      <li>${albumTitle} - <!--[gt text="Album title"]--></li>
+      <li>${owner} - <!--[gt text="Name of image owner"]--></li>
     </ul>
   </td>
 </tr>

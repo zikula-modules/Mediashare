@@ -1,10 +1,10 @@
 <!--[* $Id *]-->
-<!--[ pnml name="_MSIMPORT" assign=title ]-->
-<!--[ pnpagesetvar name=title value=$title ]-->
-<!--[ pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css" ]-->
+<!--[gt text="Import" assign=title]-->
+<!--[pnpagesetvar name=title value=$title]-->
+<!--[pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css"]-->
 
 <div class="pn-adminbox">
-    <h1><!--[ pnml name="_MSMEDIASHARE" ]--></h1>
+    <h1><!--[gt text="Mediashare"]--></h1>
     <div class="pn-menu"><!--[moduleadminlinks modname=mediashare]--></div>
 </div>
 
@@ -12,7 +12,7 @@
     <h2><!--[$title]--></h2>
 
     <ul>
-        <li><a href="<!--[pnmodurl modname=mediashare type=import func=photoshare]-->"><!--[pnml name=_MSIMPPHOTOSHARE]--></a></li>
+        <li><a href="<!--[pnmodurl modname=mediashare type=import func=photoshare]-->"><!--[gt text="Import albums and images from Photoshare"]--></a></li>
     </ul>
 
 </div>

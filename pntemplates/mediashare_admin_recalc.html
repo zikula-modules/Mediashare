@@ -1,17 +1,17 @@
 <!--[* $Id *]-->
 <!--[include file="mediashare_admin_header.html"]-->
 
-<h2><!--[pnml name=_MSREC_PAGETITLE]--></h2>
+<h2><!--[gt text="Regenerate thumbnails and previews"]--></h2>
 
 <div class="mediashare-recalc">
     <iframe id="mediashareFrame" frameborder="0" scrolling="no">
     </iframe>
 
-    <p><!--[pnml name=_MSREC_INTRO]--></p>
+    <p><!--[gt text="Regenerating all thumbnails and previews takes a good deal of time. This feature uses JavaScript to regenerate one file at a time without running into PHP's execution time limits. The iframe to the right is used for communication with the server. You can follow the progress in both the iframe and in the checkbox list below."]--></p>
 
     <div class="pn-adminformrow pn-adminformbuttons">
-        <button style="border:1px solid; padding:3px;" type="button" onclick="mediashareRecalcStart()"><!--[pnml name=_MSSTART]--></button>
-        <button style="border:1px solid; padding:3px;" type="button" onclick="mediashareRecalcPause()"><!--[pnml name=_MSPAUSE]--></button>
+        <button style="border:1px solid; padding:3px;" type="button" onclick="mediashareRecalcStart()"><!--[gt text="Start"]--></button>
+        <button style="border:1px solid; padding:3px;" type="button" onclick="mediashareRecalcPause()"><!--[gt text="Pause"]--></button>
     </div>
 
     <div class="mediashare-recalclist">

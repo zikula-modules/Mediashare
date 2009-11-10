@@ -1,29 +1,29 @@
 <!--[* $Id *]-->
-<!--[ elfisk_setInitialFocus inputId="title" ]-->
-<!--[ pnml name=_MSEDITACCESS assign=mltitle ]-->
-<!--[ include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit" ]-->
-<!--[ include file="mediashare_invitationtabs.html" ]-->
+<!--[elfisk_setInitialFocus inputId="title"]-->
+<!--[gt text="Edit access" assign=mltitle]-->
+<!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit"]-->
+<!--[include file="mediashare_invitationtabs.html"]-->
 
-<h3><!--[pnml name=_MSEDITACCESS]--></h3>
+<h3><!--[gt text="Edit access"]--></h3>
 
 <input type="hidden" name="albumId" value="<!--[$album.id]-->"/>
 
 <fieldset>
-    <legend><!--[pnml name=_MSACCESS]--></legend>
+    <legend><!--[gt text="Access"]--></legend>
 
     <div class="pn-informationmsg">
-        <!--[pnml name=_MSACCESSHELP html=1]-->
+        <!--[gt text="Here you can assign different access levels to different user groups. <ul><li>Add album means users in the selected group may add new sub-albums to the album.</li><li>Add media means users are allowed to add new media items(*).</li><li>Edit album means users can edit the title, description and other meta-data of the album.</li><li>Edit media means users can edit the title, description and other meta-data of the media item(*).</li></ul>Any of the edit/Add access levels grants also access to the editing view of the album. Users may <em>always</em> edit their own albums and media items independently of the access settings.<br/><br/>(*) As well as re-arrange all media items in the album. html=1"]-->
     </div>
 
     <table class="pn-admintable">
         <thead>
             <tr>
-                <th><!--[pnml name=_MSGROUP]--></th>
-                <th><!--[pnml name=_MSVIEW]--></th>
-                <th><!--[pnml name=_MSADDALBUM]--></th>
-                <th><!--[pnml name=_MSADDMEDIA]--></th>
-                <th><!--[pnml name=_MSEDITALBUM]--></th>
-                <th><!--[pnml name=_MSEDITMEDIA]--></th>
+                <th><!--[gt text="Group"]--></th>
+                <th><!--[gt text="View"]--></th>
+                <th><!--[gt text="Add album"]--></th>
+                <th><!--[gt text="Add media"]--></th>
+                <th><!--[gt text="Edit album"]--></th>
+                <th><!--[gt text="Edit media"]--></th>
             </tr>
         </thead>
         <!--[foreach from=$access item=accessRow]-->
@@ -53,8 +53,8 @@
 </fieldset>
 
 <div class="pn-adminformrow pn-adminformbuttons">
-    <!--[elfisk_button name="saveButton" text="_MSSAVE"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+    <!--[elfisk_button name="saveButton" text="Save"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
 </div>
 
 <!--[include file="mediashare_footer.html"]-->

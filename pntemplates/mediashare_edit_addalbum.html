@@ -1,17 +1,17 @@
 <!--[elfisk_setInitialFocus inputId="title"]-->
 
-<!--[pnml name=_MSHEADERADDALBUM assign=mltitle]-->
+<!--[gt text="Add album" assign=mltitle]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit"]-->
 
 <!--[mediashare_block]-->
   <!--[mediashare_header]-->
-    <!--[pnml name=_MSADDALBUM]-->
+    <!--[gt text="Add album"]-->
   <!--[/mediashare_header]-->
   <!--[mediashare_body]-->
     <table>
       <tr>
         <td>
-          <label for="title"><!--[pnml name=_MSTITLE]--></label>
+          <label for="title"><!--[gt text="Title"]--></label>
         </td>
         <td>
           <!--[elfisk_textInput id="title" width="400px"]-->
@@ -19,7 +19,7 @@
       </tr>
       <tr>
         <td>
-          <label for="keywords"><!--[pnml name=_MSKEYWORDS]--></label>
+          <label for="keywords"><!--[gt text="Keywords"]--></label>
         </td>
         <td>
           <!--[elfisk_textInput id="keywords" width="400px"]-->
@@ -27,7 +27,7 @@
       </tr>
       <tr>
         <td>
-          <label for="summary"><!--[pnml name=_MSSUMMARY]--></label>
+          <label for="summary"><!--[gt text="Summary"]--></label>
         </td>
         <td>
           <!--[elfisk_textArea id="summary" width="400px" height="100px"]-->
@@ -35,7 +35,7 @@
       </tr>
       <tr>
         <td>
-          <label for="description"><!--[pnml name=_MSDESCRIPTION]--></label>
+          <label for="description"><!--[gt text="Description"]--></label>
         </td>
         <td>
           <!--[elfisk_textArea id="description" width="400px" height="100px"]-->
@@ -43,7 +43,7 @@
       </tr>
       <tr>
         <td>
-          <label for="template"><!--[pnml name=_MSTEMPLATE]--></label>
+          <label for="template"><!--[gt text="Template"]--></label>
         </td>
         <td>
           <!--[mediashare_templateSelector id="template" readonly=$disableTemplateOverride]-->
@@ -51,7 +51,7 @@
       </tr>
       <tr>
         <td>
-          <label for="extappURL"><!--[pnml name=_MSEXTAPPURL]--></label>
+          <label for="extappURL"><!--[gt text="External album URL"]--></label>
         </td>
         <td>
           <!--[elfisk_textInput id="extappURL" width="400px"]-->
@@ -60,8 +60,8 @@
     </table>
   <!--[/mediashare_body]-->
   <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="_MSSAVE"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+    <!--[elfisk_button name="saveButton" text="Save"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
   <!--[/mediashare_buttons]-->
 <!--[/mediashare_block]-->
 

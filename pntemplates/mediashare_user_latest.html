@@ -1,13 +1,13 @@
 <!--[* $Id *]-->
 <!--[mediashare_lightbox]-->
 
-<h2><!--[pnml name=_MSMEDIASHARE]--></h2>
+<h2><!--[gt text="Mediashare"]--></h2>
 
 <div class="mediashare-summary">
-    <!--[pnml name=_MSSUMMARYLATEST album=$summary.albumCount media=$summary.mediaCount]-->
+    <!--[gt text='There are %1$s albums available in all and %2$s media items.' tag1=$summary.albumCount tag2=$summary.mediaCount"]-->
 </div>
 
-<h3><!--[pnml name=_MSLATESTMEDIAITEMS]--> <a href="<!--[pnmodurl modname=mediashare func=xmllist order=created orderdir=desc]-->"><img src="modules/mediashare/pnimages/rss.gif" alt="RSS" /></a></h3>
+<h3><!--[gt text="Latest media files"]--> <a href="<!--[pnmodurl modname=mediashare func=xmllist order=created orderdir=desc]-->"><img src="modules/mediashare/pnimages/rss.gif" alt="RSS" /></a></h3>
 
 <div class="mediashare-thumbnails pn-clearfix">
     <!--[foreach from=$latestMediaItems item=item]-->
@@ -28,7 +28,7 @@
 
 </div>
 
-<h3><!--[pnml name=_MSLATESTALBUMS]--> <a href="<!--[pnmodurl modname=mediashare func=albumxmllist]-->"><img src="modules/mediashare/pnimages/rss.gif" alt="RSS" /></a></h3>
+<h3><!--[gt text="Latest albums"]--> <a href="<!--[pnmodurl modname=mediashare func=albumxmllist]-->"><img src="modules/mediashare/pnimages/rss.gif" alt="RSS" /></a></h3>
 
 <!--[include file="mediashare_subalbumlist.html" mode="view" subAlbums=$latestAlbums]-->
 
@@ -38,7 +38,7 @@
 <table class="mediashare-mostactive">
     <tr>
         <td class="left">
-            <h3><!--[pnml name=_MSMOSTACTIVEUSER]--></h3>
+            <h3><!--[gt text="Most active users"]--></h3>
             <ul>
                 <!--[foreach from=$mostActiveUsers item=user]-->
                 <li>
@@ -49,7 +49,7 @@
             </ul>
         </td>
         <td class="right">
-            <h3><!--[pnml name=_MSMOSTACTIVEKEYWORDS]--></h3>
+            <h3><!--[gt text="Keywords"]--></h3>
             <!--[foreach from=$mostActiveKeywords item=keyword]-->
             <a href="<!--[pnmodurl modname=mediashare func=list key=$keyword.keyword]-->" style="font-size: <!--[$keyword.fontsize]-->%"><!--[$keyword.keyword]--></a>
             <!--[/foreach]-->
@@ -58,7 +58,7 @@
 </table>
 
 <!--[capture assign=rsslinks]-->
-<link rel="alternate" type="application/rss+xml" title="<!--[pnml name=_MSLATESTMEDIAITEMS]--> - RSS" href="<!--[pnmodurl modname=mediashare func=xmllist order=created orderdir=desc]-->" />
-<link rel="alternate" type="application/rss+xml" title="<!--[pnml name=_MSLATESTALBUMS]--> - RSS" href="<!--[pnmodurl modname=mediashare func=albumxmllist]-->" />
+<link rel="alternate" type="application/rss+xml" title="<!--[gt text="Latest media files"]--> - RSS" href="<!--[pnmodurl modname=mediashare func=xmllist order=created orderdir=desc]-->" />
+<link rel="alternate" type="application/rss+xml" title="<!--[gt text="Latest albums"]--> - RSS" href="<!--[pnmodurl modname=mediashare func=albumxmllist]-->" />
 <!--[/capture]-->
 <!--[pnpageaddvar name="rawtext" value=$rsslinks]-->

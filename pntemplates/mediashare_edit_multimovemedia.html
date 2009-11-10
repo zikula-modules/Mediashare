@@ -2,12 +2,12 @@
 
 <form method="post" action="<!--[pnmodurl modname=mediashare type=edit func=multimovemedia aid=$albumId]-->">
 
-<input type="hidden" name="authid" value="<!--[ pnsecgenauthkey module=mediashare ]-->" />
+<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=mediashare]-->" />
 
 <div class="mediashare">
 
   <div class="mediashare-header">
-    <h1><!--[pnml name=_MSHEADERMOVEMULTIITEMS]--></h1>
+    <h1><!--[gt text="Move selected items"]--></h1>
   </div>
 
 
@@ -29,13 +29,13 @@
 </div>
 <div class="mediashare-clear"></div>
 
-<label for="newalbumid"><!--[pnml name=_MSMOVESELECTEDTOALBUM]--></label><br/>
+<label for="newalbumid"><!--[gt text="Select new album for the above items"]--></label><br/>
 <!--[mediashare_albumSelector albumId=1 name=newalbumid id=newalbumid access="mediashareAccessRequirementAddMedia"]-->
 
   <!--[/mediashare_body]-->
   <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="_MSMOVE"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+    <!--[elfisk_button name="saveButton" text="Move"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
   <!--[/mediashare_buttons]-->
 <!--[/mediashare_block]-->
 

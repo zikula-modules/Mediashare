@@ -1,7 +1,7 @@
 <!--[* $Id *]-->
-<!--[ pnpageaddvar name="stylesheet" value="modules/mediashare/pnstyle/style.css" ]-->
+<!--[pnpageaddvar name="stylesheet" value="modules/mediashare/pnstyle/style.css"]-->
 
-<strong><!--[pnml name=_MSALBUM]-->: <!--[$album.title]--></strong>
+<strong><!--[gt text="Album"]-->: <!--[$album.title]--></strong>
 <div class="mediashare-filmstrip">
     <table>
         <tr>
@@ -11,4 +11,4 @@
         </tr>
     </table>
 </div>
-<span class="mediashare-filmstrip-info"><!--[pnml name=_MSCLICKTOBROWSE count=$itemCount]--></span>
+<span class="mediashare-filmstrip-info"><!--[gt text="Click on image for slideshow (%s photos)" tag1=$itemCount]--></span>

@@ -1,14 +1,14 @@
 <!--[if $hitCount != 0]-->
-  <!--[pnml name='_MSSEARCHTITLE']-->: <!--[$hitCount]--> <!--[pnml name='_MSSEARCHRESULTS']-->
+  <!--[gt text='Mediashare']-->: <!--[$hitCount]--> <!--[gt text='item(s) found']-->
   <ul>
   <!--[foreach from=$result item=item]-->
     <li><a href="<!--[pnmodurl modname=mediashare aid=$item.albumId mid=$item.mediaId]-->"> <strong><!--[$item.albumTitle|pnvarprepfordisplay]--></strong>:&nbsp;<!--[$item.mediaTitle|pnvarprepfordisplay]--></a>
     </li>
   <!--[/foreach]-->
   </ul>
-  <!--[ pager rowcount=$hitCount limit=$pageSize separator=" " posvar=mediashare_itemindex txt_prev="<<" txt_next=">>" ]-->
+  <!--[pager rowcount=$hitCount limit=$pageSize separator=" " posvar=mediashare_itemindex txt_prev="<<" txt_next=">>"]-->
 <!--[else]-->
-  <!--[pnml name='_MSSEARCHNONEFOUND']-->
+  <!--[gt text='Mediashare: Nothing matched your search']-->
 <!--[/if]-->
 <br />
 <br />

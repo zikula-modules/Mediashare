@@ -5,11 +5,11 @@
 <!--[/if]-->
 <div class="mediashare-browseicons">
     <!--[if $itemCount > 0]-->
-    <a href="<!--[$slideshowUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/slideshow.gif" alt="" /><!--[pnml name=_MSSLIDESHOW]--></a>
-    <a href="<!--[pnmodurl modname=mediashare func=thumbnails aid=$album.id]-->"><img src="modules/mediashare/pnimages/thumbnails.gif" alt="" /><!--[pnml name=_MSTHUMBNAILS]--></a>
+    <a href="<!--[$slideshowUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/slideshow.gif" alt="" /><!--[gt text="Slideshow"]--></a>
+    <a href="<!--[pnmodurl modname=mediashare func=thumbnails aid=$album.id]-->"><img src="modules/mediashare/pnimages/thumbnails.gif" alt="" /><!--[gt text="Thumbnails"]--></a>
     <!--[/if]-->
-    <a href="<!--[pnmodurl modname=mediashare func=browse aid=$album.id]-->"><img src="modules/mediashare/pnimages/browse.gif" alt="" /><!--[pnml name=_MSBROWSE]--></a>
-    <a href="<!--[pnmodurl modname=mediashare func=latest]-->"><img src="modules/mediashare/pnimages/new.gif" alt="" /><!--[pnml name=_MSLATEST]--></a>
+    <a href="<!--[pnmodurl modname=mediashare func=browse aid=$album.id]-->"><img src="modules/mediashare/pnimages/browse.gif" alt="" /><!--[gt text="Browse"]--></a>
+    <a href="<!--[pnmodurl modname=mediashare func=latest]-->"><img src="modules/mediashare/pnimages/new.gif" alt="" /><!--[gt text="Latest"]--></a>
     <!--[if $access.hasAnyEditAccess]-->
     <!--[include file=mediashare_browseicons_menu.html]-->
     <!--[/if]-->

@@ -4,10 +4,10 @@
 
 <!--[include file="mediashare_admin_header.html"]-->
 
-<h2><!--[pnml name=_MSPLUGINS]--></h2>
+<h2><!--[gt text="Plugins"]--></h2>
 <fieldset>
-    <legend><!--[pnml name=_MSMEDIAHANDLERS]--></legend>
-    <p><!--[pnml name=_MSMEDIAHANDLERSINFO]--></p>
+    <legend><!--[gt text="Media handlers"]--></legend>
+    <p><!--[gt text="The list below shows the available media handlers. These plugins creates thumbnails and takes care of displaying the various media items you add."]--></p>
     <dl>
         <!--[foreach from=$mediaHandlers item=handler]-->
         <dt><!--[$handler.title|escape]--></dt>
@@ -23,8 +23,8 @@
 </fieldset>
 
 <fieldset>
-    <legend><!--[pnml name=_MSMEDIASOURCES]--></legend>
-    <p><!--[pnml name=_MSMEDIASOURCESINFO]--></p>
+    <legend><!--[gt text="Media sources"]--></legend>
+    <p><!--[gt text="The list below shows the available media sources. These plugins implements the various ways you can add media to your albums."]--></p>
     <ul>
         <!--[foreach from=$sources item=source]-->
         <li><!--[$source.title]--></li>
@@ -33,7 +33,7 @@
 </fieldset>
 
 <div class="pn-adminformrow pn-adminformbuttons">
-    <!--[elfisk_button name="scanButton" text="_MSSCANFORPLUGINS"]-->
+    <!--[elfisk_button name="scanButton" text="Scan for plugins"]-->
 </div>
 
 <!--[include file="mediashare_admin_footer.html"]-->

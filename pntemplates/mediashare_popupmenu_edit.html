@@ -1,10 +1,10 @@
 <div class="psmenu" id="psmenu-media">
   <ul>
-    <li><img src="modules/mediashare/pnimages/slideshow.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,0)"><!--[pnml name=_MSSLIDESHOWITEM]--></a></li>
+    <li><img src="modules/mediashare/pnimages/slideshow.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,0)"><!--[gt text="Slideshow"]--></a></li>
     <!--[if $access.hasEditMediaAccess]-->
-    <li><img src="modules/mediashare/pnimages/setting.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,1)"><!--[pnml name=_MSEDITITEM]--></a></li>
-    <li><img src="modules/mediashare/pnimages/delete.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,2)"><!--[pnml name=_MSDELETEITEM]--></a></li>
-    <li><img src="modules/mediashare/pnimages/greendot.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,3)"><!--[pnml name=_MSSETMAINITEM]--></a></li>
+    <li><img src="modules/mediashare/pnimages/setting.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,1)"><!--[gt text="Edit item"]--></a></li>
+    <li><img src="modules/mediashare/pnimages/delete.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,2)"><!--[gt text="Delete item"]--></a></li>
+    <li><img src="modules/mediashare/pnimages/greendot.gif" alt=""/><a href="#" onclick="psmenu.onClick(this,3)"><!--[gt text="Set main item"]--></a></li>
     <!--[/if]-->
   </ul>
 </div>
@@ -14,8 +14,8 @@
     [
       "<!--[pnmodurl modname=mediashare type=user func=slideshow aid=$album.id mid=XXX back=1]-->",
       "<!--[pnmodurl modname=mediashare type=edit func=edititem mid=XXX]-->",
-      "<!--[pnmodurl modname=mediashare type=edit func=deleteitem aid=$album.id mid=XXX ]-->",
-      "<!--[pnmodurl modname=mediashare type=edit func=setmainitem aid=$album.id mid=XXX ]-->",
+      "<!--[pnmodurl modname=mediashare type=edit func=deleteitem aid=$album.id mid=XXX]-->",
+      "<!--[pnmodurl modname=mediashare type=edit func=setmainitem aid=$album.id mid=XXX]-->",
      "dummy"
     ];
 </script>

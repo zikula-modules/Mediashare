@@ -1,14 +1,14 @@
 <!--[* $Id *]-->
-<!--[ pnmodgetinfo module=mediashare info=all assign=modinfo]-->
-<!--[ admincategorymenu xhtml=1 ]-->
+<!--[pnmodgetinfo module=mediashare info=all assign=modinfo]-->
+<!--[admincategorymenu xhtml=1]-->
 
 <div class="pn-adminbox">
-  <h1><!--[ pnml name="_MSMEDIASHARE" ]--></h1>
+  <h1><!--[gt text="Mediashare"]--></h1>
   <div class="pn-menu"><!--[moduleadminlinks modname=mediashare]--></div>
 </div>
 
 <div class="mediashare pn-admincontainer">
-  <div class="pn-adminpageicon"><img src="modules/mediashare/pnimages/admin.png" alt="<!--[ pnml name="_MSMEDIASHARE"]-->" /></div>
+  <div class="pn-adminpageicon"><img src="modules/mediashare/pnimages/admin.png" alt="<!--[gt text="Mediashare"]-->" /></div>
 
   <!--[if $formEncType!='']-->
     <form class="pn-adminform" method="post" action="<!--[pngetcurrenturi]-->" enctype="<!--[$formEncType]-->">
@@ -16,4 +16,4 @@
     <form class="pn-adminform" method="post" action="<!--[pngetcurrenturi]-->">
   <!--[/if]-->
 
-   <input type="hidden" name="authid" value="<!--[ pnsecgenauthkey module=mediashare ]-->" />
+   <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=mediashare]-->" />

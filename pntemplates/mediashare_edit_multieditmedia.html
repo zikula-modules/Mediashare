@@ -1,11 +1,11 @@
 <form method="post" action="<!--[pnmodurl modname=mediashare type=edit func=multieditmedia aid=$albumId]-->">
 
-<input type="hidden" name="authid" value="<!--[ pnsecgenauthkey module=mediashare ]-->" />
+<input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=mediashare]-->" />
 
 <div class="mediashare">
 
   <div class="mediashare-header">
-    <h1><!--[pnml name=_MSHEADEREDITMULTIITEMS]--></h1>
+    <h1><!--[gt text="Edit multiple items"]--></h1>
   </div>
 
 
@@ -23,7 +23,7 @@
           <table>
             <tr>
               <td>
-                <label for="title-<!--[$item.id]-->"><!--[pnml name=_MSTITLE]--></label>
+                <label for="title-<!--[$item.id]-->"><!--[gt text="Title"]--></label>
               </td>
               <td>
                 <!--[elfisk_textInput id="title-`$item.id`" width="400px" maxLength="255" text=$item.title]-->
@@ -31,7 +31,7 @@
             </tr>
             <tr>
               <td>
-                <label for="keywords-<!--[$item.id]-->"><!--[pnml name=_MSKEYWORDS]--></label>
+                <label for="keywords-<!--[$item.id]-->"><!--[gt text="Keywords"]--></label>
               </td>
               <td>
                 <!--[elfisk_textInput id="keywords-`$item.id`" width="400px" maxLength="255" text=$item.keywords]-->
@@ -39,7 +39,7 @@
             </tr>
             <tr>
               <td>
-                <label for="description-<!--[$item.id]-->"><!--[pnml name=_MSDESCRIPTION]--></label>
+                <label for="description-<!--[$item.id]-->"><!--[gt text="Description"]--></label>
               </td>
               <td>
                 <!--[elfisk_textArea id="description-`$item.id`" width="400px" height="100px" text=$item.description]-->
@@ -53,8 +53,8 @@
 
   <!--[/mediashare_body]-->
   <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="_MSSAVE"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+    <!--[elfisk_button name="saveButton" text="Save"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
   <!--[/mediashare_buttons]-->
 <!--[/mediashare_block]-->
 

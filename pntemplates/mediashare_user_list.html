@@ -3,15 +3,15 @@
 
 <div class="mediashare mediashare-medialist pn-clearfix">
 
-    <p><a href="<!--[pnmodurl modname=mediashare func=list order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOALBUM]-->">
-    <!--[pnml name=_MSFILTERCLEAR]--></a></p>
+    <p><a href="<!--[pnmodurl modname=mediashare func=list order=$order]-->" title="<!--[gt text="Show items from this album"]-->">
+    <!--[gt text="Remove filter (show all items)"]--></a></p>
 
-    <!--[pnml name=_MSSORTBY]-->:
+    <!--[gt text="Sort by"]-->:
     <ul class="sortkeys">
-        <li<!--[$orderTitleClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=title]-->"><!--[pnml name=_MSSORTTITLE]--></a></li>
-        <li<!--[$orderUnameClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=uname]-->"><!--[pnml name=_MSSORTOWNER]--></a></li>
-        <li<!--[$orderCreatedClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=created orderdir=desc]-->"><!--[pnml name=_MSSORTCREATEDDATE]--></a></li>
-        <li<!--[$orderModifiedClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=modified orderdir=desc]-->"><!--[pnml name=_MSSORTMODIFIEDDATE]--></a></li>
+        <li<!--[$orderTitleClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=title]-->"><!--[gt text="Title"]--></a></li>
+        <li<!--[$orderUnameClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=uname]-->"><!--[gt text="Owner"]--></a></li>
+        <li<!--[$orderCreatedClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=created orderdir=desc]-->"><!--[gt text="Created date"]--></a></li>
+        <li<!--[$orderModifiedClass]-->><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=modified orderdir=desc]-->"><!--[gt text="Last modified date"]--></a></li>
     </ul>
 
     <!--[foreach from=$items item=item]-->
@@ -26,23 +26,23 @@
         <p><!--[$item.media.description]--></p>
         <!--[/if]-->
 
-        <!--[pnml name=_MSALBUM]-->: <a href="<!--[pnmodurl modname=mediashare func=list aid=$item.album.id order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOALBUM]-->">
+        <!--[gt text="Album"]-->: <a href="<!--[pnmodurl modname=mediashare func=list aid=$item.album.id order=$order]-->" title="<!--[gt text="Show items from this album"]-->">
         <!--[$item.album.title]--></a>.<br/>
 
         <!--[if $item.media.hasKeywords != 0]-->
-        <!--[pnml name=_MSKEYWORDS]-->:
-        <!--[foreach from=$item.media.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOKEY]-->"><!--[$keyword]--></a>
-        <!--[pnml name=_MSRSSBYKEYWORD assign=keywordrss]-->
+        <!--[gt text="Keywords"]-->:
+        <!--[foreach from=$item.media.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=$order]-->" title="<!--[gt text="Show items with this keyword"]-->"><!--[$keyword]--></a>
+        <!--[gt text="Subscribe to RSS feed for this keyword assign=keywordrss"]-->
         <!--[mediashare_rss title="`$keyword`: $keywordrss" urlParam="key" urlValue=$keyword mode=text]-->
         <!--[/foreach]--><br/>
         <!--[/if]-->
 
-        <!--[pnml name=_MSADDED]--> <!--[$item.media.createdDateRaw|pndate_format]-->
-        <!--[pnml name=_MSBY]-->
-        <a href="<!--[pnmodurl modname=mediashare func=list uname=$item.media.ownerName order=$order]-->" title="<!--[pnml name=_MSRESTRICTTOOWNER]-->">
+        <!--[gt text="Added"]--> <!--[$item.media.createdDateRaw|pndate_format]-->
+        <!--[gt text="By"]-->
+        <a href="<!--[pnmodurl modname=mediashare func=list uname=$item.media.ownerName order=$order]-->" title="<!--[gt text="Show items from this person"]-->">
         <!--[mediashare_username userId=$item.media.ownerId]--></a>
         <!--[if isset($mediaItem)]-->
-        <!--[pnml name=_MSRSSBYPERSON assign=personrss]--><!--[mediashare_rss title="`$item.media.ownerName`: $personrss" urlParam="uname" urlValue=$mediaItem.ownerName mode=text]-->.
+        <!--[gt text="Subscribe to RSS feed for this person assign=personrss"]--><!--[mediashare_rss title="`$item.media.ownerName`: $personrss" urlParam="uname" urlValue=$mediaItem.ownerName mode=text]-->.
         <!--[/if]-->
     </div>
 

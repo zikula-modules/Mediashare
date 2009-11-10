@@ -1,17 +1,17 @@
 <!--[elfisk_setInitialFocus inputId="title"]-->
 
-<!--[pnml name=_MSHEADERMOVEALBUM assign=mltitle]-->
+<!--[gt text="Move album" assign=mltitle]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit"]-->
 
 <!--[mediashare_block]-->
   <!--[mediashare_header]-->
-    <!--[pnml name=_MSMOVEALBUM]-->
+    <!--[gt text="Move album"]-->
   <!--[/mediashare_header]-->
   <!--[mediashare_body]-->
     <table>
       <tr>
         <td>
-          <!--[pnml name=_MSALBUM]-->
+          <!--[gt text="Album"]-->
         </td>
         <td>
           <!--[$album.title]-->
@@ -19,7 +19,7 @@
       </tr>
       <tr>
         <td>
-          <label for="keywords"><!--[pnml name=_MSMOVETOALBUM]--></label>
+          <label for="keywords"><!--[gt text="Move to album"]--></label>
         </td>
         <td>
           <!--[mediashare_albumSelector albumId=1 name=daid excludeAlbumId=$album.id]-->
@@ -28,8 +28,8 @@
     </table>
   <!--[/mediashare_body]-->
   <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="_MSOK"]-->
-    <!--[elfisk_button name="cancelButton" text="_MSCANCEL"]-->
+    <!--[elfisk_button name="saveButton" text="Ok"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
   <!--[/mediashare_buttons]-->
 <!--[/mediashare_block]-->
 

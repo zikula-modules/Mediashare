@@ -1,22 +1,22 @@
 <!--[elfisk_setInitialFocus inputId="subject"]-->
 
-<!--[pnml name=_MSINVINVITATIONS assign=title]-->
+<!--[gt text="Invitations" assign=title]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$title mode="edit"]-->
 
 <!--[include file="mediashare_invitationtabs.html"]-->
 
-<h2><!--[pnml name=_MSINVGETLINK]--></h2>
+<h2><!--[gt text="Get invitation link"]--></h2>
 
 <!--[if empty($link)]-->
-<p><!--[pnml name=_MSINVGETLINKHELP]--></p>
-<label for="subject"><!--[pnml name=_MSINVLINKNAMELONG]--></label>
+<p><!--[gt text="Click on "Get the link" to generate a link you can paste into a mail by yourself."]--></p>
+<label for="subject"><!--[gt text="Optional link name"]--></label>
 <input name="subject">
-<input type="submit" name="generateButton" value="<!--[pnml name=_MSINVGETTHELINK]-->"/>
+<input type="submit" name="generateButton" value="<!--[gt text="Get the link"]-->"/>
 <!--[else]-->
-<p><!--[pnml name=_MSINVHEREISLINK]--></p>
+<p><!--[gt text="Here is your link:"]--></p>
 <div class="mediashare-invlink"><!--[$link]--></div>
 
-<p><a href="<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id]-->"><!--[pnml name=_MSINVNOWBACK]--></a> <!--[pnml name=_MSINVOR]--> <a href="<!--[pnmodurl modname=mediashare type=invitation func=list aid=$album.id]-->"><!--[pnml name=_MSINVTHELIST]--></a>.</p>
+<p><a href="<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id]-->"><!--[gt text="Now back to the album view"]--></a> <!--[gt text="or"]--> <a href="<!--[pnmodurl modname=mediashare type=invitation func=list aid=$album.id]-->"><!--[gt text="the invitation list"]--></a>.</p>
 
 <!--[/if]-->
 
