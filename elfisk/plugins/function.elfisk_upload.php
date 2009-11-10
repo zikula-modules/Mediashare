@@ -1,39 +1,33 @@
 <?php
 
-function smarty_function_elfisk_upload($params, &$smarty) 
+function smarty_function_elfisk_upload($params, &$smarty)
 {
-  $id = null;
-  $idHtml = '';
-  if (array_key_exists('id', $params))
-  {
-    $id = $params['id'];
-    $idHtml = " id=\"$id\"";
-  }
-  
-  $nameHtml = '';
-  if (array_key_exists('name', $params))
-  {
-    $nameHtml = " name=\"$params[name]\"";
-  }
-  else if (array_key_exists('id', $params))
-  {
-    $nameHtml = " name=\"$params[id]\"";
-  }
+    $id = null;
+    $idHtml = '';
+    if (array_key_exists('id', $params)) {
+        $id = $params['id'];
+        $idHtml = " id=\"$id\"";
+    }
 
-  $styleHtml = elfisk_getStyleHtml($params);
+    $nameHtml = '';
+    if (array_key_exists('name', $params)) {
+        $nameHtml = " name=\"$params[name]\"";
+    } else if (array_key_exists('id', $params)) {
+        $nameHtml = " name=\"$params[id]\"";
+    }
 
-  $text = '';
-  if (array_key_exists('text', $params))
-  {
-    $text = htmlspecialchars($params['text']);
-  }
+    $styleHtml = elfisk_getStyleHtml($params);
 
-  $result = "<input type=\"file\"{$idHtml}{$nameHtml}{$styleHtml} value=\"$text\"/>";
+    $text = '';
+    if (array_key_exists('text', $params)) {
+        $text = htmlspecialchars($params['text']);
+    }
 
-  if (array_key_exists('assign', $params))
-    $smarty->assign($params['assign'], $result);
-  else
-    return $result;
+    $result = "<input type=\"file\"{$idHtml}{$nameHtml}{$styleHtml} value=\"$text\"/>";
+
+    if (array_key_exists('assign', $params))
+        $smarty->assign($params['assign'], $result);
+    else
+        return $result;
 }
 
-?>

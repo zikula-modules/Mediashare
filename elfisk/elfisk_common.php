@@ -2,63 +2,56 @@
 
 function elfisk_getStyleHtml(&$params)
 {
-  $style = '';
-  if (array_key_exists('width', $params))
-    $style .= "width: $params[width];";
+    $style = '';
+    if (array_key_exists('width', $params))
+        $style .= "width: $params[width];";
 
-  if (array_key_exists('height', $params))
-    $style .= "height: $params[height];";
+    if (array_key_exists('height', $params))
+        $style .= "height: $params[height];";
 
-  if ($style != '')
-    $style = " style=\"$style\"";
+    if ($style != '')
+        $style = " style=\"$style\"";
 
-  return $style;
+    return $style;
 }
 
-
-function & elfisk_getCurrentValues()
+function &elfisk_getCurrentValues()
 {
-  global $elfisk_currentValues;
-  if ($elfisk_currentValues == null)
-    $elfisk_currentValues = array();
+    global $elfisk_currentValues;
+    if ($elfisk_currentValues == null)
+        $elfisk_currentValues = array();
 
-  return $elfisk_currentValues;
+    return $elfisk_currentValues;
 }
 
-
-function elfisk_loadValues(&$values, $group='none')
+function elfisk_loadValues(&$values, $group = 'none')
 {
-  $currentValues =& elfisk_getCurrentValues();
-  $currentValues[$group] =& $values;
+    $currentValues = & elfisk_getCurrentValues();
+    $currentValues[$group] = & $values;
 }
 
-
-function elfisk_getLoadedValue($id, $group='none')
+function elfisk_getLoadedValue($id, $group = 'none')
 {
-  $values =& elfisk_getCurrentValues();
-  return $values[$group][$id];
+    $values = & elfisk_getCurrentValues();
+    return $values[$group][$id];
 }
-
-
 
 function elfisk_decodeInput($fieldSpecs)
 {
-  $values = array();
+    $values = array();
 
-  foreach ($fieldSpecs as $id => $spec)
-  {
-    switch ($spec['type'])
-    {
-      case 'int': 
-        $values[$id] = (int)pnVarCleanFromInput($id);
-        break;
-      default:
-        $values[$id] = pnVarCleanFromInput($id);
-        break;
+    foreach ($fieldSpecs as $id => $spec) {
+        switch ($spec['type']) {
+            case 'int':
+                $values[$id] = (int) pnVarCleanFromInput($id);
+                break;
+            default:
+                $values[$id] = pnVarCleanFromInput($id);
+                break;
+        }
     }
-  }
 
-  return $values;
+    return $values;
 }
 
 /*
