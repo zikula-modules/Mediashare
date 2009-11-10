@@ -1,5 +1,5 @@
 <?php
-// $Id: pninvitationapi.php,v 1.7 2007/07/27 19:15:59 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -12,7 +12,7 @@
 
 function mediashare_invitationapi_sendInvitation(&$args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $emails = $args['emails'];
 
     // Split and trim e-mails
@@ -104,7 +104,7 @@ function mediashareCreateInvitationKey()
 
 function mediashare_invitationapi_resendInvitation(&$args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $invitationId = $args['invitationId'];
 
     $invitation = pnModAPIFunc('mediashare', 'invitation', 'getById', array('id' => $invitationId));

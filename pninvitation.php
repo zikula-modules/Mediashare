@@ -1,5 +1,5 @@
 <?php
-// $Id: pninvitation.php,v 1.6 2007/07/27 19:15:59 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -104,7 +104,7 @@ function mediashareResendInvitation($invitationId, $albumId)
 
 function mediashare_invitation_link($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $albumId = mediashareGetIntUrl('aid', $args, -1);
     if ($albumId < 0)
         return mediashareErrorPage(__FILE__, __LINE__, "Missing URL parameter 'aid'");
@@ -144,7 +144,7 @@ function mediashare_invitation_link($args)
 
 function mediashare_invitation_viewlink($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $invitationId = mediashareGetIntUrl('iid', $args, -1);
     if ($invitationId < 0)
         return mediashareErrorPage(__FILE__, __LINE__, "Missing URL parameter 'iid'");
@@ -181,7 +181,7 @@ function mediashare_invitation_viewlink($args)
 
 function mediashare_invitation_list($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     // Check access

@@ -16,12 +16,12 @@ class mediashare_contenttypesapi_mediaItemPlugin extends contentTypeBase
     }
     function getTitle()
     {
-        $dom = ZLanguage::getModuleDomain('Mediashare');
+        $dom = ZLanguage::getModuleDomain('mediashare');
         return __('Mediashare item', $dom);
     }
     function getDescription()
     {
-        $dom = ZLanguage::getModuleDomain('Mediashare');
+        $dom = ZLanguage::getModuleDomain('mediashare');
         return __('Display a single Mediashare item with link to album.', $dom);
     }
 
@@ -41,7 +41,7 @@ class mediashare_contenttypesapi_mediaItemPlugin extends contentTypeBase
 
     function displayEditing()
     {
-        $dom = ZLanguage::getModuleDomain('Mediashare');
+        $dom = ZLanguage::getModuleDomain('mediashare');
         if (!empty($this->mediaItemId)) {
             return pnModFunc('mediashare', 'user', 'simpledisplay', array('mid' => $this->mediaItemId, 'showAlbumLink' => $this->showAlbumLink, 'text' => $this->text, 'containerWidth' => $this->styleWidth));
         }

@@ -1,7 +1,7 @@
 <?php
-// $Id: pnversion.php,v 1.19 2008/06/18 19:38:12 jornlind Exp $
+// $Id$
 
-$dom = ZLanguage::getModuleDomain('Mediashare');
+$dom = ZLanguage::getModuleDomain('mediashare');
 
 $modversion['name'] = 'mediashare';
 $modversion['version'] = '4.0.1';

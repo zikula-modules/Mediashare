@@ -1,5 +1,5 @@
 <?php
-// $Id: pninit.php,v 1.46 2008/06/18 19:38:12 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2002.
 // =======================================================================
@@ -12,7 +12,7 @@ require_once ("modules/mediashare/common-edit.php");
 // -----------------------------------------------------------------------
 function mediashare_init()
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: pnadmin.php,v 1.11 2008/06/18 19:38:12 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -16,7 +16,7 @@ require_once 'modules/mediashare/elfisk/elfiskRender.class.php';
 
 function mediashare_admin_main($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -98,7 +98,7 @@ function mediashareAdminSettings($args)
 
 function mediashare_admin_plugins($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -148,7 +148,7 @@ function mediashareAdminScanPlugins()
 
 function mediashare_admin_recalc($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -170,7 +170,7 @@ function mediashare_admin_recalc($args)
 
 function mediashare_admin_recalcitem($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));

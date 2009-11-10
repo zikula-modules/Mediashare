@@ -1,5 +1,5 @@
 <?php
-// $Id: pnuserapi.php,v 1.77 2008/06/22 14:10:29 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -134,7 +134,7 @@ function &mediashare_userapi_getAlbumObject($args)
 
 function mediashare_userapi_getAlbumData($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     // Argument check
     if (!isset($args['albumId'])) {
         return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_userapi_getAlbum');
@@ -493,7 +493,7 @@ function mediashare_userapi_getAlbumList($args)
 
 function mediashare_userapi_getFirstItemIdInAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     // Argument check
     if (!isset($args['albumId'])) {
         return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_userapi_getFirstItemInAlbum');
@@ -539,7 +539,7 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
 
 function mediashare_userapi_getMediaItem($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     // Argument check
     if (!isset($args['mediaId'])) {
         return mediashareErrorAPI(__FILE__, __LINE__, 'Missing mediaId in mediashare_userapi_getMediaItem');

@@ -1,5 +1,5 @@
 <?php
-// $Id: pnadminapi.php,v 1.4 2007/06/17 20:47:51 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -14,16 +14,16 @@ require_once ("modules/mediashare/common-edit.php");
  */
 function mediashare_adminapi_getlinks()
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $links = array();
 
     if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         $links[] = array('url' => pnModURL('mediashare', 'user', 'view'), 'text' => __('Browse', $dom));
-        $links[] = array('url' => pnModURL('mediashare', 'admin', 'main'), 'text' => __('General', $dom));
         $links[] = array('url' => pnModURL('mediashare', 'admin', 'plugins'), 'text' => __('Plugins', $dom));
         $links[] = array('url' => pnModURL('mediashare', 'import', 'main'), 'text' => __('Import', $dom));
         $links[] = array('url' => pnModURL('mediashare', 'admin', 'recalc'), 'text' => __('Regenerate', $dom));
+        $links[] = array('url' => pnModURL('mediashare', 'admin', 'main'), 'text' => __('Settings', $dom));
     }
     return $links;
 }

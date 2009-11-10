@@ -17,8 +17,7 @@ function smarty_function_elfisk_button($params, &$smarty)
     } else if (array_key_exists('onclick', $params)) {
         $onclickHtml = " onclick=\"return $params[onclick]\"";
     }
-
-    $text = eval("return $text;");
+    //$text = eval("return $text;");
 
     echo "<input type=\"submit\" name=\"$name\" value=\"$text\"$onclickHtml/>";
 }

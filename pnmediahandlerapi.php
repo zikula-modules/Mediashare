@@ -1,5 +1,5 @@
 <?php
-// $Id: pnmediahandlerapi.php,v 1.10 2007/06/17 20:47:51 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -134,7 +134,7 @@ function mediashare_mediahandlerapi_loadHandler($args)
 
 function mediashare_mediahandlerapi_scanMediaHandlers($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN))
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));

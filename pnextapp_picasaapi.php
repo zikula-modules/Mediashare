@@ -1,5 +1,5 @@
 <?php
-// $Id: pnextapp_picasaapi.php,v 1.3 2008/06/22 14:10:29 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -61,7 +61,7 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
 
     function convertImage(&$image)
     {
-        $dom = ZLanguage::getModuleDomain('Mediashare');
+        $dom = ZLanguage::getModuleDomain('mediashare');
         $thumbUrlMap = $image->getThumbUrlMap();
 
         $image = array(

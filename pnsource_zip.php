@@ -1,6 +1,6 @@
 <?php
 
-// $Id: pnsource_zip.php,v 1.1 2007/01/31 22:11:47 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -134,7 +134,7 @@ function mediashareGetMimeType($filename)
 
 function mediashareSourceZipUpload(& $args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     if (!pnSecConfirmAuthKey())
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
 

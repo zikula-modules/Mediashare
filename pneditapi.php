@@ -1,5 +1,5 @@
 <?php
-// $Id: pneditapi.php,v 1.57 2008/06/21 18:45:44 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -14,7 +14,7 @@ require_once ("modules/mediashare/common-edit.php");
 
 function mediashare_editapi_addAlbum(&$args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     // Check basic access (but don't do fine grained Mediashare access check)
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -174,7 +174,7 @@ function mediashareUpdateNestedSetValues_Rec($albumId, $level, &$count, &$dbconn
 
 function mediashare_editapi_updateAlbum(&$args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Check access
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
@@ -236,7 +236,7 @@ function mediashare_editapi_updateAlbum(&$args)
 
 function mediashare_editapi_deleteAlbum(&$args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Check access
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
@@ -361,7 +361,7 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
 
 function mediashare_editapi_moveAlbum(&$args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -425,7 +425,7 @@ function mediashare_editapi_moveAlbum(&$args)
 
 function mediashare_editapi_isChildAlbum(&$args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     if (!pnModAPILoad('mediashare', 'user')) {
         return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare user API');
     }
@@ -466,7 +466,7 @@ function mediashare_editapi_isChildAlbum(&$args)
  */
 function mediashare_editapi_addMediaItem(&$args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!array_key_exists('albumId', $args)) {
         return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_editapi_addMediaItem');
@@ -782,7 +782,7 @@ function mediashareGetNewPosition($albumId)
 
 function mediashare_editapi_ensureMainAlbumId($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Argument check
     if (!isset($args['albumId'])) {
@@ -832,7 +832,7 @@ function mediashare_editapi_ensureMainAlbumId($args)
 function mediashare_editapi_updateItem(&$args)
 {
 
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -873,7 +873,7 @@ function mediashare_editapi_updateItem(&$args)
 function mediashare_editapi_updateItemFileUpload(&$args)
 {
 
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     // Ignore empty uploads
     if (!isset($args['fileSize']) || $args['fileSize'] == 0) {
         return true;

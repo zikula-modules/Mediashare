@@ -1,5 +1,5 @@
 <?php
-// $Id: pnuser.php,v 1.57 2008/06/22 06:04:23 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Wildt (C) 2005.
 // =======================================================================
@@ -27,7 +27,7 @@ function mediashare_user_view($args)
 
 function mediashare_user_browse($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaId = mediashareGetStringUrl('mid', $args, 0); // Ext apps. uses very long IDs, so int is not good
@@ -249,7 +249,7 @@ function mediashare_user_slideshowcenter($args)
 
 function mediashare_user_thumbnails($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $viewkey = pnVarCleanFromInput('viewkey');
@@ -309,7 +309,7 @@ function mediashare_user_thumbnails($args)
 function mediashare_user_simplethumbnails($args)
 {
 
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $template = isset($args['template']) ? $args['template'] : pnVarCleanFromInput('template');
     $itemCount = isset($args['count']) ? $args['count'] : pnVarCleanFromInput('count');
@@ -439,7 +439,7 @@ function mediashare_user_simpledisplay($args)
 
 function mediashare_user_displaygb($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
     $viewkey = pnVarCleanFromInput('viewkey');
 
@@ -513,7 +513,7 @@ function mediashare_user_latest($args)
 
 function mediashare_user_keys($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $keyword = mediashareGetStringUrl('key', $args);
 
     if (!pnModAPILoad('mediashare', 'user')) {
@@ -539,7 +539,7 @@ function mediashare_user_keys($args)
 function mediashare_user_list($args)
 {
 
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $keyword = mediashareGetStringUrl('key', $args);
     $uname = mediashareGetStringUrl('uname', $args);
     $albumId = mediashareGetIntUrl('aid', $args, null);
@@ -600,7 +600,7 @@ function mediashare_user_list($args)
 
 function mediashare_user_albumlist($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $order = mediashareGetStringUrl('order', $args, 'createdDate');
     $orderDir = mediashareGetStringUrl('orderdir', $args, 'desc');
     $template = (isset($args['tpl']) ? $args['tpl'] : 'list');

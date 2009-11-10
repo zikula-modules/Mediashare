@@ -1,5 +1,5 @@
 <?php
-// $Id: pnedit.php,v 1.44 2008/06/19 19:35:25 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
@@ -16,7 +16,7 @@ require_once 'modules/mediashare/elfisk/elfiskRender.class.php';
 
 function mediashare_edit_view($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $page = mediashareGetIntUrl('page', $args, 0);
@@ -98,7 +98,7 @@ $mediashare_albumFields = array('title' => array('type' => 'string'), 'keywords'
 
 function mediashare_edit_addalbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
@@ -136,7 +136,7 @@ function mediashare_edit_addalbum($args)
 
 function mediashareAddAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
@@ -164,7 +164,7 @@ function mediashareAddAlbum($args)
 
 function mediashare_edit_editalbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
@@ -201,7 +201,7 @@ function mediashare_edit_editalbum($args)
 
 function mediashareUpdateAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
     }
@@ -231,7 +231,7 @@ function mediashareUpdateAlbum($args)
 
 function mediashare_edit_deleteAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     if (isset($_POST['okButton'])) {
@@ -266,7 +266,7 @@ function mediashare_edit_deleteAlbum($args)
 
 function mediashareDeleteAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
     }
@@ -304,7 +304,7 @@ function mediashareDeleteAlbum($args)
 
 function mediashare_edit_movealbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
@@ -365,7 +365,7 @@ function mediashareUpdateMoveAlbum($args)
 
 function mediashare_edit_addmedia($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $sourceName = mediashareGetStringUrl('source', $args);
@@ -432,7 +432,7 @@ $mediashare_itemFields = array('title' => array('type' => 'string'), 'keywords' 
 
 function mediashare_edit_edititem($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
 
     $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId, 'enableEscape' => false));
@@ -483,7 +483,7 @@ function mediashare_edit_edititem($args)
 
 function mediashareUpdateItem($args, $backUrl)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
     }
@@ -528,7 +528,7 @@ function mediashareUpdateItem($args, $backUrl)
 
 function mediashare_edit_deleteitem($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
@@ -570,7 +570,7 @@ function mediashare_edit_deleteitem($args)
 
 function mediashareDeleteItem($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
@@ -594,7 +594,7 @@ function mediashareDeleteItem($args)
 
 function mediashare_edit_multieditmedia($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -633,7 +633,7 @@ function mediashare_edit_multieditmedia($args)
 
 function mediashareMultiUpdateItems()
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
@@ -671,7 +671,7 @@ function mediashareMultiUpdateItems()
 
 function mediashare_edit_multideletemedia($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -708,7 +708,7 @@ function mediashare_edit_multideletemedia($args)
 
 function mediashareMultiDeleteMedia()
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
@@ -738,7 +738,7 @@ function mediashareMultiDeleteMedia()
 
 function mediashare_edit_multimovemedia($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -777,7 +777,7 @@ function mediashare_edit_multimovemedia($args)
 
 function mediashareMultiMoveMedia()
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
@@ -812,7 +812,7 @@ function mediashareMultiMoveMedia()
 
 function mediashare_edit_setmainitem($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
 
@@ -838,7 +838,7 @@ function mediashare_edit_setmainitem($args)
 
 function mediashare_edit_arrange($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
@@ -889,7 +889,7 @@ function mediashare_edit_arrange($args)
 
 function mediashareArrangeAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
@@ -919,7 +919,7 @@ function mediashareArrangeAlbum($args)
 
 function mediashare_edit_access($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
@@ -967,7 +967,7 @@ function mediashare_edit_access($args)
 
 function mediashareUpdateAccess($args)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!pnSecConfirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));

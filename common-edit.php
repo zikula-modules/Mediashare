@@ -1,5 +1,5 @@
 <?php
-// $Id: common-edit.php,v 1.4 2007/06/20 20:26:49 jornlind Exp $
+// $Id$
 // =======================================================================
 // Mediashare by Jorn Lind-Nielsen (C) 2003.
 // =======================================================================
@@ -9,7 +9,7 @@ require_once ("modules/mediashare/common.php");
 
 function mediashareUploadErrorMsg($error)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     switch ($error) {
         case 1:

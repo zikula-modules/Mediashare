@@ -4,7 +4,7 @@
  *
  * @copyright (C) 2007, Jorn Wildt
  * @link http://www.elfisk.dk
- * @version $Id: pnajax.php,v 1.1 2007/04/01 19:21:47 jornlind Exp $
+ * @version $Id$
  * @license See license.txt
  */
 
