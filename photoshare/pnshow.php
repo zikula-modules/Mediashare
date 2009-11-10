@@ -4,23 +4,21 @@
 // Photoshare by Jorn Lind-Nielsen (C) 2002-2004.
 // =======================================================================
 
+
 // This file contains just enough to display an image, with the sole purpose
 // of reducing the load and CPU time needed for image display.
 
+
 function photoshare_show_viewimage()
 {
-  $imageID   = pnVarCleanFromInput('iid');
-  $thumbnail = intval(pnVarCleanFromInput('thumbnail'));
+    $imageID = pnVarCleanFromInput('iid');
+    $thumbnail = intval(pnVarCleanFromInput('thumbnail'));
 
-  if (!pnModAPILoad('mediashare', 'import'))
-    return photoshareErrorPage(__FILE__, __LINE__, "Failed to load Mediashare import API");
+    if (!pnModAPILoad('mediashare', 'import'))
+        return photoshareErrorPage(__FILE__, __LINE__, "Failed to load Mediashare import API");
 
-  $mediashareUrl = pnModAPIFunc('mediashare', 'import', 'getMediashareUrl',
-                                array('imageId' => $imageID,
-                                      'thumbnail' => $thumbnail));
+    $mediashareUrl = pnModAPIFunc('mediashare', 'import', 'getMediashareUrl', array('imageId' => $imageID, 'thumbnail' => $thumbnail));
 
-  pnRedirect($mediashareUrl);
-  return true;
+    pnRedirect($mediashareUrl);
+    return true;
 }
-
-?>
