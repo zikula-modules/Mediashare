@@ -8,23 +8,16 @@
  * @license See license.txt
  */
 
-
 function mediashare_ajax_getitems($args)
 {
-  $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => FormUtil::getPassedValue('aid')));
+    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => FormUtil::getPassedValue('aid')));
 
-  $mediaItems = array();
+    $mediaItems = array();
 
-  foreach ($items as $item)
-  {
-    $mediaItems[] = array('id' => $item['id'],
-                          'isExternal' => $item['mediaHandler'] == 'extapp',
-                          'thumbnailRef' => $item['thumbnailRef'],
-                          'previewRef' => $item['previewRef'],
-                          'title' => $item['title']);
-  }
-  
-  return array('mediaItems' => $mediaItems);
+    foreach ($items as $item) {
+        $mediaItems[] = array('id' => $item['id'], 'isExternal' => $item['mediaHandler'] == 'extapp', 'thumbnailRef' => $item['thumbnailRef'], 'previewRef' => $item['previewRef'], 'title' => $item['title']);
+    }
+
+    return array('mediaItems' => $mediaItems);
 }
 
-?>

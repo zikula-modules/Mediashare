@@ -4,8 +4,8 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-require_once("modules/mediashare/common-edit.php");
 
+require_once ("modules/mediashare/common-edit.php");
 
 /**
  * get available admin panel links
@@ -14,16 +14,16 @@ require_once("modules/mediashare/common-edit.php");
  */
 function mediashare_adminapi_getlinks()
 {
+    $dom = ZLanguage::getModuleDomain('Mediashare');
+
     $links = array();
-    
-    pnModLangLoad('mediashare', 'admin');
-    
+
     if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
-        $links[] = array('url' => pnModURL('mediashare', 'user',   'view'),    'text' => _MSBROWSE);
-        $links[] = array('url' => pnModURL('mediashare', 'admin',  'main'),    'text' => _MSGENERAL);
-        $links[] = array('url' => pnModURL('mediashare', 'admin',  'plugins'), 'text' => _MSPLUGINS);
-        $links[] = array('url' => pnModURL('mediashare', 'import', 'main'),    'text' => _MSIMPORT);
-        $links[] = array('url' => pnModURL('mediashare', 'admin',   'recalc'), 'text' => _MSREC_RECALCULATE);
+        $links[] = array('url' => pnModURL('mediashare', 'user', 'view'), 'text' => __('Browse', $dom));
+        $links[] = array('url' => pnModURL('mediashare', 'admin', 'main'), 'text' => __('General', $dom));
+        $links[] = array('url' => pnModURL('mediashare', 'admin', 'plugins'), 'text' => __('Plugins', $dom));
+        $links[] = array('url' => pnModURL('mediashare', 'import', 'main'), 'text' => __('Import', $dom));
+        $links[] = array('url' => pnModURL('mediashare', 'admin', 'recalc'), 'text' => __('Regenerate', $dom));
     }
     return $links;
 }
@@ -32,51 +32,55 @@ function mediashare_adminapi_getlinks()
 // Scan for all media
 // =======================================================================
 
+
 function mediashare_adminapi_scanAllPlugins($args)
 {
-  // Force load - it is used during pninit
-  if (!pnModAPILoad('mediashare', 'mediahandler', true))
-    return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare mediahandler API');
+    // Force load - it is used during pninit
+    if (!pnModAPILoad('mediashare', 'mediahandler', true)) {
+        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare mediahandler API');
+    }
 
-  $ok = pnModAPIFunc('mediashare', 'mediahandler', 'scanMediaHandlers');
-  if ($ok === false)
-    return false;
+    $ok = pnModAPIFunc('mediashare', 'mediahandler', 'scanMediaHandlers');
+    if ($ok === false) {
+        return false;
+    }
 
-  // Force load - it is used during pninit
-  if (!pnModAPILoad('mediashare', 'sources', true))
-    return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare sources API');
+    // Force load - it is used during pninit
+    if (!pnModAPILoad('mediashare', 'sources', true)) {
+        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare sources API');
+    }
 
-  $ok = pnModAPIFunc('mediashare', 'sources', 'scanSources');
-  if ($ok === false)
-    return false;
+    $ok = pnModAPIFunc('mediashare', 'sources', 'scanSources');
+    if ($ok === false) {
+        return false;
+    }
 
-  return true;
+    return true;
 }
-
 
 // =======================================================================
 // Set plugins
 // =======================================================================
 
+
 function mediashare_adminapi_setTemplateGlobally($args)
 {
-  list($dbconn) = pnDBGetConn();
-  $pntable = pnDBGetTables();
+    list ($dbconn) = pnDBGetConn();
+    $pntable = pnDBGetTables();
 
-  $albumsTable = $pntable['mediashare_albums'];
-  $albumsColumn = &$pntable['mediashare_albums_column'];
+    $albumsTable = $pntable['mediashare_albums'];
+    $albumsColumn = &$pntable['mediashare_albums_column'];
 
-  $template = pnVarPrepForStore($args['template']);
+    $template = pnVarPrepForStore($args['template']);
 
-  $sql = "UPDATE $albumsTable 
+    $sql = "UPDATE $albumsTable
           SET $albumsColumn[template] = '$template'";
 
-  $dbconn->execute($sql);
+    $dbconn->execute($sql);
 
-  if ($dbconn->errorNo() != 0)
-    return mediashareErrorAPI(__FILE__, __LINE__, 'Set template failed: ' . $dbconn->errorMsg() . " while executing: $sql");
-
-  return true;
+    if ($dbconn->errorNo() != 0) {
+        return mediashareErrorAPI(__FILE__, __LINE__, 'Set template failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    }
+    return true;
 }
 
-?>

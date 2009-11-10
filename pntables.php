@@ -180,4 +180,3 @@ function & mediashare_pntables()
   return $pntable;
 }
 
-?>

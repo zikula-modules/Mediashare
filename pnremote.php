@@ -18,7 +18,8 @@
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
 // =======================================================================
 
-require_once("modules/mediashare/common.php");
+
+require_once ("modules/mediashare/common.php");
 
 /* DEBUG
   $f = fopen('c:/tmp/gallery.txt', 'a');
@@ -32,73 +33,65 @@ require_once("modules/mediashare/common.php");
 
 // http://www.pn760.dk/user.php?uname=$USERNAME$&pass=$PASSWORD$&module=NS-User&op=login
 
+
 function mediashare_remote_main()
 {
-  $cmd = str_replace('-', '', $_POST['cmd']);
+    $cmd = str_replace('-', '', $_POST['cmd']);
 
-  ob_start();
-  pnModFunc('mediashare', 'remote', $cmd);
-  $txt = "\n" . ob_get_clean();
+    ob_start();
+    pnModFunc('mediashare', 'remote', $cmd);
+    $txt = "\n" . ob_get_clean();
 
-/* DEBUG
+    /* DEBUG
   $f = fopen('c:/tmp/gallery.txt', 'a');
   fwrite($f, $txt);
   fclose($f);
 //*/
 
-  echo $txt;
+    echo $txt;
 
-  return true;
+    return true;
 }
-
 
 function mediashare_remote_login()
 {
-  if (pnUserLogIn($_POST['uname'], $_POST['password']))
-  {
-    echo "#__GR2PROTO__
+    if (pnUserLogIn($_POST['uname'], $_POST['password'])) {
+        echo "__#GR2PROTO__
 status=0
 status_text=ok
 server_version=2.15";
-  }
-  else
-  {
-    echo "#__GR2PROTO__
+    } else {
+        echo "__#GR2PROTO__
 status=202
 status_text=no access
 server_version=2.15";
-  }
+    }
 
-  return true;
+    return true;
 }
-
 
 function mediashare_remote_fetchalbums()
 {
-  return mediashare_remote_fetchalbumsprune();
+    return mediashare_remote_fetchalbumsprune();
 }
-
 
 function mediashare_remote_fetchalbumsprune()
 {
-  $albums = pnModAPIFunc('mediashare', 'user', 'getAllAlbums',
-                         array('access' => mediashareAccessRequirementEditAccess,
-                               'albumId' => 0));
-  if ($albums === false)
-    return mediashareErrorAPIRemote();
+    $albums = pnModAPIFunc('mediashare', 'user', 'getAllAlbums', array('access' => mediashareAccessRequirementEditAccess, 'albumId' => 0));
+    if ($albums === false)
+        return mediashareErrorAPIRemote();
 
-  $thumbnailSize = (int)pnModGetVar('mediashare', 'thumbnailSize');
-  $previewSize = (int)pnModGetVar('mediashare', 'previewSize');
+    $thumbnailSize = (int) pnModGetVar('mediashare', 'thumbnailSize');
+    $previewSize = (int) pnModGetVar('mediashare', 'previewSize');
 
-  echo "#__GR2PROTO__
+    echo "__#GR2PROTO__
 status=0
 status_text=ok";
 
-  for ($i=1,$cou=count($albums); $i<=$cou; ++$i)
-  {
-    $album = &$albums[$i-1];
+    for ($i = 1, $cou = count($albums); $i <= $cou; ++$i) {
+        $album = &$albums[$i - 1];
 
-    echo "
+        echo "
 album.name.$i=$album[id]
 album.title.$i=" . mediashareRemoteEscape($album[title]) . "
 album.summary.$i=" . mediashareRemoteEscape($album[summary] . ' ' . $album[description]) . "
@@ -111,68 +104,61 @@ album.perms.write.$i=true
 album.perms.del_item.$i=true
 album.perms.del_alb.$i=true
 album.perms.create_sub.$i=true";
-  }
+    }
 
-  echo "
+    echo "
 album_count=" . count($albums) . "
 can_create_root=no";
 
-  return true;
+    return true;
 }
-
 
 function mediashare_remote_albumproperties()
 {
-  $albumId = $_POST['set_albumName'];
+    $albumId = $_POST['set_albumName'];
 
-  if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething))
-    return mediashareErrorPageRemote(__FILE__, __LINE__, 'Access denied');
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething))
+        return mediashareErrorPageRemote(__FILE__, __LINE__, 'Access denied');
 
-  $album = pnModAPIFunc('mediashare', 'user', 'getAlbum',
-                         array('albumId' => $albumId));
-  if ($album === false)
-    return mediashareErrorAPIRemote();
+    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
+    if ($album === false)
+        return mediashareErrorAPIRemote();
 
-  $size = (int)pnModGetVar('mediashare', 'previewSize');
+    $size = (int) pnModGetVar('mediashare', 'previewSize');
 
-  echo "#__GR2PROTO__
+    echo "__#GR2PROTO__
 status=0
 status_text=ok
 auto_resize=$size
 max_size=999999
 add_to_beginning=no";
 
-  return true;
+    return true;
 }
-
 
 function mediashare_remote_fetchalbumimages()
 {
-  $albumId = $_POST['set_albumName'];
+    $albumId = $_POST['set_albumName'];
 
-  $images = pnModAPIFunc('mediashare', 'user', 'getMediaItems',
-                         array('access' => mediashareAccessRequirementView,
-                               'albumId' => $albumId));
-  if ($images === false)
-    return mediashareErrorAPIRemote();
+    $images = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('access' => mediashareAccessRequirementView, 'albumId' => $albumId));
+    if ($images === false)
+        return mediashareErrorAPIRemote();
 
-  $album = pnModAPIFunc('mediashare', 'user', 'getAlbum',
-                         array('albumId' => $albumId));
-  if ($album === false)
-    return mediashareErrorAPIRemote();
+    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
+    if ($album === false)
+        return mediashareErrorAPIRemote();
 
-  $baseurl = pnGetBaseURL() . 'mediashare/';
+    $baseurl = pnGetBaseURL() . 'mediashare/';
 
-  echo "#__GR2PROTO__
+    echo "__#GR2PROTO__
 status=0
 status_text=ok
 album.caption=$album[title]";
 
-  for ($i=1,$cou=count($images); $i<=$cou; ++$i)
-  {
-    $image = &$images[$i-1];
+    for ($i = 1, $cou = count($images); $i <= $cou; ++$i) {
+        $image = &$images[$i - 1];
 
-    echo "
+        echo "
 image.name.$i=$image[originalRef]
 image.raw_width.$i=$image[originalWidth]
 image.raw_height.$i=$image[originalHeight]
@@ -187,141 +173,126 @@ image.caption.$i=" . mediashareRemoteEscape($image[title]) . "
 image.title.$i=" . mediashareRemoteEscape($image[title]) . "
 image.clicks.$i=0
 image.hidden.$i=no";
-  }
+    }
 
-  echo "
+    echo "
 image_count=" . count($images) . "
 baseurl=$baseurl
 ";
 
-  return true;
+    return true;
 }
-
 
 function mediashare_remote_additem()
 {
-  $title =  $_POST['caption'];
-  $albumId = $_POST['set_albumName'];
-  $uploadInfo = $_FILES['userfile'];
+    $title = $_POST['caption'];
+    $albumId = $_POST['set_albumName'];
+    $uploadInfo = $_FILES['userfile'];
 
-  if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, ''))
-    return mediashareErrorPageRemote(__FILE__, __LINE__, 'Access denied');
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, ''))
+        return mediashareErrorPageRemote(__FILE__, __LINE__, 'Access denied');
 
-  $result = pnModAPIFunc('mediashare', 'source_browser', 'addMediaItem',
-                         array( 'albumId'        => $albumId,
-                                 'uploadFilename' => $uploadInfo['tmp_name'],
-                                 'fileSize'       => $uploadInfo['size'],
-                                 'filename'       => $uploadInfo['name'],
-                                 'mimeType'       => $uploadInfo['type'],
-                                 'title'          => $title,
-                                 'keywords'       => null,
-                                 'description'    => null,
-                                 'width'          => $width,
-                                 'height'         => $height));
-  if ($result === false)
-    return mediashareErrorAPIRemote();
+    $result = pnModAPIFunc('mediashare', 'source_browser', 'addMediaItem', array(
+        'albumId' => $albumId,
+        'uploadFilename' => $uploadInfo['tmp_name'],
+        'fileSize' => $uploadInfo['size'],
+        'filename' => $uploadInfo['name'],
+        'mimeType' => $uploadInfo['type'],
+        'title' => $title,
+        'keywords' => null,
+        'description' => null,
+        'width' => $width,
+        'height' => $height));
+    if ($result === false)
+        return mediashareErrorAPIRemote();
 
-  echo "#__GR2PROTO__
+    echo "__#GR2PROTO__
 status=0
 status_text=ok
 item_name=$result[mediaId]";
 
-  return true;
+    return true;
 }
-
 
 function mediashare_remote_newalbum()
 {
-  if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddAlbum, ''))
-    return mediashareErrorPageRemote(__FILE__, __LINE__, 'Access denied');
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddAlbum, ''))
+        return mediashareErrorPageRemote(__FILE__, __LINE__, 'Access denied');
 
-  $newAlbumID = pnModAPIFunc('mediashare', 'edit', 'addAlbum',
-                             array('title'         => $_POST['newAlbumTitle'],
-                                   'keywords'      => '',
-                                   'summary'       => '',
-                                   'description'   => $_POST['newAlbumDesc'],
-                                   'template'      => null,
-                                   'parentAlbumId' => $_POST['set_albumName']) );
-  if ($newAlbumID === false)
-    return mediashareErrorAPIRemote();
+    $newAlbumID = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array('title' => $_POST['newAlbumTitle'], 'keywords' => '', 'summary' => '', 'description' => $_POST['newAlbumDesc'], 'template' => null, 'parentAlbumId' => $_POST['set_albumName']));
+    if ($newAlbumID === false)
+        return mediashareErrorAPIRemote();
 
-  echo "#__GR2PROTO__
+    echo "__#GR2PROTO__
 status=0
 status_text=ok
 album_name=$newAlbumID";
 
-  return true;
+    return true;
 }
-
 
 function mediashare_remote_movealbum()
 {
-  $albumId = $_POST['set_albumName'];
-  $dstAlbumId = $_POST['set_destalbumName'];
+    $albumId = $_POST['set_albumName'];
+    $dstAlbumId = $_POST['set_destalbumName'];
 
-  // Access control built into API funcion
-  $ok = pnModAPIFunc('mediashare', 'edit', 'moveAlbum',
-                     array('albumId' => $albumId,
-                           'dstAlbumId' => $dstAlbumId));
-  if ($ok === false)
-    return mediashareErrorAPIRemote();
+    // Access control built into API funcion
+    $ok = pnModAPIFunc('mediashare', 'edit', 'moveAlbum', array('albumId' => $albumId, 'dstAlbumId' => $dstAlbumId));
+    if ($ok === false)
+        return mediashareErrorAPIRemote();
 
-  echo "#__GR2PROTO__
+    echo "__#GR2PROTO__
 status=0
 status_text=ok";
 
-  return true;
+    return true;
 }
-
 
 function mediashare_remote_incrementviewcount()
 {
-  // Ignore
+    // Ignore
 
-  echo "#__GR2PROTO__
+
+    echo "__#GR2PROTO__
 status=0
 status_text=ok";
 
-  return true;
+    return true;
 }
-
 
 function mediashare_remote_noop()
 {
-  echo "#__GR2PROTO__
+    echo "__#GR2PROTO__
 status=0
 status_text=ok";
 
-  return true;
+    return true;
 }
-
 
 function mediashareRemoteEscape($txt)
 {
-  $txt = str_replace("\r", '', $txt);
-  $txt = str_replace("\n", ' ', $txt);
-  return $txt;
+    $txt = str_replace("\r", '', $txt);
+    $txt = str_replace("\n", ' ', $txt);
+    return $txt;
 }
 
 function mediashareErrorPageRemote($file, $line, $msg)
 {
-  echo "#__GR2PROTO__
+    echo "__#GR2PROTO__
 status=1
 status_text=$file($line): $msg";
 
-  return true;
+    return true;
 }
-
 
 function mediashareErrorAPIRemote()
 {
-  $msg = mediashareErrorAPIGet();
+    $msg = mediashareErrorAPIGet();
 
-  echo "#__GR2PROTO__
+    echo "__#GR2PROTO__
 status=1
 status_text=$msg";
 
-  return true;
+    return true;
 }
 
-?>

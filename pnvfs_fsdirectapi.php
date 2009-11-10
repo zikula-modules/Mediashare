@@ -12,7 +12,7 @@ class mediashare_vfsHandlerFSDirect
 
   function mediashare_vfsHandlerFSDirect()
   {
-    $this->storageDir = pnModGetVar('mediashare', 'mediaDirName'); 
+    $this->storageDir = pnModGetVar('mediashare', 'mediaDirName');
   }
 
 
@@ -22,8 +22,9 @@ class mediashare_vfsHandlerFSDirect
     $newFilename = $this->storageDir . '/' . pnVarPrepForOS($fileReference);
 
     $ok = @copy($filename, $newFilename);
-    if ($ok === false)
+    if ($ok === false) {
       return mediashareErrorAPI(__FILE__, __LINE__, "Failed to copy file '$filename' to '$newFilename' while creating new file in virtual storage system. Please check media upload directory in admin settings and it's permissions.");
+    }
 
     chmod($newFilename, 0777);
     return $fileReference;
@@ -41,8 +42,9 @@ class mediashare_vfsHandlerFSDirect
   {
     $orgFilename = $this->storageDir . '/' . pnVarPrepForOS($orgFileReference);
 
-    if (!copy($newFilename, $orgFilename))
+    if (!copy($newFilename, $orgFilename)) {
       return mediashareErrorAPI(__FILE__, __LINE__, "Failed to copy '$newFilename' to '$orgFileReference'");
+    }
 
     return true;
   }
@@ -52,23 +54,23 @@ class mediashare_vfsHandlerFSDirect
   {
     $chars = "0123456789abcdefghijklmnopqrstuvwxyz";
     $charLen = strlen($chars);
-        
+
     $id = $chars[mt_rand(0, $charLen-1)] . $chars[mt_rand(0, $charLen-1)];
 
-    if (!file_exists("mediashare/$id"))
-    {
+    if (!file_exists("mediashare/$id")) {
       mkdir("mediashare/$id");
       chmod("mediashare/$id", 0777);
     }
 
     $id .= '/';
-    
-    for ($i=0; $i<30; ++$i)
+
+    for ($i=0; $i<30; ++$i) {
       $id .= $chars[mt_rand(0, $charLen-1)];
+    }
 
     return $id;
   }
-};
+}
 
 
 function mediashare_vfs_fsdirectapi_buildHandler($args)
@@ -76,4 +78,3 @@ function mediashare_vfs_fsdirectapi_buildHandler($args)
   return new mediashare_vfsHandlerFSDirect();
 }
 
-?>

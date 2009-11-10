@@ -4,25 +4,24 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2003.
 // =======================================================================
 
-require_once("modules/mediashare/common.php");
 
+require_once ("modules/mediashare/common.php");
 
 function mediashareUploadErrorMsg($error)
 {
-  switch ($error)
-  {
-    case 1:
-      return _MSUPLOADERROR_INISIZE;
-    case 2:
-      return _MSUPLOADERROR_FORMSIZE;
-    case 3:
-      return _MSUPLOADERROR_PARTIAL;
-    case 4:
-      return _MSUPLOADERROR_NOFILE;
-    default:
-      return _MSUPLOADERROR_UNKNOWN;
-  }
+    $dom = ZLanguage::getModuleDomain('Mediashare');
+
+    switch ($error) {
+        case 1:
+            return __('Upload error - image size exceeds server upload limit', $dom);
+        case 2:
+            return __('Upload error - image size exceeds form upload limit', $dom);
+        case 3:
+            return __('Upload error - uploaded file was only partially uploaded', $dom);
+        case 4:
+            return __('Upload error - no file was uploaded', $dom);
+        default:
+            return __('Unknown upload error', $dom);
+    }
 }
 
-
-?>

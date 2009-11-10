@@ -7,111 +7,100 @@
 
 function mediashare_sourcesapi_getSources(&$args)
 {
-  list($dbconn) = pnDBGetConn();
-  $pntable = pnDBGetTables();
+    list ($dbconn) = pnDBGetConn();
+    $pntable = pnDBGetTables();
 
-  $sourcesTable   = $pntable['mediashare_sources'];
-  $sourcesColumn  = $pntable['mediashare_sources_column'];
+    $sourcesTable = $pntable['mediashare_sources'];
+    $sourcesColumn = $pntable['mediashare_sources_column'];
 
-  $sql = "SELECT $sourcesColumn[name],
+    $sql = "SELECT $sourcesColumn[name],
                  $sourcesColumn[title],
                  $sourcesColumn[formEncType]
           FROM $sourcesTable";
 
-  $result = $dbconn->execute($sql);
+    $result = $dbconn->execute($sql);
 
-  if ($dbconn->errorNo() != 0)
-    return mediashareErrorAPI(__FILE__, __LINE__, '"mediashare_sourcesapi_getSources" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0)
+        return mediashareErrorAPI(__FILE__, __LINE__, '"mediashare_sourcesapi_getSources" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
 
-  $sources = array();
+    $sources = array();
 
-  for (; !$result->EOF; $result->moveNext())
-  {
-    $source = array('name'        => $result->fields[0],
-                    'title'       => $result->fields[1],
-                    'formEncType' => $result->fields[2]);
+    for (; !$result->EOF; $result->moveNext()) {
+        $source = array('name' => $result->fields[0], 'title' => $result->fields[1], 'formEncType' => $result->fields[2]);
 
-    $sources[] = $source;
-  }
+        $sources[] = $source;
+    }
 
-  $result->close();
+    $result->close();
 
-  return $sources;
+    return $sources;
 }
-
 
 function mediashare_sourcesapi_scanSources($args)
 {
-  // Check access
-  if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN))
-    return mediashareErrorAPI(__FILE__, __LINE__, _MSNOAUTH);
+    $dom = ZLanguage::getModuleDomain('Mediashare');
+    // Check access
+    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN))
+        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
 
-  // Clear existing sources table
-  
-  list($dbconn) = pnDBGetConn();
-  $pntable = pnDBGetTables();
-
-  $sourcesTable = $pntable['mediashare_sources'];
-  $sql = "TRUNCATE TABLE $sourcesTable";
-
-  $dbconn->execute($sql);
-
-  if ($dbconn->errorNo() != 0)
-    return mediashareErrorAPI(__FILE__, __LINE__, '"scanSources" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    // Clear existing sources table
 
 
-  // Scan for sources
-  if ($dh = opendir("modules/mediashare"))
-  {
-    while (($filename=readdir($dh)) !== false)
-    {
-      if (preg_match('/^pnsource_([-a-zA-Z0-9_]+)api.php$/', $filename, $matches))
-      {
-        $sourceName = $matches[1];
-        $sourceApi = "source_$sourceName";
+    list ($dbconn) = pnDBGetConn();
+    $pntable = pnDBGetTables();
 
-        // Force load - it is used during pninit
-        if (!pnModAPILoad('mediashare', $sourceApi, true))
-          return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$sourceApi' API in scanSources");
+    $sourcesTable = $pntable['mediashare_sources'];
+    $sql = "TRUNCATE TABLE $sourcesTable";
 
-        $title = pnModAPIFunc('mediashare', $sourceApi, 'getTitle');
+    $dbconn->execute($sql);
 
-        if ($title === false)
-        {
-          closedir($dh);
-          return false;
+    if ($dbconn->errorNo() != 0)
+        return mediashareErrorAPI(__FILE__, __LINE__, '"scanSources" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+
+    // Scan for sources
+    if ($dh = opendir("modules/mediashare")) {
+        while (($filename = readdir($dh)) !== false) {
+            if (preg_match('/^pnsource_([-a-zA-Z0-9_]+)api.php$/', $filename, $matches)) {
+                $sourceName = $matches[1];
+                $sourceApi = "source_$sourceName";
+
+                // Force load - it is used during pninit
+                if (!pnModAPILoad('mediashare', $sourceApi, true))
+                    return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$sourceApi' API in scanSources");
+
+                $title = pnModAPIFunc('mediashare', $sourceApi, 'getTitle');
+
+                if ($title === false) {
+                    closedir($dh);
+                    return false;
+                }
+
+                $ok = pnModAPIFunc('mediashare', 'sources', 'addSource', array('title' => $title, 'name' => $sourceName));
+                if ($ok === false) {
+                    closedir($dh);
+                    return false;
+                }
+            }
         }
 
-        $ok = pnModAPIFunc('mediashare', 'sources', 'addSource', 
-                           array('title' => $title,
-                                 'name'  => $sourceName));
-        if ($ok === false)
-        {
-          closedir($dh);
-          return false;
-        }
-      }
+        closedir($dh);
     }
 
-    closedir($dh);
-  }
-
-  return true;
+    return true;
 }
-
 
 function mediashare_sourcesapi_addSource($args)
 {
-  $title  = $args['title'];
-  $name   = $args['name'];
+    $title = $args['title'];
+    $name = $args['name'];
 
-  list($dbconn) = pnDBGetConn();
-  $pntable = pnDBGetTables();
+    list ($dbconn) = pnDBGetConn();
+    $pntable = pnDBGetTables();
 
-  $sourcesTable   = $pntable['mediashare_sources'];
-  $sourcesColumn  = $pntable['mediashare_sources_column'];
+    $sourcesTable = $pntable['mediashare_sources'];
+    $sourcesColumn = $pntable['mediashare_sources_column'];
 
-  $sql = "INSERT INTO $sourcesTable (
+    $sql = "INSERT INTO $sourcesTable (
             $sourcesColumn[name],
             $sourcesColumn[title],
 			$sourcesColumn[formEncType])
@@ -120,12 +109,11 @@ function mediashare_sourcesapi_addSource($args)
             '" . pnVarPrepForStore($title) . "',
 			'')";
 
-  $dbconn->execute($sql);
+    $dbconn->execute($sql);
 
-  if ($dbconn->errorNo() != 0)
-    return mediashareErrorAPI(__FILE__, __LINE__, '"addSource" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0)
+        return mediashareErrorAPI(__FILE__, __LINE__, '"addSource" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
 
-  return true;
+    return true;
 }
 
-?>
