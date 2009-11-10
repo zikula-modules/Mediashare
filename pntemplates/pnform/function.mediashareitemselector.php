@@ -52,9 +52,10 @@ class mediashareItemSelector extends pnFormPlugin
     $render->pnFormAddValidator($this);
   }
 
-  
+
   function render(&$render)
   {
+      $dom = ZLanguage::getModuleDomain('Mediashare');
     PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
     PageUtil::AddVar('javascript', 'javascript/ajax/pnajax.js');
     PageUtil::AddVar('javascript', 'javascript/ajax/lightbox.js');
@@ -150,7 +151,7 @@ class mediashareItemSelector extends pnFormPlugin
 
     if ($this->enableUpload)
     {
-      $html .= "<tr><td colspan=\"2\"><a href=\"javascript:void(0)\" id=\"mediashare_upload_collapse\">" . _MSUPLOAD. "</a><div id=\"mediashare_upload\">\n";
+      $html .= "<tr><td colspan=\"2\"><a href=\"javascript:void(0)\" id=\"mediashare_upload_collapse\">" . __('Upload', $dom). "</a><div id=\"mediashare_upload\">\n";
 
       $html .= _MSSELECTORUPLOAD . '<br/>';
       $html .= "<label for=\"{$this->id}_upload\">" . _MSUPLOAD . "</label>\n";
@@ -199,7 +200,7 @@ class mediashareItemSelector extends pnFormPlugin
           $albumId = $newAlbumID;
       }
       else
-        $this->setError(_MSNOAUTH);
+        $this->setError(__('You do not have access to this feature', $dom));
     }
 
     $file = (isset($_FILES["{$this->inputName}_upload"]) ? $_FILES["{$this->inputName}_upload"] : null);
@@ -227,7 +228,7 @@ class mediashareItemSelector extends pnFormPlugin
           $value = $result['mediaId'];
       }
       else
-        $this->setError(_MSNOAUTH);
+        $this->setError(__('You do not have access to this feature', $dom));
     }
 
     $this->selectedItemId = $value;
@@ -238,7 +239,7 @@ class mediashareItemSelector extends pnFormPlugin
   {
     if ($this->mandatory  &&  empty($this->selectedItemId))
     {
-      $this->setError(_PNFORM_MANDATORYSELECTERROR);
+      $this->setError(__('A selection here is mandatory.', $dom));
     }
   }
 
@@ -256,7 +257,7 @@ class mediashareItemSelector extends pnFormPlugin
     $this->errorMessage = null;
   }
 
-  
+
   function saveValue(&$render, &$data)
   {
     if ($this->dataBased)
