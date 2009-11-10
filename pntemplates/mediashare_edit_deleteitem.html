@@ -1,17 +1,16 @@
 <!--[gt text="Delete item" assign=mltitle]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit"]-->
 
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[gt text="Delete item"]-->
-  <!--[/mediashare_header]-->
-  <!--[mediashare_body]-->
+<fieldset>
+    <legend><!--[gt text="Delete item"]--></legend>
+
     <!--[include file=mediashare_itemInfo.html]-->
-  <!--[/mediashare_body]-->
-  <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="okButton" text="Delete item"]-->
-    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
+
+    <div class="z-formbuttons">
+        <!--[elfisk_button name="okButton" __text="Delete item"]-->
+        <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
+    </div>
+
+</fieldset>
 
 <!--[include file="mediashare_footer.html"]-->

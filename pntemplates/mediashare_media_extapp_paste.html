@@ -1,57 +1,54 @@
 <select name="htmlFormat" id="htmlFormat">
-
- <option value="previewItem"><!--[gt text="Preview"]--></option>
- <option value="fullItem"><!--[gt text="Original"]--></option>
- <option value="thumbnail"><!--[gt text="Thumbnail"]--></option>
- <!--[if $mode == 'html']-->
- <option value="thumbnailPopup"><!--[gt text="Thumbnail (popup)"]--></option>
- <option value="previewPopup"><!--[gt text="Preview (popup)"]--></option>
- <option value="fullItemURL"><!--[gt text="Link to original"]--></option>
- <option value="fullItemURLPopup"><!--[gt text="Link to original (popup)"]--></option>
- <option value="albumUrl"><!--[gt text="Album link"]--></option>
- <option value="albumThumbnailURL"><!--[gt text="Album link as thumbnail"]--></option>
- <option value="albumUrlpopup"><!--[gt text="Album link (popup)"]--></option>
- <option value="albumThumbnailURLpopup"><!--[gt text="Album link as thumbnail (popup)"]--></option>
-  <!--[/if]-->
-
+    <option value="previewItem"><!--[gt text="Preview"]--></option>
+    <option value="fullItem"><!--[gt text="Original"]--></option>
+    <option value="thumbnail"><!--[gt text="Thumbnail"]--></option>
+    <!--[if $mode == 'html']-->
+    <option value="thumbnailPopup"><!--[gt text="Thumbnail (popup)"]--></option>
+    <option value="previewPopup"><!--[gt text="Preview (popup)"]--></option>
+    <option value="fullItemURL"><!--[gt text="Link to original"]--></option>
+    <option value="fullItemURLPopup"><!--[gt text="Link to original (popup)"]--></option>
+    <option value="albumUrl"><!--[gt text="Album link"]--></option>
+    <option value="albumThumbnailURL"><!--[gt text="Album link as thumbnail"]--></option>
+    <option value="albumUrlpopup"><!--[gt text="Album link (popup)"]--></option>
+    <option value="albumThumbnailURLpopup"><!--[gt text="Album link as thumbnail (popup)"]--></option>
+    <!--[/if]-->
 </select>
-
 
 <script type="text/javascript">
 
-<!--[include file=mediashare_pasteutility.html]-->
+    <!--[include file=mediashare_pasteutility.html]-->
 
-function mediashare_paste_getHtml(mode)
-{
-  var htmlFormat = document.getElementById('htmlFormat').value;
-  var html = null;
-
-  var albumUrl = '<!--[pnmodurl modname=mediashare func=view aid=$mediaItem.parentAlbumId]-->';
-  var displayItemUrl = '<!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id]-->';
-  var originalUrl = '<!--[$originalUrl]-->';
-  var previewUrl = '<!--[$previewUrl]-->';
-  var thumbnailUrl = '<!--[$thumbnailUrl]-->';
-
-  html = mediashare_paste_getStandardHtml(htmlFormat, mode);
-
-  if (html == null)
-  {
-    switch (htmlFormat)
+    function mediashare_paste_getHtml(mode)
     {
-      case 'fullItem':
-        html = "<img src=\"" + originalUrl + "\"/>";
-      break;
-      case 'previewItem':
-        html = "<img src=\"" + previewUrl + "\"/>";
-      break;
-      case 'previewPopup':
-        html = "<a href=\"javascript:popupMediaViewer('" + displayItemUrl + "')\">" 
-               + "<img src=\"" + previewUrl + "\"/></a>";
-      break;
-    }
-  }
+        var htmlFormat = document.getElementById('htmlFormat').value;
+        var html = null;
 
-  return html;
-}
+        var albumUrl = '<!--[pnmodurl modname=mediashare func=view aid=$mediaItem.parentAlbumId]-->';
+        var displayItemUrl = '<!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id]-->';
+        var originalUrl = '<!--[$originalUrl]-->';
+        var previewUrl = '<!--[$previewUrl]-->';
+        var thumbnailUrl = '<!--[$thumbnailUrl]-->';
+
+        html = mediashare_paste_getStandardHtml(htmlFormat, mode);
+
+        if (html == null)
+        {
+            switch (htmlFormat)
+            {
+                case 'fullItem':
+                html = "<img src=\"" + originalUrl + "\"/>";
+                break;
+                case 'previewItem':
+                html = "<img src=\"" + previewUrl + "\"/>";
+                break;
+                case 'previewPopup':
+                html = "<a href=\"javascript:popupMediaViewer('" + displayItemUrl + "')\">"
+                + "<img src=\"" + previewUrl + "\"/></a>";
+                break;
+            }
+        }
+
+        return html;
+    }
 
 </script>

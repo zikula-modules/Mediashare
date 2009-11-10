@@ -1,30 +1,20 @@
-<!--[* $Id *]-->
-<!--[gt text="Import" assign=title]-->
-<!--[pnpagesetvar name=title value=$title]-->
-<!--[pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css"]-->
+<!--[* $Id$ *]-->
+<!--[gt text="Mediashare Import" assign=templatetitle]-->
+<!--[pnpagesetvar name=title value=$templatetitle]-->
 
-<div class="pn-adminbox">
-    <h1><!--[gt text="Mediashare"]--></h1>
-    <div class="pn-menu"><!--[moduleadminlinks modname=mediashare]--></div>
-</div>
+<h2><!--[$templatetitle]--></h2>
+<!--[insert name='getstatusmsg']-->
+<h3><!--[gt text="Import albums and images from Photoshare"]--></h3>
 
-<div class="mediashare pn-admincontainer pn-clearfix">
+<p class="z-warningmsg"><!--[gt text="Importing from Photoshare takes a long time since all images has to be loaded and converted. Your web server probably kills PHP before importing is finished. Please just re-submit this page until you return to Mediashare (keep clicking refresh as long as you get a white screen or an error message)."]--></p>
 
-    <h2><!--[gt text="Import albums and images from Photoshare"]--></h2>
-
-    <form class="pn-adminform" method="post" action="<!--[pngetcurrenturi]-->">
-        <fieldset>
-            <legend><!--[gt text="Import albums and images from Photoshare"]--></legend>
-            <div class="pn-adminformrow">
-                <!--[gt text="<strong>Importing from Photoshare takes a long time</strong> since all images has to be loaded and converted. Your web server probably kills PHP before importing is finished. Please just re-submit this page until you return to Mediashare (keep clicking refresh as long as you get a white screen or an error message). html=1"]-->
-            </div>
-        </fieldset>
-
-        <div class="pn-adminformrow pn-adminformbuttons">
-            <!--[elfisk_button name="importButton" text="Import"]-->
-            <!--[elfisk_button name="cancelButton" text="Cancel"]-->
+<form class="z-form" method="post" action="<!--[pngetcurrenturi]-->">
+    <fieldset>
+        <legend><!--[gt text="Confirmation prompt"]--></legend>
+        <div class="z-formbuttons">
+            <!--[pnbutton src='button_ok.gif' set='icons/small' __alt='Import' __title='Import']-->
+            <a href="<!--[pnmodurl modname='mediashare' type='import' func='main']-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel'  __title='Cancel']--></a>
         </div>
+    </fieldset>
+</form>
 
-    </form>
-
-</div>

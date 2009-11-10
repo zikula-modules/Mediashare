@@ -1,18 +1,13 @@
-<!--[* $Id *]-->
-<!--[gt text="Import" assign=title]-->
-<!--[pnpagesetvar name=title value=$title]-->
-<!--[pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css"]-->
+<!--[* $Id$ *]-->
+<!--[gt text="Mediashare Import" assign=templatetitle]-->
+<!--[pnpagesetvar name=title value=$templatetitle]-->
 
-<div class="pn-adminbox">
-    <h1><!--[gt text="Mediashare"]--></h1>
-    <div class="pn-menu"><!--[moduleadminlinks modname=mediashare]--></div>
-</div>
+<h2><!--[$templatetitle]--></h2>
+<!--[insert name='getstatusmsg']-->
+<h3><!--[gt text="Choose import type"]--></h3>
 
-<div class="mediashare pn-admincontainer pn-clearfix">
-    <h2><!--[$title]--></h2>
-
-    <ul>
-        <li><a href="<!--[pnmodurl modname=mediashare type=import func=photoshare]-->"><!--[gt text="Import albums and images from Photoshare"]--></a></li>
-    </ul>
-
+<div class="z-menu">
+    <span class="z-menuitem-title">
+        [ <a href="<!--[pnmodurl modname=mediashare type=import func=photoshare]-->"><!--[gt text="Import albums and images from Photoshare"]--></a> ]
+    </span>
 </div>

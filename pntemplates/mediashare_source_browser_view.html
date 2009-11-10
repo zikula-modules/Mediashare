@@ -1,36 +1,30 @@
 <!--[elfisk_setInitialFocus inputId="upload1"]-->
 
-<div class="mediashare-info">
-  <!--[gt text="<p>Here you can upload media items from your browser.</p><p>You can upload up to %postsize% kbytes at one time, but no single file can be bigger than %uploadsize% kbytes. But these are only the raw upload restrictions - memory limits may further restrict how big a single file can be.</p><p>You will be asked to write descriptions, keywords and such like on the next page.</p> html=1 postsize=$post_max_size uploadsize=$upload_max_filesize"]-->
+<div class="z-informationmsg"><!--[gt text="<p>Here you can upload media items from your browser.</p><p>You can upload up to %1$s KBytes at one time, but no single file can be bigger than %2$s KBytes. But these are only the raw upload restrictions - memory limits may further restrict how big a single file can be.</p><p>You will be asked to write descriptions, keywords and such like on the next page.</p>" tag1=$post_max_size tag2=$upload_max_filesize]--></div>
+
+<input type="hidden" name="imagenum" value="<!--[$imageNum]-->" />
+
+<!--[foreach from=$uploadFields item=fieldId]-->
+<fieldset>
+    <legend><!--[gt text="Upload"]--> <!--[$fieldId]--></legend>
+    <div class="z-formrow">
+        <label for="upload<!--[$fieldId]-->"><!--[gt text="Filename"]--></label>
+        <!--[elfisk_upload id="upload$fieldId"]-->
+    </div>
+    <div class="z-formrow">
+        <label for="width<!--[$fieldId]-->"><!--[gt text="Width"]--></label>
+        <!--[elfisk_intInput id="width$fieldId" width="4em" intValue=""]-->
+        <em class="z-sub">(<!--[gt text="Only required for video formats"]-->)</em>
+    </div>
+    <div class="z-formrow">
+        <label for="height<!--[$fieldId]-->"><!--[gt text="Height"]--></label>
+        <!--[elfisk_intInput id="height$fieldId" width="4em" intValue=""]-->
+        <em class="z-sub">(<!--[gt text="Only required for video formats"]-->)</em>
+    </div>
+</fieldset>
+<!--[/foreach]-->
+
+<div class="z-formbuttons">
+    <!--[elfisk_button name="saveButton" text="Save"]-->
+    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
 </div>
-
-
-<input type="hidden" name="imagenum" value="<!--[$imageNum]-->"/>
-
-<div class="mediashare-upload">
- <table>
-  <!--[foreach from=$uploadFields item=fieldId]-->
-
-  <tr class="mediashare-uploadrow">
-   <td><label for="upload<!--[$fieldId]-->"><!--[gt text="Upload"]--> <!--[$fieldId]--></label></td>
-   <td><!--[elfisk_upload id="upload$fieldId" width="400px"]--></td>
-  </tr>
-  <tr class="mediashare-sizerow">
-   <td></td>
-   <td>
-     <label for="width<!--[$fieldId]-->"><!--[gt text="Width"]--></label>
-     <!--[elfisk_intInput id="width$fieldId" width="4em" intValue=""]-->
-     <label for="height<!--[$fieldId]-->"><!--[gt text="Height"]--></label>
-     <!--[elfisk_intInput id="height$fieldId" width="4em" intValue=""]-->
-     (<!--[gt text="Only required for video formats"]-->)
-   </td>
-  </tr>
-
-  <!--[/foreach]-->
- </table>
-</div>
-
-<!--[mediashare_buttons]-->
-  <!--[elfisk_button name="saveButton" text="Save"]-->
-  <!--[elfisk_button name="cancelButton" text="Cancel"]-->
-<!--[/mediashare_buttons]-->

@@ -3,34 +3,23 @@
 <!--[gt text="Move album" assign=mltitle]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit"]-->
 
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[gt text="Move album"]-->
-  <!--[/mediashare_header]-->
-  <!--[mediashare_body]-->
-    <table>
-      <tr>
-        <td>
-          <!--[gt text="Album"]-->
-        </td>
-        <td>
-          <!--[$album.title]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="keywords"><!--[gt text="Move to album"]--></label>
-        </td>
-        <td>
-          <!--[mediashare_albumSelector albumId=1 name=daid excludeAlbumId=$album.id]-->
-        </td>
-      </tr>
-    </table>
-  <!--[/mediashare_body]-->
-  <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="Ok"]-->
-    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
+<fieldset>
+    <legend><!--[gt text="Move album"]--></legend>
+
+    <div class="z-formrow">
+        <label><!--[gt text="Album"]--></label>
+        <span><!--[$album.title]--></span>
+    </div>
+
+    <div class="z-formrow">
+        <label for="keywords"><!--[gt text="Move to album"]--></label>
+         <!--[mediashare_albumSelector albumId=1 name=daid excludeAlbumId=$album.id]-->
+    </div>
+</fieldset>
+
+<div class="z-formbuttons">
+    <!--[elfisk_button name="saveButton" __text="Ok"]-->
+    <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
+</div>
 
 <!--[include file="mediashare_footer.html"]-->

@@ -3,64 +3,42 @@
 <!--[gt text="Edit item" assign=mltitle]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle formEncType="multipart/form-data" mode="edit"]-->
 
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[gt text="Edit item"]-->
-  <!--[/mediashare_header]-->
-  <!--[mediashare_body]-->
-    <table>
-      <tr>
-        <td colspan="2">
-          <!--[include file=mediashare_itemInfo.html]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="title"><!--[gt text="Title"]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textInput id="title" width="400px" maxLength="255"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="keywords"><!--[gt text="Keywords"]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textInput id="keywords" width="400px" maxLength="255"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="description"><!--[gt text="Description"]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textArea id="description" width="400px" height="100px"]-->
-        </td>
-      </tr>
-      <tr>
-       <td><label for="upload"><!--[gt text="Optional new media file"]--></label></td>
-       <td>
-         <!--[elfisk_upload id="upload" width="400px"]--><br/>
-         <em><!--[gt text="You may have to force a reload of the next page when replacing media item!"]--></em>
-       </td>
-      </tr>
-      <tr>
-       <td></td>
-       <td>
-         <label for="width"><!--[gt text="Width"]--></label>
-         <!--[elfisk_intInput id="width" width="4em" intValue=""]-->
-         <label for="height"><!--[gt text="Height"]--></label>
-         <!--[elfisk_intInput id="height" width="4em" intValue=""]-->
-         (<!--[gt text="Only required for video formats"]-->)
-        </td>
-      </tr>
-    </table>
-  <!--[/mediashare_body]-->
-  <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="Save"]-->
-    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
+<fieldset>
+    <legend><!--[gt text="Edit item"]--></legend>
+
+    <!--[include file=mediashare_itemInfo.html]-->
+
+    <div class="z-formrow">
+        <label for="title"><!--[gt text="Title"]--></label>
+        <!--[elfisk_textInput id="title" maxLength="255"]-->
+    </div>
+    <div class="z-formrow">
+        <label for="keywords"><!--[gt text="Keywords"]--></label>
+        <!--[elfisk_textInput id="keywords" maxLength="255"]-->
+    </div>
+    <div class="z-formrow">
+        <label for="description"><!--[gt text="Description"]--></label>
+        <!--[elfisk_textArea id="description" height="100px"]-->
+    </div>
+    <div class="z-formrow">
+        <label for="upload"><!--[gt text="Optional new media file"]--></label>
+        <!--[elfisk_upload id="upload"]--><br/>
+        <em class="z-formnote"><!--[gt text="You may have to force a reload of the next page when replacing media item!"]--></em>
+    </div>
+    <div class="z-formrow">
+        <label for="width"><!--[gt text="Width"]--></label>
+        <!--[elfisk_intInput id="width" width="4em" intValue=""]-->
+    </div>
+    <div class="z-formrow">
+        <label for="height"><!--[gt text="Height"]--></label>
+        <!--[elfisk_intInput id="height" width="4em" intValue=""]-->
+        <em class="z-formnote"(<!--[gt text="Only required for video formats"]-->)</em>
+    </div>
+</fieldset>
+
+<div class="z-formbuttons">
+    <!--[elfisk_button name="saveButton" __text="Save"]-->
+    <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
+</div>
 
 <!--[include file="mediashare_footer.html"]-->

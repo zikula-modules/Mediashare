@@ -1,10 +1,10 @@
-<!--[* $Id *]-->
+<!--[* $Id$ *]-->
 <!--[elfisk_setInitialFocus inputId="mediaDirName"]-->
 <!--[elfisk_loadValues source=$item]-->
 
+<!--[gt text="Plugins" assign=templatetitle]-->
 <!--[include file="mediashare_admin_header.html"]-->
 
-<h2><!--[gt text="Plugins"]--></h2>
 <fieldset>
     <legend><!--[gt text="Media handlers"]--></legend>
     <p><!--[gt text="The list below shows the available media handlers. These plugins creates thumbnails and takes care of displaying the various media items you add."]--></p>
@@ -32,8 +32,9 @@
     </ul>
 </fieldset>
 
-<div class="pn-adminformrow pn-adminformbuttons">
-    <!--[elfisk_button name="scanButton" text="Scan for plugins"]-->
+<div class="z-formbuttons">
+    <!--[pnbutton src='button_ok.gif' set='icons/small' name='scanButton' __alt='Scan for plugins' __title='Scan for plugins']-->
+    <a href="<!--[pnmodurl modname='mediashare' type='admin' func='main']-->"><!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' __alt='Cancel'  __title='Cancel']--></a>
 </div>
 
 <!--[include file="mediashare_admin_footer.html"]-->

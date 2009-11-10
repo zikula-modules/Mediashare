@@ -1,4 +1,4 @@
-<!--[* $Id *]-->
+<!--[* $Id$ *]-->
 <!--[pnpagesetvar name=title value="`$album.title` :: `$mediaItem.title`"]-->
 <!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$mediaItem.id delay=$delay mode=$mode assign=centerUrl]-->
 
@@ -8,7 +8,7 @@
 
     <iframe name="mediadisplay" id="mediadisplay" frameborder="0" marginwidth="0px" marginheight="0px" src="<!--[$centerUrl|escape:"html"]-->" height="75%"></iframe>
 
-    <div class="mediashare-clear"></div>
+    <br class="z-clearer" />
 
     <div class="stripframe" style="position: absolute; bottom: 0; left: 0">
         <div class="strip" style="height: <!--[$thumbnailSize+30]-->px;">

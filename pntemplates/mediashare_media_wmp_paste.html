@@ -1,60 +1,57 @@
 <select name="htmlFormat" id="htmlFormat">
-
- <option value="previewItem"><!--[gt text="Preview"]--></option>
- <option value="fullItem"><!--[gt text="Original"]--></option>
- <option value="thumbnail"><!--[gt text="Thumbnail"]--></option>
- <option value="thumbnailPopup"><!--[gt text="Thumbnail (popup)"]--></option>
- <option value="fullItemURL"><!--[gt text="Link to original"]--></option>
- <option value="fullItemURLPopup"><!--[gt text="Link to original (popup)"]--></option>
- <option value="albumUrl"><!--[gt text="Album link"]--></option>
- <option value="albumThumbnailURL"><!--[gt text="Album link as thumbnail"]--></option>
- <option value="albumUrlpopup"><!--[gt text="Album link (popup)"]--></option>
- <option value="albumThumbnailURLpopup"><!--[gt text="Album link as thumbnail (popup)"]--></option>
-
+    <option value="previewItem"><!--[gt text="Preview"]--></option>
+    <option value="fullItem"><!--[gt text="Original"]--></option>
+    <option value="thumbnail"><!--[gt text="Thumbnail"]--></option>
+    <option value="thumbnailPopup"><!--[gt text="Thumbnail (popup)"]--></option>
+    <option value="fullItemURL"><!--[gt text="Link to original"]--></option>
+    <option value="fullItemURLPopup"><!--[gt text="Link to original (popup)"]--></option>
+    <option value="albumUrl"><!--[gt text="Album link"]--></option>
+    <option value="albumThumbnailURL"><!--[gt text="Album link as thumbnail"]--></option>
+    <option value="albumUrlpopup"><!--[gt text="Album link (popup)"]--></option>
+    <option value="albumThumbnailURLpopup"><!--[gt text="Album link as thumbnail (popup)"]--></option>
 </select>
-
 
 <script type="text/javascript">
 
-<!--[include file=mediashare_pasteutility.html]-->
+    <!--[include file=mediashare_pasteutility.html]-->
 
-function mediashare_paste_getHtml(mode)
-{
-  var htmlFormat = document.getElementById('htmlFormat').value;
-  var html = null;
-
-  var albumUrl = '<!--[pnmodurl modname=mediashare func=view aid=$mediaItem.parentAlbumId]-->';
-  var displayItemUrl = '<!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id]-->';
-  var originalUrl = '<!--[$originalUrl]-->';
-  var previewUrl = '<!--[$previewUrl]-->';
-  var thumbnailUrl = '<!--[$thumbnailUrl]-->';
-
-  html = mediashare_paste_getStandardHtml(htmlFormat, mode);
-
-  if (html == null)
-  {
-    var url = null;
-
-    switch (htmlFormat)
+    function mediashare_paste_getHtml(mode)
     {
-      case 'fullItem':
-        url = originalUrl;
-      break;
-      case 'previewItem':
-        url = previewUrl;
-      break;
+        var htmlFormat = document.getElementById('htmlFormat').value;
+        var html = null;
+
+        var albumUrl = '<!--[pnmodurl modname=mediashare func=view aid=$mediaItem.parentAlbumId]-->';
+        var displayItemUrl = '<!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id]-->';
+        var originalUrl = '<!--[$originalUrl]-->';
+        var previewUrl = '<!--[$previewUrl]-->';
+        var thumbnailUrl = '<!--[$thumbnailUrl]-->';
+
+        html = mediashare_paste_getStandardHtml(htmlFormat, mode);
+
+        if (html == null)
+        {
+            var url = null;
+
+            switch (htmlFormat)
+            {
+                case 'fullItem':
+                url = originalUrl;
+                break;
+                case 'previewItem':
+                url = previewUrl;
+                break;
+            }
+
+            html = "<object classid=\"clsid:22d6f312-b0f6-11d0-94ab-0080c74c7e95\"\n"
+            +"codebase=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701\">\n"
+            +"<param name=\"FileName\" value=\"" + url + "\"/>\n"
+            +"<param name=\"AutoStart\" value=\"false\"/>\n"
+            +"<param name=\"ShowControls\" value=\"true\"/>\n"
+            +"<embed type=\"application/x-mplayer2\" src=\"" + url + "\" name=\"MediaPlayer\" ShowControls=\"1\" ShowStatusBar=\"0\" ShowDisplay=\"0\" autostart=\"0\"></embed>"
+            +"</object>\n";
+        }
+
+        return html;
     }
-
-    html = "<object classid=\"clsid:22d6f312-b0f6-11d0-94ab-0080c74c7e95\"\n"
-+"codebase=\"http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=5,1,52,701\">\n"
-+"<param name=\"FileName\" value=\"" + url + "\"/>\n"
-+"<param name=\"AutoStart\" value=\"false\"/>\n"
-+"<param name=\"ShowControls\" value=\"true\"/>\n"
-+"<embed type=\"application/x-mplayer2\" src=\"" + url + "\" name=\"MediaPlayer\" ShowControls=\"1\" ShowStatusBar=\"0\" ShowDisplay=\"0\" autostart=\"0\"></embed>"
-+"</object>\n";
-  }
-
-  return html;
-}
 
 </script>

@@ -1,4 +1,4 @@
-<!--[* $Id *]-->
+<!--[* $Id$ *]-->
 <!--[elfisk_setInitialFocus inputId="title"]-->
 <!--[gt text="Edit access" assign=mltitle]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit"]-->
@@ -11,11 +11,9 @@
 <fieldset>
     <legend><!--[gt text="Access"]--></legend>
 
-    <div class="pn-informationmsg">
-        <!--[gt text="Here you can assign different access levels to different user groups. <ul><li>Add album means users in the selected group may add new sub-albums to the album.</li><li>Add media means users are allowed to add new media items(*).</li><li>Edit album means users can edit the title, description and other meta-data of the album.</li><li>Edit media means users can edit the title, description and other meta-data of the media item(*).</li></ul>Any of the edit/Add access levels grants also access to the editing view of the album. Users may <em>always</em> edit their own albums and media items independently of the access settings.<br/><br/>(*) As well as re-arrange all media items in the album. html=1"]-->
-    </div>
+    <p class="z-informationmsg"><!--[gt text="Here you can assign different access levels to different user groups. <ul><li>Add album means users in the selected group may add new sub-albums to the album.</li><li>Add media means users are allowed to add new media items(*).</li><li>Edit album means users can edit the title, description and other meta-data of the album.</li><li>Edit media means users can edit the title, description and other meta-data of the media item(*).</li></ul>Any of the edit/Add access levels grants also access to the editing view of the album. Users may <em>always</em> edit their own albums and media items independently of the access settings.<br/><br/>(*) As well as re-arrange all media items in the album. html=1"]--></p>
 
-    <table class="pn-admintable">
+    <table class="z-admintable">
         <thead>
             <tr>
                 <th><!--[gt text="Group"]--></th>
@@ -28,7 +26,7 @@
         </thead>
         <!--[foreach from=$access item=accessRow]-->
         <tbody>
-            <tr class="<!--[cycle values="pn-odd,pn-even"]-->">
+            <tr class="<!--[cycle values="z-odd,z-even"]-->">
                 <td><!--[$accessRow.groupName]--></td>
                 <td>
                     <input type="checkbox" value="1" name="accessView<!--[$accessRow.groupId]-->"<!--[if $accessRow.accessView]--> checked="checked"<!--[/if]--> />
@@ -52,9 +50,9 @@
 
 </fieldset>
 
-<div class="pn-adminformrow pn-adminformbuttons">
-    <!--[elfisk_button name="saveButton" text="Save"]-->
-    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
+<div class="z-formbuttons">
+    <!--[elfisk_button name="saveButton" __text="Save"]-->
+    <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
 </div>
 
 <!--[include file="mediashare_footer.html"]-->

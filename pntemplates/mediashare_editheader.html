@@ -1,25 +1,26 @@
-<!--[* $Id *]-->
-<!--[pnpageaddvar name="stylesheet" value="system/Admin/pnstyle/admin.css"]-->
+<!--[* $Id$ *]-->
 <!--[if isset($formEncType)  &&  $formEncType!='']-->
-<form method="post" class="pn-adminform" action="<!--[pngetcurrenturi]-->" enctype="<!--[$formEncType]-->">
-<!--[else]-->
-<form method="post" class="pn-adminform" action="<!--[pngetcurrenturi]-->">
-<!--[/if]-->
-
-    <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=mediashare]-->" />
-    
-    <div class="mediashare" id="mediashare">
-    
-        <div class="mediashare-header">
-    
-            <!--[if $album.mainMediaItem != null]-->
-            <!--[mediashare_mediaItem src=$album.mainMediaItem.thumbnailRef title=$album.title mediaHandler=$album.mainMediaItem.mediaHandler isThumbnail=1]-->
-            <!--[/if]-->
-    
-            <h2><!--[$title]--></h2>
-            <!--[mediashare_breadcrumb albumId=$albumId mode=$mode]-->
-        </div>
-    
-        <!--[if isset($includeMenu)  &&  $includeMenu == 1]-->
-        <!--[include file=mediashare_editmenu.html]-->
+<form method="post" class="z-form" action="<!--[pngetcurrenturi]-->" enctype="<!--[$formEncType]-->">
+    <!--[else]-->
+    <form method="post" class="z-form" action="<!--[pngetcurrenturi]-->">
         <!--[/if]-->
+
+        <div class="mediashare" id="mediashare">
+            <input type="hidden" name="authid" value="<!--[insert name="generateauthkey" module="mediashare" ]-->" />
+
+            <div class="mediashare-header z-clearfix">
+                <!--[if $album.mainMediaItem != null]-->
+                <!--[mediashare_mediaItem src=$album.mainMediaItem.thumbnailRef title=$album.title mediaHandler=$album.mainMediaItem.mediaHandler isThumbnail=1]-->
+                <!--[/if]-->
+                <h2><!--[$title]--></h2>
+            </div>
+
+            <div class="z-menu">
+                <span class="z-menuitem-title">
+                    [ <!--[mediashare_breadcrumb albumId=$albumId mode=$mode]--> ]
+                </span>
+            </div>
+
+            <!--[if isset($includeMenu)  &&  $includeMenu == 1]-->
+            <!--[include file=mediashare_editmenu.html]-->
+            <!--[/if]-->

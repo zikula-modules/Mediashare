@@ -4,7 +4,7 @@
  *
  * @copyright (C) 2007, Jorn Wildt
  * @link http://www.elfisk.dk
- * @version $Id: function.mediasharealbumselector.php,v 1.1 2007/10/18 18:48:22 jornlind Exp $
+ * @version $Id$
  * @license See license.txt
  */
 

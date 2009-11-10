@@ -2,7 +2,7 @@
 
 function smarty_function_mediashare_mediaItem($params, &$smarty)
 {
-    $dom = ZLanguage::getModuleDomain('Mediashare');
+    $dom = ZLanguage::getModuleDomain('mediashare');
     pnModLoad('mediashare', 'user');
     $mediaBase = 'mediashare/'; // FIXME
 

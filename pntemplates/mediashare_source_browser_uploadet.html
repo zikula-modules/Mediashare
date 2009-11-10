@@ -1,58 +1,40 @@
 <ul class="mediashare-upload-list">
-<!--[foreach from=$statusSet item=status]-->
-
-<li>
-  <!--[$status.message]-->
-  <!--[if $status.ok]-->
-    <img src="modules/mediashare/pnimages/button_ok.gif" alt="<!--[gt text="Ok"]-->"/>
-  <!--[else]-->
-    <img src="modules/mediashare/pnimages/button_cancel.gif" alt="<!--[$status.message]-->"/>
-  <!--[/if]-->
-</li>
-
-<!--[/foreach]-->
+    <!--[foreach from=$statusSet item=status]-->
+    <li>
+        <!--[$status.message]-->
+        <!--[if $status.ok]-->
+        <img src="modules/mediashare/pnimages/button_ok.gif" alt="<!--[gt text="Ok"]-->" />
+        <!--[else]-->
+        <img src="modules/mediashare/pnimages/button_cancel.gif" alt="<!--[$status.message]-->" />
+        <!--[/if]-->
+    </li>
+    <!--[/foreach]-->
 </ul>
 
-<table>
- <!--[foreach from=$items item=item]-->
-  <tr>
-    <td class="top">
-      <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
-      <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]-->
-    </td>
-    <td>
-      <table>
-        <tr>
-          <td>
-            <label for="title-<!--[$item.id]-->"><!--[gt text="Title"]--></label>
-          </td>
-          <td>
-            <!--[elfisk_textInput id="title-`$item.id`" width="400px" maxLength="255" text=$item.title]-->
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <label for="keywords-<!--[$item.id]-->"><!--[gt text="Keywords"]--></label>
-          </td>
-          <td>
-            <!--[elfisk_textInput id="keywords-`$item.id`" width="400px" maxLength="255" text=$item.keywords]-->
-          </td>
-        </tr>
-        <tr>
-          <td class="top">
-            <label for="description-<!--[$item.id]-->"><!--[gt text="Description"]--></label>
-          </td>
-          <td>
-            <!--[elfisk_textArea id="description-`$item.id`" width="400px" height="100px" text=$item.description]-->
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
- <!--[/foreach]-->
-</table>
+<!--[foreach from=$items item=item]-->
+<fieldset>
+    <legend><!--[$item.title]--></legend>
+    <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
+    <div class="z-formrow">
+        <label><!--[gt text="Thumbnail"]--></label>
+        <div><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></div>
+    </div>
+    <div class="z-formrow">
+        <label for="title-<!--[$item.id]-->"><!--[gt text="Title"]--></label>
+        <!--[elfisk_textInput id="title-`$item.id`" maxLength="255" text=$item.title]-->
+    </div>
+    <div class="z-formrow">
+        <label for="keywords-<!--[$item.id]-->"><!--[gt text="Keywords"]--></label>
+        <!--[elfisk_textInput id="keywords-`$item.id`" maxLength="255" text=$item.keywords]-->
+    </div>
+    <div class="z-formrow">
+        <label for="description-<!--[$item.id]-->"><!--[gt text="Description"]--></label>
+        <!--[elfisk_textArea id="description-`$item.id`" height="100px" text=$item.description]-->
+    </div>
+</fieldset>
+<!--[/foreach]-->
 
-<!--[mediashare_buttons]-->
-  <!--[elfisk_button name="continueButton" text="Continue"]-->
-  <!--[elfisk_button name="moreButton" text="Add more"]-->
-<!--[/mediashare_buttons]-->
+<div class="z-formbuttons">
+    <!--[elfisk_button name="continueButton" __text="Continue"]-->
+    <!--[elfisk_button name="moreButton" __text="Add more"]-->
+</div>

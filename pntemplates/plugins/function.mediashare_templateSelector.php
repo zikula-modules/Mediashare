@@ -35,7 +35,7 @@ function smarty_function_mediashare_templateSelector($params, &$smarty)
     $title = pnVarPrepForDisplay($template['title']);
     $value = $template['title'];
 
-    $selectedHtml = (strcasecmp($value, $selectedTemplate)==0 ? ' selected="1"' : '');
+    $selectedHtml = (strcasecmp($value, $selectedTemplate)==0 ? ' selected="selected"' : '');
 
     $html .= "<option value=\"$value\"$selectedHtml>$title</option>\n";
   }

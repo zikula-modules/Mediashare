@@ -1,29 +1,34 @@
-<div class="mediashare-menu">
-  <a href="<!--[pnmodurl modname="mediashare" type="user" func="view" aid=$albumId]-->"><!--[gt text="Browse"]--></a>
-  <a href="<!--[pnmodurl modname="mediashare" type="user" func="slideshow" aid=$albumId back=1]-->"><!--[gt text="Slideshow"]--></a>
-  <!--[if $access.hasAddAlbumAccess]-->
-   <a href="<!--[pnmodurl modname="mediashare" type="edit" func="addalbum" aid=$albumId]-->"><!--[gt text="Add album"]--></a>
-  <!--[/if]-->
-  <!--[if $access.hasEditAlbumAccess]-->
-   <a href="<!--[pnmodurl modname="mediashare" type="edit" func="editalbum" aid=$albumId]-->"><!--[gt text="Edit"]--></a>
-  <!--[/if]-->
-  <!--[if $access.hasAddMediaAccess]-->
-   <a href="<!--[pnmodurl modname="mediashare" type="edit" func="addmedia" aid=$albumId]-->"><!--[gt text="Add media"]--></a>
-  <!--[/if]-->
-  <!--[if $access.hasAddMediaAccess || $access.hasEditMediaAccess]-->
-   <a href="<!--[pnmodurl modname="mediashare" type="edit" func="arrange" aid=$albumId]-->"><!--[gt text="Arrange"]--></a>
-  <!--[/if]-->
-  <!--[if $access.hasEditAccessAccess]-->
-   <a href="<!--[pnmodurl modname="mediashare" type="edit" func="access" aid=$albumId]-->"><!--[gt text="Access"]--></a>
-  <!--[/if]-->
-  <!--[if $albumId != 1  &&  $access.hasEditAccessAccess]-->
-   <a href="<!--[pnmodurl modname="mediashare" type="edit" func="movealbum" aid=$albumId]-->"><!--[gt text="Move"]--></a>
-  <!--[/if]-->
+<div class="z-menu">
+    <span class="z-menuitem-title">
+        [
+        <a href="<!--[pnmodurl modname="mediashare" type="user" func="view" aid=$albumId]-->"><!--[gt text="Browse"]--></a>
+        | <a href="<!--[pnmodurl modname="mediashare" type="user" func="slideshow" aid=$albumId back=1]-->"><!--[gt text="Slideshow"]--></a>
+        <!--[if $access.hasAddAlbumAccess]-->
+        | <a href="<!--[pnmodurl modname="mediashare" type="edit" func="addalbum" aid=$albumId]-->"><!--[gt text="Add album"]--></a>
+        <!--[/if]-->
+        <!--[if $access.hasEditAlbumAccess]-->
+        | <a href="<!--[pnmodurl modname="mediashare" type="edit" func="editalbum" aid=$albumId]-->"><!--[gt text="Edit"]--></a>
+        <!--[/if]-->
+        <!--[if $access.hasAddMediaAccess]-->
+        | <a href="<!--[pnmodurl modname="mediashare" type="edit" func="addmedia" aid=$albumId]-->"><!--[gt text="Add media"]--></a>
+        <!--[/if]-->
+        <!--[if $access.hasAddMediaAccess || $access.hasEditMediaAccess]-->
+        | <a href="<!--[pnmodurl modname="mediashare" type="edit" func="arrange" aid=$albumId]-->"><!--[gt text="Arrange"]--></a>
+        <!--[/if]-->
+        <!--[if $access.hasEditAccessAccess]-->
+        | <a href="<!--[pnmodurl modname="mediashare" type="edit" func="access" aid=$albumId]-->"><!--[gt text="Access"]--></a>
+        <!--[/if]-->
+        <!--[if $albumId != 1  &&  $access.hasEditAccessAccess]-->
+        | <a href="<!--[pnmodurl modname="mediashare" type="edit" func="movealbum" aid=$albumId]-->"><!--[gt text="Move"]--></a>
+        <!--[/if]-->
+        ]
+    </span>
 </div>
+
 <!--[if $access.hasEditMediaAccess]-->
- <div class="mediashare-toolbar">
-  <input type="image" name="multiedit" src="modules/mediashare/pnimages/edit.gif" alt="<!--[gt text="Edit selected items"]-->" title="<!--[gt text="Edit selected items"]-->"/>
-  <input type="image" name="multimove" src="modules/mediashare/pnimages/move.gif" alt="<!--[gt text="Move selected items"]-->" title="<!--[gt text="Move selected items"]-->"/>
-  <input type="image" name="multidelete" src="modules/mediashare/pnimages/delete.gif" alt="<!--[gt text="Delete selected items"]-->" title="<!--[gt text="Delete selected items"]-->"/>
- </div>
+<div class="mediashare-toolbar">
+    <input type="image" name="multiedit" src="modules/mediashare/pnimages/edit.gif" alt="<!--[gt text="Edit selected items"]-->" title="<!--[gt text="Edit selected items"]-->" />
+    <input type="image" name="multimove" src="modules/mediashare/pnimages/move.gif" alt="<!--[gt text="Move selected items"]-->" title="<!--[gt text="Move selected items"]-->" />
+    <input type="image" name="multidelete" src="modules/mediashare/pnimages/delete.gif" alt="<!--[gt text="Delete selected items"]-->" title="<!--[gt text="Delete selected items"]-->" />
+</div>
 <!--[/if]-->

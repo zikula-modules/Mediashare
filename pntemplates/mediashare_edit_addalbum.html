@@ -3,66 +3,43 @@
 <!--[gt text="Add album" assign=mltitle]-->
 <!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit"]-->
 
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[gt text="Add album"]-->
-  <!--[/mediashare_header]-->
-  <!--[mediashare_body]-->
-    <table>
-      <tr>
-        <td>
-          <label for="title"><!--[gt text="Title"]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textInput id="title" width="400px"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="keywords"><!--[gt text="Keywords"]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textInput id="keywords" width="400px"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="summary"><!--[gt text="Summary"]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textArea id="summary" width="400px" height="100px"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="description"><!--[gt text="Description"]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textArea id="description" width="400px" height="100px"]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="template"><!--[gt text="Template"]--></label>
-        </td>
-        <td>
-          <!--[mediashare_templateSelector id="template" readonly=$disableTemplateOverride]-->
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label for="extappURL"><!--[gt text="External album URL"]--></label>
-        </td>
-        <td>
-          <!--[elfisk_textInput id="extappURL" width="400px"]-->
-        </td>
-      </tr>
-    </table>
-  <!--[/mediashare_body]-->
-  <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="Save"]-->
-    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
+<fieldset>
+    <legend><!--[gt text="Add album"]--></legend>
+
+    <div class="z-formrow">
+        <label for="title"><!--[gt text="Title"]--></label>
+        <!--[elfisk_textInput id="title"]-->
+    </div>
+
+    <div class="z-formrow">
+        <label for="keywords"><!--[gt text="Keywords"]--></label>
+        <!--[elfisk_textInput id="keywords"]-->
+    </div>
+
+    <div class="z-formrow">
+        <label for="summary"><!--[gt text="Summary"]--></label>
+        <!--[elfisk_textArea id="summary"]-->
+    </div>
+
+    <div class="z-formrow">
+        <label for="description"><!--[gt text="Description"]--></label>
+        <!--[elfisk_textArea id="description"]-->
+    </div>
+
+    <div class="z-formrow">
+        <label for="template"><!--[gt text="Template"]--></label>
+        <!--[mediashare_templateSelector id="template" readonly=$disableTemplateOverride]-->
+    </div>
+
+    <div class="z-formrow">
+        <label for="extappURL"><!--[gt text="External album URL"]--></label>
+        <!--[elfisk_textInput id="extappURL"]-->
+    </div>
+</fieldset>
+
+<div class="z-formbuttons">
+    <!--[elfisk_button name="saveButton" __text="Save"]-->
+    <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
+</div>
 
 <!--[include file="mediashare_footer.html"]-->

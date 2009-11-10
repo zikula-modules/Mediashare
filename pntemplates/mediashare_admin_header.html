@@ -1,19 +1,22 @@
-<!--[* $Id *]-->
+<!--[* $Id$ *]-->
 <!--[pnmodgetinfo module=mediashare info=all assign=modinfo]-->
 <!--[admincategorymenu xhtml=1]-->
 
-<div class="pn-adminbox">
-  <h1><!--[gt text="Mediashare"]--></h1>
-  <div class="pn-menu"><!--[moduleadminlinks modname=mediashare]--></div>
+<div class="z-adminbox">
+    <h1><!--[gt text="Mediashare"]--></h1>
+    <div class="z-menu"><!--[moduleadminlinks modname=mediashare]--></div>
 </div>
 
-<div class="mediashare pn-admincontainer">
-  <div class="pn-adminpageicon"><img src="modules/mediashare/pnimages/admin.png" alt="<!--[gt text="Mediashare"]-->" /></div>
+<div class="mediashare z-admincontainer">
+    <div class="z-adminpageicon"><!--[pnimg modname='mediashare' src='admin.png' __alt='Mediashare']--></div>
 
-  <!--[if $formEncType!='']-->
-    <form class="pn-adminform" method="post" action="<!--[pngetcurrenturi]-->" enctype="<!--[$formEncType]-->">
-  <!--[else]-->
-    <form class="pn-adminform" method="post" action="<!--[pngetcurrenturi]-->">
-  <!--[/if]-->
+    <h2><!--[$templatetitle]--></h2>
 
-   <input type="hidden" name="authid" value="<!--[pnsecgenauthkey module=mediashare]-->" />
+    <!--[if $formEncType!='']-->
+    <form class="z-form" method="post" action="<!--[pngetcurrenturi]-->" enctype="<!--[$formEncType]-->">
+        <!--[else]-->
+        <form class="z-form" method="post" action="<!--[pngetcurrenturi]-->">
+            <!--[/if]-->
+
+            <div>
+                <input type="hidden" name="authid" value="<!--[insert name="generateauthkey" module="mediashare" ]-->" />

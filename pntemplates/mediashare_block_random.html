@@ -1,70 +1,70 @@
 <tr>
-  <td>
-  </td>
-  <td><em><!--[gt text="Select one of the following kinds of block content and specify optional album criteria."]--></em></td>
+    <td>
+    </td>
+    <td><em><!--[gt text="Select one of the following kinds of block content and specify optional album criteria." domain="module_mediashare"]--></em></td>
 </tr>
 
 <tr>
-  <td>
-  </td>
-  <td>
-    <input type="radio" id="radioAll" name="mstype" value="all"<!--[if $type==all]--> checked="checked"<!--[/if]-->"/>
-    <label for="radioAll"><!--[gt text="Show random image from any album"]--></label>
-  </td>
+    <td>
+    </td>
+    <td>
+        <input type="radio" id="radioAll" name="mstype" value="all"<!--[if $type==all]--> checked="checked"<!--[/if]-->"/>
+        <label for="radioAll"><!--[gt text="Show random image from any album" domain="module_mediashare"]--></label>
+    </td>
 </tr>
 <tr>
-  <td>
-  </td>
-  <td>
-    <input type="radio" id="radioLatest" name="mstype" value="latest"<!--[if $type==latest]--> checked="checked"<!--[/if]-->/>
-    <label for="radioLatest"><!--[gt text="Show random image from latest album"]--></label>
-  </td>
+    <td>
+    </td>
+    <td>
+        <input type="radio" id="radioLatest" name="mstype" value="latest"<!--[if $type==latest]--> checked="checked"<!--[/if]-->/>
+        <label for="radioLatest"><!--[gt text="Show random image from latest album" domain="module_mediashare"]--></label>
+    </td>
 </tr>
 <tr>
-  <td>
-  </td>
-  <td>
-    <input type="radio" id="radioAlbum" name="mstype" value="album"<!--[if $type==album]--> checked="checked"<!--[/if]-->/>
-    <label for="radioAlbum"><!--[gt text="Show random image from specific album"]--></label>
-  </td>
+    <td>
+    </td>
+    <td>
+        <input type="radio" id="radioAlbum" name="mstype" value="album"<!--[if $type==album]--> checked="checked"<!--[/if]-->/>
+        <label for="radioAlbum"><!--[gt text="Show random image from specific album" domain="module_mediashare"]--></label>
+    </td>
 </tr>
 <tr>
-  <td>
-    <label for="msalbumId"><!--[gt text="Show random image from specific album"]--></label>
-  </td>
-  <td>
-    <!--[mediashare_albumSelector id="msalbumId" albumId=$albumId]-->
-  </td>
+    <td>
+        <label for="msalbumId"><!--[gt text="Show random image from specific album" domain="module_mediashare"]--></label>
+    </td>
+    <td>
+        <!--[mediashare_albumSelector id="msalbumId" albumId=$albumId]-->
+    </td>
 </tr>
 <tr>
-  <td>
-    <label for="cacheTime"><!--[gt text="Update time for block (sec.) (empty = always)"]--></label>
-  </td>
-  <td>
-    <input type="text" id="cacheTime" name="cacheTime" value="<!--[$cacheTime]-->"/>
-  </td>
+    <td>
+        <label for="cacheTime"><!--[gt text="Update time for block (sec.) (empty = always)" domain="module_mediashare"]--></label>
+    </td>
+    <td>
+        <input type="text" id="cacheTime" name="cacheTime" value="<!--[$cacheTime]-->"/>
+    </td>
 </tr>
 <tr>
-  <td style="vertical-align: top">
-    <label for="mshtml"><!--[gt text="HTML to wrap image in"]--></label>
-  </td>
-  <td>
-    <textarea id="mshtml" name="mshtml" cols="40" rows="10"><!--[$html|htmlspecialchars]--></textarea><br/>
-    <a href="modules/mediashare/docs/randomblock/examples.html" target="_new"><!--[gt text="The following variables can be used in the HTML code:"]--></a>
-  </td>
+    <td style="vertical-align: top">
+        <label for="mshtml"><!--[gt text="HTML to wrap image in" domain="module_mediashare"]--></label>
+    </td>
+    <td>
+        <textarea id="mshtml" name="mshtml" cols="40" rows="10"><!--[$html|htmlspecialchars]--></textarea><br/>
+        <a href="modules/mediashare/docs/randomblock/examples.html" target="_new"><!--[gt text="The following variables can be used in the HTML code:" domain="module_mediashare"]--></a>
+    </td>
 </tr>
 <tr>
-  <td>
-  </td>
-  <td>
-    <ul>
-      <li>${originalURL} - <!--[gt text="URL to full size image (to be used in SRC element of IMG tag)"]--></li>
-      <li>${previewURL} - <!--[gt text="URL to preview image (to be used in SRC element of IMG tag)"]--></li>
-      <li>${thumbnailURL} - <!--[gt text="URL to thumbnail image (to be used in SRC element of IMG tag)"]--></li>
-      <li>${albumURL} - <!--[gt text="URL to album viewer"]--></li>
-      <li>${title} - <!--[gt text="Image title"]--></li>
-      <li>${albumTitle} - <!--[gt text="Album title"]--></li>
-      <li>${owner} - <!--[gt text="Name of image owner"]--></li>
-    </ul>
-  </td>
+    <td>
+    </td>
+    <td>
+        <ul>
+            <li>${originalURL} - <!--[gt text="URL to full size image (to be used in SRC element of IMG tag)" domain="module_mediashare"]--></li>
+            <li>${previewURL} - <!--[gt text="URL to preview image (to be used in SRC element of IMG tag)" domain="module_mediashare"]--></li>
+            <li>${thumbnailURL} - <!--[gt text="URL to thumbnail image (to be used in SRC element of IMG tag)" domain="module_mediashare"]--></li>
+            <li>${albumURL} - <!--[gt text="URL to album viewer" domain="module_mediashare" domain="module_mediashare"]--></li>
+            <li>${title} - <!--[gt text="Image title" domain="module_mediashare"]--></li>
+            <li>${albumTitle} - <!--[gt text="Album title" domain="module_mediashare"]--></li>
+            <li>${owner} - <!--[gt text="Name of image owner" domain="module_mediashare"]--></li>
+        </ul>
+    </td>
 </tr>

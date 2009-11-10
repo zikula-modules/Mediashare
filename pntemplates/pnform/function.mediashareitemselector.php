@@ -4,7 +4,7 @@
  *
  * @copyright (C) 2007, Jorn Wildt
  * @link http://www.elfisk.dk
- * @version $Id: function.mediashareitemselector.php,v 1.9 2008/01/19 13:03:28 jornlind Exp $
+ * @version $Id$
  * @license See license.txt
  */
 
@@ -55,7 +55,7 @@ class mediashareItemSelector extends pnFormPlugin
 
   function render(&$render)
   {
-      $dom = ZLanguage::getModuleDomain('Mediashare');
+      $dom = ZLanguage::getModuleDomain('mediashare');
     PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
     PageUtil::AddVar('javascript', 'javascript/ajax/pnajax.js');
     PageUtil::AddVar('javascript', 'javascript/ajax/lightbox.js');
