@@ -39,7 +39,7 @@ function mediashare_source_zip_view(& $args)
 
     $uploadInfo = pnModAPIFunc('mediashare', 'source_zip', 'getUploadInfo');
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
     $render->assign('imageNum', 1);
     $render->assign('uploadFields', array(1));
@@ -187,11 +187,11 @@ function mediashareSourceZipUpload(& $args)
             }
 
             while ($zipEntry = zip_read($zip)) {
-                //					echo "Name:               ".zip_entry_name($zipEntry)."\n";
-                //					echo "Actual Filesize:    ".zip_entry_filesize($zipEntry)."\n";
-                //					echo "Compressed Size:    ".zip_entry_compressedsize($zipEntry)."\n";
-                //					echo "Compression Method: ".zip_entry_compressionmethod($zipEntry)."\n";
-                //					echo "<br>\n";
+                //                  echo "Name:               ".zip_entry_name($zipEntry)."\n";
+                //                  echo "Actual Filesize:    ".zip_entry_filesize($zipEntry)."\n";
+                //                  echo "Compressed Size:    ".zip_entry_compressedsize($zipEntry)."\n";
+                //                  echo "Compression Method: ".zip_entry_compressionmethod($zipEntry)."\n";
+                //                  echo "<br>\n";
                 if (zip_entry_filesize($zipEntry) > 0) {
                     $result = mediashareSourceZipAddFile($zip, $zipEntry, $args);
                     if ($result === false)
@@ -224,7 +224,7 @@ function mediashareSourceZipUpload(& $args)
     if ($items === false)
         return mediashareErrorAPIGet();
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('statusSet', $statusSet);

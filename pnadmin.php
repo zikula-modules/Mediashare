@@ -35,7 +35,9 @@ function mediashare_admin_main($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
+    array_push($render->plugins_dir, "modules/mediashare/elfisk/plugins");
+    //$render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign($settings);
@@ -120,7 +122,7 @@ function mediashare_admin_plugins($args)
     if ($sources === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
     $render->assign('mediaHandlers', $mediaHandlers);
     $render->assign('sources', $sources);

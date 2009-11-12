@@ -16,7 +16,7 @@ function mediashare_import_main($args)
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
 
     return $render->fetch('mediashare_import_main.html');
@@ -43,7 +43,7 @@ function mediashare_import_photoshare($args)
         return true;
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
 
     return $render->fetch('mediashare_import_photoshare.html');

@@ -47,7 +47,7 @@ function mediashare_invitation_send($args)
     if ($album === false)
         return mediashareErrorAPIGet();
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('invitation', $invitation);
@@ -131,7 +131,7 @@ function mediashare_invitation_link($args)
     if ($album === false)
         return mediashareErrorAPIGet();
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('link', $link);
@@ -168,7 +168,7 @@ function mediashare_invitation_viewlink($args)
     if ($album === false)
         return mediashareErrorAPIGet();
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('link', $link);

@@ -86,4 +86,3 @@ function elfisk_getControl($id)
 
 */
 
-?>

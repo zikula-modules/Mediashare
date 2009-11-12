@@ -76,7 +76,7 @@ function mediashare_edit_view($args)
     if ($items === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('subAlbums', $subAlbums);
@@ -124,7 +124,7 @@ function mediashare_edit_addalbum($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('album', $album);
@@ -189,7 +189,7 @@ function mediashare_edit_editalbum($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('album', $album);
@@ -256,7 +256,7 @@ function mediashare_edit_deleteAlbum($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('album', $album);
@@ -335,7 +335,7 @@ function mediashare_edit_movealbum($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
 
@@ -414,7 +414,7 @@ function mediashare_edit_addmedia($args)
         return $sourceHtml;
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('album', $album);
@@ -471,7 +471,7 @@ function mediashare_edit_edititem($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign($item);
@@ -559,7 +559,7 @@ function mediashare_edit_deleteitem($args)
     if ($album === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('item', $item);
@@ -622,7 +622,7 @@ function mediashare_edit_multieditmedia($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('items', $items);
@@ -696,7 +696,7 @@ function mediashare_edit_multideletemedia($args)
     if ($items === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('items', $items);
@@ -765,7 +765,7 @@ function mediashare_edit_multimovemedia($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('items', $items);
@@ -878,7 +878,7 @@ function mediashare_edit_arrange($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
 
     $render->caching = false;
     $render->assign('album', $album);
@@ -954,7 +954,7 @@ function mediashare_edit_access($args)
     if ($access === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new elfiskRender('mediashare');
+    $render = new pnRender('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('access', $access);
