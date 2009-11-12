@@ -6,7 +6,6 @@
 
 
 require_once 'modules/mediashare/common.php';
-require_once 'modules/mediashare/elfisk/elfiskRender.class.php';
 
 // =======================================================================
 // Find / paste

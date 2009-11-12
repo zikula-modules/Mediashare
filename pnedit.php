@@ -7,7 +7,6 @@
 
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
-require_once 'modules/mediashare/elfisk/elfiskRender.class.php';
 
 // =======================================================================
 // View album in edit-mode
