@@ -448,4 +448,3 @@ WHERE     $invitationColumn[key] IN ($keys)
 
     return $albums;
 }
-

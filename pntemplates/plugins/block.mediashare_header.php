@@ -10,4 +10,4 @@ function smarty_block_mediashare_header($params, $content, $smarty)
   }
 }
 
-?>
+

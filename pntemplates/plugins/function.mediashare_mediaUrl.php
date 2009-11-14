@@ -12,4 +12,4 @@ function smarty_function_mediashare_mediaUrl($params, &$smarty)
     return DataUtil::formatForDisplay($result);
 }
 
-?>
+

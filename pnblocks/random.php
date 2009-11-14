@@ -136,7 +136,7 @@ function mediashare_randomblock_modify($blockinfo)
     if (!isset($vars['useRefreshTime']))
         $vars['useRefreshTime'] = 0;
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign($vars);
 

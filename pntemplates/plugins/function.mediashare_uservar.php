@@ -16,4 +16,4 @@ function smarty_function_mediashare_uservar($params, &$smarty)
     return $var;
 }
 
-?>
+

@@ -29,4 +29,4 @@ function smarty_function_mediashare_rss($params, $smarty)
   return $html;
 }
 
-?>
+

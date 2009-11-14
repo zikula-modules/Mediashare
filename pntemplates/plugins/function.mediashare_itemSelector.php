@@ -50,4 +50,4 @@ function smarty_function_mediashare_itemSelector($params, &$smarty)
     return $html;
 }
 
-?>
+

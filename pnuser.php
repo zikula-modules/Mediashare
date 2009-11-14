@@ -94,7 +94,7 @@ function mediashare_user_browse($args)
     } else if ($mediaItem == null) {
         $mediaItem = array('title' => '', 'description' => '', 'id' => 0);
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('mediaItem', $mediaItem);
@@ -207,7 +207,7 @@ function mediashare_user_slideshow($args)
     if ($quitUrl == null) {
         $quitUrl = pnModUrl('mediashare', 'user', 'view', array('aid' => $album['id']));
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('viewUrl', $viewUrl);
     $render->assign('mediaId', $mediaId);
@@ -284,7 +284,7 @@ function mediashare_user_thumbnails($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('mediaItems', $items);
     $render->assign('album', $album);
@@ -338,7 +338,7 @@ function mediashare_user_simplethumbnails($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('itemCount', count($items));
     $render->assign('mediaItems', $itemCount === null ? $items : array_slice($items, 0, $itemCount));
@@ -385,7 +385,7 @@ function mediashare_user_display($args)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething, $viewkey)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('mediaItem', $mediaItem);
 
@@ -423,7 +423,7 @@ function mediashare_user_simpledisplay($args)
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('mediaItem', $mediaItem);
     $render->assign('showAlbumLink', $showAlbumLink);
@@ -456,7 +456,7 @@ function mediashare_user_displaygb($args)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething, $viewkey)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('mediaItem', $mediaItem);
 
@@ -494,7 +494,7 @@ function mediashare_user_latest($args)
     if ($summary === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('latestMediaItems', $latestMediaItems);
     $render->assign('latestAlbums', $latestAlbums);
@@ -523,7 +523,7 @@ function mediashare_user_keys($args)
     if ($items === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('keyword', $keyword);
     $render->assign('items', $items);
@@ -581,7 +581,7 @@ function mediashare_user_list($args)
     } else {
         $filterText = __('All items', $dom);
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('keyword', $keyword);
     $render->assign('items', $items);
@@ -612,7 +612,7 @@ function mediashare_user_albumlist($args)
     if ($albums === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('albums', $albums);
 
@@ -651,7 +651,7 @@ function mediashare_user_extapphelp($args)
     if ($settings === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->assign('settings', $settings);
 
     return $render->fetch('mediashare_user_extapphelp.html');

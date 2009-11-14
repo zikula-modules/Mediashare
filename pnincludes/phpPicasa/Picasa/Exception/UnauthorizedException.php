@@ -39,4 +39,4 @@ class Picasa_Exception_UnauthorizedException extends Picasa_Exception {
 	}
 }
 
-?>
+

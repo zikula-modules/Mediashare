@@ -160,4 +160,4 @@ class Picasa_Exception_CaptchaRequiredException extends Picasa_Exception {
     
 }
 
-?>
+

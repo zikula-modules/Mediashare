@@ -27,4 +27,4 @@ foreach ($recent['photo'] as $photo) {
     echo $owner['username'];
     echo "</a><br>";
 }
-?>
+

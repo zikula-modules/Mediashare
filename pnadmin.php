@@ -34,9 +34,9 @@ function mediashare_admin_main($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     array_push($render->plugins_dir, "modules/mediashare/elfisk/plugins");
-    //$render = new pnRender('mediashare');
+    //$render = & pnRender::getInstance('mediashare');
 
     $render->caching = false;
     $render->assign($settings);
@@ -121,7 +121,7 @@ function mediashare_admin_plugins($args)
     if ($sources === false) {
         return mediashareErrorAPIGet();
     }
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('mediaHandlers', $mediaHandlers);
     $render->assign('sources', $sources);
@@ -162,7 +162,7 @@ function mediashare_admin_recalc($args)
     }
     $allItems = pnModAPIFunc('mediashare', 'user', 'getList', array('pageSize' => 999999999));
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('allItems', $allItems);
 
@@ -188,7 +188,7 @@ function mediashare_admin_recalcitem($args)
         return mediashareErrorAPIGet();
     }
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('item', $mediaItem);
 

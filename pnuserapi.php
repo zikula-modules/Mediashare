@@ -1724,4 +1724,4 @@ function mediashare_userapi_getAllTemplates($args)
     return $templates;
 }
 
-?>
+

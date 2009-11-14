@@ -13,4 +13,4 @@ function smarty_function_mediashare_tab($params, &$smarty)
     return $result;
 }
 
-?>
+

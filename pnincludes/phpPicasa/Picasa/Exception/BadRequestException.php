@@ -37,4 +37,4 @@ class Picasa_Exception_BadRequestException extends Picasa_Exception {
 	}
 }
 
-?>
+

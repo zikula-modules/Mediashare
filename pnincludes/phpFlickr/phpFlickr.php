@@ -1360,4 +1360,4 @@ class phpFlickr {
 }
 
 
-?>
+

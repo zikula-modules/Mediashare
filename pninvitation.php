@@ -46,7 +46,7 @@ function mediashare_invitation_send($args)
     if ($album === false)
         return mediashareErrorAPIGet();
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('invitation', $invitation);
@@ -130,7 +130,7 @@ function mediashare_invitation_link($args)
     if ($album === false)
         return mediashareErrorAPIGet();
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('link', $link);
@@ -167,7 +167,7 @@ function mediashare_invitation_viewlink($args)
     if ($album === false)
         return mediashareErrorAPIGet();
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('link', $link);
@@ -200,7 +200,7 @@ function mediashare_invitation_list($args)
     if ($invitations === false)
         return mediashareErrorAPIGet();
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('album', $album);
     $render->assign('invitations', $invitations);
@@ -262,4 +262,4 @@ function mediashare_invitation_open($args)
     return true;
 }
 
-?>
+

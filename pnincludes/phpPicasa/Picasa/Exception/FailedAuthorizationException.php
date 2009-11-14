@@ -36,4 +36,4 @@ class Picasa_Exception_FailedAuthorizationException extends Picasa_Exception {
 	}
 }
 
-?>
+

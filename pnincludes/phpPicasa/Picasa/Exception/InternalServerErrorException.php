@@ -37,4 +37,4 @@ class Picasa_Exception_InternalServerErrorException extends Picasa_Exception {
 	}
 }
 
-?>
+

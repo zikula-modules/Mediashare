@@ -25,4 +25,4 @@ foreach ($albums as $album) {
 	echo $album['Title']." (ID: ".$album['id'].")<br />";
 }    
 
-?>
+

@@ -85,5 +85,5 @@ class Picasa_Exception extends Exception {
 	}
 }
 
-?>
+
 

@@ -37,4 +37,4 @@ class Picasa_Exception_FileNotFoundException extends Picasa_Exception {
 	}
 }
 
-?>
+

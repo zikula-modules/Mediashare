@@ -48,4 +48,4 @@ function smarty_function_mediashare_templateSelector($params, &$smarty)
     return $html;
 }
 
-?>
+

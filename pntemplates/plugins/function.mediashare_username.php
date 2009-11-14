@@ -20,4 +20,4 @@ function smarty_function_mediashare_username($params, &$smarty)
     return $name;
 }
 
-?>
+

@@ -149,7 +149,7 @@ function mediashareErrorPage($file, $line, $msg)
 
     $text = pnVarPrepForDisplay($text);
 
-    $smarty = new pnRender('mediashare');
+    $smarty = & pnRender::getInstance('mediashare');
     $smarty->caching = false;
     $smarty->assign('errorMessage', $text);
     return $smarty->fetch('mediashare_error.html');
@@ -176,7 +176,7 @@ function mediashareErrorAPIGet()
 {
     global $mediashareErrorMessageAPI;
 
-    $smarty = new pnRender('mediashare');
+    $smarty = & pnRender::getInstance('mediashare');
     $smarty->caching = false;
     $smarty->assign('errorMessage', $mediashareErrorMessageAPI);
     return $smarty->fetch('mediashare_error.html');
@@ -211,11 +211,11 @@ function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset)
     $foldersColumn = & $pntable['mediashare_albums_column'];
 
     $sql = "SELECT
-		            $foldersColumn[id]
-		          FROM
-		            $foldersTable
-		          WHERE $foldersColumn[parentAlbumId] = '" . pnVarPrepForStore($parentFolderID) . "'
-		            AND $foldersColumn[title] = '" . pnVarPrepForStore($folderTitle) . "'";
+                    $foldersColumn[id]
+                  FROM
+                    $foldersTable
+                  WHERE $foldersColumn[parentAlbumId] = '" . pnVarPrepForStore($parentFolderID) . "'
+                    AND $foldersColumn[title] = '" . pnVarPrepForStore($folderTitle) . "'";
 
     $result = $dbconn->execute($sql);
 

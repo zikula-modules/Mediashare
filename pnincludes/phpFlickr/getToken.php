@@ -16,4 +16,4 @@
     
     echo "Copy this token into your code: " . $_SESSION['phpFlickr_auth_token'];
     
-?>
+

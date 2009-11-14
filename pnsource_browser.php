@@ -37,7 +37,7 @@ function mediashare_source_browser_view(&$args)
 
     $uploadInfo = pnModAPIFunc('mediashare', 'source_browser', 'getUploadInfo');
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('imageNum', 10);
     $render->assign('uploadFields', array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
@@ -133,7 +133,7 @@ function mediashareSourceBrowserUpload(&$args)
     if ($items === false)
         return mediashareErrorAPIGet();
 
-    $render = new pnRender('mediashare');
+    $render = & pnRender::getInstance('mediashare');
 
     $render->caching = false;
     $render->assign('statusSet', $statusSet);

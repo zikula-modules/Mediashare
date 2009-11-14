@@ -34,4 +34,4 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
     return $result;
 }
 
-?>
+

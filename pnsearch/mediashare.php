@@ -48,7 +48,7 @@ function search_mediashare()
   if (!isset($startnum) || !is_numeric($startnum))
     $startnum = 0;
 
-  $render = new pnRender('mediashare');
+  $render = & pnRender::getInstance('mediashare');
   $render->assign('pageSize', $pageSize);
 
   if (!empty($query))

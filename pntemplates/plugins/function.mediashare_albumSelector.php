@@ -59,4 +59,4 @@ function smarty_function_mediashare_albumSelector($params, &$smarty)
     return $html;
 }
 
-?>
+

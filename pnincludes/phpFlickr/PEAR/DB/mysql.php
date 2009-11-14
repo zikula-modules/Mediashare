@@ -1031,4 +1031,4 @@ class DB_mysql extends DB_common
  * End:
  */
 
-?>
+

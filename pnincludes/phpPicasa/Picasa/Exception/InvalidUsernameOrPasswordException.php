@@ -38,4 +38,4 @@ class Picasa_Exception_InvalidUsernameOrPasswordException extends Picasa_Excepti
 	}
 }
 
-?>
+

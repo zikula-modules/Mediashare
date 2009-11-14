@@ -39,4 +39,4 @@ class Picasa_Exception_ConflictException extends Picasa_Exception {
 	}
 }
 
-?>
+
