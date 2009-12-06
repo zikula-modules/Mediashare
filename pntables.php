@@ -8,13 +8,12 @@
  * This function is called internally by the core whenever the module is
  * loaded.  It adds in information about the tables that the module uses.
  */
-function & mediashare_pntables()
+function mediashare_pntables()
 {
   $pntable = array();
   $prefix = pnConfigGetVar('prefix');
 
-    // Album and media setup
-
+  // Album and media setup
   $tableName = $prefix . '_mediashare_albums';
 
   $pntable['mediashare_albums'] = $tableName;
@@ -179,4 +178,3 @@ function & mediashare_pntables()
 
   return $pntable;
 }
-

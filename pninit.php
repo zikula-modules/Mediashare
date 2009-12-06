@@ -52,7 +52,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
     // Media items creation
 
@@ -81,7 +81,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
 
     // Keywords creation
@@ -101,7 +101,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
     // Add index on keyword
     $indexFields = $keywordsColumn['keyword'];
@@ -111,7 +111,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
     // Media store creation
 
@@ -133,7 +133,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
 
     if (!mediashareCreateMediaDB($dbconn, $pntable, $dict, $taboptarray)) {
@@ -161,7 +161,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
 
     // Sources handlers creation
@@ -183,7 +183,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
 
     // Access control creation
@@ -204,7 +204,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
 
     $indexFields = $accessColumn['albumId'];
@@ -214,7 +214,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
     // Setup table
 
@@ -234,7 +234,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
 
     // Photoshare table
@@ -256,7 +256,7 @@ function mediashare_init()
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
 
     if (!mediashareCreateInvitationTable($dbconn, $pntable, $dict, $taboptarray)) {
@@ -266,35 +266,35 @@ function mediashare_init()
 
 
     if (!pnModSetVar('mediashare', 'tmpDirName', '/tmp')) {
-        return mediashareInitError(__FILE__, __LINE__, 'Set module var tmpDirName failed');
+        return LogUtil::registerError('Set module var tmpDirName failed');
     }
 
     if (!pnModSetVar('mediashare', 'mediaDirName', str_replace('/modules', '', dirname(__FILE__)))) {
-        return mediashareInitError(__FILE__, __LINE__, 'Set module var mediaDirName failed');
+        return LogUtil::registerError('Set module var mediaDirName failed');
     }
 
     if (!pnModSetVar('mediashare', 'thumbnailSize', '100')) {
-        return mediashareInitError(__FILE__, __LINE__, 'Set module var thumbnailSize failed');
+        return LogUtil::registerError('Set module var thumbnailSize failed');
     }
 
     if (!pnModSetVar('mediashare', 'previewSize', '400')) {
-        return mediashareInitError(__FILE__, __LINE__, 'Set module var previewSize failed');
+        return LogUtil::registerError('Set module var previewSize failed');
     }
 
     if (!pnModSetVar('mediashare', 'mediaSizeLimitSingle', 250000)) {
-        return mediashareInitError(__FILE__, __LINE__, 'Set module var mediaSizeLimitSingle failed');
+        return LogUtil::registerError('Set module var mediaSizeLimitSingle failed');
     }
 
     if (!pnModSetVar('mediashare', 'mediaSizeLimitTotal', 5000000)) {
-        return mediashareInitError(__FILE__, __LINE__, 'Set module var mediaSizeLimitTotal failed');
+        return LogUtil::registerError('Set module var mediaSizeLimitTotal failed');
     }
 
     if (!pnModSetVar('mediashare', 'defaultAlbumTemplate', 'standard')) {
-        return mediashareInitError(__FILE__, __LINE__, 'Set module var defaultAlbumTemplate failed');
+        return LogUtil::registerError('Set module var defaultAlbumTemplate failed');
     }
 
     if (!pnModSetVar('mediashare', 'defaultSlideshowTemplate', 'standard')) {
-        return mediashareInitError(__FILE__, __LINE__, 'Set module var defaultSlideshowTemplate failed');
+        return LogUtil::registerError('Set module var defaultSlideshowTemplate failed');
     }
 
     // Scan for plugins
@@ -302,7 +302,7 @@ function mediashare_init()
 
     $ok = pnModAPIFunc('mediashare', 'admin', 'scanAllPlugins');
     if ($ok === false) {
-        mediashareInitError(__FILE__, __LINE__, LogUtil::getErrorMessagesText());
+        LogUtil::registerError(LogUtil::getErrorMessagesText());
     }
 
     // Add top album
@@ -312,11 +312,11 @@ function mediashare_init()
     $topAlbum = array('title' => __('Top', $dom), 'keywords' => '', 'summary' => '', 'description' => __('This is the top album (of which there can be only one). You can edit this album to change the title and other attributes of it.', $dom), 'parentAlbumId' => 0);
     $topId = pnModAPIFunc('mediashare', 'edit', 'addAlbum', $topAlbum);
     if ($topId === false) {
-        return mediashareInitError(__FILE__, __LINE__, LogUtil::getErrorMessagesText());
+        return LogUtil::registerError(LogUtil::getErrorMessagesText());
     }
     $ok = pnModAPIFunc('mediashare', 'edit', 'setDefaultAccess', array('albumId' => $topId, 'usersMayAddAlbum' => true));
     if ($ok === false) {
-        return mediashareInitError(__FILE__, __LINE__, LogUtil::getErrorMessagesText());
+        return LogUtil::registerError(LogUtil::getErrorMessagesText());
     }
 
     if (!mediashareCreateMediashareUpdateNestedSetValues()) {
@@ -348,7 +348,7 @@ function mediashareCreateMediaDB(&$dbconn, &$pntable, &$dict, &$taboptarray)
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
     pnModSetVar('mediashare', 'vfs', 'fsdirect');
     pnModSetVar('mediashare', 'enableSharpen', 1);
@@ -379,7 +379,7 @@ function mediashareCreateInvitationTable(&$dbconn, &$pntable, &$dict, &$taboptar
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Table creation failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
     return true;
 }
@@ -517,7 +517,7 @@ function mediashare_upgrade_to_1_0_2($oldVersion)
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Album table change failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Album table change failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
 
     $mediaTable = $pntable['mediashare_media'];
@@ -532,14 +532,14 @@ function mediashare_upgrade_to_1_0_2($oldVersion)
     // Check for an error with the database code, and if so set an
     // appropriate error message and return
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Media table change failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
+        return LogUtil::registerError('Media table change failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sqlArray[0]);
     }
     $sql = "UPDATE $albumTable
           SET $albumColumn[modifiedDate] = $albumColumn[createdDate]";
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareInitError(__FILE__, __LINE__, 'Media table change failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sql);
+        return LogUtil::registerError('Media table change failed: ' . $dbconn->ErrorMsg() . ' while executing' . $sql);
     }
 
     return true;
@@ -569,7 +569,7 @@ function mediashare_upgrade_to_2_2_0($oldVersion)
 
     // Check for an error with the database code
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Drop column "data" failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        return LogUtil::registerError('Drop column "data" failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     if (!mediashareCreateMediaDB($dbconn, $pntable, $dict, $taboptarray)) {
         return false;
@@ -612,7 +612,7 @@ function mediashare_upgrade_to_3_4_0($oldVersion)
 
     // Check for an error with the database code
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Add columns failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        return LogUtil::registerError('Add columns failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     return true;
 }
@@ -637,7 +637,7 @@ function mediashare_upgrade_to_3_4_1($oldVersion)
 
     // Check for an error with the database code
     if ($result != 2) {
-        return mediashareInitError(__FILE__, __LINE__, 'Add columns failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        return LogUtil::registerError('Add columns failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     return true;
 }
@@ -797,12 +797,4 @@ function mediashare_delete()
 
     // Deletion always successful
     return true;
-}
-
-// -----------------------------------------------------------------------
-// Error handling
-// -----------------------------------------------------------------------
-function mediashareInitError($file, $line, $msg)
-{
-    return LogUtil::registerError("$file($line): $msg");
 }
