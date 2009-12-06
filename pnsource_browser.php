@@ -50,7 +50,7 @@ function mediashare_source_browser_view(&$args)
 function mediashareSourceBrowserUpload(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
-    if (!pnSecConfirmAuthKey())
+    if (!SecurityUtil::confirmAuthKey())
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
 
     $albumId = mediashareGetIntUrl('aid', $args, 0);
@@ -137,7 +137,7 @@ function mediashareSourceBrowserUpload(&$args)
 function mediashareSourceBrowserUpdate()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
-    if (!pnSecConfirmAuthKey())
+    if (!SecurityUtil::confirmAuthKey())
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
 
     $mediaIds = FormUtil::getPassedValue('mediaId');

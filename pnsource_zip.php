@@ -134,7 +134,7 @@ function mediashareGetMimeType($filename)
 function mediashareSourceZipUpload(& $args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
-    if (!pnSecConfirmAuthKey())
+    if (!SecurityUtil::confirmAuthKey())
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
 
     $albumId = mediashareGetIntUrl('aid', $args, 0);
@@ -226,7 +226,7 @@ function mediashareSourceZipUpload(& $args)
 // Second page in upload sequence - user has entered media titles and such like, and it needs to be updated
 function mediashareSourceZipUpdate()
 {
-    if (!pnSecConfirmAuthKey())
+    if (!SecurityUtil::confirmAuthKey())
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
 
     $mediaIds = FormUtil::getPassedValue('mediaId');
