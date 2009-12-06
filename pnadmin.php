@@ -80,8 +80,7 @@ function mediashareAdminSettings($args)
         }
     }
 
-    pnRedirect(pnModURL('mediashare', 'admin', 'main'));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'admin', 'main'));
 }
 
 // =======================================================================
@@ -121,8 +120,7 @@ function mediashareAdminScanPlugins()
     if ($ok === false) {
         return mediashareErrorAPIGet();
     }
-    pnRedirect(pnModURL('mediashare', 'admin', 'plugins'));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'admin', 'plugins'));
 }
 
 // =======================================================================

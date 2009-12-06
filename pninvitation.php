@@ -35,8 +35,7 @@ function mediashare_invitation_send($args)
         return mediashareResendInvitation($invitationId, $albumId);
 
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
@@ -70,8 +69,7 @@ function mediashareUpdateInvitation($args)
     if ($ok === false)
         return mediashareErrorAPIGet();
 
-    pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $input['albumId'])));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $input['albumId'])));
 }
 
 function mediashareResendInvitation($invitationId, $albumId)
@@ -89,8 +87,7 @@ function mediashareResendInvitation($invitationId, $albumId)
     if ($ok === false)
         return mediashareErrorAPIGet();
 
-    pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
 }
 
 function mediashare_invitation_link($args)
@@ -209,8 +206,7 @@ function mediashareExpireInvitations($args)
             return mediashareErrorAPIGet();
     }
 
-    pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
 }
 
 function mediashareDeleteInvitations($args)
@@ -224,8 +220,7 @@ function mediashareDeleteInvitations($args)
             return mediashareErrorAPIGet();
     }
 
-    pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
 }
 
 function mediashare_invitation_open($args)
@@ -238,8 +233,5 @@ function mediashare_invitation_open($args)
     else if (!$result['ok'])
         return $result['message'];
 
-    pnRedirect(pnModURL('mediashare', 'user', 'view', array('aid' => $result['albumId'])));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'user', 'view', array('aid' => $result['albumId'])));
 }
-
-

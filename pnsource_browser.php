@@ -23,13 +23,11 @@ function mediashare_source_browser_view(&$args)
     }
 
     if (isset($_POST['cancelButton']) || isset($_POST['continueButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     if (isset($_POST['moreButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'addmedia', array('aid' => $albumId, 'source' => 'browser')));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'addmedia', array('aid' => $albumId, 'source' => 'browser')));
     }
 
     // TODO Required for globals??

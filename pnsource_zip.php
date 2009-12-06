@@ -24,13 +24,11 @@ function mediashare_source_zip_view(& $args)
     }
 
     if (isset($_POST['cancelButton']) || isset($_POST['continueButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     if (isset($_POST['moreButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'addmedia', array('aid' => $albumId, 'source' => 'zip')));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'addmedia', array('aid' => $albumId, 'source' => 'zip')));
     }
 
     // TODO Required globals??

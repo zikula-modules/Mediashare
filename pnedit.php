@@ -43,8 +43,7 @@ function mediashare_edit_view($args)
         }
 
         $url = pnModUrl('mediashare', 'edit', $func, array('mid' => $mediaIdList, 'aid' => $albumId));
-        pnRedirect($url);
-        return true;
+        return pnRedirect($url);
     }
 
     // Fetch current album
@@ -105,8 +104,7 @@ function mediashare_edit_addalbum($args)
         return mediashareAddAlbum($args);
     }
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     // Get parent album info (ignore unknown parent => this means we add a top most album)
@@ -147,8 +145,7 @@ function mediashareAddAlbum($args)
     if ($newAlbumID === false) {
         return mediashareErrorAPIGet();
     }
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $newAlbumID)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $newAlbumID)));
 }
 
 function mediashare_edit_editalbum($args)
@@ -161,8 +158,7 @@ function mediashare_edit_editalbum($args)
         return mediashareUpdateAlbum($args);
     }
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     // Check access
@@ -207,8 +203,7 @@ function mediashareUpdateAlbum($args)
         return mediashareErrorAPIGet();
     }
 
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
 function mediashare_edit_deleteAlbum($args)
@@ -221,8 +216,7 @@ function mediashare_edit_deleteAlbum($args)
     }
 
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     // Check access
@@ -269,8 +263,7 @@ function mediashareDeleteAlbum($args)
         return mediashareErrorAPIGet();
     }
 
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $album['parentAlbumId'])));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $album['parentAlbumId'])));
 }
 
 // =======================================================================
@@ -296,8 +289,7 @@ function mediashare_edit_movealbum($args)
     }
 
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     // Fetch current album
@@ -322,8 +314,7 @@ function mediashareUpdateMoveAlbum($args)
     if ($ok === false) {
         return mediashareErrorAPIGet();
     }
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
 // =======================================================================
@@ -415,8 +406,7 @@ function mediashare_edit_edititem($args)
     }
 
     if (isset($_POST['cancelButton'])) {
-        pnRedirect($backUrl);
-        return true;
+        return pnRedirect($backUrl);
     }
 
     // Do late access check so we can get "unknown item" error message from 'getMediaItem'
@@ -476,8 +466,7 @@ function mediashareUpdateItem($args, $backUrl)
         return mediashareErrorAPIGet();
     }
 
-    pnRedirect($backUrl);
-    return true;
+    return pnRedirect($backUrl);
 }
 
 function mediashare_edit_deleteitem($args)
@@ -496,8 +485,7 @@ function mediashare_edit_deleteitem($args)
     }
 
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
@@ -534,8 +522,7 @@ function mediashareDeleteItem($args)
         return mediashareErrorAPIGet();
     }
 
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
 function mediashare_edit_multieditmedia($args)
@@ -555,8 +542,7 @@ function mediashare_edit_multieditmedia($args)
     }
 
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia, 'enableEscape' => false));
@@ -604,8 +590,7 @@ function mediashareMultiUpdateItems()
         //echo "$itemId: $title, $keywords, $description. ";
     }
 
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
 function mediashare_edit_multideletemedia($args)
@@ -624,8 +609,7 @@ function mediashare_edit_multideletemedia($args)
         return mediashareMultiDeleteMedia();
     }
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia));
@@ -667,8 +651,7 @@ function mediashareMultiDeleteMedia()
         }
     }
 
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
 function mediashare_edit_multimovemedia($args)
@@ -687,8 +670,7 @@ function mediashare_edit_multimovemedia($args)
         return mediashareMultiMoveMedia();
     }
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia));
@@ -730,8 +712,7 @@ function mediashareMultiMoveMedia()
         }
     }
 
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
 // =======================================================================
@@ -754,8 +735,7 @@ function mediashare_edit_setmainitem($args)
     if ($ok === false) {
         return mediashareErrorAPIGet();
     }
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
 // =======================================================================
@@ -777,8 +757,7 @@ function mediashare_edit_arrange($args)
         return mediashareArrangeAlbum($args);
     }
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     if (!pnUserLoggedIn()) {
@@ -826,8 +805,7 @@ function mediashareArrangeAlbum($args)
         return mediashareErrorAPIGet();
     }
 
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
 // =======================================================================
@@ -849,8 +827,7 @@ function mediashare_edit_access($args)
         return mediashareUpdateAccess($args);
     }
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     // Fetch current album
@@ -904,7 +881,6 @@ function mediashareUpdateAccess($args)
     if ($ok === false) {
         return mediashareErrorAPIGet();
     }
-    pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 

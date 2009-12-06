@@ -49,9 +49,7 @@ function mediashare_external_finditem($args)
         }
 
         if (!$uploadFailed) {
-            $url = pnModUrl('mediashare', 'external', 'pasteitem', array('aid' => $albumId, 'mid' => $mediaId, 'mode' => $mode));
-            pnRedirect($url);
-            return true;
+            return pnRedirect(pnModUrl('mediashare', 'external', 'pasteitem', array('aid' => $albumId, 'mid' => $mediaId, 'mode' => $mode)));
         }
     }
 
@@ -78,16 +76,12 @@ function mediashare_external_finditem($args)
 function mediashare_external_pasteitem($args)
 {
     // FIXME access check
-
-
     $albumId = mediashareGetIntUrl('aid', $args, 0);
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
     $mode = FormUtil::getPassedValue('mode');
 
     if (isset($_POST['backButton'])) {
-        $url = pnModUrl('mediashare', 'external', 'finditem', array('aid' => $albumId, 'mid' => $mediaId, 'mode' => $mode));
-        pnRedirect($url);
-        return true;
+        return pnRedirect(pnModUrl('mediashare', 'external', 'finditem', array('aid' => $albumId, 'mid' => $mediaId, 'mode' => $mode)));
     }
 
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));

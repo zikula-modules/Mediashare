@@ -39,8 +39,7 @@ function mediashare_import_photoshare($args)
     }
 
     if (isset($_POST['cancelButton'])) {
-        pnRedirect(pnModURL('mediashare', 'import', 'main'));
-        return true;
+        return pnRedirect(pnModURL('mediashare', 'import', 'main'));
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -56,7 +55,6 @@ function mediashareImportPhotoshare()
         return mediashareErrorAPIGet();
     }
 
-    pnRedirect(pnModURL('mediashare', 'import', 'main'));
-    return true;
+    return pnRedirect(pnModURL('mediashare', 'import', 'main'));
 }
 
