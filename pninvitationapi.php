@@ -399,19 +399,19 @@ function mediashare_invitationapi_register(&$args)
     if ($ok === false)
         return false;
 
-    $albums = pnSessionGetVar('mediashareInvitedAlbums');
+    $albums = SessionUtil::getVar('mediashareInvitedAlbums');
     if ($albums == false || $albums == null)
         $albums = array('version' => 1, 'keys' => array());
 
     $albums['keys'][$key] = true;
-    pnSessionSetVar('mediashareInvitedAlbums', $albums);
+    SessionUtil::setVar('mediashareInvitedAlbums', $albums);
 
     return array('ok' => true, 'albumId' => $invitation['albumId']);
 }
 
 function mediashare_invitationapi_getInvitedAlbums($args)
 {
-    $invitedAlbums = pnSessionGetVar('mediashareInvitedAlbums');
+    $invitedAlbums = SessionUtil::getVar('mediashareInvitedAlbums');
     if ($invitedAlbums == null)
         return $invitedAlbums;
 

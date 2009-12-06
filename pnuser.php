@@ -189,9 +189,9 @@ function mediashare_user_slideshow($args)
     $viewUrl = pnModUrl('mediashare', 'user', 'slideshow', array('mid' => $mediaItem['id']));
 
     if ($back) {
-        pnSessionSetVar('mediashareQuitUrl', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
+        SessionUtil::setVar('mediashareQuitUrl', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
     }
-    $quitUrl = pnSessionGetVar('mediashareQuitUrl');
+    $quitUrl = SessionUtil::getVar('mediashareQuitUrl');
     if ($quitUrl == null) {
         $quitUrl = pnModUrl('mediashare', 'user', 'view', array('aid' => $album['id']));
     }

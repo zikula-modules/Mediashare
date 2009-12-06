@@ -671,7 +671,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        LogUtil::registerError('Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     // Drop the media items table
 
@@ -682,7 +682,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        SessionUtil::setVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     // Drop the media storage table
 
@@ -700,7 +700,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        LogUtil::registerError('Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     // Drop the media handler table
 
@@ -711,7 +711,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        LogUtil::registerError('Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     // Drop the sources table
 
@@ -722,7 +722,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        LogUtil::registerError('Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     // Drop the access control table
 
@@ -733,7 +733,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        LogUtil::registerError('Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     // Drop the setup table
 
@@ -744,7 +744,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        LogUtil::registerError('Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     // Drop the photoshare table
 
@@ -755,7 +755,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        LogUtil::registerError('Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     // Drop the keywords table
 
@@ -766,7 +766,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        LogUtil::registerError('Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
     // Drop the invitation table
 
@@ -777,7 +777,7 @@ function mediashare_delete()
 
     // Check for an error with the database code
     if ($result != 2) {
-        pnSessionSetVar('errormsg', 'Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
+        LogUtil::registerError('Drop table failed ' . ': ' . $dbconn->ErrorMsg() . ' while executing ' . $sqlArray[0]);
     }
 
     pnModDelVar('mediashare', 'tmpDirName');
@@ -806,7 +806,6 @@ function mediashare_delete()
 
 function mediashareInitError($file, $line, $msg)
 {
-    pnSessionSetVar('errormsg', "$file($line): $msg");
-    return false;
+    return LogUtil::registerError("$file($line): $msg");
 }
 

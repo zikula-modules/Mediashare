@@ -33,7 +33,7 @@ function mediashare_randomblock_display($blockinfo)
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 
     $sessionVarName = 'mediashare_block_' . $blockinfo['bid'];
-    $sessionVars = pnSessionGetVar($sessionVarName);
+    $sessionVars = SessionUtil::getVar($sessionVarName);
     if ($sessionVars == '' || $sessionVars == null)
         $sessionVars = array();
 
@@ -99,7 +99,7 @@ function mediashare_randomblock_display($blockinfo)
     $sessionVars['oldContent'] = $html;
     $sessionVars['lastUpdate'] = time();
 
-    pnSessionSetVar($sessionVarName, $sessionVars);
+    SessionUtil::setVar($sessionVarName, $sessionVars);
     /*
     pnModDBInfoLoad('mediashare');
     list ($dbconn) = pnDBGetConn();
