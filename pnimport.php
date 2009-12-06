@@ -11,7 +11,7 @@ require_once 'modules/mediashare/elfisk/elfisk_common.php';
 function mediashare_import_main($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
@@ -29,7 +29,7 @@ function mediashare_import_main($args)
 function mediashare_import_photoshare($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 

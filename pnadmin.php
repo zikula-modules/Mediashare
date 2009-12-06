@@ -17,7 +17,7 @@ function mediashare_admin_main($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
@@ -101,7 +101,7 @@ function mediashare_admin_plugins($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     if (isset($_POST['scanButton'])) {
@@ -151,7 +151,7 @@ function mediashare_admin_recalc($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     if (isset($_POST['recalcButton'])) {
@@ -173,7 +173,7 @@ function mediashare_admin_recalcitem($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 

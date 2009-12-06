@@ -14,7 +14,7 @@ $search_modules[] = array('title'       => 'Mediashare files',
   // "Print" search form in advanced search
 function search_mediashare_opt()
 {
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
         return;
     }
 

@@ -136,12 +136,11 @@ function mediashare_mediahandlerapi_scanMediaHandlers($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN))
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+    }
 
     // Clear existing handler table
-
-
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 

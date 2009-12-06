@@ -16,7 +16,7 @@ function mediashare_editapi_addAlbum(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     // Check basic access (but don't do fine grained Mediashare access check)
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     // Set defaults
@@ -177,7 +177,7 @@ function mediashare_editapi_updateAlbum(&$args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
@@ -239,7 +239,7 @@ function mediashare_editapi_deleteAlbum(&$args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
@@ -363,7 +363,7 @@ function mediashare_editapi_moveAlbum(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     $albumId = (int) $args['albumId'];
@@ -795,7 +795,7 @@ function mediashare_editapi_ensureMainAlbumId($args)
     $forceUpdate = isset($args['forceUpdate']) && $args['forceUpdate'];
 
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
@@ -834,7 +834,7 @@ function mediashare_editapi_updateItem(&$args)
 
     $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     $mediaId = (int) $args['mediaId'];

@@ -26,7 +26,7 @@ function mediashare_randomblock_info()
 function mediashare_randomblock_display($blockinfo)
 {
     // Security check
-    if (!pnSecAuthAction(0, 'mediashare:randomblock:', "$blockinfo[title]::$blockinfo[bid]", ACCESS_READ))
+    if (!SecurityUtil::checkPermission('mediashare:randomblock:', "$blockinfo[title]::$blockinfo[bid]", ACCESS_READ))
         return;
 
     // Get variables from content block

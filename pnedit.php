@@ -595,7 +595,7 @@ function mediashare_edit_multieditmedia($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     $albumId    = mediashareGetIntUrl('aid', $args, 1);
@@ -673,7 +673,7 @@ function mediashare_edit_multideletemedia($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     $albumId = mediashareGetIntUrl('aid', $args, 1);
@@ -741,7 +741,7 @@ function mediashare_edit_multimovemedia($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     $albumId = mediashareGetIntUrl('aid', $args, 1);

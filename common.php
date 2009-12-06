@@ -141,7 +141,7 @@ function mediashareAddAccess(&$render, $album)
 
 function mediashareErrorPage($file, $line, $msg)
 {
-    if ($file == null || !pnSecAuthAction(0, 'mediashare::', '', ACCESS_ADMIN)) {
+    if ($file == null || !SecurityUtil::checkPermission('mediashare::', '', ACCESS_ADMIN)) {
         $text = $msg;
     } else {
         $text = "$file($line): $msg";
@@ -159,14 +159,14 @@ function mediashareErrorAPI($file, $line, $msg, $setSession = true)
 {
     global $mediashareErrorMessageAPI;
 
-    if ($file == null || !pnSecAuthAction(0, 'mediashare::', '', ACCESS_ADMIN)) {
+    if ($file == null || !SecurityUtil::checkPermission('mediashare::', '', ACCESS_ADMIN)) {
         $mediashareErrorMessageAPI = $msg;
     } else {
         $mediashareErrorMessageAPI = "$file($line): $msg";
     }
 
     if ($setSession) {
-        pnSessionSetVar('errormsg', $mediashareErrorMessageAPI);
+        LogUtil::registerError($mediashareErrorMessageAPI);
     }
 
     return false;

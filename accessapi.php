@@ -10,7 +10,7 @@ class mediashareAccessApi
     function hasAlbumAccess($albumId, $access, $viewKey)
     {
         // Admin can do everything
-        if (pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
             return true;
         }
 
@@ -26,11 +26,11 @@ class mediashareAccessApi
         }
 
         // Don't enable any edit access if not having normal Zikula edit access
-        if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT))
+        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT))
             $access = $access & ~mediashareAccessRequirementEditSomething;
 
         // Must have normal PN read access to the module
-        if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ))
+        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ))
             return false;
 
         // Anonymous is not allowed to add stuff, so remove those bits
@@ -77,7 +77,7 @@ class mediashareAccessApi
     function getAlbumAccess($albumId)
     {
         // Admin can do everything
-        if (pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
             return 0xFF;
         }
         $userId = (int) pnUserGetVar('uid');
@@ -102,7 +102,7 @@ class mediashareAccessApi
         $membershipTable = $pntable['group_membership'];
         $membershipColumn = &$pntable['group_membership_column'];
 
-        if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
             return 0x00;
         }
         $sql = "SELECT $accessColumn[access]
@@ -134,10 +134,10 @@ class mediashareAccessApi
     function getAccessibleAlbumsSql($albumId, $access, $field)
     {
         // Admin can do everything
-        if (pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN)) {
+        if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
             return '1=1';
         }
-        if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ)) {
+        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
             return '1=0';
         }
         $userId = (int) pnUserGetVar('uid');

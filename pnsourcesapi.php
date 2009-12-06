@@ -40,7 +40,7 @@ function mediashare_sourcesapi_scanSources($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_ADMIN))
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN))
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
 
     // Clear existing sources table

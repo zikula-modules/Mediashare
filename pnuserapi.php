@@ -142,7 +142,7 @@ function mediashare_userapi_getAlbumData($args)
     $enableEscape = (isset($args['enableEscape']) ? $args['enableEscape'] : true);
 
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
@@ -249,7 +249,7 @@ function mediashare_userapi_getSubAlbumsData($args)
     }
 
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
@@ -409,7 +409,7 @@ function mediashare_userapi_getAlbumList($args)
     $access = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
 
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     list ($dbconn) = pnDBGetConn();
@@ -499,7 +499,7 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
         return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_userapi_getFirstItemInAlbum');
     }
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     $albumId = (int) $args['albumId'];
@@ -548,7 +548,7 @@ function mediashare_userapi_getMediaItem($args)
     $enableEscape = (isset($args['enableEscape']) ? $args['enableEscape'] : true);
 
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
@@ -685,7 +685,7 @@ function mediashare_userapi_getMediaItems($args)
     }
 
     // Check access
-    if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_READ)) {
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
