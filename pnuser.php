@@ -87,8 +87,8 @@ function mediashare_user_browse($args)
     } else if ($mediaItem == null) {
         $mediaItem = array('title' => '', 'description' => '', 'id' => 0);
     }
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('album', $album);
     $render->assign('mediaItem', $mediaItem);
     $render->assign('itemCount', count($items));
@@ -186,12 +186,14 @@ function mediashare_user_slideshow($args)
     if ($back) {
         SessionUtil::setVar('mediashareQuitUrl', isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null);
     }
+
     $quitUrl = SessionUtil::getVar('mediashareQuitUrl');
     if ($quitUrl == null) {
         $quitUrl = pnModUrl('mediashare', 'user', 'view', array('aid' => $album['id']));
     }
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('viewUrl', $viewUrl);
     $render->assign('mediaId', $mediaId);
     $render->assign('mediaItem', $mediaItem);
@@ -215,8 +217,8 @@ function mediashare_user_slideshow($args)
     if (pnConfigGetVar('shorturls')) {
         $render->load_filter('output', 'shorturls');
     }
-    echo $render->fetch('mediashare_user_slideshow.html');
 
+    $render->display('mediashare_user_slideshow.html');
     return true;
 }
 
@@ -261,8 +263,8 @@ function mediashare_user_thumbnails($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('mediaItems', $items);
     $render->assign('album', $album);
     $render->assign('subAlbums', $subAlbums);
@@ -311,8 +313,8 @@ function mediashare_user_simplethumbnails($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('itemCount', count($items));
     $render->assign('mediaItems', $itemCount === null ? $items : array_slice($items, 0, $itemCount));
     $render->assign('album', $album);
@@ -326,6 +328,7 @@ function mediashare_user_simplethumbnails($args)
     if ($template == 'filmstrip') {
         $templateFile = 'mediashare_user_contentfilmstrip.html';
     }
+
     return $render->fetch($templateFile);
 }
 
@@ -352,8 +355,8 @@ function mediashare_user_display($args)
         return LogUtil::registerPermissionError();
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('mediaItem', $mediaItem);
 
     $render->display('mediashare_user_display.html');
@@ -385,8 +388,8 @@ function mediashare_user_simpledisplay($args)
         return LogUtil::registerPermissionError();
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('mediaItem', $mediaItem);
     $render->assign('showAlbumLink', $showAlbumLink);
     $render->assign('text', $text);
@@ -415,8 +418,8 @@ function mediashare_user_displaygb($args)
         return LogUtil::registerPermissionError();
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('mediaItem', $mediaItem);
 
     $render->display('mediashare_user_displaygb.html');
@@ -451,8 +454,9 @@ function mediashare_user_latest($args)
     if ($summary === false) {
         return false;
     }
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('latestMediaItems', $latestMediaItems);
     $render->assign('latestAlbums', $latestAlbums);
     $render->assign('mostActiveUsers', $mostActiveUsers);
@@ -476,8 +480,8 @@ function mediashare_user_keys($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('keyword', $keyword);
     $render->assign('items', $items);
 
@@ -529,8 +533,8 @@ function mediashare_user_list($args)
     } else {
         $filterText = __('All items', $dom);
     }
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('keyword', $keyword);
     $render->assign('items', $items);
     $render->assign('itemCount', $itemCount);
@@ -558,8 +562,8 @@ function mediashare_user_albumlist($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('albums', $albums);
 
     $templateFile = "mediashare_user_album{$template}.html";

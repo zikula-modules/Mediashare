@@ -52,9 +52,9 @@ function mediashare_external_finditem($args)
 
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
     mediashareExternalLoadTheme($render);
-    $render->caching = false;
+
     $render->assign('albumId', $albumId);
     $render->assign('mediaId', $mediaId);
     $render->assign('mediaItem', $mediaItem);
@@ -88,9 +88,9 @@ function mediashare_external_pasteitem($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
     mediashareExternalLoadTheme($render);
-    $render->caching = false;
+
     $render->assign('albumId', $albumId);
     $render->assign('mediaId', $mediaId);
     $render->assign('mediaItem', $mediaItem);

@@ -104,9 +104,8 @@ function mediashare_edit_addalbum($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign('album', $album);
     $render->assign('template', pnModGetVar('mediashare', 'defaultAlbumTemplate'));
     $render->assign('disableTemplateOverride', pnModGetVar('mediashare', 'allowTemplateOverride') ? false : true);
@@ -160,9 +159,8 @@ function mediashare_edit_editalbum($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign('album', $album);
     $render->assign($album);
     $render->assign('disableTemplateOverride', pnModGetVar('mediashare', 'allowTemplateOverride') ? false : true);
@@ -217,9 +215,8 @@ function mediashare_edit_deleteAlbum($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign('album', $album);
 
     return $render->fetch('mediashare_edit_deletealbum.html');
@@ -284,8 +281,8 @@ function mediashare_edit_movealbum($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('album', $album);
 
     return $render->fetch('mediashare_edit_movealbum.html');
@@ -356,9 +353,8 @@ function mediashare_edit_addmedia($args)
         return $sourceHtml;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign('album', $album);
     $render->assign('sources', $sources);
     $render->assign('selectedSource', $source);
@@ -408,9 +404,8 @@ function mediashare_edit_edititem($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign($item);
     $render->assign('item', $item);
     $render->assign('album', $album);
@@ -485,9 +480,9 @@ function mediashare_edit_deleteitem($args)
     if ($album === false) {
         return false;
     }
-    $render = & pnRender::getInstance('mediashare');
 
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('item', $item);
     $render->assign('album', $album);
 
@@ -535,9 +530,8 @@ function mediashare_edit_multieditmedia($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign('items', $items);
     $render->assign('albumId', $albumId);
 
@@ -599,9 +593,8 @@ function mediashare_edit_multideletemedia($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign('items', $items);
     $render->assign('albumId', $albumId);
     $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
@@ -659,9 +652,8 @@ function mediashare_edit_multimovemedia($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign('items', $items);
     $render->assign('albumId', $albumId);
     $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
@@ -755,9 +747,8 @@ function mediashare_edit_arrange($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign('album', $album);
     $render->assign('mediaItems', $items);
 
@@ -814,8 +805,9 @@ function mediashare_edit_access($args)
     if ($access === false) {
         return false;
     }
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('album', $album);
     $render->assign('access', $access);
     $render->assign('accessSelected', 1);

@@ -35,8 +35,8 @@ function mediashare_source_zip_view(& $args)
 
     $uploadInfo = pnModAPIFunc('mediashare', 'source_zip', 'getUploadInfo');
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('imageNum', 1);
     $render->assign('uploadFields', array(1));
     $render->assign('post_max_size', $uploadInfo['post_max_size']);
@@ -214,9 +214,8 @@ function mediashareSourceZipUpload(& $args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
+    $render = & pnRender::getInstance('mediashare', false);
 
-    $render->caching = false;
     $render->assign('statusSet', $statusSet);
     $render->assign('items', $items);
 

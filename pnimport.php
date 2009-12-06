@@ -13,8 +13,7 @@ function mediashare_import_main($args)
         return LogUtil::registerPermissionError();
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
 
     return $render->fetch('mediashare_import_main.html');
 }
@@ -36,8 +35,7 @@ function mediashare_import_photoshare($args)
         return pnRedirect(pnModURL('mediashare', 'import', 'main'));
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
 
     return $render->fetch('mediashare_import_photoshare.html');
 }

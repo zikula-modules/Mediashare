@@ -4,7 +4,6 @@
 // Mediashare by Jorn Wildt (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
 
@@ -136,8 +135,8 @@ function mediashare_randomblock_modify($blockinfo)
     if (!isset($vars['useRefreshTime']))
         $vars['useRefreshTime'] = 0;
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign($vars);
 
     return $render->fetch('mediashare_block_random.html');

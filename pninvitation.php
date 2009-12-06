@@ -47,8 +47,8 @@ function mediashare_invitation_send($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('album', $album);
     $render->assign('invitation', $invitation);
     $render->assign('accessSelected', 0);
@@ -125,8 +125,8 @@ function mediashare_invitation_link($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('album', $album);
     $render->assign('link', $link);
     $render->assign('accessSelected', 0);
@@ -163,8 +163,8 @@ function mediashare_invitation_viewlink($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('album', $album);
     $render->assign('link', $link);
     $render->assign('accessSelected', 0);
@@ -200,8 +200,8 @@ function mediashare_invitation_list($args)
         return false;
     }
 
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('album', $album);
     $render->assign('invitations', $invitations);
     $render->assign('accessSelected', 0);
