@@ -67,19 +67,18 @@ class mediashareItemSelector extends pnFormPlugin
     $html = "<div class=\"mediashareItemSelector\">\n<table><tr>\n";
 
     $albums = pnModAPIFunc('mediashare', 'user', 'getAllAlbums', array('albumId' => 1));
-    if ($albums === false)
-      return pnModAPIFunc('mediashare','user','errorAPIGet');
+    if ($albums === false) {
+      return false;
+    }
 
-    if ($this->selectedItemId != null)
-    {
+    if ($this->selectedItemId != null) {
       $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $this->selectedItemId));
-      if ($mediaItem === false)
-        return pnModAPIFunc('mediashare','user','errorAPIGet');
+      if ($mediaItem === false) {
+        return false;
+      }
       $selectedMediaId = $mediaItem['id'];
       $selectedAlbumId = $mediaItem['parentAlbumId'];
-    }
-    else
-    {
+    } else {
       $mediaItem = null;
       $selectedMediaId = null;
       $selectedAlbumId = (count($albums) > 0 ? $albums[0]['id'] : null);
@@ -194,13 +193,14 @@ class mediashareItemSelector extends pnFormPlugin
                                          'description'   => '',
                                          'template'      => null,
                                          'parentAlbumId' => $albumId) );
-        if ($newAlbumID === false)
-          $this->setError(pnModAPIFunc('mediashare','user','errorAPIGet'));
-        else
+        if ($newAlbumID === false) {
+          $this->setError(LogUtil::getErrorMessagesText());
+        } else {
           $albumId = $newAlbumID;
-      }
-      else
+        }
+      } else {
         $this->setError(__('You do not have access to this feature', $dom));
+      }
     }
 
     $file = (isset($_FILES["{$this->inputName}_upload"]) ? $_FILES["{$this->inputName}_upload"] : null);
@@ -220,15 +220,14 @@ class mediashareItemSelector extends pnFormPlugin
                                       'description'    => null,
                                       'width'          => 0,
                                       'height'         => 0));
-        if ($result === false)
-        {
-          $this->setError(pnModAPIFunc('mediashare','user','errorAPIGet'));
-        }
-        else
+        if ($result === false) {
+          $this->setError(LogUtil::getErrorMessagesText());
+        } else {
           $value = $result['mediaId'];
-      }
-      else
+        }
+      } else {
         $this->setError(__('You do not have access to this feature', $dom));
+      }
     }
 
     $this->selectedItemId = $value;

@@ -1681,11 +1681,6 @@ function mediashare_userapi_search($args)
     return array('result' => $result, 'hitCount' => $i);
 }
 
-function mediashare_userapi_errorAPIGet($args)
-{
-    return false;
-}
-
 // =======================================================================
 // Templates
 // =======================================================================

@@ -15,19 +15,16 @@ class mediashareAlbumSelector extends pnFormDropdownList
   var $onlyMine = 0; 
   var $access = 0xFF;
   
-
   function getFilename()
   {
     return __FILE__;
   }
-
 
   function load(&$render, &$params)
   {
     $this->update(false);
     parent::load($render, $params);
   }
-
 
   function update($force)
   {
@@ -38,18 +35,18 @@ class mediashareAlbumSelector extends pnFormDropdownList
                                    //'excludeAlbumId' => $excludeAlbumId,
                                    'access'         => $this->access,
                                    'onlyMine'       => $this->onlyMine));
-      if ($albums === false)
-        pn_exit( pnModAPIFunc('mediashare','user','errorAPIGet') );
+      if ($albums === false) {
+        pn_exit(LogUtil::getErrorMessagesText());
+      }
 
-      foreach ($albums as $album)
+      foreach ($albums as $album) {
         $this->addItem($album['title'], $album['id']);
+      }
     }
   }
 }
-
 
 function smarty_function_mediasharealbumselector($params, &$render)
 {
   return $render->pnFormRegisterPlugin('mediashareAlbumSelector', $params);
 }
-
