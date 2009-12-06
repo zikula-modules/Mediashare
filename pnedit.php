@@ -51,7 +51,7 @@ function mediashare_edit_view($args)
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     if ($album === true) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Unknown album');
@@ -61,14 +61,14 @@ function mediashare_edit_view($args)
 
     $subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementEditSomething));
     if ($subAlbums === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     // Fetch media items
 
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
     if ($items === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
@@ -77,7 +77,7 @@ function mediashare_edit_view($args)
     $render->assign('mediaItems', $items);
     $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
     if (!mediashareAddAccess($render, $album)) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     return $render->fetch('mediashare_edit_view.html');
 }
@@ -110,7 +110,7 @@ function mediashare_edit_addalbum($args)
     // Get parent album info (ignore unknown parent => this means we add a top most album)
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -143,7 +143,7 @@ function mediashareAddAlbum($args)
                                      'parentAlbumId' => $parentAlbumId));
 
     if ($newAlbumID === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $newAlbumID)));
 }
@@ -168,7 +168,7 @@ function mediashare_edit_editalbum($args)
     // Get album info
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId, 'enableEscape' => false));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -200,7 +200,7 @@ function mediashareUpdateAlbum($args)
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'updateAlbum', $values + array('albumId' => $albumId));
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
@@ -227,7 +227,7 @@ function mediashare_edit_deleteAlbum($args)
     // Get album info
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -255,12 +255,12 @@ function mediashareDeleteAlbum($args)
     // Get album info
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'deleteAlbum', array('albumId' => $albumId));
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $album['parentAlbumId'])));
@@ -295,7 +295,7 @@ function mediashare_edit_movealbum($args)
     // Fetch current album
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -312,7 +312,7 @@ function mediashareUpdateMoveAlbum($args)
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'moveAlbum', array('albumId' => $albumId, 'dstAlbumId' => $dstAlbumId));
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
@@ -336,12 +336,12 @@ function mediashare_edit_addmedia($args)
     // Get parent album info (ignore unknown parent => this means we add to a top most album)
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     // Get media sources
     $sources = pnModAPIFunc('mediashare', 'sources', 'getSources');
     if ($sources === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     if (count($sources) == 0) {
         return mediashareErrorPage(__FILE__, __LINE__, __('No media sources found. You need to go to the admin part and make a scan for media sources.', $dom));
@@ -390,7 +390,7 @@ function mediashare_edit_edititem($args)
 
     $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId, 'enableEscape' => false));
     if ($item === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $albumId = $item['parentAlbumId'];
@@ -416,7 +416,7 @@ function mediashare_edit_edititem($args)
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $item['parentAlbumId']));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -463,7 +463,7 @@ function mediashareUpdateItem($args, $backUrl)
         'width' => $width,
         'height' => $height));
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     return pnRedirect($backUrl);
@@ -490,12 +490,12 @@ function mediashare_edit_deleteitem($args)
 
     $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
     if ($item === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $item['parentAlbumId']));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     $render = & pnRender::getInstance('mediashare');
 
@@ -519,7 +519,7 @@ function mediashareDeleteItem($args)
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'deleteMediaItem', array('mediaId' => $mediaId));
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
@@ -547,7 +547,7 @@ function mediashare_edit_multieditmedia($args)
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia, 'enableEscape' => false));
     if ($items === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -585,7 +585,7 @@ function mediashareMultiUpdateItems()
 
         $ok = pnModAPIFunc('mediashare', 'edit', 'updateItem', array('mediaId' => $mediaId, 'title' => $title, 'keywords' => $keywords, 'description' => $description));
         if ($ok === false) {
-            return mediashareErrorAPIGet();
+            return false;
         }
         //echo "$itemId: $title, $keywords, $description. ";
     }
@@ -614,7 +614,7 @@ function mediashare_edit_multideletemedia($args)
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia));
     if ($items === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -647,7 +647,7 @@ function mediashareMultiDeleteMedia()
         }
         $ok = pnModAPIFunc('mediashare', 'edit', 'deleteMediaItem', array('mediaId' => $mediaId));
         if ($ok === false) {
-            return mediashareErrorAPIGet();
+            return false;
         }
     }
 
@@ -675,7 +675,7 @@ function mediashare_edit_multimovemedia($args)
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia));
     if ($items === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -708,7 +708,7 @@ function mediashareMultiMoveMedia()
         }
         $ok = pnModAPIFunc('mediashare', 'edit', 'moveMediaItem', array('mediaId' => $mediaId, 'albumId' => $albumId));
         if ($ok === false) {
-            return mediashareErrorAPIGet();
+            return false;
         }
     }
 
@@ -733,7 +733,7 @@ function mediashare_edit_setmainitem($args)
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'setMainItem', array('albumId' => $albumId, 'mediaId' => $mediaId));
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
@@ -767,7 +767,7 @@ function mediashare_edit_arrange($args)
     // Fetch current album
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     if ($album === true) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Unknown album');
@@ -776,7 +776,7 @@ function mediashare_edit_arrange($args)
     // Fetch media items
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
     if ($items === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -802,7 +802,7 @@ function mediashareArrangeAlbum($args)
     $ok = pnModAPIFunc('mediashare', 'edit', 'arrangeAlbum', array('albumId' => $albumId, 'seq' => explode(',', $seq)));
 
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
@@ -833,12 +833,12 @@ function mediashare_edit_access($args)
     // Fetch current album
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $access = pnModAPIFunc('mediashare', 'edit', 'getAccessSettings', array('albumId' => $albumId));
     if ($access === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
@@ -862,7 +862,7 @@ function mediashareUpdateAccess($args)
 
     $groups = pnModAPIFunc('mediashare', 'edit', 'getAccessGroups');
     if ($groups === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $access = array();
@@ -879,7 +879,7 @@ function mediashareUpdateAccess($args)
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'updateAccessSettings', array('albumId' => $albumId, 'access' => $access));
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }

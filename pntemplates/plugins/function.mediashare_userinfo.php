@@ -4,7 +4,7 @@ function smarty_function_mediashare_userinfo($params, $smarty)
 {
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
     if ($userInfo === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $dom = ZLanguage::getModuleDomain('mediashare');

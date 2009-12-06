@@ -48,7 +48,7 @@ function mediashareImportPhotoshare()
 {
     $ok = pnModAPIFunc('mediashare', 'import', 'photoshare');
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     return pnRedirect(pnModURL('mediashare', 'import', 'main'));

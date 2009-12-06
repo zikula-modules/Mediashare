@@ -13,7 +13,7 @@ function smarty_function_mediashare_itemSelector($params, &$smarty)
                           array('albumId' => $albumId));
 
     if ($items === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     if ($mediaId == 0 && count($items) > 0 && isset($params['fetchSelectedInto'])) {

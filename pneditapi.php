@@ -278,7 +278,7 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     // Get album info
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     // Fetch and delete sub-abums
@@ -470,7 +470,7 @@ function mediashare_editapi_addMediaItem(&$args)
     // Check upload limits
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
     if ($userInfo === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     if (!array_key_exists('ignoreSizeLimits', $args) || !$args['ignoreSizeLimits']) {

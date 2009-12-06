@@ -16,7 +16,7 @@ function mediashare_vfs_db_dump()
 
     $media = pnModAPIFunc('mediashare', 'vfs_db', 'getMedia', array('fileref' => $fileref));
     if ($media === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     // Check access
     if (!mediashareAccessAlbum($media['albumId'], mediashareAccessRequirementView, null)) {

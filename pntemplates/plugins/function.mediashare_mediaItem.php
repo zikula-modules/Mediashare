@@ -36,7 +36,7 @@ function smarty_function_mediashare_mediaItem($params, &$smarty)
     } else {
         $handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $params['mediaHandler']));
         if ($handler === false) {
-            return mediashareErrorAPIGet();
+            return false;
         }
         $result = $handler->getMediaDisplayHtml($src, $width, $height, $id, array('title' => $title, 'onclick' => $onclick, 'onmousedown' => $onmousedown, 'class' => $class, 'style' => $style));
     }

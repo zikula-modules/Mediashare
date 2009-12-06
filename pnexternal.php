@@ -4,14 +4,11 @@
 // Mediashare by Jorn Wildt (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common.php';
 
 // =======================================================================
 // Find / paste
 // =======================================================================
-
-
 function mediashare_external_finditem($args)
 {
     // FIXME access check
@@ -66,7 +63,7 @@ function mediashare_external_finditem($args)
     $render->assign('hasEditAccess', mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum));
 
     if ($uploadFailed) {
-        $render->assign('uploadErrorMessage', mediashareErrorAPIGet());
+        $render->assign('uploadErrorMessage', LogUtil::getErrorMessagesText());
     }
 
     echo $render->fetch('mediashare_external_finditem.html');
@@ -88,7 +85,7 @@ function mediashare_external_pasteitem($args)
 
     $handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $mediaItem['mediaHandler']));
     if ($handler === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');

@@ -60,7 +60,7 @@ function mediashare_randomblock_display($blockinfo)
     }
 
     if ($randomInfo === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $mediaId = $randomInfo['mediaId'];

@@ -20,7 +20,8 @@ function smarty_function_mediashare_albumSelector($params, &$smarty)
                                  'onlyMine'       => $onlyMine));
 
     if ($albums === false) {
-        return $smarty->trigger_error( mediashareErrorAPIGet() );
+        $smarty->trigger_error(LogUtil::getErrorMessagesText());
+        return false;
     }
 
     if (isset($params['onchange'])) {

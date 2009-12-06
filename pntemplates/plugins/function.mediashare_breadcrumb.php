@@ -11,8 +11,10 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
 
   $breadcrumb = pnModAPIFunc('mediashare', 'user', 'getAlbumBreadcrumb',
                               array('albumId' => $params['albumId']));
-  if ($breadcrumb === false)
-    return $smarty->trigger_error(mediashareErrorAPIGet());
+  if ($breadcrumb === false) {
+    $smarty->trigger_error(LogUtil::getErrorMessagesText());
+    return false;
+  }
 
   $urlType = $mode == 'edit' ? 'edit' : 'user';
   $url = pnModUrl('mediashare', $urlType, 'view', array('aid' => 0));
@@ -33,5 +35,3 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
   else
     return $result;
 }
-
-

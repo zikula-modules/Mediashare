@@ -740,7 +740,7 @@ function mediashareGetMediaItemsData($args)
         }
         $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql', array('access' => $access, 'field' => "$mediaColumn[parentAlbumId]"));
         if ($accessibleAlbumSql === false) {
-            return mediashareErrorAPIGet();
+            return false;
         }
         $albumRestriction .= ' AND ' . $accessibleAlbumSql;
     }
@@ -1683,7 +1683,7 @@ function mediashare_userapi_search($args)
 
 function mediashare_userapi_errorAPIGet($args)
 {
-    return mediashareErrorAPIGet();
+    return false;
 }
 
 // =======================================================================

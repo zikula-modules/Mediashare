@@ -70,7 +70,7 @@ function mediashare_source_browserapi_getUploadInfo($args)
 {
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
     if ($userInfo === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     $totalCapacityUsed = $userInfo['totalCapacityUsed'];
 

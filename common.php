@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2003.
 // =======================================================================
 
-
 define('mediashareAccessRequirementView',       1);
 define('mediashareAccessRequirementEditAlbum',  2);
 define('mediashareAccessRequirementEditMedia',  4);
@@ -21,8 +20,6 @@ define('mediashareAccessRequirementViewSomething', mediashareAccessRequirementVi
 // =======================================================================
 // URL helpers
 // =======================================================================
-
-
 function mediashareGetIntUrl($param, &$args, $default)
 {
     $i = isset($args[$param]) ? $args[$param] : FormUtil::getPassedValue($param);
@@ -61,8 +58,6 @@ function mediashareGetStringUrl($param, &$args, $default = null)
 // =======================================================================
 // Access control
 // =======================================================================
-
-
 function mediashareGetAccessAPI()
 {
     if (file_exists('modules/mediashare/localaccessapi.php')) {
@@ -109,7 +104,7 @@ function mediashareAddAccess(&$render, $album)
     }
 
     if ($parentAccess === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $access = array(
@@ -129,8 +124,6 @@ function mediashareAddAccess(&$render, $album)
 // =======================================================================
 // Error handling
 // =======================================================================
-
-
 function mediashareErrorPage($file, $line, $msg)
 {
     if ($file == null || !SecurityUtil::checkPermission('mediashare::', '', ACCESS_ADMIN)) {
@@ -147,21 +140,9 @@ function mediashareErrorPage($file, $line, $msg)
     return $smarty->fetch('mediashare_error.html');
 }
 
-function mediashareErrorAPIGet()
-{
-    global $mediashareErrorMessageAPI;
-
-    $smarty = & pnRender::getInstance('mediashare');
-    $smarty->caching = false;
-    $smarty->assign('errorMessage', $mediashareErrorMessageAPI);
-    return $smarty->fetch('mediashare_error.html');
-}
-
 // =======================================================================
 // Other
 // =======================================================================
-
-
 function mediashareStripKeywords($keywords)
 {
     return preg_replace('/[^\w ]/i', '', $keywords);
@@ -177,8 +158,6 @@ function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset)
     $folderTitle = $folders[$folderOffset];
 
     // Get ID of existing folder
-
-
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
@@ -236,4 +215,3 @@ function mediashareLoadLightbox()
         PageUtil::addVar('javascript', $scripts);
     }
 }
-

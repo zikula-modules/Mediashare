@@ -54,7 +54,7 @@ function search_mediashare()
                                      'itemIndex'  => $startnum));
 
         if ($result === false) {
-            return mediashareErrorAPIGet();
+            return false;
         }
 
         $render->assign('result', $result['result']);

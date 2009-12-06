@@ -27,7 +27,7 @@ function mediashare_admin_main($args)
 
     $settings = pnModAPIFunc('mediashare', 'user', 'getSettings');
     if ($settings === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -71,12 +71,12 @@ function mediashareAdminSettings($args)
 
     $ok = pnModAPIFunc('mediashare', 'user', 'setSettings', $settings);
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     if (FormUtil::getPassedValue('templateButton')) {
         $ok = pnModAPIFunc('mediashare', 'admin', 'setTemplateGlobally', array('template' => $settings['defaultAlbumTemplate']));
         if ($ok === false) {
-            return mediashareErrorAPIGet();
+            return false;
         }
     }
 
@@ -100,11 +100,11 @@ function mediashare_admin_plugins($args)
     }
     $mediaHandlers = pnModAPIFunc('mediashare', 'mediahandler', 'getMediaHandlers');
     if ($mediaHandlers === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     $sources = pnModAPIFunc('mediashare', 'sources', 'getSources');
     if ($sources === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
@@ -118,7 +118,7 @@ function mediashareAdminScanPlugins()
 {
     $ok = pnModAPIFunc('mediashare', 'admin', 'scanAllPlugins');
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     return pnRedirect(pnModURL('mediashare', 'admin', 'plugins'));
 }
@@ -159,11 +159,11 @@ function mediashare_admin_recalcitem($args)
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'recalcItem', array('mediaId' => $mediaId));
     if ($ok === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
     if ($mediaItem === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');

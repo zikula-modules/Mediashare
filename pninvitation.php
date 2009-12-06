@@ -40,7 +40,7 @@ function mediashare_invitation_send($args)
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
-        return mediashareErrorAPIGet();
+        return false;
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -67,7 +67,7 @@ function mediashareUpdateInvitation($args)
 
     $ok = pnModAPIFunc('mediashare', 'invitation', 'sendInvitation', $input);
     if ($ok === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $input['albumId'])));
 }
@@ -85,7 +85,7 @@ function mediashareResendInvitation($invitationId, $albumId)
 
     $ok = pnModAPIFunc('mediashare', 'invitation', 'resendInvitation', $args);
     if ($ok === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
 }
@@ -107,14 +107,14 @@ function mediashare_invitation_link($args)
 
         $invitationId = pnModAPIFunc('mediashare', 'invitation', 'createInvitationId', $args);
         if ($invitationId === false)
-            return mediashareErrorAPIGet();
+            return false;
 
         $link = pnModUrl('mediashare', 'invitation', 'open', array('inv' => $invitationId), false, false, true);
     }
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
@@ -148,7 +148,7 @@ function mediashare_invitation_viewlink($args)
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
@@ -177,11 +177,11 @@ function mediashare_invitation_list($args)
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     $invitations = pnModAPIFunc('mediashare', 'invitation', 'getInvitations', array('albumId' => $albumId));
     if ($invitations === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
@@ -203,7 +203,7 @@ function mediashareExpireInvitations($args)
     if (!empty($invitations)) {
         $ok = pnModAPIFunc('mediashare', 'invitation', 'expireInvitations', array('albumId' => $albumId, 'expires' => $expires, 'invitations' => $invitations));
         if ($ok === false)
-            return mediashareErrorAPIGet();
+            return false;
     }
 
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
@@ -217,7 +217,7 @@ function mediashareDeleteInvitations($args)
     if (!empty($invitations)) {
         $ok = pnModAPIFunc('mediashare', 'invitation', 'deleteInvitations', array('albumId' => $albumId, 'invitations' => $invitations));
         if ($ok === false)
-            return mediashareErrorAPIGet();
+            return false;
     }
 
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
@@ -229,7 +229,7 @@ function mediashare_invitation_open($args)
 
     $result = pnModAPIFunc('mediashare', 'invitation', 'register', array('key' => $key));
     if ($result === false)
-        return mediashareErrorAPIGet();
+        return false;
     else if (!$result['ok'])
         return $result['message'];
 

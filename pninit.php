@@ -302,7 +302,7 @@ function mediashare_init()
 
     $ok = pnModAPIFunc('mediashare', 'admin', 'scanAllPlugins');
     if ($ok === false) {
-        mediashareInitError(__FILE__, __LINE__, mediashareErrorAPIGet());
+        mediashareInitError(__FILE__, __LINE__, LogUtil::getErrorMessagesText());
     }
 
     // Add top album
@@ -312,11 +312,11 @@ function mediashare_init()
     $topAlbum = array('title' => __('Top', $dom), 'keywords' => '', 'summary' => '', 'description' => __('This is the top album (of which there can be only one). You can edit this album to change the title and other attributes of it.', $dom), 'parentAlbumId' => 0);
     $topId = pnModAPIFunc('mediashare', 'edit', 'addAlbum', $topAlbum);
     if ($topId === false) {
-        return mediashareInitError(__FILE__, __LINE__, mediashareErrorAPIGet());
+        return mediashareInitError(__FILE__, __LINE__, LogUtil::getErrorMessagesText());
     }
     $ok = pnModAPIFunc('mediashare', 'edit', 'setDefaultAccess', array('albumId' => $topId, 'usersMayAddAlbum' => true));
     if ($ok === false) {
-        return mediashareInitError(__FILE__, __LINE__, mediashareErrorAPIGet());
+        return mediashareInitError(__FILE__, __LINE__, LogUtil::getErrorMessagesText());
     }
 
     if (!mediashareCreateMediashareUpdateNestedSetValues()) {
@@ -802,10 +802,7 @@ function mediashare_delete()
 // -----------------------------------------------------------------------
 // Error handling
 // -----------------------------------------------------------------------
-
-
 function mediashareInitError($file, $line, $msg)
 {
     return LogUtil::registerError("$file($line): $msg");
 }
-

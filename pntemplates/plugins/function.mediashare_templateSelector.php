@@ -8,7 +8,8 @@ function smarty_function_mediashare_templateSelector($params, &$smarty)
 
     $templates = pnModAPIFunc('mediashare', 'user', 'getAllTemplates');
     if ($templates === false) {
-        return $smarty->trigger_error( mediashareErrorAPIGet() );
+        $smarty->trigger_error(LogUtil::getErrorMessagesText());
+        return false;
     }
 
     if (isset($params['onchange']) && $params['onchange']) {
@@ -49,5 +50,3 @@ function smarty_function_mediashare_templateSelector($params, &$smarty)
 
     return $html;
 }
-
-

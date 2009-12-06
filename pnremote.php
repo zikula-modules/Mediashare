@@ -287,7 +287,7 @@ status_text=$file($line): $msg";
 
 function mediashareErrorAPIRemote()
 {
-    $msg = mediashareErrorAPIGet();
+    $msg = LogUtil::getErrorMessagesText();
 
     echo "__#GR2PROTO__
 status=1

@@ -19,7 +19,7 @@ function mediashare_source_browser_view(&$args)
         // After upload - update items and then continue to next page
         $ok = mediashareSourceBrowserUpdate();
         if ($ok === false)
-            return mediashareErrorAPIGet();
+            return false;
     }
 
     if (isset($_POST['cancelButton']) || isset($_POST['continueButton'])) {
@@ -60,12 +60,12 @@ function mediashareSourceBrowserUpload(&$args)
     // Get parent album information
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     // Get user information
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
     if ($userInfo === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     $totalCapacityUsed = $userInfo['totalCapacityUsed'];
 
@@ -95,7 +95,7 @@ function mediashareSourceBrowserUpload(&$args)
                 'width' => $width,
                 'height' => $height));
             if ($result === false)
-                $status = array('ok' => false, 'message' => mediashareErrorApiGet());
+                $status = array('ok' => false, 'message' => LogUtil::getErrorMessagesText());
             else
                 $status = array('ok' => true, 'message' => $result['message'], 'mediaId' => $result['mediaId']);
 
@@ -120,7 +120,7 @@ function mediashareSourceBrowserUpload(&$args)
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $editMediaIds));
     if ($items === false)
-        return mediashareErrorAPIGet();
+        return false;
 
     $render = & pnRender::getInstance('mediashare');
 

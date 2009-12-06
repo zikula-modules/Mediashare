@@ -19,7 +19,7 @@ class mediashareAccessApi
         // Owner can do everything
         $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
         if ($album === false) {
-            return mediashareErrorAPIGet();
+            return false;
         }
         if ($album['ownerId'] == $userId) {
             return true;
@@ -85,7 +85,7 @@ class mediashareAccessApi
         // Owner can do everything
         $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
         if ($album === false) {
-            return mediashareErrorAPIGet();
+            return false;
         }
         if ($album['ownerId'] == $userId) {
             return 0xFF;
