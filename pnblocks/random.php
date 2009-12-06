@@ -10,7 +10,7 @@ require_once 'modules/mediashare/elfisk/elfisk_common.php';
 function mediashare_randomblock_init()
 {
     // Security
-    pnSecAddSchema('mediashare:randomblock:', 'Block title::Block Id');
+    SecurityUtil::registerPermissionSchema('mediashare:randomblock:', 'Block title::Block Id');
 }
 
 /**
