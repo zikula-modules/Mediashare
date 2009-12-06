@@ -39,12 +39,10 @@ function mediashare_invitation_send($args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'user'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false)
+    if ($album === false) {
         return mediashareErrorAPIGet();
+    }
 
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
@@ -68,9 +66,6 @@ function mediashareUpdateInvitation($args)
         'senderemail' => pnUserGetVar('email'),
         'expires' => FormUtil::getPassedValue('expires'));
 
-    if (!pnModAPILoad('mediashare', 'invitation'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare invitation API');
-
     $ok = pnModAPIFunc('mediashare', 'invitation', 'sendInvitation', $input);
     if ($ok === false)
         return mediashareErrorAPIGet();
@@ -89,9 +84,6 @@ function mediashareResendInvitation($invitationId, $albumId)
         'sender' => FormUtil::getPassedValue('sender'),
         'senderemail' => pnUserGetVar('email'),
         'expires' => FormUtil::getPassedValue('expires'));
-
-    if (!pnModAPILoad('mediashare', 'invitation'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare invitation API');
 
     $ok = pnModAPIFunc('mediashare', 'invitation', 'resendInvitation', $args);
     if ($ok === false)
@@ -122,9 +114,6 @@ function mediashare_invitation_link($args)
 
         $link = pnModUrl('mediashare', 'invitation', 'open', array('inv' => $invitationId), false, false, true);
     }
-
-    if (!pnModAPILoad('mediashare', 'user'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false)
@@ -159,9 +148,6 @@ function mediashare_invitation_viewlink($args)
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
 
     $link = pnModUrl('mediashare', 'invitation', 'open', array('inv' => $invitation['key']));
-
-    if (!pnModAPILoad('mediashare', 'user'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false)
@@ -218,9 +204,6 @@ function mediashareExpireInvitations($args)
     $invitations = FormUtil::getPassedValue('invitation');
 
     if (!empty($invitations)) {
-        if (!pnModAPILoad('mediashare', 'invitation'))
-            return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare invitation API');
-
         $ok = pnModAPIFunc('mediashare', 'invitation', 'expireInvitations', array('albumId' => $albumId, 'expires' => $expires, 'invitations' => $invitations));
         if ($ok === false)
             return mediashareErrorAPIGet();
@@ -236,9 +219,6 @@ function mediashareDeleteInvitations($args)
     $invitations = FormUtil::getPassedValue('invitation');
 
     if (!empty($invitations)) {
-        if (!pnModAPILoad('mediashare', 'invitation'))
-            return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare invitation API');
-
         $ok = pnModAPIFunc('mediashare', 'invitation', 'deleteInvitations', array('albumId' => $albumId, 'invitations' => $invitations));
         if ($ok === false)
             return mediashareErrorAPIGet();

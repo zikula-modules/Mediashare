@@ -76,19 +76,11 @@ function mediashareGetAccessAPI()
 
 function mediashareAccessAlbum($albumId, $access, $viewKey = null)
 {
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     return pnModAPIFunc('mediashare', 'user', 'hasAlbumAccess', array('albumId' => $albumId, 'access' => $access, 'viewKey' => $viewKey));
 }
 
 function mediashareAccessItem($mediaId, $access, $viewKey = null)
 {
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     return pnModAPIFunc('mediashare', 'user', 'hasItemAccess', array('mediaId' => $mediaId, 'access' => $access, 'viewKey' => $viewKey));
 }
 

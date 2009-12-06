@@ -9,17 +9,9 @@ require_once ("modules/mediashare/common-edit.php");
 
 function mediashare_importapi_photoshare($args)
 {
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
-
-    if (!pnModAPILoad('photoshare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Photoshare user API');
-    }
-
-    if (!pnModAPILoad('photoshare', 'show')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Photoshare show API');
-    }
+    pnModAPILoad('mediashare', 'edit');
+    pnModAPILoad('photoshare', 'user');
+    pnModAPILoad('photoshare', 'show');
 
     $ok = mediashareImportPhotoshareRec(-1, 1);
     if ($ok) {

@@ -30,10 +30,6 @@ function mediashare_edit_view($args)
         return mediashareErrorPage(__FILE__, __LINE__, __('You must be logged in to use this feature', $dom));
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     // Check multi-edit buttons
     $selectedMediaId = FormUtil::getPassedValue('selectedMediaId');
     if ((isset($_POST['multiedit_x']) || isset($_POST['multidelete_x']) || isset($_POST['multimove_x'])) && count($selectedMediaId) > 0) {
@@ -113,10 +109,6 @@ function mediashare_edit_addalbum($args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     // Get parent album info (ignore unknown parent => this means we add a top most album)
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
@@ -143,17 +135,15 @@ function mediashareAddAlbum($args)
 
     $parentAlbumId = mediashareGetIntUrl('aid', $args, 1);
 
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
-    $newAlbumID = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array(
-        'title' => FormUtil::getPassedValue('title'),
-        'keywords' => FormUtil::getPassedValue('keywords'),
-        'summary' => FormUtil::getPassedValue('summary'),
-        'description' => FormUtil::getPassedValue('description'),
-        'template' => FormUtil::getPassedValue('template'),
-        'extappURL' => FormUtil::getPassedValue('extappURL'),
-        'parentAlbumId' => $parentAlbumId));
+    $newAlbumID = pnModAPIFunc('mediashare', 'edit', 'addAlbum',
+                               array('title' => FormUtil::getPassedValue('title'),
+                                     'keywords' => FormUtil::getPassedValue('keywords'),
+                                     'summary' => FormUtil::getPassedValue('summary'),
+                                     'description' => FormUtil::getPassedValue('description'),
+                                     'template' => FormUtil::getPassedValue('template'),
+                                     'extappURL' => FormUtil::getPassedValue('extappURL'),
+                                     'parentAlbumId' => $parentAlbumId));
+
     if ($newAlbumID === false) {
         return mediashareErrorAPIGet();
     }
@@ -178,9 +168,6 @@ function mediashare_edit_editalbum($args)
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, ''))
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
-
-    if (!pnModAPILoad('mediashare', 'user'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
 
     // Get album info
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId, 'enableEscape' => false));
@@ -210,10 +197,6 @@ function mediashareUpdateAlbum($args)
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, '')) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
-    }
-
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
     }
 
     global $mediashare_albumFields;
@@ -246,9 +229,7 @@ function mediashare_edit_deleteAlbum($args)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, '')) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
+
     // Get album info
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
@@ -277,21 +258,17 @@ function mediashareDeleteAlbum($args)
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     // Get album info
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return mediashareErrorAPIGet();
     }
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
+
     $ok = pnModAPIFunc('mediashare', 'edit', 'deleteAlbum', array('albumId' => $albumId));
     if ($ok === false) {
         return mediashareErrorAPIGet();
     }
+
     pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $album['parentAlbumId'])));
     return true;
 }
@@ -323,12 +300,7 @@ function mediashare_edit_movealbum($args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     // Fetch current album
-
-
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return mediashareErrorAPIGet();
@@ -346,9 +318,6 @@ function mediashareUpdateMoveAlbum($args)
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $dstAlbumId = mediashareGetIntUrl('daid', $args, 1);
 
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     $ok = pnModAPIFunc('mediashare', 'edit', 'moveAlbum', array('albumId' => $albumId, 'dstAlbumId' => $dstAlbumId));
     if ($ok === false) {
         return mediashareErrorAPIGet();
@@ -369,12 +338,6 @@ function mediashare_edit_addmedia($args)
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $sourceName = mediashareGetStringUrl('source', $args);
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-    if (!pnModAPILoad('mediashare', 'sources')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare sources API');
-    }
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, '')) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -456,10 +419,6 @@ function mediashare_edit_edititem($args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     // Do late access check so we can get "unknown item" error message from 'getMediaItem'
     if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -493,10 +452,6 @@ function mediashareUpdateItem($args, $backUrl)
     // Check access
     if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
-    }
-
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
     }
 
     global $mediashare_itemFields;
@@ -545,10 +500,6 @@ function mediashare_edit_deleteitem($args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
     if ($item === false) {
         return mediashareErrorAPIGet();
@@ -577,10 +528,6 @@ function mediashareDeleteItem($args)
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
-
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'deleteMediaItem', array('mediaId' => $mediaId));
     if ($ok === false) {
@@ -612,10 +559,6 @@ function mediashare_edit_multieditmedia($args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia, 'enableEscape' => false));
     if ($items === false) {
         return mediashareErrorAPIGet();
@@ -639,10 +582,6 @@ function mediashareMultiUpdateItems()
     }
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
 
     $mediaIds = FormUtil::getPassedValue('mediaId');
     foreach ($mediaIds as $mediaId)
@@ -689,13 +628,11 @@ function mediashare_edit_multideletemedia($args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia));
     if ($items === false) {
         return mediashareErrorAPIGet();
     }
+
     $render = & pnRender::getInstance('mediashare');
 
     $render->caching = false;
@@ -715,9 +652,6 @@ function mediashareMultiDeleteMedia()
     }
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
     $mediaIds = FormUtil::getPassedValue('mediaId');
     foreach ($mediaIds as $mediaId)
     {
@@ -757,10 +691,6 @@ function mediashare_edit_multimovemedia($args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia));
     if ($items === false) {
         return mediashareErrorAPIGet();
@@ -785,11 +715,9 @@ function mediashareMultiMoveMedia()
     }
     $albumId = mediashareGetIntUrl('newalbumid', $args, 1);
 
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
     $mediaIds = FormUtil::getPassedValue('mediaId');
-    foreach ($mediaIds as $mediaId) {
+    foreach ($mediaIds as $mediaId)
+    {
         $mediaId = (int) $mediaId;
 
         // Check access (mediaId is from URL and need not all be from same album)
@@ -821,9 +749,7 @@ function mediashare_edit_setmainitem($args)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, '')) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
+
     $ok = pnModAPIFunc('mediashare', 'edit', 'setMainItem', array('albumId' => $albumId, 'mediaId' => $mediaId));
     if ($ok === false) {
         return mediashareErrorAPIGet();
@@ -858,12 +784,8 @@ function mediashare_edit_arrange($args)
     if (!pnUserLoggedIn()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You must be logged in to use this feature', $dom));
     }
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
+
     // Fetch current album
-
-
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return mediashareErrorAPIGet();
@@ -871,9 +793,8 @@ function mediashare_edit_arrange($args)
     if ($album === true) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Unknown album');
     }
+
     // Fetch media items
-
-
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
     if ($items === false) {
         return mediashareErrorAPIGet();
@@ -898,10 +819,6 @@ function mediashareArrangeAlbum($args)
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $seq = FormUtil::getPassedValue('seq');
-
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'arrangeAlbum', array('albumId' => $albumId, 'seq' => explode(',', $seq)));
 
@@ -936,16 +853,7 @@ function mediashare_edit_access($args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
     // Fetch current album
-
-
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return mediashareErrorAPIGet();
@@ -974,10 +882,6 @@ function mediashareUpdateAccess($args)
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
     }
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-
-    if (!pnModAPILoad('mediashare', 'edit')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
 
     $groups = pnModAPIFunc('mediashare', 'edit', 'getAccessGroups');
     if ($groups === false) {

@@ -19,9 +19,6 @@ function mediashare_source_zipapi_addMediaItem($args)
     if (!array_key_exists('albumId', $args))
         return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_source_zipapi_addMediaItem');
 
-    if (!pnModAPILoad('mediashare', 'edit'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-
     $args['mediaFilename'] = $uploadFilename;
 
     $result = pnModAPIFunc('mediashare', 'edit', 'addMediaItem', $args);
@@ -46,9 +43,6 @@ function mediashareSourceZipParseIni($ini)
 
 function mediashare_source_zipapi_getUploadInfo($args)
 {
-    if (!pnModAPILoad('mediashare', 'edit'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
     if ($userInfo === false)
         return mediashareErrorAPIGet();

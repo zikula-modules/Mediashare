@@ -115,17 +115,15 @@ function mediashare_mediahandlerapi_loadHandler($args)
 {
     if (!empty($args['mimeType'])) {
         $handlerInfo = pnModAPIFunc('mediashare', 'mediahandler', 'getHandlerInfo', array('mimeType' => $args['mimeType']));
-        if ($handlerInfo === false)
+        if ($handlerInfo === false) {
             return false;
-
+        }
         $handlerName = $handlerInfo['handlerName'];
-    } else
+    } else {
         $handlerName = $args['handlerName'];
+    }
 
     $handlerApi = "media_$handlerName";
-
-    if (!pnModAPILoad('mediashare', $handlerApi))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$handlerApi' handler in mediashare_mediahandlerapi_loadHandler");
 
     $handler = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler');
 
@@ -160,8 +158,7 @@ function mediashare_mediahandlerapi_scanMediaHandlers($args)
                 $handlerApi = "media_$handlerName";
 
                 // Force load - it is used during pninit
-                if (!pnModAPILoad('mediashare', $handlerApi, true))
-                    return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$handlerApi' handler in scanMediaHandlers");
+                pnModAPILoad('mediashare', $handlerApi, true);
 
                 $handler = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler');
 
@@ -227,4 +224,3 @@ function mediashare_mediahandlerapi_addMediaHandler($args)
 
     return true;
 }
-

@@ -243,10 +243,6 @@ function mediashare_editapi_deleteAlbum(&$args)
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     $albumId = (int) $args['albumId'];
 
     if ($albumId == 1) {
@@ -425,11 +421,6 @@ function mediashare_editapi_moveAlbum(&$args)
 
 function mediashare_editapi_isChildAlbum(&$args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     $albumId = (int) $args['albumId'];
     $parentAlbumId = (int) $args['parentAlbumId'];
 
@@ -506,12 +497,6 @@ function mediashare_editapi_addMediaItem(&$args)
     }
 
     // Find a media handler
-
-
-    if (!pnModAPILoad('mediashare', 'mediahandler')) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare mediahandler API');
-    }
-
     $handlerInfo = pnModAPIFunc('mediashare', 'mediahandler', 'getHandlerInfo', array('mimeType' => $args['mimeType'], 'filename' => $args['filename']));
     if ($handlerInfo === false) {
         return false;
@@ -523,18 +508,11 @@ function mediashare_editapi_addMediaItem(&$args)
     $args['mimeType'] = $handlerInfo['mimeType'];
     $args['fileType'] = $handlerInfo['fileType'];
 
-    // Load media handler
-
-
+    // Build the media handler
     $handlerApi = "media_$handlerName";
-    if (!pnModAPILoad('mediashare', $handlerApi)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$handlerApi' handler in mediashare_editapi_addMediaItem");
-    }
     $handler = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler');
 
     // Ask media handler to generate thumbnail and preview images
-
-
     $tmpDir = pnModGetVar('mediashare', 'tmpDirName');
     if (($thumbnailFilename = tempnam($tmpDir, 'Preview')) === false) {
         return mediashareErrorAPI(__FILE__, __LINE__, "Failed to create thumbnail filename in mediashare_editapi_addMediaItem");
@@ -910,12 +888,6 @@ function mediashare_editapi_updateItemFileUpload(&$args)
     }
 
     // Find a media handler
-
-
-    if (!pnModAPILoad('mediashare', 'mediahandler')) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare mediahandler API');
-    }
-
     $handlerInfo = pnModAPIFunc('mediashare', 'mediahandler', 'getHandlerInfo', array('mimeType' => $args['mimeType'], 'filename' => $args['filename']));
     if ($handlerInfo === false) {
         return false;
@@ -928,12 +900,7 @@ function mediashare_editapi_updateItemFileUpload(&$args)
     $args['fileType'] = $handlerInfo['fileType'];
 
     // Load media handler
-
-
     $handlerApi = "media_$handlerName";
-    if (!pnModAPILoad('mediashare', $handlerApi)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$handlerApi' handler in mediashare_editapi_addMediaItem");
-    }
 
     $handler = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler');
 
@@ -1163,10 +1130,6 @@ function mediashare_editapi_deleteMediaItem(&$args)
 {
     $mediaId = (int) $args['mediaId'];
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
     if ($item === false) {
         return false;
@@ -1182,9 +1145,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
     // Get virtual file system handler
     $vfsHandlerName = mediashareGetVFSHandlerName($item['thumbnailRef']);
     $vfsHandlerApi = "vfs_$vfsHandlerName";
-    if (!pnModAPILoad('mediashare', $vfsHandlerApi)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$vfsHandlerApi' in mediashare_editapi_deleteMediaItem");
-    }
+
     $vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler');
     if ($vfsHandler === false) {
         return false;

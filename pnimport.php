@@ -29,6 +29,7 @@ function mediashare_import_main($args)
 function mediashare_import_photoshare($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
+
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
@@ -50,10 +51,6 @@ function mediashare_import_photoshare($args)
 
 function mediashareImportPhotoshare()
 {
-    if (!pnModAPILoad('mediashare', 'import')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare import API');
-    }
-
     $ok = pnModAPIFunc('mediashare', 'import', 'photoshare');
     if ($ok === false) {
         return mediashareErrorAPIGet();

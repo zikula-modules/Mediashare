@@ -65,8 +65,7 @@ function mediashare_sourcesapi_scanSources($args)
                 $sourceApi = "source_$sourceName";
 
                 // Force load - it is used during pninit
-                if (!pnModAPILoad('mediashare', $sourceApi, true))
-                    return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$sourceApi' API in scanSources");
+                pnModAPILoad('mediashare', $sourceApi, true);
 
                 $title = pnModAPIFunc('mediashare', $sourceApi, 'getTitle');
 

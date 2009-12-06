@@ -25,10 +25,6 @@ function mediashare_admin_main($args)
         return mediashareAdminSettings($args);
     }
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     $settings = pnModAPIFunc('mediashare', 'user', 'getSettings');
     if ($settings === false) {
         return mediashareErrorAPIGet();
@@ -56,10 +52,6 @@ function mediashareDirIsWritable($dir)
 
 function mediashareAdminSettings($args)
 {
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     $settings = array(
         'tmpDirName' => FormUtil::getPassedValue('tmpDirName'),
         'mediaDirName' => FormUtil::getPassedValue('mediaDirName'),
@@ -107,12 +99,6 @@ function mediashare_admin_plugins($args)
     if (isset($_POST['scanButton'])) {
         return mediashareAdminScanPlugins();
     }
-    if (!pnModAPILoad('mediashare', 'mediahandler')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare mediahandler API');
-    }
-    if (!pnModAPILoad('mediashare', 'sources')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare sources API');
-    }
     $mediaHandlers = pnModAPIFunc('mediashare', 'mediahandler', 'getMediaHandlers');
     if ($mediaHandlers === false) {
         return mediashareErrorAPIGet();
@@ -131,9 +117,6 @@ function mediashare_admin_plugins($args)
 
 function mediashareAdminScanPlugins()
 {
-    if (!pnModAPILoad('mediashare', 'admin')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare admin API');
-    }
     $ok = pnModAPIFunc('mediashare', 'admin', 'scanAllPlugins');
     if ($ok === false) {
         return mediashareErrorAPIGet();
@@ -156,9 +139,6 @@ function mediashare_admin_recalc($args)
     }
     if (isset($_POST['recalcButton'])) {
         return mediashareAdminRecalculate($args);
-    }
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
     }
     $allItems = pnModAPIFunc('mediashare', 'user', 'getList', array('pageSize' => 999999999));
 

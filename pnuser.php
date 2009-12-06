@@ -33,10 +33,6 @@ function mediashare_user_browse($args)
     $mediaId = mediashareGetStringUrl('mid', $args, 0); // Ext apps. uses very long IDs, so int is not good
     $invitation = FormUtil::getPassedValue('invitation');
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     // Check access to album (media ID won't do a difference if not from this album)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
@@ -132,16 +128,12 @@ function mediashare_user_slideshow($args)
     $center = isset($args['center']) ? '_center' : '';
     $back = mediashareGetIntUrl('back', $args, 0);
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     // Check access to album (media ID won't do a difference if not from this album)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
+
     // Fetch current album
-
-
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return mediashareErrorAPIGet();
@@ -149,13 +141,13 @@ function mediashare_user_slideshow($args)
     if ($album === true) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Unknown album');
     }
+
     // Fetch media items
-
-
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
     if ($items === false) {
         return mediashareErrorAPIGet();
     }
+
     // Find current, previous and next items
     if ($mediaId == 0 && count($items) > 0) {
         $mediaId = $items[0]['id'];
@@ -165,15 +157,16 @@ function mediashare_user_slideshow($args)
         $prevMediaId = $items[count($items) - 1]['id'];
         $nextMediaId = $items[0]['id'];
         foreach ($items as $item) {
-            if ($mediaItem != null) // Media-Current item found, so this must be next
-{
+            if ($mediaItem != null) {
+                // Media-Current item found, so this must be next
                 $nextMediaId = $item['id'];
                 break;
             }
             if ($item['id'] == $mediaId) {
                 $mediaItem = $item;
             } else {
-                $prevMediaId = $item['id']; // Media-item not found, so this must become prev
+                // Media-item not found, so this must become prev
+                $prevMediaId = $item['id'];
             }
         }
     } else {
@@ -182,12 +175,6 @@ function mediashare_user_slideshow($args)
     }
 
     // Add media display HTML
-
-
-    if (!pnModAPILoad('mediashare', 'mediahandler')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare mediahandler API');
-    }
-
     $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
     for ($i = 0, $cou = count($items); $i < $cou; ++$i) {
         $handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $items[$i]['mediaHandler']));
@@ -255,16 +242,12 @@ function mediashare_user_thumbnails($args)
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $viewkey = FormUtil::getPassedValue('viewkey');
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     // Check access (use albumId since no mediaId was passed)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething, $viewkey)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
+
     // Fetch current album
-
-
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return mediashareErrorAPIGet();
@@ -315,16 +298,12 @@ function mediashare_user_simplethumbnails($args)
     $template = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template');
     $itemCount = isset($args['count']) ? $args['count'] : FormUtil::getPassedValue('count');
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     // Check access (use albumId since no mediaId was passed)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
+
     // Fetch current album
-
-
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return mediashareErrorAPIGet();
@@ -368,13 +347,7 @@ function mediashare_user_display($args)
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
     $viewkey = FormUtil::getPassedValue('viewkey');
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
-
     // Fetch media item
-
-
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
     if ($mediaItem === false) {
         return mediashareErrorAPIGet();
@@ -402,12 +375,7 @@ function mediashare_user_simpledisplay($args)
     $containerWidth = isset($args['containerWidth']) ? $args['containerWidth'] : 'auto';
     $text = isset($args['text']) ? $args['text'] : '';
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     // Fetch media item
-
-
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
     if ($mediaItem === false) {
         return mediashareErrorAPIGet();
@@ -444,9 +412,6 @@ function mediashare_user_displaygb($args)
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
     $viewkey = FormUtil::getPassedValue('viewkey');
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
     if ($mediaItem === false) {
         return mediashareErrorAPIGet();
@@ -517,13 +482,11 @@ function mediashare_user_keys($args)
     $dom = ZLanguage::getModuleDomain('mediashare');
     $keyword = mediashareGetStringUrl('key', $args);
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     $items = pnModAPIFunc('mediashare', 'user', 'getByKeyword', array('keyword' => $keyword));
     if ($items === false) {
         return mediashareErrorAPIGet();
     }
+
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('keyword', $keyword);
@@ -549,9 +512,6 @@ function mediashare_user_list($args)
     $recordPos = mediashareGetIntUrl('pos', $args, 0);
     $template = (isset($args['tpl']) ? $args['tpl'] : 'list');
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     $items = pnModAPIFunc('mediashare', 'user', 'getList', compact('keyword', 'uname', 'albumId', 'order', 'orderDir', 'recordPos'));
     if ($items === false) {
         return mediashareErrorAPIGet();
@@ -606,13 +566,11 @@ function mediashare_user_albumlist($args)
     $orderDir = mediashareGetStringUrl('orderdir', $args, 'desc');
     $template = (isset($args['tpl']) ? $args['tpl'] : 'list');
 
-    if (!pnModAPILoad('mediashare', 'user')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
     $albums = pnModAPIFunc('mediashare', 'user', 'getAlbumList', compact('order', 'orderDir'));
     if ($albums === false) {
         return mediashareErrorAPIGet();
     }
+
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('albums', $albums);

@@ -2,52 +2,51 @@
 
 function smarty_function_mediashare_itemSelector($params, &$smarty)
 {
-  if (!isset($params['albumId'])) 
-    return $smarty->trigger_error('mediashare_albumSelector: albumId parameter required');
+    if (!isset($params['albumId'])) {
+        return $smarty->trigger_error('mediashare_albumSelector: albumId parameter required');
+    }
 
-  $albumId = $params['albumId'];
-  $mediaId = $params['mediaId'];
+    $albumId = $params['albumId'];
+    $mediaId = $params['mediaId'];
 
-  if (!pnModAPILoad('mediashare', 'user'))
-    return $smarty->trigger_error( mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API') );
+    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems',
+                          array('albumId' => $albumId));
 
-  $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems',
-                        array('albumId' => $albumId));
-  if ($items === false)
-    return mediashareErrorAPIGet();
+    if ($items === false) {
+        return mediashareErrorAPIGet();
+    }
 
-  if ($mediaId == 0  &&  count($items) > 0  &&  isset($params['fetchSelectedInto']))
-  {
-    $mediaId = $items[0]['id'];
-    $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem',
-                              array('mediaId' => $mediaId));
-    $smarty->assign($params['fetchSelectedInto'], $mediaItem);
-  }
+    if ($mediaId == 0 && count($items) > 0 && isset($params['fetchSelectedInto'])) {
+        $mediaId = $items[0]['id'];
+        $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem',
+                                  array('mediaId' => $mediaId));
 
-  if (isset($params['onchange']))
-    $onChangeHtml = " onchange=\"$params[onchange]\"";
-  else
-    $onChangeHtml = '';
+        $smarty->assign($params['fetchSelectedInto'], $mediaItem);
+    }
 
-  $html = "<select name=\"mid\"$onChangeHtml>\n";
+    if (isset($params['onchange'])) {
+        $onChangeHtml = " onchange=\"$params[onchange]\"";
+    } else {
+        $onChangeHtml = '';
+    }
 
-  foreach ($items as $item)
-  {
-    $title = $item['title'];
-    $id    = (int)$item['id'];
+    $html = "<select name=\"mid\"$onChangeHtml>\n";
 
-    $selectedHtml = ($id == $mediaId ? ' selected="1"' : '');
+    foreach ($items as $item)
+    {
+        $title = $item['title'];
+        $id    = (int)$item['id'];
 
-    $html .= "<option value=\"$id\"$selectedHtml>$title</option>\n";
-  }
+        $selectedHtml = ($id == $mediaId ? ' selected="1"' : '');
 
+        $html .= "<option value=\"$id\"$selectedHtml>$title</option>\n";
+    }
 
-  $html .= "</select>";
+    $html .= "</select>";
 
-  if (isset($params['assign']))
-    $smarty->assign($params['assign'], $html);
-  else
+    if (isset($params['assign'])) {
+        $smarty->assign($params['assign'], $html);
+    }
+
     return $html;
 }
-
-

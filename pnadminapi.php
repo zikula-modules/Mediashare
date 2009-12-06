@@ -36,9 +36,7 @@ function mediashare_adminapi_getlinks()
 function mediashare_adminapi_scanAllPlugins($args)
 {
     // Force load - it is used during pninit
-    if (!pnModAPILoad('mediashare', 'mediahandler', true)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare mediahandler API');
-    }
+    pnModAPILoad('mediashare', 'mediahandler', true);
 
     $ok = pnModAPIFunc('mediashare', 'mediahandler', 'scanMediaHandlers');
     if ($ok === false) {
@@ -46,9 +44,7 @@ function mediashare_adminapi_scanAllPlugins($args)
     }
 
     // Force load - it is used during pninit
-    if (!pnModAPILoad('mediashare', 'sources', true)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare sources API');
-    }
+    pnModAPILoad('mediashare', 'sources', true);
 
     $ok = pnModAPIFunc('mediashare', 'sources', 'scanSources');
     if ($ok === false) {

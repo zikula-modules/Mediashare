@@ -32,8 +32,8 @@ function mediashare_source_browser_view(&$args)
         return true;
     }
 
-    if (!pnModAPILoad('mediashare', 'edit'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
+    // TODO Required for globals??
+    pnModAPILoad('mediashare', 'edit');
 
     $uploadInfo = pnModAPIFunc('mediashare', 'source_browser', 'getUploadInfo');
 
@@ -58,15 +58,6 @@ function mediashareSourceBrowserUpload(&$args)
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, ''))
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
-
-    if (!pnModAPILoad('mediashare', 'source_browser'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare source_browser API');
-
-    if (!pnModAPILoad('mediashare', 'edit'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-
-    if (!pnModAPILoad('mediashare', 'user'))
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
 
     // Get parent album information
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));

@@ -298,11 +298,7 @@ function mediashare_init()
     }
 
     // Scan for plugins
-
-
-    if (!pnModAPILoad('mediashare', 'admin', true)) {
-        return mediashareInitError(__FILE__, __LINE__, 'Failed to load Mediashare admin API');
-    }
+    pnModAPILoad('mediashare', 'admin', true);
 
     $ok = pnModAPIFunc('mediashare', 'admin', 'scanAllPlugins');
     if ($ok === false) {
@@ -310,15 +306,8 @@ function mediashare_init()
     }
 
     // Add top album
-
-
-    if (!pnModAPILoad('mediashare', 'edit', true)) {
-        return mediashareInitError(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-    }
-
-    if (!pnModAPILoad('mediashare', 'user', true)) {
-        return mediashareInitError(__FILE__, __LINE__, 'Failed to load Mediashare user API');
-    }
+    pnModAPILoad('mediashare', 'edit', true);
+    pnModAPILoad('mediashare', 'user', true);
 
     $topAlbum = array('title' => __('Top', $dom), 'keywords' => '', 'summary' => '', 'description' => __('This is the top album (of which there can be only one). You can edit this album to change the title and other attributes of it.', $dom), 'parentAlbumId' => 0);
     $topId = pnModAPIFunc('mediashare', 'edit', 'addAlbum', $topAlbum);

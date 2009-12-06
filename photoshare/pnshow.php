@@ -8,14 +8,10 @@
 // This file contains just enough to display an image, with the sole purpose
 // of reducing the load and CPU time needed for image display.
 
-
 function photoshare_show_viewimage()
 {
     $imageID   = FormUtil::getPassedValue('iid');
     $thumbnail = (int)FormUtil::getPassedValue('thumbnail');
-
-    if (!pnModAPILoad('mediashare', 'import'))
-        return photoshareErrorPage(__FILE__, __LINE__, "Failed to load Mediashare import API");
 
     $mediashareUrl = pnModAPIFunc('mediashare', 'import', 'getMediashareUrl', array('imageId' => $imageID, 'thumbnail' => $thumbnail));
 

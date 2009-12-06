@@ -92,10 +92,6 @@ function mediashare_external_pasteitem($args)
 
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
 
-    if (!pnModAPILoad('mediashare', 'mediahandler')) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare mediahandler API');
-    }
-
     $handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $mediaItem['mediaHandler']));
     if ($handler === false) {
         return mediashareErrorAPIGet();

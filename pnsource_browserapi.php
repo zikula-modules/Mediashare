@@ -14,17 +14,17 @@ function mediashare_source_browserapi_getTitle($args)
 
 function mediashare_source_browserapi_addMediaItem($args)
 {
+    if (!isset($args['albumId'])) {
+        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_source_browserapi_addMediaItem');
+    }
+
     $uploadFilename = $args['uploadFilename'];
 
-    if (!array_key_exists('albumId', $args))
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_source_browserapi_addMediaItem');
-
-    if (!pnModAPILoad('mediashare', 'edit'))
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
+    // TODO Required because the globals??
+    pnModAPILoad('mediashare', 'edit');
 
     // For OPEN_BASEDIR reasons we move the uploaded file as fast as possible to an accessible place
     // MUST remember to remove it afterwards!!!
-
 
     // Create and check tmpfilename
     $tmpDir = pnModGetVar('mediashare', 'tmpDirName');
@@ -68,9 +68,6 @@ function mediashareSourceBrowserParseIni($ini)
 
 function mediashare_source_browserapi_getUploadInfo($args)
 {
-    if (!pnModAPILoad('mediashare', 'edit'))
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
-
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
     if ($userInfo === false)
         return mediashareErrorAPIGet();
