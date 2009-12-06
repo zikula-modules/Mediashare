@@ -60,16 +60,16 @@ function mediashare_editapi_addAlbum(&$args)
           VALUES (
             " . (int) $args['ownerId'] . ",
             NOW(),
-            '" . pnVarPrepForStore($args['title']) . "',
-            '" . pnVarPrepForStore($args['keywords']) . "',
-            '" . pnVarPrepForStore($args['summary']) . "',
-            '" . pnVarPrepForStore($args['description']) . "',
-            '" . pnVarPrepForStore($args['template']) . "',
+            '" . DataUtil::formatForStore($args['title']) . "',
+            '" . DataUtil::formatForStore($args['keywords']) . "',
+            '" . DataUtil::formatForStore($args['summary']) . "',
+            '" . DataUtil::formatForStore($args['description']) . "',
+            '" . DataUtil::formatForStore($args['template']) . "',
             " . (int) $args['parentAlbumId'] . ",
             '" . $thumbnailSize . "',
             round(rand()*9000000000000 + 1000000000000),
-            '" . pnVarPrepForStore($args['extappURL']) . "',
-            '" . pnVarPrepForStore($args['extappData']) . "')";
+            '" . DataUtil::formatForStore($args['extappURL']) . "',
+            '" . DataUtil::formatForStore($args['extappData']) . "')";
 
     $dbconn->execute($sql);
 
@@ -195,7 +195,7 @@ function mediashare_editapi_updateAlbum(&$args)
     $albumsColumn = &$pntable['mediashare_albums_column'];
 
     if (isset($args['template'])) {
-        $templateSql = "$albumsColumn[template] = '" . pnVarPrepForStore($args['template']) . "',";
+        $templateSql = "$albumsColumn[template] = '" . DataUtil::formatForStore($args['template']) . "',";
     } else {
         $templateSql = '';
     }
@@ -206,13 +206,13 @@ function mediashare_editapi_updateAlbum(&$args)
     $thumbnailSize = (int) pnModGetVar('mediashare', 'thumbnailSize');
 
     $sql = "UPDATE $albumsTable SET
-            $albumsColumn[title] = '" . pnVarPrepForStore($args['title']) . "',
-            $albumsColumn[keywords] = '" . pnVarPrepForStore($args['keywords']) . "',
-            $albumsColumn[summary] = '" . pnVarPrepForStore($args['summary']) . "',
-            $albumsColumn[description] = '" . pnVarPrepForStore($args['description']) . "',
+            $albumsColumn[title] = '" . DataUtil::formatForStore($args['title']) . "',
+            $albumsColumn[keywords] = '" . DataUtil::formatForStore($args['keywords']) . "',
+            $albumsColumn[summary] = '" . DataUtil::formatForStore($args['summary']) . "',
+            $albumsColumn[description] = '" . DataUtil::formatForStore($args['description']) . "',
             $templateSql
-            $albumsColumn[extappURL] = '" . pnVarPrepForStore($args['extappURL']) . "',
-            $albumsColumn[extappData] = '" . pnVarPrepForStore($args['extappData']) . "'
+            $albumsColumn[extappURL] = '" . DataUtil::formatForStore($args['extappURL']) . "',
+            $albumsColumn[extappData] = '" . DataUtil::formatForStore($args['extappData']) . "'
           WHERE $albumsColumn[id] = $albumId";
 
     $dbconn->execute($sql);
@@ -676,15 +676,15 @@ function mediashare_editapi_storeMediaItem(&$args)
           VALUES (
             " . (int) $args['ownerId'] . ",
             NOW(),
-            '" . pnVarPrepForStore($args['title']) . "',
-            '" . pnVarPrepForStore(mediashareStripKeywords($args['keywords'])) . "',
-            '" . pnVarPrepForStore($args['description']) . "',
+            '" . DataUtil::formatForStore($args['title']) . "',
+            '" . DataUtil::formatForStore(mediashareStripKeywords($args['keywords'])) . "',
+            '" . DataUtil::formatForStore($args['description']) . "',
             " . $albumId . ",
             " . $position . ",
-            '" . pnVarPrepForStore($args['mediaHandler']) . "',
-            '" . pnVarPrepForStore($thumbnailId) . "',
-            '" . pnVarPrepForStore($previewId) . "',
-            '" . pnVarPrepForStore($originalId) . "')";
+            '" . DataUtil::formatForStore($args['mediaHandler']) . "',
+            '" . DataUtil::formatForStore($thumbnailId) . "',
+            '" . DataUtil::formatForStore($previewId) . "',
+            '" . DataUtil::formatForStore($originalId) . "')";
 
     $dbconn->execute($sql);
 
@@ -717,11 +717,11 @@ function mediashare_editapi_registerMediaItem(&$args)
             $mediaColumn[height],
             $mediaColumn[bytes])
           VALUES (
-            '" . pnVarPrepForStore($args['fileRef']) . "',
-            '" . pnVarPrepForStore($args['mimeType']) . "',
-            '" . pnVarPrepForStore($args['width']) . "',
-            '" . pnVarPrepForStore($args['height']) . "',
-            '" . pnVarPrepForStore($args['bytes']) . "')";
+            '" . DataUtil::formatForStore($args['fileRef']) . "',
+            '" . DataUtil::formatForStore($args['mimeType']) . "',
+            '" . DataUtil::formatForStore($args['width']) . "',
+            '" . DataUtil::formatForStore($args['height']) . "',
+            '" . DataUtil::formatForStore($args['bytes']) . "')";
 
     $dbconn->execute($sql);
 
@@ -824,9 +824,9 @@ function mediashare_editapi_updateItem(&$args)
     $mediaColumn = &$pntable['mediashare_media_column'];
 
     $sql = "UPDATE $mediaTable SET
-            $mediaColumn[title] = '" . pnVarPrepForStore($args['title']) . "',
-            $mediaColumn[keywords] = '" . pnVarPrepForStore($args['keywords']) . "',
-            $mediaColumn[description] = '" . pnVarPrepForStore($args['description']) . "'
+            $mediaColumn[title] = '" . DataUtil::formatForStore($args['title']) . "',
+            $mediaColumn[keywords] = '" . DataUtil::formatForStore($args['keywords']) . "',
+            $mediaColumn[description] = '" . DataUtil::formatForStore($args['description']) . "'
           WHERE $mediaColumn[id] = $mediaId";
 
     $dbconn->execute($sql);
@@ -1386,7 +1386,7 @@ function mediashare_editapi_getUserInfo(&$args)
 function mediashare_editapi_updateKeywords(&$args)
 {
     $itemId = (int) $args['itemId'];
-    $type = pnVarPrepForStore($args['type']);
+    $type = DataUtil::formatForStore($args['type']);
     $keywords = mediashareStripKeywords($args['keywords']);
 
     list ($dbconn) = pnDBGetConn();
@@ -1417,7 +1417,7 @@ function mediashare_editapi_updateKeywords(&$args)
         if (!empty($keyword)) {
             $sql = "INSERT INTO $keywordsTable
                 ($keywordsColumn[itemId], $keywordsColumn[type], $keywordsColumn[keyword])
-              VALUES ($itemId, '$type', '" . pnVarPrepForStore($keyword) . "')";
+              VALUES ($itemId, '$type', '" . DataUtil::formatForStore($keyword) . "')";
 
             $dbconn->execute($sql);
             if ($dbconn->errorNo() != 0) {

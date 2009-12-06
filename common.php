@@ -199,15 +199,15 @@ function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset)
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $foldersTable = $pntable['mediashare_albums'];
+    $foldersTable  = $pntable['mediashare_albums'];
     $foldersColumn = & $pntable['mediashare_albums_column'];
 
     $sql = "SELECT
-                    $foldersColumn[id]
-                  FROM
-                    $foldersTable
-                  WHERE $foldersColumn[parentAlbumId] = '" . pnVarPrepForStore($parentFolderID) . "'
-                    AND $foldersColumn[title] = '" . pnVarPrepForStore($folderTitle) . "'";
+                $foldersColumn[id]
+            FROM
+                $foldersTable
+            WHERE $foldersColumn[parentAlbumId] = '" . DataUtil::formatForStore($parentFolderID) . "'
+              AND $foldersColumn[title] = '" . DataUtil::formatForStore($folderTitle) . "'";
 
     $result = $dbconn->execute($sql);
 

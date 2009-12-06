@@ -30,11 +30,11 @@ class mediashare_vfsHandlerDB
 INSERT INTO $mediadbTable
   ($mediadbColumn[fileref], $mediadbColumn[mode], $mediadbColumn[type], $mediadbColumn[bytes], $mediadbColumn[data])
 VALUES
-  ('" . pnVarPrepForStore($fileReference) . "',
-   '" . pnVarPrepForStore($args['fileMode']) . "',
-   '" . pnVarPrepForStore($args['fileType']) . "',
+  ('" . DataUtil::formatForStore($fileReference) . "',
+   '" . DataUtil::formatForStore($args['fileMode']) . "',
+   '" . DataUtil::formatForStore($args['fileType']) . "',
    $bytes,
-   '" . pnVarPrepForStore($data) . "')";
+   '" . DataUtil::formatForStore($data) . "')";
 
         $result = $dbconn->execute($sql);
 
@@ -53,7 +53,7 @@ VALUES
         $mediadbTable = $pntable['mediashare_mediadb'];
         $mediadbColumn = &$pntable['mediashare_mediadb_column'];
 
-        $fileReference = pnVarPrepForStore($fileReference);
+        $fileReference = DataUtil::formatForStore($fileReference);
 
         $sql = "DELETE FROM $mediadbTable WHERE $mediadbColumn[fileref] = '$fileReference'";
 
@@ -76,11 +76,11 @@ VALUES
 
         $data = file_get_contents($newFilename);
         $bytes = count($data);
-        $orgFileReference = pnVarPrepForStore($orgFileReference);
+        $orgFileReference = DataUtil::formatForStore($orgFileReference);
 
         $sql = "
 UPDATE $mediadbTable SET
-  $mediadbColumn[data] = '" . pnVarPrepForStore($data) . "',
+  $mediadbColumn[data] = '" . DataUtil::formatForStore($data) . "',
   $mediadbColumn[bytes] = $bytes
 WHERE $mediadbColumn[fileref] = '$orgFileReference'";
 
@@ -115,7 +115,7 @@ function mediashare_vfs_dbapi_buildHandler($args)
 
 function mediashare_vfs_dbapi_getMedia($args)
 {
-    $fileref = pnVarPrepForStore($args['fileref']);
+    $fileref = DataUtil::formatForStore($args['fileref']);
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();

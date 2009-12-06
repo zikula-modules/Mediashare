@@ -75,11 +75,11 @@ VALUES
    (" . (int) $args['albumId'] . ",
     NOW(),
     '" . $key . "',
-    '" . pnVarPrepForStore($args['email']) . "',
-    '" . pnVarPrepForStore($args['subject']) . "',
-    '" . pnVarPrepForStore($args['text']) . "',
-    '" . pnVarPrepForStore($args['sender']) . "',
-    " . (empty($args['expires']) ? 'NULL' : "'" . pnVarPrepForStore($args['expires']) . "'") . ")";
+    '" . DataUtil::formatForStore($args['email']) . "',
+    '" . DataUtil::formatForStore($args['subject']) . "',
+    '" . DataUtil::formatForStore($args['text']) . "',
+    '" . DataUtil::formatForStore($args['sender']) . "',
+    " . (empty($args['expires']) ? 'NULL' : "'" . DataUtil::formatForStore($args['expires']) . "'") . ")";
 
         $dbconn->execute($sql);
 
@@ -146,7 +146,7 @@ function mediashare_invitationapi_resendInvitation(&$args)
 
 function mediashare_invitationapi_getByKey($args)
 {
-    $key = pnVarPrepForStore($args['key']);
+    $key = DataUtil::formatForStore($args['key']);
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
@@ -247,7 +247,7 @@ WHERE $invitationColumn[id] = $id";
 
 function mediashare_invitationapi_updateViewCount($args)
 {
-    $key = pnVarPrepForStore($args['key']);
+    $key = DataUtil::formatForStore($args['key']);
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
@@ -341,7 +341,7 @@ function mediashare_invitationapi_expireInvitations(&$args)
     // Access control done on album ID so include that in SQL
     $sql = "
 UPDATE $invitationTable
-SET $invitationColumn[expires] = " . (empty($args['expires']) ? 'NULL' : "'" . pnVarPrepForStore($args['expires']) . "'") . "
+SET $invitationColumn[expires] = " . (empty($args['expires']) ? 'NULL' : "'" . DataUtil::formatForStore($args['expires']) . "'") . "
 WHERE     $invitationColumn[albumId] = $albumId
       AND $invitationColumn[id] IN ($ids)";
 
@@ -420,7 +420,7 @@ function mediashare_invitationapi_getInvitedAlbums($args)
         if ($ok) {
             if ($keys != '')
                 $keys .= ',';
-            $keys .= '\'' . pnVarPrepForStore($key) . '\'';
+            $keys .= '\'' . DataUtil::formatForStore($key) . '\'';
         }
     }
 

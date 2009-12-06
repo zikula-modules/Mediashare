@@ -67,7 +67,7 @@ function mediashare_adminapi_setTemplateGlobally($args)
     $albumsTable = $pntable['mediashare_albums'];
     $albumsColumn = &$pntable['mediashare_albums_column'];
 
-    $template = pnVarPrepForStore($args['template']);
+    $template = DataUtil::formatForStore($args['template']);
 
     $sql = "UPDATE $albumsTable
           SET $albumsColumn[template] = '$template'";

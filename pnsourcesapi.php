@@ -104,8 +104,8 @@ function mediashare_sourcesapi_addSource($args)
             $sourcesColumn[title],
 			$sourcesColumn[formEncType])
           VALUES (
-            '" . pnVarPrepForStore($name) . "',
-            '" . pnVarPrepForStore($title) . "',
+            '" . DataUtil::formatForStore($name) . "',
+            '" . DataUtil::formatForStore($title) . "',
 			'')";
 
     $dbconn->execute($sql);

@@ -96,19 +96,19 @@ function mediashare_randomblock_display($blockinfo)
 
     $blockinfo['content'] = $html;
 
-    pnModDBInfoLoad('mediashare');
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
     $sessionVars['oldContent'] = $html;
     $sessionVars['lastUpdate'] = time();
 
     pnSessionSetVar($sessionVarName, $sessionVars);
     /*
+    pnModDBInfoLoad('mediashare');
+    list ($dbconn) = pnDBGetConn();
+    $pntable = pnDBGetTables();
+
   $blocksColumn = $pntable['blocks_column'];
   $sql = "UPDATE $pntable[blocks]
-          SET    $blocksColumn[content] = '" . pnVarPrepForStore(pnBlockVarsToContent($vars)) . "'
-          WHERE  $blocksColumn[bid] = " . pnVarPrepForStore($blockinfo['bid']);
+          SET    $blocksColumn[content] = '" . DataUtil::formatForStore(pnBlockVarsToContent($vars)) . "'
+          WHERE  $blocksColumn[bid] = " . DataUtil::formatForStore($blockinfo['bid']);
 
   $result = $dbconn->Execute($sql);
   if($dbconn->ErrorNo() != 0)

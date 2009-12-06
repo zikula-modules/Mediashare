@@ -1220,7 +1220,7 @@ function mediashare_userapi_getByKeyword($args)
                 ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
           INNER JOIN $storageTable thumbnail
                 ON thumbnail.$storageColumn[id] = $mediaColumn[thumbnailId]
-          WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . pnVarPrepForStore($keyword) . "'
+          WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
 
           UNION
 
@@ -1239,7 +1239,7 @@ function mediashare_userapi_getByKeyword($args)
                ON media.$mediaColumn[id] = album.$albumsColumn[mainMediaId]
           INNER JOIN $storageTable thumbnail
                ON thumbnail.$storageColumn[id] = $mediaColumn[thumbnailId]
-          WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . pnVarPrepForStore($keyword) . "'";
+          WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'";
 
     //ORDER BY album.$albumsColumn[title], media.$mediaColumn[title]";
 
@@ -1310,7 +1310,7 @@ function mediashare_userapi_getList($args)
     $join = array();
 
     if ($uname != null) {
-        $restriction[] = "$usersColumn[uname] = '" . pnVarPrepForStore($uname) . "'";
+        $restriction[] = "$usersColumn[uname] = '" . DataUtil::formatForStore($uname) . "'";
         //$join[] = "INNER JOIN $usersTable ON $usersColumn[uid] = media.$mediaColumn[ownerId]";
     }
 
@@ -1379,7 +1379,7 @@ function mediashare_userapi_getList($args)
             INNER JOIN $usersTable
                   ON $usersColumn[uid] = media.$mediaColumn[ownerId]
             $joinSql
-            WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . pnVarPrepForStore($keyword) . "'
+            WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
                   $restrictionSql)
 
             UNION
@@ -1423,7 +1423,7 @@ function mediashare_userapi_getList($args)
             INNER JOIN $usersTable
                   ON $usersColumn[uid] = media.$mediaColumn[ownerId]
             $joinSql
-            WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . pnVarPrepForStore($keyword) . "'
+            WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
                   $restrictionSql)
 
             ORDER BY $orderKey $orderDir";
@@ -1552,7 +1552,7 @@ function mediashare_userapi_getListCount($args)
     $join = array();
 
     if ($uname != null) {
-        $restriction[] = "$usersColumn[uname] = '" . pnVarPrepForStore($uname) . "'";
+        $restriction[] = "$usersColumn[uname] = '" . DataUtil::formatForStore($uname) . "'";
         //$join[] = "INNER JOIN $usersTable ON $usersColumn[uid] = media.$mediaColumn[ownerId]";
     }
 
@@ -1574,7 +1574,7 @@ function mediashare_userapi_getListCount($args)
             INNER JOIN $albumsTable album
                   ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
             $joinSql
-            WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . pnVarPrepForStore($keyword) . "'
+            WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
                   $restrictionSql";
 
         $sql2 = "SELECT COUNT(*)
@@ -1587,7 +1587,7 @@ function mediashare_userapi_getListCount($args)
              INNER JOIN $usersTable
                    ON $usersColumn[uid] = media.$mediaColumn[ownerId]
              $joinSql
-             WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . pnVarPrepForStore($keyword) . "'
+             WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
                    $restrictionSql";
     } else {
         $sql = "SELECT COUNT(*)
@@ -1660,7 +1660,7 @@ function mediashare_userapi_search($args)
         if ($restriction != '')
             $restriction .= ($match == 'AND' ? ' AND ' : ' OR ');
 
-        $restriction .= "(media.$mediaColumn[title] LIKE '%" . pnVarPrepForStore($word) . "%' OR " . "media.$mediaColumn[description] LIKE '%" . pnVarPrepForStore($word) . "%' OR " . "media.$mediaColumn[keywords] LIKE '%" . pnVarPrepForStore($word) . "%')";
+        $restriction .= "(media.$mediaColumn[title] LIKE '%" . DataUtil::formatForStore($word) . "%' OR " . "media.$mediaColumn[description] LIKE '%" . DataUtil::formatForStore($word) . "%' OR " . "media.$mediaColumn[keywords] LIKE '%" . DataUtil::formatForStore($word) . "%')";
     }
 
     // Find accessible albums

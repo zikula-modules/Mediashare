@@ -47,7 +47,7 @@ function mediashare_mediahandlerapi_getMediaHandlers($args)
               $handlersColumn[foundMimeType],
               $handlersColumn[foundFileType]
             FROM $handlersTable
-            WHERE $handlersColumn[handler] = '" . pnVarPrepForStore($handler['handler']) . "'";
+            WHERE $handlersColumn[handler] = '" . DataUtil::formatForStore($handler['handler']) . "'";
 
         $result = $dbconn->execute($sql);
 
@@ -93,8 +93,8 @@ function mediashare_mediahandlerapi_getHandlerInfo($args)
                           $handlersColumn[foundMimeType],
                           $handlersColumn[foundFileType]
           FROM $handlersTable
-          WHERE    $handlersColumn[mimeType] = '" . pnVarPrepForStore($mimeType) . "'
-                OR $handlersColumn[fileType] = '" . pnVarPrepForStore($fileType) . "'";
+          WHERE    $handlersColumn[mimeType] = '" . DataUtil::formatForStore($mimeType) . "'
+                OR $handlersColumn[fileType] = '" . DataUtil::formatForStore($fileType) . "'";
 
     $result = $dbconn->execute($sql);
 
@@ -210,12 +210,12 @@ function mediashare_mediahandlerapi_addMediaHandler($args)
             $handlersColumn[handler],
             $handlersColumn[title])
           VALUES (
-            '" . pnVarPrepForStore($mimeType) . "',
-            '" . pnVarPrepForStore($fileType) . "',
-            '" . pnVarPrepForStore($foundMimeType) . "',
-            '" . pnVarPrepForStore($foundFileType) . "',
-            '" . pnVarPrepForStore($handler) . "',
-            '" . pnVarPrepForStore($title) . "')";
+            '" . DataUtil::formatForStore($mimeType) . "',
+            '" . DataUtil::formatForStore($fileType) . "',
+            '" . DataUtil::formatForStore($foundMimeType) . "',
+            '" . DataUtil::formatForStore($foundFileType) . "',
+            '" . DataUtil::formatForStore($handler) . "',
+            '" . DataUtil::formatForStore($title) . "')";
 
     $dbconn->execute($sql);
 
