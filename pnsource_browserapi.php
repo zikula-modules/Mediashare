@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common-edit.php';
 
 function mediashare_source_browserapi_getTitle($args)
@@ -15,7 +14,7 @@ function mediashare_source_browserapi_getTitle($args)
 function mediashare_source_browserapi_addMediaItem($args)
 {
     if (!isset($args['albumId'])) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_source_browserapi_addMediaItem');
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'source_browserapi.addMediaItem'), $dom));
     }
 
     $uploadFilename = $args['uploadFilename'];
@@ -29,18 +28,19 @@ function mediashare_source_browserapi_addMediaItem($args)
     // Create and check tmpfilename
     $tmpDir = pnModGetVar('mediashare', 'tmpDirName');
 
-    if (($tmpFilename = tempnam($tmpDir, 'Upload_')) === false)
-        return mediashareErrorAPI(__FILE__, __LINE__, "Unable to create tmpFilename in '$tmpDir' (uploading image)");
+    if (($tmpFilename = tempnam($tmpDir, 'Upload_')) === false) {
+        return LogUtil::registerError(__f("Unable to create a temporary file in '%s'", $tmpDir, $dom).' - '.__('(uploading image)', $dom));
+    }
 
     if (is_uploaded_file($uploadFilename)) {
         if (move_uploaded_file($uploadFilename, $tmpFilename) === false) {
             unlink($tmpFilename);
-            return mediashareErrorAPI(__FILE__, __LINE__, "Unable to move uploaded file from '$uploadFilename' to '$tmpFilename' (uploading image)");
+            return LogUtil::registerError(__f('Unable to move uploaded file from \'%1$s\' to \'%2$s\'', array($uploadFilename, $tmpFilename), $dom).' - '.__('(uploading image)', $dom));
         }
     } else {
         if (!copy($uploadFilename, $tmpFilename)) {
             unlink($tmpFilename);
-            return mediashareErrorAPI(__FILE__, __LINE__, "Unable to copy file from '$uploadFilename' to '$tmpFilename' (adding image)");
+            return LogUtil::registerError(__f('Unable to copy the file from \'%1$s\' to \'%2$s\'', array($uploadFilename, $tmpFilename), $dom).' - '.__('(adding image)', $dom));
         }
     }
 
@@ -86,4 +86,3 @@ function mediashare_source_browserapi_getUploadInfo($args)
 
     return array('post_max_size' => (int) ($post_max_size / 1000), 'upload_max_filesize' => (int) ($upload_max_filesize / 1000));
 }
-

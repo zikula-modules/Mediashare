@@ -91,20 +91,21 @@ class mediashareAccessApi
             return 0xFF;
         }
 
-        pnModDBInfoLoad('Groups'); // Make sure groups database info is available
-
+        // Make sure groups database info is available
+        pnModDBInfoLoad('Groups');
 
         list ($dbconn) = pnDBGetConn();
         $pntable = pnDBGetTables();
 
-        $accessTable = $pntable['mediashare_access'];
-        $accessColumn = $pntable['mediashare_access_column'];
-        $membershipTable = $pntable['group_membership'];
-        $membershipColumn = &$pntable['group_membership_column'];
+        $accessTable      = $pntable['mediashare_access'];
+        $accessColumn     = $pntable['mediashare_access_column'];
+        $membershipTable  = $pntable['group_membership'];
+        $membershipColumn = $pntable['group_membership_column'];
 
         if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
             return 0x00;
         }
+
         $sql = "SELECT $accessColumn[access]
             FROM $accessTable
             LEFT JOIN $membershipTable
@@ -115,8 +116,9 @@ class mediashareAccessApi
 
         $dbresult = $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"getAlbumAccess" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('accessapi.getAlbumAccess', 'Could not retrieve the access level.'), $dom));
         }
+
         $access = 0x00;
         for (; !$dbresult->EOF; $dbresult->MoveNext()) {
             $access |= (int) $dbresult->fields[0];
@@ -142,8 +144,8 @@ class mediashareAccessApi
         }
         $userId = (int) pnUserGetVar('uid');
 
-        pnModDBInfoLoad('Groups'); // Make sure groups database info is available
-
+        // Make sure groups database info is available
+        pnModDBInfoLoad('Groups');
 
         list ($dbconn) = pnDBGetConn();
         $pntable = pnDBGetTables();
@@ -187,7 +189,7 @@ class mediashareAccessApi
         //echo "<pre>$sql</pre><br/>\n";
         $dbresult = $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"getAccessibleAlbumsSql" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('accessapi.getAccessibleAlbumsSql', 'Could not retrieve the accessible albums.'), $dom));
         }
         $albumIds = $invitedSql;
         for (; !$dbresult->EOF; $dbresult->MoveNext()) {
@@ -229,5 +231,3 @@ function mediashareCreateAccessAPI()
 {
     return new mediashareAccessApi();
 }
-
-

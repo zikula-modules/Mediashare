@@ -4,14 +4,11 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once ("modules/mediashare/common.php");
 
 // =======================================================================
 // Album class definition
 // =======================================================================
-
-
 class MediashareBaseAlbum
 {
     var $albumId;
@@ -69,8 +66,6 @@ function &mediashareGetAlbumInstance($albumId, $albumData)
 // =======================================================================
 // Access
 // =======================================================================
-
-
 function mediashare_userapi_hasAlbumAccess($args)
 {
     $albumId = (int) $args['albumId'];
@@ -116,8 +111,6 @@ function mediashare_userapi_hasItemAccess($args)
 // =======================================================================
 // Albums
 // =======================================================================
-
-
 function mediashare_userapi_getAlbum($args)
 {
     return mediashare_userapi_getAlbumData($args);
@@ -134,17 +127,18 @@ function &mediashare_userapi_getAlbumObject($args)
 
 function mediashare_userapi_getAlbumData($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-    // Argument check
-    if (!isset($args['albumId'])) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_userapi_getAlbum');
-    }
-    $enableEscape = (isset($args['enableEscape']) ? $args['enableEscape'] : true);
-
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+    // Argument check
+    if (!isset($args['albumId'])) {
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumData'), $dom));
+    }
+    $enableEscape = (isset($args['enableEscape']) ? $args['enableEscape'] : true);
 
     $albumId = (int) $args['albumId'];
     $countSubAlbums = array_key_exists('countSubAlbums', $args) ? $args['countSubAlbums'] : false;
@@ -153,10 +147,10 @@ function mediashare_userapi_getAlbumData($args)
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $albumsTable = $pntable['mediashare_albums'];
+    $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = $pntable['mediashare_albums_column'];
 
-    $sql = "SELECT   $albumsColumn[id],
+    $sql = "SELECT $albumsColumn[id],
                    $albumsColumn[ownerId],
                    UNIX_TIMESTAMP($albumsColumn[createdDate]),
                    UNIX_TIMESTAMP($albumsColumn[modifiedDate]),
@@ -174,17 +168,17 @@ function mediashare_userapi_getAlbumData($args)
                    $albumsColumn[nestedSetLevel],
                    $albumsColumn[extappURL],
                    $albumsColumn[extappData]
-          FROM $albumsTable
-          WHERE    $albumsColumn[id] = $albumId";
+              FROM $albumsTable
+             WHERE $albumsColumn[id] = $albumId";
 
     //echo "<pre>$sql</pre>\n"; exit(0);
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getAlbum" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getAlbumData', 'Could not retrieve the album information.'), $dom));
     }
     if ($result->EOF) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Unknown album (' . $albumId . ')');
+        return LogUtil::registerError(__('Unknown album ID (%s).', $albumId, $dom));
     }
     $album = array(
         'id' => $result->fields[0],
@@ -243,14 +237,14 @@ function mediashare_userapi_getSubAlbums($args)
 
 function mediashare_userapi_getSubAlbumsData($args)
 {
-    // Argument check
-    if (!isset($args['albumId'])) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_userapi_getSubAlbums');
-    }
-
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
+    }
+
+    // Argument check
+    if (!isset($args['albumId'])) {
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getSubAlbumsData'), $dom));
     }
 
     $albumId = (int) $args['albumId'];
@@ -287,7 +281,7 @@ function mediashare_userapi_getSubAlbumsData($args)
     if ($onlyMine) {
         $mineSql = " album.$albumsColumn[ownerId] = $ownerId AND ";
     }
-    $sql = "SELECT   album.$albumsColumn[id],
+    $sql = "SELECT album.$albumsColumn[id],
                    album.$albumsColumn[ownerId],
                    UNIX_TIMESTAMP(album.$albumsColumn[createdDate]),
                    UNIX_TIMESTAMP(album.$albumsColumn[modifiedDate]),
@@ -319,7 +313,7 @@ function mediashare_userapi_getSubAlbumsData($args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getSubAlbums" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getSubAlbumsData', 'Could not retrieve the sub albums information.'), $dom));
     }
 
     $albums = array();
@@ -344,8 +338,8 @@ function mediashare_userapi_getSubAlbumsData($args)
             'extappURL' => $result->fields[16],
             'extappData' => unserialize($result->fields[17]));
 
-        if ($album['mainMediaId'] > 0) // FIXME: always fetch all main items?
-{
+        // FIXME: always fetch all main items?
+        if ($album['mainMediaId'] > 0) {
             $mainMediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
 
             $album['mainMediaItem'] = $mainMediaItem;
@@ -368,7 +362,7 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
 {
     // Argument check
     if (!isset($args['albumId'])) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_userapi_getAlbumBreadcrumb');
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumBreadcrumb'), $dom));
     }
     $albumId = (int) $args['albumId'];
 
@@ -390,7 +384,7 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getAlbumBreadcrumb" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getAlbumBreadcrumb', 'Could not retrieve the breadcrumb information.'), $dom));
     }
     $breadcrumb = array();
     for (; !$result->EOF; $result->MoveNext()) {
@@ -404,14 +398,17 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
 
 function mediashare_userapi_getAlbumList($args)
 {
+    // Check access
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
+        return LogUtil::registerPermissionError();
+    }
+
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $recordPos = isset($args['recordPos']) ? (int) $args['recordPos'] : 0;
     $pageSize = isset($args['pageSize']) ? (int) $args['pageSize'] : 5;
     $access = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
 
-    // Check access
-    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
-    }
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
@@ -448,8 +445,9 @@ function mediashare_userapi_getAlbumList($args)
     $result = $dbconn->selectLimit($sql, $pageSize, $recordPos);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getAlbumList" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getAlbumList', 'Could not retrieve the albums list.'), $dom));
     }
+
     $albums = array();
     for (; !$result->EOF; $result->MoveNext()) {
         $album = array(
@@ -493,15 +491,18 @@ function mediashare_userapi_getAlbumList($args)
 
 function mediashare_userapi_getFirstItemIdInAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-    // Argument check
-    if (!isset($args['albumId'])) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_userapi_getFirstItemInAlbum');
-    }
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+    // Argument check
+    if (!isset($args['albumId'])) {
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getFirstItemIdInAlbum'), $dom));
+    }
+
     $albumId = (int) $args['albumId'];
 
     list ($dbconn) = pnDBGetConn();
@@ -513,13 +514,13 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
     $mediaColumn = $pntable['mediashare_media_column'];
 
     $sql = "SELECT $mediaColumn[id]
-          FROM $mediaTable
-          WHERE $mediaColumn[parentAlbumId] = $albumId
+              FROM $mediaTable
+             WHERE $mediaColumn[parentAlbumId] = $albumId
           ORDER BY $mediaColumn[createdDate] DESC";
 
     $result = $dbconn->selectLimit($sql, 1, 0);
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getFirstItemInAlbum" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getFirstItemInAlbum', 'Could not retrieve the album information.'), $dom));
     }
     if ($result->EOF) {
         return true;
@@ -535,22 +536,21 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
 // =======================================================================
 // Media items
 // =======================================================================
-
-
 function mediashare_userapi_getMediaItem($args)
 {
+    // Check access
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
+        return LogUtil::registerPermissionError();
+    }
+
     $dom = ZLanguage::getModuleDomain('mediashare');
+
     // Argument check
     if (!isset($args['mediaId'])) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing mediaId in mediashare_userapi_getMediaItem');
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('mediaId', 'userapi.getMediaItem'), $dom));
     }
 
     $enableEscape = (isset($args['enableEscape']) ? $args['enableEscape'] : true);
-
-    // Check access
-    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
-    }
 
     $mediaId = (int) $args['mediaId'];
     $ownerId = (int) pnUserGetVar('uid');
@@ -563,7 +563,7 @@ function mediashare_userapi_getMediaItem($args)
     $storageTable = $pntable['mediashare_mediastore'];
     $storageColumn = $pntable['mediashare_mediastore_column'];
 
-    $sql = "SELECT   $mediaColumn[id],
+    $sql = "SELECT $mediaColumn[id],
                    $mediaColumn[ownerId],
                    UNIX_TIMESTAMP($mediaColumn[createdDate]),
                    UNIX_TIMESTAMP($mediaColumn[modifiedDate]),
@@ -591,20 +591,20 @@ function mediashare_userapi_getMediaItem($args)
                    original.$storageColumn[width],
                    original.$storageColumn[height],
                    original.$storageColumn[bytes]
-          FROM $mediaTable
-          LEFT JOIN $storageTable thumbnail
-                    ON thumbnail.$storageColumn[id] = $mediaColumn[thumbnailId]
-          LEFT JOIN $storageTable preview
-                    ON preview.$storageColumn[id] = $mediaColumn[previewId]
-          LEFT JOIN $storageTable original
-                    ON original.$storageColumn[id] = $mediaColumn[originalId]
-          WHERE    $mediaColumn[id] = $mediaId";
+              FROM $mediaTable
+         LEFT JOIN $storageTable thumbnail
+                   ON thumbnail.$storageColumn[id] = $mediaColumn[thumbnailId]
+         LEFT JOIN $storageTable preview
+                   ON preview.$storageColumn[id] = $mediaColumn[previewId]
+         LEFT JOIN $storageTable original
+                   ON original.$storageColumn[id] = $mediaColumn[originalId]
+             WHERE $mediaColumn[id] = $mediaId";
 
     //echo "<pre>$sql</pre>\n"; exit(0);
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getMediaItem" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getMediaItem', 'Could not retrieve the media information.'), $dom));
     }
     if ($result->EOF) {
         return null;
@@ -663,7 +663,7 @@ function mediashare_userapi_getMediaUrl(&$args)
     } else if (isset($args['mediaItem'])) {
         $mediaItem = $args['mediaItem'];
     } else {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing either mediaId or mediaItem in getMediaUrl()');
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('mediaId / mediaItem', 'userapi.getMediaUrl'), $dom));
     }
 
     $url = $mediaItem[$src];
@@ -679,23 +679,25 @@ function mediashare_userapi_getMediaUrl(&$args)
 
 function mediashare_userapi_getMediaItems($args)
 {
-    // Argument check
-    if (!isset($args['albumId']) && !isset($args['mediaIdList'])) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId or mediaIdList in mediashare_userapi_getMediaItems');
-    }
-
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
-    /*if (isset($args['albumId']))
-  {
-    $album = mediashare_userapi_getAlbumObject($args);
-    return $album->getMediaItems();
-  }
-  else
-    return mediashareGetMediaItemsData($args);*/
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+    // Argument check
+    if (!isset($args['albumId']) && !isset($args['mediaIdList'])) {
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId / mediaIdList', 'userapi.getMediaItems'), $dom));
+    }
+/*
+    if (isset($args['albumId'])) {
+        $album = mediashare_userapi_getAlbumObject($args);
+       return $album->getMediaItems();
+    } else {
+        return mediashareGetMediaItemsData($args);
+    }
+*/
     return mediashareGetMediaItemsData($args);
 }
 
@@ -711,7 +713,6 @@ function mediashareGetMediaItemsData($args)
     $pntable = pnDBGetTables();
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
-
 
     $mediaTable = $pntable['mediashare_media'];
     $mediaColumn = $pntable['mediashare_media_column'];
@@ -791,8 +792,9 @@ function mediashareGetMediaItemsData($args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getMediaItems" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getMediaItems', 'Could not retrieve the media items.'), $dom));
     }
+
     $items = array();
     for (; !$result->EOF; $result->MoveNext()) {
         $item = array(
@@ -847,8 +849,6 @@ function mediashareGetMediaItemsData($args)
 // =======================================================================
 // Latest, random and more
 // =======================================================================
-
-
 function mediashare_userapi_getLatestMediaItems($args)
 {
     return pnModAPIFunc('mediashare', 'user', 'getList', array('order' => 'created', 'orderDir' => 'desc'));
@@ -861,6 +861,8 @@ function mediashare_userapi_getLatestAlbums($args)
 
 function mediashare_userapi_getRandomMediaItem($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $mode = (isset($args['mode']) ? $args['mode'] : 'all');
     $albumId = (isset($args['albumId']) ? (int) $args['albumId'] : null);
     $latest = (isset($args['latest']) ? $args['latest'] : false);
@@ -886,7 +888,7 @@ function mediashare_userapi_getRandomMediaItem($args)
 
         $dbresult = $dbconn->selectLimit($sql, 1, 0);
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"getRandomMediaItem" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
         }
         $albumId = (int) $dbresult->fields[0];
         $dbresult->Close();
@@ -900,25 +902,31 @@ function mediashare_userapi_getRandomMediaItem($args)
         $restriction .= " AND album.$albumsColumn[id] = $albumId";
     }
 
-    $sql = "SELECT COUNT(*) FROM $mediaTable media
-          JOIN $albumsTable album
-               ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
-          WHERE $restriction";
+    $sql = "SELECT COUNT(*)
+              FROM $mediaTable media
+              JOIN $albumsTable album
+                ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
+             WHERE $restriction";
 
     $dbresult = $dbconn->execute($sql);
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getRandomMediaItem" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
+    }
 
     $count = (int) $dbresult->fields[0];
     $dbresult->Close();
 
-    $sql = "SELECT media.$mediaColumn[id], media.$mediaColumn[parentAlbumId] FROM $mediaTable media
-          JOIN $albumsTable album
-               ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
-          WHERE $restriction";
+    $sql = "SELECT media.$mediaColumn[id],
+                   media.$mediaColumn[parentAlbumId]
+              FROM $mediaTable media
+              JOIN $albumsTable album
+                ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
+             WHERE $restriction";
+
     $dbresult = $dbconn->selectLimit($sql, 1, rand(0, $count - 1));
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getRandomMediaItem" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
+    }
 
     $result = array('mediaId' => (int) $dbresult->fields[0], 'albumId' => (int) $dbresult->fields[1]);
 
@@ -930,8 +938,6 @@ function mediashare_userapi_getRandomMediaItem($args)
 // =======================================================================
 // Escaping
 // =======================================================================
-
-
 function mediashareEscapeAlbum(&$album, $albumId)
 {
     $album['title'] = DataUtil::formatForDisplay($album['title']);
@@ -949,8 +955,6 @@ function mediashareEscapeItem(&$item, $itemId)
 // =======================================================================
 // Settings
 // =======================================================================
-
-
 function mediashare_userapi_getSettings($args)
 {
     // TODO Improve
@@ -974,50 +978,21 @@ function mediashare_userapi_getSettings($args)
 
 function mediashare_userapi_setSettings($args)
 {
-    if (!pnModSetVar('mediashare', 'tmpDirName', $args['tmpDirName']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'tmpDirName'");
-
-    if (!pnModSetVar('mediashare', 'mediaDirName', $args['mediaDirName']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'mediaDirName'");
-
-    if (!pnModSetVar('mediashare', 'thumbnailSize', $args['thumbnailSize']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'thumbnailSize'");
-
-    if (!pnModSetVar('mediashare', 'previewSize', $args['previewSize']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'previewSize'");
-
-    if (!pnModSetVar('mediashare', 'mediaSizeLimitSingle', (int) $args['mediaSizeLimitSingle'] * 1000))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'mediaSizeLimitSingle'");
-
-    if (!pnModSetVar('mediashare', 'mediaSizeLimitTotal', (int) $args['mediaSizeLimitTotal'] * 1000))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'mediaSizeLimitTotal'");
-
-    if (!pnModSetVar('mediashare', 'defaultAlbumTemplate', $args['defaultAlbumTemplate']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'defaultAlbumTemplate'");
-
-    if (!pnModSetVar('mediashare', 'allowTemplateOverride', $args['allowTemplateOverride']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'allowTemplateOverride'");
-
-    if (!pnModSetVar('mediashare', 'enableSharpen', $args['enableSharpen']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'enableSharpen'");
-
-    if (!pnModSetVar('mediashare', 'enableThumbnailStart', $args['enableThumbnailStart']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'enableThumbnailStart'");
-
-    if (!pnModSetVar('mediashare', 'flickrAPIKey', $args['flickrAPIKey']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'flickrAPIKey'");
-
-    if (!pnModSetVar('mediashare', 'smugmugAPIKey', $args['smugmugAPIKey']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'smugmugAPIKey'");
-
-    if (!pnModSetVar('mediashare', 'photobucketAPIKey', $args['photobucketAPIKey']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'photobucketAPIKey'");
-
-    if (!pnModSetVar('mediashare', 'picasaAPIKey', $args['picasaAPIKey']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'picasaAPIKey'");
-
-    if (!pnModSetVar('mediashare', 'vfs', $args['vfs']))
-        return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'vfs'");
+    pnModSetVar('mediashare', 'tmpDirName', $args['tmpDirName']);
+    pnModSetVar('mediashare', 'mediaDirName', $args['mediaDirName']);
+    pnModSetVar('mediashare', 'thumbnailSize', $args['thumbnailSize']);
+    pnModSetVar('mediashare', 'previewSize', $args['previewSize']);
+    pnModSetVar('mediashare', 'mediaSizeLimitSingle', (int) $args['mediaSizeLimitSingle'] * 1000);
+    pnModSetVar('mediashare', 'mediaSizeLimitTotal', (int) $args['mediaSizeLimitTotal'] * 1000);
+    pnModSetVar('mediashare', 'defaultAlbumTemplate', $args['defaultAlbumTemplate']);
+    pnModSetVar('mediashare', 'allowTemplateOverride', $args['allowTemplateOverride']);
+    pnModSetVar('mediashare', 'enableSharpen', $args['enableSharpen']);
+    pnModSetVar('mediashare', 'enableThumbnailStart', $args['enableThumbnailStart']);
+    pnModSetVar('mediashare', 'flickrAPIKey', $args['flickrAPIKey']);
+    pnModSetVar('mediashare', 'smugmugAPIKey', $args['smugmugAPIKey']);
+    pnModSetVar('mediashare', 'photobucketAPIKey', $args['photobucketAPIKey']);
+    pnModSetVar('mediashare', 'picasaAPIKey', $args['picasaAPIKey']);
+    pnModSetVar('mediashare', 'vfs', $args['vfs']);
 }
 
 function mediashare_userapi_getRelativeMediadir()
@@ -1031,8 +1006,6 @@ function mediashare_userapi_getRelativeMediadir()
 // =======================================================================
 // Most xxx
 // =======================================================================
-
-
 function mediashare_userapi_getMostActiveUsers($args)
 {
     list ($dbconn) = pnDBGetConn();
@@ -1056,14 +1029,13 @@ function mediashare_userapi_getMostActiveUsers($args)
 
     $dbresult = $dbconn->selectLimit($sql, 10, 0);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"mostActiveUsers" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.mostActiveUsers', 'Could not retrieve the most active users.'), $dom));
+    }
 
     $result = array();
     for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        $active = array('uname' => $dbresult->fields[0], 'count' => $dbresult->fields[1]);
-
-        $result[] = $active;
+        $result[] = array('uname' => $dbresult->fields[0], 'count' => $dbresult->fields[1]);
     }
 
     $dbresult->close();
@@ -1073,11 +1045,12 @@ function mediashare_userapi_getMostActiveUsers($args)
 
 function mediashare_userapi_getMostActiveKeywords($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
-
 
     $mediaTable = $pntable['mediashare_media'];
     $mediaColumn = $pntable['mediashare_media_column'];
@@ -1087,15 +1060,16 @@ function mediashare_userapi_getMostActiveKeywords($args)
     $keywordsColumn = $pntable['mediashare_keywords_column'];
 
     $sql = "SELECT $keywordsColumn[keyword],
-                 COUNT(*) cou
-          FROM $keywordsTable
+                   COUNT(*) cou
+              FROM $keywordsTable
           GROUP BY $keywordsColumn[keyword]
           ORDER BY $keywordsColumn[keyword]";
 
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"mostActiveKeywords" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.mostActiveKeywords', 'Could not retrieve the most active keywords.'), $dom));
+    }
 
     $result = array();
     $max = -1;
@@ -1145,8 +1119,9 @@ function mediashare_userapi_getSummary($args)
 
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getSummary" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getSummary', 'Could not count the media table.'), $dom));
+    }
 
     $summary['mediaCount'] = (int) $dbresult->fields[0];
 
@@ -1159,8 +1134,9 @@ function mediashare_userapi_getSummary($args)
 
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getSummary" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getSummary', 'Could not count the albums table.'), $dom));
+    }
 
     $summary['albumCount'] = (int) $dbresult->fields[0];
 
@@ -1170,8 +1146,6 @@ function mediashare_userapi_getSummary($args)
 // =======================================================================
 // Keywords
 // =======================================================================
-
-
 function mediashareAddKeywords(&$item)
 {
     $k = trim(mediashareStripKeywords($item['keywords']));
@@ -1247,8 +1221,9 @@ function mediashare_userapi_getByKeyword($args)
     //echo "<pre>$sql</pre>\n"; exit(0);
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"search" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getByKeyword', 'Could not retrieve the search results.'), $dom));
+    }
 
     $result = array();
     for (; !$dbresult->EOF; $dbresult->MoveNext()) {
@@ -1271,8 +1246,6 @@ function mediashare_userapi_getByKeyword($args)
 // =======================================================================
 // Lists
 // =======================================================================
-
-
 function mediashare_userapi_getList($args)
 {
     $keyword = isset($args['keyword']) ? $args['keyword'] : null;
@@ -1472,8 +1445,9 @@ function mediashare_userapi_getList($args)
     //echo "<pre>$sql</pre>\n"; exit(0);
     $dbresult = $dbconn->selectLimit($sql, $pageSize, $recordPos);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getList" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getList', 'Could not retrieve the media list.'), $dom));
+    }
 
     $result = array();
     for (; !$dbresult->EOF; $dbresult->MoveNext()) {
@@ -1531,7 +1505,6 @@ function mediashare_userapi_getListCount($args)
     $pntable = pnDBGetTables();
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
-
 
     $mediaTable = $pntable['mediashare_media'];
     $mediaColumn = $pntable['mediashare_media_column'];
@@ -1605,8 +1578,9 @@ function mediashare_userapi_getListCount($args)
 
     //echo "<pre>$sql</pre>\n"; exit(0);
     $dbresult = $dbconn->execute($sql);
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getListCount" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
+    }
 
     $count = (int) $dbresult->fields[0];
 
@@ -1614,8 +1588,9 @@ function mediashare_userapi_getListCount($args)
 
     if ($sql2 != null) {
         $dbresult = $dbconn->execute($sql2);
-        if ($dbconn->errorNo() != 0)
-            return mediashareErrorAPI(__FILE__, __LINE__, '"getListCount" failed: ' . $dbconn->errorMsg() . " while executing: $sql2");
+        if ($dbconn->errorNo() != 0) {
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
+        }
 
         $count += (int) $dbresult->fields[0];
 
@@ -1628,8 +1603,6 @@ function mediashare_userapi_getListCount($args)
 // =======================================================================
 // Searching
 // =======================================================================
-
-
 function mediashare_userapi_search($args)
 {
     $query = $args['query'];
@@ -1682,8 +1655,9 @@ function mediashare_userapi_search($args)
     //echo "<pre>$sql</pre>\n"; exit(0);
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"search" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.search', 'Could not retrieve the search results.'), $dom));
+    }
 
     $result = array();
     $i = 0;
@@ -1715,8 +1689,6 @@ function mediashare_userapi_errorAPIGet($args)
 // =======================================================================
 // Templates
 // =======================================================================
-
-
 function mediashare_userapi_getAllTemplates($args)
 {
     $templates = array();
@@ -1733,5 +1705,3 @@ function mediashare_userapi_getAllTemplates($args)
 
     return $templates;
 }
-
-

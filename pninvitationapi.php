@@ -43,7 +43,7 @@ function mediashare_invitationapi_sendInvitation(&$args)
 
             $ok = pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email, 'fromname' => $args['sender'], 'fromaddress' => $args['senderemail'], 'subject' => $args['subject'], 'body' => $message, 'html' => true));
             if ($ok === false)
-                return mediashareErrorAPI(__FILE__, __LINE__, 'Some error occured while trying to send invitation');
+                return LogUtil::registerError(__('Some error occured while trying to send invitation.', $dom));
         }
     }
 
@@ -83,10 +83,10 @@ VALUES
 
         $dbconn->execute($sql);
 
-        if ($dbconn->errorNo() != 0)
-            return mediashareErrorAPI(__FILE__, __LINE__, '"Create invitation" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        if ($dbconn->errorNo() != 0) {
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.createInvitationId', 'Could not create the invitation.'), $dom));
+        }
     } while (false); // FIXME: add "key exists" check
-
 
     return $key;
 }
@@ -137,7 +137,7 @@ function mediashare_invitationapi_resendInvitation(&$args)
 
             $ok = pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email, 'fromname' => $args['sender'], 'fromaddress' => $args['senderemail'], 'subject' => $args['subject'], 'body' => $message, 'html' => true));
             if ($ok === false)
-                return mediashareErrorAPI(__FILE__, __LINE__, 'Some error occured while trying to send invitation');
+                return LogUtil::registerError(__('Some error occured sending the invitation.', $dom));
         }
     }
 
@@ -172,8 +172,9 @@ WHERE     $invitationColumn[key] = '$key'
 
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getById" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getByKey', 'Could not retrieve the invitation.'), $dom));
+    }
 
     if ($dbresult->EOF)
         $invitation = null;
@@ -222,8 +223,9 @@ WHERE $invitationColumn[id] = $id";
 
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getById" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getById', 'Could not retrieve the invitation.'), $dom));
+    }
 
     if ($dbresult->EOF)
         $invitation = null;
@@ -247,23 +249,10 @@ WHERE $invitationColumn[id] = $id";
 
 function mediashare_invitationapi_updateViewCount($args)
 {
-    $key = DataUtil::formatForStore($args['key']);
-
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
-    $invitationTable = $pntable['mediashare_invitation'];
-    $invitationColumn = $pntable['mediashare_invitation_column'];
-
-    $sql = "
-UPDATE $invitationTable
-SET $invitationColumn[viewCount] = $invitationColumn[viewCount] + 1
-WHERE $invitationColumn[key] = '$key'";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"updateViewCount" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    $res = DBUtil::incrementObjectFieldByID('mediashare_invitation', 'viewCount', $args['key'], 'key');
+    if ($res === false) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.updateViewCount', 'Could not update the counter.'), $dom));
+    }
 
     return true;
 }
@@ -296,8 +285,9 @@ ORDER BY $invitationColumn[created] DESC";
 
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getInvitations" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getInvitations', 'Could not retrieve the invitation.'), $dom));
+    }
 
     $result = array();
     for (; !$dbresult->EOF; $dbresult->MoveNext()) {
@@ -339,16 +329,16 @@ function mediashare_invitationapi_expireInvitations(&$args)
     $ids = implode(',', $ids);
 
     // Access control done on album ID so include that in SQL
-    $sql = "
-UPDATE $invitationTable
-SET $invitationColumn[expires] = " . (empty($args['expires']) ? 'NULL' : "'" . DataUtil::formatForStore($args['expires']) . "'") . "
-WHERE     $invitationColumn[albumId] = $albumId
-      AND $invitationColumn[id] IN ($ids)";
+    $sql = "UPDATE $invitationTable
+               SET $invitationColumn[expires] = " . (empty($args['expires']) ? 'NULL' : "'" . DataUtil::formatForStore($args['expires']) . "'") . "
+             WHERE $invitationColumn[albumId] = $albumId
+               AND $invitationColumn[id] IN ($ids)";
 
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"expireInvitations" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.expireInvitations', 'Could not set the expiration for the invitations.'), $dom));
+    }
 
     return true;
 }
@@ -379,8 +369,9 @@ WHERE     $invitationColumn[albumId] = $albumId
 
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"deleteInvitations" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.deleteInvitations', 'Could not delete the invitations.'), $dom));
+    }
 
     return true;
 }
@@ -430,16 +421,16 @@ function mediashare_invitationapi_getInvitedAlbums($args)
     $invitationTable = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];
 
-    $sql = "
-SELECT $invitationColumn[albumId]
-FROM $invitationTable
-WHERE     $invitationColumn[key] IN ($keys)
-      AND ($invitationColumn[expires] > NOW() OR $invitationColumn[expires] IS NULL)";
+    $sql = "SELECT $invitationColumn[albumId]
+              FROM $invitationTable
+             WHERE $invitationColumn[key] IN ($keys)
+               AND ($invitationColumn[expires] > NOW() OR $invitationColumn[expires] IS NULL)";
 
     $dbresult = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getInvitedAlbums" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getInvitedAlbums', 'Could not retrieve the invited albums.'), $dom));
+    }
 
     $albums = array();
     for (; !$dbresult->EOF; $dbresult->MoveNext()) {

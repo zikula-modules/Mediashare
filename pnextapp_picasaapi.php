@@ -44,6 +44,8 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
 
     function getRawImages()
     {
+        $dom = ZLanguage::getModuleDomain('mediashare');
+
         $data = $this->albumData['extappData']['data'];
 
         try {
@@ -53,7 +55,7 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
                 $images = $this->getApi()->getAlbumByName($data['userName'], $data['albumName'], 30, 0, null, null, '72,400', 800, $data['authkey'])->getImages();
             }
         } catch (Exception $e) {
-            return mediashareErrorAPI(__FILE__, __LINE__, "The supplied URL resulted in an error.");
+            return LogUtil::registerError(__('The supplied URL resulted in an error.', $dom));
         }
 
         return $images;

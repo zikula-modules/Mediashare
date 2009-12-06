@@ -7,38 +7,29 @@
 
 function mediashare_mediahandlerapi_getMediaHandlers($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $handlersTable = $pntable['mediashare_mediahandlers'];
-    $handlersColumn = $pntable['mediashare_mediahandlers_column'];
-
     // Get handlers
+    $result = DBUtil::selectFieldArray('mediashare_mediahandlers', 'handler', '', '', true, 'title');
 
-
-    $sql = "SELECT DISTINCT
-            $handlersColumn[handler],
-            $handlersColumn[title]
-          FROM $handlersTable";
-
-    $result = $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getMediaHandlers" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
-
-    $handlers = array();
-    for (; !$result->EOF; $result->MoveNext()) {
-        $handler = array('handler' => $result->fields[0], 'title' => $result->fields[1], 'mediaTypes' => array());
-
-        $handlers[] = $handler;
+    if ($result === false) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.getMediaHandlers', 'Could not load the handlers.'), $dom));
     }
 
-    $result->Close();
+    $handlers = array();
+    foreach ($result as $title => $handler)
+    {
+        $handlers[] = array('handler' => $handler,
+                            'title'   => $title,
+                            'mediaTypes' => array());
+    }
 
     // Get media types per handler
-
-
-    for ($i = 0, $count = count($handlers); $i < $count; ++$i) {
+    for ($i = 0, $count = count($handlers); $i < $count; ++$i)
+    {
         $handler = &$handlers[$i];
 
         $sql = "SELECT
@@ -51,14 +42,16 @@ function mediashare_mediahandlerapi_getMediaHandlers($args)
 
         $result = $dbconn->execute($sql);
 
-        if ($dbconn->errorNo() != 0)
-            return mediashareErrorAPI(__FILE__, __LINE__, '"getMediaHandlers" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        if ($dbconn->errorNo() != 0) {
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.getMediaHandlers', "Could not load the types for the handler $handler[handler]."), $dom));
+        }
 
         $types = array();
         for (; !$result->EOF; $result->MoveNext()) {
-            $type = array('mimeType' => $result->fields[0], 'fileType' => $result->fields[1], 'foundMimeType' => $result->fields[2], 'foundFileType' => $result->fields[3]);
-
-            $types[] = $type;
+            $types[] = array('mimeType' => $result->fields[0],
+                             'fileType' => $result->fields[1],
+                             'foundMimeType' => $result->fields[2],
+                             'foundFileType' => $result->fields[3]);
         }
 
         $result->Close();
@@ -76,12 +69,14 @@ function mediashare_mediahandlerapi_getHandlerInfo($args)
 
     if (!empty($filename)) {
         $dotPos = strpos($filename, '.');
-        if ($dotPos === false)
+        if ($dotPos === false) {
             $fileType = '';
-        else
+        } else {
             $fileType = substr($filename, $dotPos + 1);
-    } else
+        }
+    } else {
         $fileType = '';
+    }
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
@@ -98,13 +93,18 @@ function mediashare_mediahandlerapi_getHandlerInfo($args)
 
     $result = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getHandlerInfo" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    $errormsg = __('Unable to locate media handler for \'%1$s\' (%2$s)', array($filename, $mimeType), $dom);
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.getHandlerInfo', $errormsg), $dom));
+    }    
 
-    if ($result->EOF)
-        return mediashareErrorAPI(__FILE__, __LINE__, "Unable to locate media handler for '$filename' ($mimeType)");
+    if ($result->EOF) {
+        return LogUtil::registerError($errormsg);
+    }
 
-    $handler = array('handlerName' => $result->fields[0], 'mimeType' => $result->fields[1], 'fileType' => $result->fields[2]);
+    $handler = array('handlerName' => $result->fields[0],
+                     'mimeType' => $result->fields[1],
+                     'fileType' => $result->fields[2]);
 
     $result->close();
 
@@ -132,27 +132,22 @@ function mediashare_mediahandlerapi_loadHandler($args)
 
 function mediashare_mediahandlerapi_scanMediaHandlers($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     // Clear existing handler table
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
-    $handlerTable = $pntable['mediashare_mediahandlers'];
-    $sql = "TRUNCATE TABLE $handlerTable";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"scanMediaHandlers" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if (!DBUtil::truncateTable('mediashare_mediahandlers')) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.scanMediaHandlers', __f("Could not clear the '%s' table.", 'mediahandlers', $dom)), $dom));
+    }
 
     // Scan for handlers
     if ($dh = opendir("modules/mediashare")) {
-        while (($filename = readdir($dh)) !== false) {
+        while (($filename = readdir($dh)) !== false)
+        {
             if (preg_match('/^pnmedia_([-a-zA-Z0-9_]+)api.php$/', $filename, $matches)) {
                 $handlerName = $matches[1];
                 $handlerApi = "media_$handlerName";
@@ -168,7 +163,8 @@ function mediashare_mediahandlerapi_scanMediaHandlers($args)
                 }
 
                 $fileTypes = $handler->getMediaTypes();
-                foreach ($fileTypes as $fileType) {
+                foreach ($fileTypes as $fileType)
+                {
                     $fileType['handler'] = $handlerName;
                     $fileType['title'] = $handler->getTitle();
 
@@ -219,8 +215,9 @@ function mediashare_mediahandlerapi_addMediaHandler($args)
 
     $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"addHandler" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.addHandler', 'Could not add a handler.'), $dom));
+    }
 
     return true;
 }

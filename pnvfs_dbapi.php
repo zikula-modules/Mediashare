@@ -26,20 +26,19 @@ class mediashare_vfsHandlerDB
         $data = file_get_contents($filename);
         $bytes = count($data);
 
-        $sql = "
-INSERT INTO $mediadbTable
-  ($mediadbColumn[fileref], $mediadbColumn[mode], $mediadbColumn[type], $mediadbColumn[bytes], $mediadbColumn[data])
-VALUES
-  ('" . DataUtil::formatForStore($fileReference) . "',
-   '" . DataUtil::formatForStore($args['fileMode']) . "',
-   '" . DataUtil::formatForStore($args['fileType']) . "',
-   $bytes,
-   '" . DataUtil::formatForStore($data) . "')";
+        $sql = "INSERT INTO $mediadbTable
+                       ($mediadbColumn[fileref], $mediadbColumn[mode], $mediadbColumn[type], $mediadbColumn[bytes], $mediadbColumn[data])
+                VALUES
+                       ('" . DataUtil::formatForStore($fileReference) . "',
+                        '" . DataUtil::formatForStore($args['fileMode']) . "',
+                        '" . DataUtil::formatForStore($args['fileType']) . "',
+                        $bytes,
+                        '" . DataUtil::formatForStore($data) . "')";
 
         $result = $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"createFile" failed (pnvf_dbapi): ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('vfsHandlerDB.createFile', 'Could not retrieve insert the file information.'), $dom));
         }
 
         return $fileReference;
@@ -60,7 +59,7 @@ VALUES
         $result = $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"deleteFile" failed (pnvf_dbapi): ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('vfsHandlerDB.deleteFile', 'Could not delete the file information.'), $dom));
         }
 
         return true;
@@ -87,7 +86,7 @@ WHERE $mediadbColumn[fileref] = '$orgFileReference'";
         $result = $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"createFile" failed (pnvf_dbapi): ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('vfsHandlerDB.updateFile', 'Could not update the file information.'), $dom));
         }
         return true;
     }
@@ -115,6 +114,8 @@ function mediashare_vfs_dbapi_buildHandler($args)
 
 function mediashare_vfs_dbapi_getMedia($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $fileref = DataUtil::formatForStore($args['fileref']);
 
     list ($dbconn) = pnDBGetConn();
@@ -148,11 +149,11 @@ WHERE     db.$mediadbColumn[fileref] = '$fileref'";
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getMedia" failed (pnvf_dbapi): ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('vfsHandlerDB.getMedia', 'Could not retrieve the file information.'), $dom));
     }
 
     if ($result->EOF) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Unknown media item");
+        return LogUtil::registerError(__('Unknown media item.', $dom));
     }
 
     $info = array('data' => $result->fields[0], 'mimeType' => $result->fields[1], 'bytes' => $result->fields[2], 'mediaId' => $result->fields[3], 'albumId' => $result->fields[4], 'title' => $result->fields[5], 'modifiedDate' => $result->fields[6]);

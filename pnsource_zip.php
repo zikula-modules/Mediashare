@@ -5,7 +5,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
 
@@ -49,8 +48,6 @@ function mediashare_source_zip_view(& $args)
 function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args)
 {
     // Read zip info and file data into buffer
-
-
     $zipSize = zip_entry_filesize($zipEntry);
     $zipName = zip_entry_name($zipEntry);
 
@@ -61,8 +58,6 @@ function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args)
     zip_entry_close($zipEntry);
 
     // Ensure sub-folder exists
-
-
     // Split name by slashes into folders and filename and create/verify the folders recursively
     $folders = explode('/', $zipName);
     $albumId = $args['albumId'];
@@ -131,9 +126,11 @@ function mediashareGetMimeType($filename)
 
 function mediashareSourceZipUpload(& $args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-    if (!SecurityUtil::confirmAuthKey())
+    if (!SecurityUtil::confirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+    }
+
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 0);
 
@@ -154,14 +151,13 @@ function mediashareSourceZipUpload(& $args)
     $totalCapacityUsed = $userInfo['totalCapacityUsed'];
 
     // Start fetching media items
-
-
     $imageNum = (int) FormUtil::getPassedValue('imagenum');
     $statusSet = array();
 
     $args['albumId'] = $albumId;
 
-    for ($i = 1; $i <= $imageNum; ++$i) {
+    for ($i = 1; $i <= $imageNum; ++$i)
+    {
         $uploadInfo = $_FILES["upload$i"];
         $args['width'] = FormUtil::getPassedValue("width$i");
         $args['height'] = FormUtil::getPassedValue("height$i");
@@ -171,7 +167,7 @@ function mediashareSourceZipUpload(& $args)
         } else if ($uploadInfo['size'] > 0) {
             $zip = zip_open($uploadInfo['tmp_name']);
             if (!$zip) {
-                return mediashareErrorAPI(__FILE__, __LINE__, MSZIPOPENERROR);
+                return LogUtil::registerError(__('Could not open the ZIP.', $dom));
             }
 
             while ($zipEntry = zip_read($zip)) {
@@ -224,11 +220,13 @@ function mediashareSourceZipUpload(& $args)
 // Second page in upload sequence - user has entered media titles and such like, and it needs to be updated
 function mediashareSourceZipUpdate()
 {
-    if (!SecurityUtil::confirmAuthKey())
+    if (!SecurityUtil::confirmAuthKey()) {
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+    }
 
     $mediaIds = FormUtil::getPassedValue('mediaId');
-    foreach ($mediaIds as $mediaId) {
+    foreach ($mediaIds as $mediaId)
+    {
         $mediaId = (int) $mediaId;
 
         $title = FormUtil::getPassedValue("title-$mediaId");
@@ -236,12 +234,14 @@ function mediashareSourceZipUpdate()
         $description = FormUtil::getPassedValue("description-$mediaId");
 
         // Check access
-        if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, ''))
+        if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
             return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        }
 
         $ok = pnModAPIFunc('mediashare', 'edit', 'updateItem', array('mediaId' => $mediaId, 'title' => $title, 'keywords' => $keywords, 'description' => $description));
-        if ($ok === false)
+        if ($ok === false) {
             return false;
+        }
     }
 
     return true;

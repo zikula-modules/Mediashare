@@ -10,14 +10,12 @@ require_once ("modules/mediashare/common-edit.php");
 // =======================================================================
 // Add/edit albums
 // =======================================================================
-
-
 function mediashare_editapi_addAlbum(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     // Check basic access (but don't do fine grained Mediashare access check)
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
     // Set defaults
     if (!array_key_exists('ownerId', $args)) {
@@ -40,7 +38,6 @@ function mediashare_editapi_addAlbum(&$args)
     $albumsColumn = &$pntable['mediashare_albums_column'];
 
     // FIXME: what if not logged in - how about 'owner' ???
-
 
     $thumbnailSize = (int) pnModGetVar('mediashare', 'thumbnailSize');
 
@@ -74,7 +71,7 @@ function mediashare_editapi_addAlbum(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Create album" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.addAlbum', 'Could not add the new album.'), $dom));
     }
 
     $newAlbumId = $dbconn->insert_ID();
@@ -116,7 +113,7 @@ function mediashare_editapi_updateNestedSetValues(&$args)
         $sql = "call mediashareUpdateNestedSetValues()";
         $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"calling mediashareUpdateNestedSetValues()" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateNestedSetValues', 'Calling mediashareUpdateNestedSetValues() failed.'), $dom));
         }
         return true;
     } else {
@@ -144,7 +141,7 @@ function mediashareUpdateNestedSetValues_Rec($albumId, $level, &$count, &$dbconn
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"mediashareUpdateNestedSetValues_Rec" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareUpdateNestedSetValues_Rec', 'Could not retrieve the subalbums.'), $dom));
     }
 
     for (; !$result->EOF; $result->MoveNext()) {
@@ -166,7 +163,7 @@ function mediashareUpdateNestedSetValues_Rec($albumId, $level, &$count, &$dbconn
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"mediashareUpdateNestedSetValues_Rec" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareUpdateNestedSetValues_Rec', 'Could not update the album.'), $dom));
     }
 
     return true;
@@ -178,7 +175,7 @@ function mediashare_editapi_updateAlbum(&$args)
 
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     $albumId = (int) $args['albumId'];
@@ -218,7 +215,7 @@ function mediashare_editapi_updateAlbum(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Update album" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateAlbum', 'Could not update the album.'), $dom));
     }
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $albumId, 'type' => 'album', 'keywords' => $args['keywords']));
@@ -240,13 +237,13 @@ function mediashare_editapi_deleteAlbum(&$args)
 
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     $albumId = (int) $args['albumId'];
 
     if ($albumId == 1) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'You cannot delete the top album');
+        return LogUtil::registerError(__('You cannot delete the top album', $dom));
     }
 
     list ($dbconn) = pnDBGetConn();
@@ -285,8 +282,6 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     }
 
     // Fetch and delete sub-abums
-
-
     $sql = "SELECT $albumsColumn[id]
           FROM $albumsTable
           WHERE $albumsColumn[parentAlbumId] = $albumId";
@@ -294,7 +289,7 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Delete album" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareDeleteAlbumRec', 'Could not delete the album.'), $dom));
     }
 
     $albumIds = array();
@@ -309,8 +304,6 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
         }
     }
     // Fetch and delete media items
-
-
     $sql = "SELECT $mediaColumn[id]
           FROM $mediaTable
           WHERE $mediaColumn[parentAlbumId] = $albumId";
@@ -318,8 +311,9 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Delete album" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareDeleteAlbumRec', 'Could not select the album.'), $dom));
     }
+
     $mediaIds = array();
     for (; !$result->EOF; $result->MoveNext()) {
         $mediaIds[] = $result->fields[0];
@@ -342,7 +336,7 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Delete album" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareDeleteAlbumRec', 'Could not delete the album.'), $dom));
     }
 
     pnModCallHooks('item', 'delete', "album-$albumId", array('module' => 'mediashare', 'albumId' => $albumId));
@@ -353,28 +347,26 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
 // =======================================================================
 // Move album
 // =======================================================================
-
-
 function mediashare_editapi_moveAlbum(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
     $albumId = (int) $args['albumId'];
     $dstAlbumId = (int) $args['dstAlbumId'];
 
     if ($albumId == 1) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Cannot move top album');
+        return LogUtil::registerError(__('Cannot move top album', $dom));
     }
 
     if ($albumId == $dstAlbumId) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Cannot move album to self');
+        return LogUtil::registerError(__('Cannot move album to self', $dom));
     }
 
     if ($dstAlbumId == 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Cannot move album outsite root album');
+        return LogUtil::registerError(__('Cannot move album outsite root album', $dom));
     }
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
@@ -387,12 +379,12 @@ function mediashare_editapi_moveAlbum(&$args)
         return false;
     }
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, '') || !mediashareAccessAlbum($dstAlbumId, mediashareAccessRequirementAddAlbum, '')) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     $isChild = pnModAPIFunc('mediashare', 'edit', 'isChildAlbum', array('albumId' => $dstAlbumId, 'parentAlbumId' => $albumId));
     if ($isChild === true) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Cannot move album below self');
+        return LogUtil::registerError(__('Cannot move album below self', $dom));
     }
 
     list ($dbconn) = pnDBGetConn();
@@ -408,7 +400,7 @@ function mediashare_editapi_moveAlbum(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Move album" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.moveAlbum', 'Could not move the album.'), $dom));
     }
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'updateNestedSetValues');
@@ -441,7 +433,6 @@ function mediashare_editapi_isChildAlbum(&$args)
 // Adding media items
 // =======================================================================
 
-
 /**
  * addMediaItem
  * This function adds a single media item to Mediashare's repository.
@@ -459,8 +450,8 @@ function mediashare_editapi_addMediaItem(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    if (!array_key_exists('albumId', $args)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_editapi_addMediaItem');
+    if (!isset($args['albumId'])) {
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'editapi.addMediaItem'), $dom));
     }
 
     $albumId = (int) $args['albumId'];
@@ -477,8 +468,6 @@ function mediashare_editapi_addMediaItem(&$args)
     $mediaTitle = str_replace('_', ' ', $mediaTitle);
 
     // Check upload limits
-
-
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
     if ($userInfo === false) {
         return mediashareErrorAPIGet();
@@ -488,11 +477,11 @@ function mediashare_editapi_addMediaItem(&$args)
         $fileSize = $args['fileSize'];
 
         if ($fileSize > $userInfo['mediaSizeLimitSingle']) {
-            return mediashareErrorAPI(null, null, "$mediaTitle: " . __('Media file too big', $dom));
+            return LogUtil::registerError(DataUtil::formatForDisplay($mediaTitle).': '.__('Media file too big', $dom));
         }
 
         if ($fileSize + $userInfo['totalCapacityUsed'] > $userInfo['mediaSizeLimitTotal']) {
-            return mediashareErrorAPI(__FILE__, __LINE__, __('Media file too big - total quota would be exceeded', $dom));
+            return LogUtil::registerError(__('Media file too big - total quota would be exceeded', $dom));
         }
     }
 
@@ -515,12 +504,12 @@ function mediashare_editapi_addMediaItem(&$args)
     // Ask media handler to generate thumbnail and preview images
     $tmpDir = pnModGetVar('mediashare', 'tmpDirName');
     if (($thumbnailFilename = tempnam($tmpDir, 'Preview')) === false) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Failed to create thumbnail filename in mediashare_editapi_addMediaItem");
+        return LogUtil::registerError(__f("Failed to create the thumbnail file in '%s'.", 'editapi.addMediaItem', $dom));
     }
 
     if (($previewFilename = tempnam($tmpDir, 'Preview')) === false) {
         @unlink($thumbnailFilename);
-        return mediashareErrorAPI(__FILE__, __LINE__, "Failed to create preview filename in mediashare_editapi_addMediaItem");
+        return LogUtil::registerError(__f("Failed to create the preview file in '%s'.", 'editapi.addMediaItem', $dom));
     }
 
     $thumbnailSize = (int) pnModGetVar('mediashare', 'thumbnailSize');
@@ -542,7 +531,7 @@ function mediashare_editapi_addMediaItem(&$args)
     if (!pnModAPILoad('mediashare', $vfsHandlerApi)) {
         @unlink($thumbnailFilename);
         @unlink($previewFilename);
-        return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$vfsHandlerApi' in mediashare_editapi_addMediaItem");
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array($vfsHandlerApi, 'editapi.addMediaItem'), $dom));
     }
 
     $vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler');
@@ -689,7 +678,7 @@ function mediashare_editapi_storeMediaItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Insert media item" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.storeMediaItem', __('Could not insert the media item.', $dom)), $dom));
     }
 
     $newMediaId = $dbconn->insert_ID();
@@ -726,7 +715,7 @@ function mediashare_editapi_registerMediaItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Insert media item" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.registerMediaItem', __('Could not insert the media item.', $dom)), $dom));
     }
 
     $id = $dbconn->insert_ID();
@@ -749,7 +738,7 @@ function mediashareGetNewPosition($albumId)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"GetNewPosition" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareGetNewPosition', 'Could not get the max position.'), $dom));
     }
 
     $position = $result->fields[0];
@@ -760,22 +749,22 @@ function mediashareGetNewPosition($albumId)
 
 function mediashare_editapi_ensureMainAlbumId($args)
 {
+    // Check access
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
+        return LogUtil::registerPermissionError();
+    }
+
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Argument check
     if (!isset($args['albumId'])) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_userapi_ensureMainAlbumId');
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'editapi.ensureMainAlbumId'), $dom));
     }
     if (!isset($args['mediaId'])) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing mediaId in mediashare_userapi_ensureMainAlbumId');
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('mediaId', 'editapi.ensureMainAlbumId'), $dom));
     }
 
     $forceUpdate = isset($args['forceUpdate']) && $args['forceUpdate'];
-
-    // Check access
-    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
-    }
 
     $albumId = (int) $args['albumId'];
     $mediaId = (int) $args['mediaId'];
@@ -796,7 +785,7 @@ function mediashare_editapi_ensureMainAlbumId($args)
     //echo "<pre>$sql</pre>"; exit(0);
     $dbconn->execute($sql);
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getFirstItemInAlbum" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.ensureMainAlbumId', 'Could not ensure the main media for the album.'), $dom));
     }
 
     return true;
@@ -813,7 +802,7 @@ function mediashare_editapi_updateItem(&$args)
     $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
     $mediaId = (int) $args['mediaId'];
 
@@ -832,7 +821,7 @@ function mediashare_editapi_updateItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Update media" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateItem', 'Could not update the media item.'), $dom));
     }
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $mediaId, 'type' => 'media', 'keywords' => $args['keywords']));
@@ -881,10 +870,10 @@ function mediashare_editapi_updateItemFileUpload(&$args)
         $fileSize = $args['fileSize'];
 
         if ($fileSize > $userInfo['mediaSizeLimitSingle']) {
-            return mediashareErrorAPI(null, null, "$args[filename]: " . __('Media file too big', $dom));
+            return LogUtil::registerError($args['filename'].': '.__('Media file too big', $dom));
         }
         if ($fileSize + $userInfo['totalCapacityUsed'] > $userInfo['mediaSizeLimitTotal'])
-            return mediashareErrorAPI(__FILE__, __LINE__, __('Media file too big - total quota would be exceeded', $dom));
+            return LogUtil::registerError(__('Media file too big - total quota would be exceeded', $dom));
     }
 
     // Find a media handler
@@ -911,18 +900,18 @@ function mediashare_editapi_updateItemFileUpload(&$args)
     // Create and check tmpfilename
     $tmpDir = pnModGetVar('mediashare', 'tmpDirName');
     if (($tmpFilename = tempnam($tmpDir, 'Upload_')) === false) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Unable to create tmpFilename in '$tmpDir' (uploading image)");
+        return LogUtil::registerError(__f("Unable to create a temporary file in '%s'", $tmpDir, $dom).' - '.__('(uploading image)', $dom));
     }
 
     if (is_uploaded_file($uploadFilename)) {
         if (move_uploaded_file($uploadFilename, $tmpFilename) === false) {
             unlink($tmpFilename);
-            return mediashareErrorAPI(__FILE__, __LINE__, "Unable to move uploaded file from '$uploadFilename' to '$tmpFilename' (uploading image)");
+            return LogUtil::registerError(__f('Unable to move uploaded file from \'%1$s\' to \'%2$s\'', array($uploadFilename, $tmpFilename), $dom).' - '.__('(uploading image)', $dom));
         }
     } else {
         if (!copy($uploadFilename, $tmpFilename)) {
             unlink($tmpFilename);
-            return mediashareErrorAPI(__FILE__, __LINE__, "Unable to copy file from '$uploadFilename' to '$tmpFilename' (adding image)");
+            return LogUtil::registerError(__f('Unable to copy the file from \'%1$s\' to \'%2$s\'', array($uploadFilename, $tmpFilename), $dom).' - '.__('(adding image)', $dom));
         }
     }
 
@@ -932,7 +921,7 @@ function mediashare_editapi_updateItemFileUpload(&$args)
 
 
     if ($mediaItem['mediaHandler'] != $handlerName) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "New media type does not match the existing");
+        return LogUtil::registerError(__('New media type does not match the existing.', $dom));
     }
 
     // Ask media handler to generate thumbnail and preview files
@@ -940,13 +929,13 @@ function mediashare_editapi_updateItemFileUpload(&$args)
 
     if (($thumbnailFilename = tempnam($tmpDir, 'Preview')) === false) {
         @unlink($tmpFilename);
-        return mediashareErrorAPI(__FILE__, __LINE__, "Failed to create thumbnail filename in updateItemFileUpload");
+        return LogUtil::registerError(__f("Failed to create the thumbnail file in '%s'.", 'editapi.updateItemFileUpload', $dom));
     }
 
     if (($previewFilename = tempnam($tmpDir, 'Preview')) === false) {
         @unlink($tmpFilename);
         @unlink($thumbnailFilename);
-        return mediashareErrorAPI(__FILE__, __LINE__, "Failed to create preview filename in updateItemFileUpload");
+        return LogUtil::registerError(__f("Failed to create the preview file in '%s'.", 'editapi.updateItemFileUpload', $dom));
     }
 
     $thumbnailSize = (int) pnModGetVar('mediashare', 'thumbnailSize');
@@ -974,7 +963,7 @@ function mediashare_editapi_updateItemFileUpload(&$args)
         @unlink($tmpFilename);
         @unlink($thumbnailFilename);
         @unlink($previewFilename);
-        return mediashareErrorAPI(__FILE__, __LINE__, "Missing '$vfsHandlerApi' in mediashare_editapi_addMediaItem");
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array($vfsHandlerApi, 'editapi.updateItemFileUpload'), $dom));
     }
 
     $vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler');
@@ -1053,7 +1042,7 @@ function mediashare_editapi_updateMediaStorage($args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Update storage failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateMediaStorage', 'Could not update the storage.'), $dom));
     }
     return true;
 }
@@ -1069,7 +1058,7 @@ function mediashare_editapi_recalcItem($args)
 
     $tmpDir = pnModGetVar('mediashare', 'tmpDirName');
     if (($tmpFilename = tempnam($tmpDir, 'recalc_')) === false) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Unable to create tmpFilename in '$tmpDir' (regenerating image)");
+        return LogUtil::registerError(__("Unable to create a temporary file in '%s'", $tmpDir, $dom).' - '.__('(regenerating image)', $dom));
     }
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'copyMediaData', array('mediaId' => $item['id'], 'dstFilename' => $tmpFilename));
@@ -1106,7 +1095,7 @@ function mediashare_editapi_copyMediaData($args)
             return false;
         }
         if (($f = fopen($dstFilename, 'w')) === false) {
-            return mediashareErrorAPI(__FILE__, __LINE__, "Failed to open $dstFilename for write");
+            return LogUtil::registerError(__("Failed to open '%s' for write.", $dstFilename, $dom));
         }
         fwrite($f, $media['data']);
         fclose($f);
@@ -1114,7 +1103,7 @@ function mediashare_editapi_copyMediaData($args)
         // Copy from disk
         $originalRef = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir').$originalRef;
         if (!copy($originalRef, $dstFilename)) {
-            return mediashareErrorAPI(__FILE__, __LINE__, "Failed to copy '$originalRef' to '$dstFilename'");
+            return LogUtil::registerError(__f('Unable to copy the file from \'%1$s\' to \'%2$s\'', array($originalRef, $dstFilename), $dom));
         }
     }
 
@@ -1124,8 +1113,6 @@ function mediashare_editapi_copyMediaData($args)
 // =======================================================================
 // Delete media item
 // =======================================================================
-
-
 function mediashare_editapi_deleteMediaItem(&$args)
 {
     $mediaId = (int) $args['mediaId'];
@@ -1152,15 +1139,15 @@ function mediashare_editapi_deleteMediaItem(&$args)
     }
 
     if ($vfsHandler->deleteFile($item['thumbnailRef']) === false) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Failed to delete media item '$mediaId's thumbnail ($item[thumbnailId])");
+        return LogUtil::registerError(__("Failed to delete media item.", $dom).' '.__('%1$s\'s thumbnail (%2$s).', array($mediaId, $item['thumbnailId']), $dom));
     }
 
     if ($vfsHandler->deleteFile($item['previewRef']) === false) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Failed to delete media item '$mediaId's preview ($item[previewId])");
+        return LogUtil::registerError(__("Failed to delete media item.", $dom).' '.__('%1$s\'s preview (%2$s).', array($mediaId, $item['previewId']), $dom));
     }
 
     if ($vfsHandler->deleteFile($item['originalRef']) === false) {
-        return mediashareErrorAPI(__FILE__, __LINE__, "Failed to delete media item '$mediaId's original ($item[originalId])");
+        return LogUtil::registerError(__("Failed to delete media item.", $dom).' '.__('%1$s\'s original (%2$s).', array($mediaId, $item['originalId']), $dom));
     }
 
     list ($dbconn) = pnDBGetConn();
@@ -1170,31 +1157,27 @@ function mediashare_editapi_deleteMediaItem(&$args)
     $mediaColumn = &$pntable['mediashare_media_column'];
 
     // Remove media info
-
-
     $sql = "DELETE FROM $mediaTable
           WHERE $mediaColumn[id] = $mediaId";
 
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Delete media" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.deleteMediaItem', 'Could not delete the media item.'), $dom));
     }
 
     pnModCallHooks('item', 'delete', "media-$mediaId", array('module' => 'mediashare', 'mediaId' => $mediaId));
 
     // Ensure correct position of the remaining items
-
-
     $sql = "UPDATE $mediaTable
-          SET $mediaColumn[position] = $mediaColumn[position] - 1
-          WHERE     $mediaColumn[parentAlbumId] = $albumId
-                AND $mediaColumn[position] > $position";
+               SET $mediaColumn[position] = $mediaColumn[position] - 1
+             WHERE $mediaColumn[parentAlbumId] = $albumId
+               AND $mediaColumn[position] > $position";
 
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Delete media" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.deleteMediaItem', 'Could not delete the media item.'), $dom));
     }
 
     // Remove keyword references
@@ -1210,7 +1193,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
     $sql = "DELETE FROM $storageTable WHERE $storageColumn[id] IN ($item[thumbnailId],$item[previewId],$item[originalId])";
     $dbconn->execute($sql);
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Delete storage failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.deleteMediaItem', 'Could not delete the storage.'), $dom));
     }
     // Update main album item
     if ($album['mainMediaId'] == $mediaId) {
@@ -1226,8 +1209,6 @@ function mediashare_editapi_deleteMediaItem(&$args)
 // =======================================================================
 // Move media item
 // =======================================================================
-
-
 function mediashare_editapi_moveMediaItem(&$args)
 {
     $mediaId = (int) $args['mediaId'];
@@ -1248,7 +1229,7 @@ function mediashare_editapi_moveMediaItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Move media item" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.moveMediaItem', 'Could not move the media item.'), $dom));
     }
 
     // Check main media item
@@ -1265,7 +1246,7 @@ function mediashare_editapi_moveMediaItem(&$args)
         $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"Move media item" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.moveMediaItem', 'Could not move the media item.'), $dom));
         }
     }
 
@@ -1275,8 +1256,6 @@ function mediashare_editapi_moveMediaItem(&$args)
 // =======================================================================
 // Main media item
 // =======================================================================
-
-
 function mediashare_editapi_setMainItem(&$args)
 {
     $albumId = (int) $args['albumId'];
@@ -1295,7 +1274,7 @@ function mediashare_editapi_setMainItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"Set main item" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.setMainItem', 'Could not set the main media item.'), $dom));
     }
 
     return true;
@@ -1304,8 +1283,6 @@ function mediashare_editapi_setMainItem(&$args)
 // =======================================================================
 // Arrange items
 // =======================================================================
-
-
 function mediashare_editapi_arrangeAlbum(&$args)
 {
     $albumId = (int) $args['albumId'];
@@ -1327,11 +1304,10 @@ function mediashare_editapi_arrangeAlbum(&$args)
             WHERE     $mediaColumn[id] = $mediaId
                   AND $mediaColumn[parentAlbumId] = $albumId"; // Include parent as permission check
 
-
         $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"ArrangeAlbum" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.arrangeAlbum', 'Could not arrange the album.'), $dom));
         }
     }
 
@@ -1341,8 +1317,6 @@ function mediashare_editapi_arrangeAlbum(&$args)
 // =======================================================================
 // User info
 // =======================================================================
-
-
 function mediashare_editapi_getUserInfo(&$args)
 {
     $user = (int) pnUserGetVar('uid');
@@ -1365,7 +1339,7 @@ function mediashare_editapi_getUserInfo(&$args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"GetUserInfo" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.getUserInfo', 'Could not retrieve the user information.'), $dom));
     }
 
     $limitTotal = (int) pnModGetVar('mediashare', 'mediaSizeLimitTotal');
@@ -1381,8 +1355,6 @@ function mediashare_editapi_getUserInfo(&$args)
 // =======================================================================
 // Keywords update
 // =======================================================================
-
-
 function mediashare_editapi_updateKeywords(&$args)
 {
     $itemId = (int) $args['itemId'];
@@ -1404,7 +1376,7 @@ function mediashare_editapi_updateKeywords(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"updateKeywords" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateKeywords', 'Could not update the keywords.'), $dom));
     }
 
     // Split keywords string into keywords array
@@ -1421,7 +1393,7 @@ function mediashare_editapi_updateKeywords(&$args)
 
             $dbconn->execute($sql);
             if ($dbconn->errorNo() != 0) {
-                return mediashareErrorAPI(__FILE__, __LINE__, '"updateKeywords" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+                return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateKeywords', 'Could not insert the keywords.'), $dom));
             }
         }
     }
@@ -1432,8 +1404,6 @@ function mediashare_editapi_updateKeywords(&$args)
 // =======================================================================
 // Access
 // =======================================================================
-
-
 function mediashare_editapi_getAccessSettings(&$args)
 {
     $albumId = (int) $args['albumId'];
@@ -1483,7 +1453,7 @@ function mediashare_editapi_getAccessSettings(&$args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getAccessSettings" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.getAccessSettings', 'Could not retrieve the access settings.'), $dom));
     }
 
     $result = array();
@@ -1530,7 +1500,7 @@ function mediashare_editapi_updateAccessSettings(&$args)
 
     $dbresult = $dbconn->execute($sql);
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"updateAccessSettings" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateAccessSettings', 'Could not delete the access registries.'), $dom));
     }
 
     foreach ($access as $accessRow) {
@@ -1546,7 +1516,7 @@ function mediashare_editapi_updateAccessSettings(&$args)
 
         $dbresult = $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
-            return mediashareErrorAPI(__FILE__, __LINE__, '"updateAccessSettings" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateAccessSettings', 'Could not insert the access registry.'), $dom));
         }
     }
 
@@ -1568,7 +1538,7 @@ function mediashare_editapi_getAccessGroups(&$args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getAccessSettings" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.getAccessGroups', 'Could not retrieve the groups information.'), $dom));
     }
 
     $result = array();
@@ -1604,8 +1574,6 @@ function mediashare_editapi_setDefaultAccess($args)
 // =======================================================================
 // External applications
 // =======================================================================
-
-
 function mediashare_editapi_extappGetApps(&$args)
 {
     $apps = array();
@@ -1627,6 +1595,8 @@ function mediashare_editapi_extappGetApps(&$args)
 
 function mediashare_editapi_extappLocateApp(&$args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $url = $args['extappURL'];
     if (empty($url)) {
         return true;
@@ -1648,7 +1618,7 @@ function mediashare_editapi_extappLocateApp(&$args)
     $args['extappData'] = serialize($args['extappData']);
 
     if (!$ok) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __f('Unrecognized URL %s', array('url' => $url)));
+        return LogUtil::registerError(__f('Unrecognized URL %s', array('url' => DataUtil::formatForDisplay($url)), $dom));
     }
 
     return true;
@@ -1680,7 +1650,8 @@ function mediashare_editapi_fetchExternalImages($args)
     }
 
     $mainMediaItemId = null;
-    foreach ($mediaItems as $item) {
+    foreach ($mediaItems as $item)
+    {
         if ($item['mediaHandler'] == 'extapp') {
             if (!isset($existingMediaItemsMap[$item['originalRef']])) {
                 $thumbnail = array('fileRef' => $item['thumbnailRef'], 'mimeType' => $item['thumbnailMimeType'], 'width' => $item['thumbnailWidth'], 'height' => $item['thumbnailHeight'], 'bytes' => $item['thumbnailBytes']);
@@ -1744,4 +1715,3 @@ function mediashare_editapi_fetchExternalImages($args)
 
     return true;
 }
-

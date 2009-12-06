@@ -24,14 +24,10 @@ function mediashare_import_main($args)
 // =======================================================================
 // Import Photoshare
 // =======================================================================
-
-
 function mediashare_import_photoshare($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     if (isset($_POST['importButton'])) {
@@ -57,4 +53,3 @@ function mediashareImportPhotoshare()
 
     return pnRedirect(pnModURL('mediashare', 'import', 'main'));
 }
-

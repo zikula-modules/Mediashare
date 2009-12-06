@@ -81,10 +81,10 @@ class mediashare_imageHandlerGD
     }
 
     // Internal functions
-
-
     function createImageFromFile($filename, $mimeType)
     {
+        $dom = ZLanguage::getModuleDomain('mediashare');
+
         $im = false;
 
         if ($mimeType == 'image/jpeg') {
@@ -95,8 +95,9 @@ class mediashare_imageHandlerGD
             $im = @imagecreatefrompng($filename);
         }
 
-        if (!$im)
-            return mediashareErrorAPI(__FILE__, __LINE__, _MSUNKNOWNIMAGEFORMAT . " '$mimeType' / '$filename'");
+        if (!$im) {
+            return LogUtil::registerError(__('Unknown image format %1$s/%2$s.', array($mimeType, $filename), $dom));
+        }
 
         return $im;
     }
@@ -259,10 +260,8 @@ class mediashare_imageHandlerGD
         return $image;
     }
 }
-;
 
 function mediashare_media_imagegdapi_buildHandler($args)
 {
     return new mediashare_imageHandlerGD();
 }
-

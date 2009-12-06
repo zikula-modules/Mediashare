@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once ("modules/mediashare/common-edit.php");
 
 function mediashare_importapi_photoshare($args)
@@ -26,7 +25,7 @@ function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
 {
     $folders = pnModAPIFunc('photoshare', 'user', 'get_accessible_folders', array('getForList' => true, 'order' => 'title', 'parentFolderID' => $photoshareFolderId));
     if ($folders === false) {
-        return mediashareErrorAPI(__FILE__, __LINE__, photoshareErrorAPIGet());
+        return LogUtil::registerError(photoshareErrorAPIGet());
     }
 
     foreach ($folders as $folder) {
@@ -42,7 +41,7 @@ function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
         if (!array_key_exists($folder['id'], $importedAlbums)) {
             $folderData = pnModAPIFunc('photoshare', 'user', 'get_folder_info', array('folderID' => $folder['id']));
             if ($folderData === false) {
-                return mediashareErrorAPI(__FILE__, __LINE__, photoshareErrorAPIGet());
+                return LogUtil::registerError(photoshareErrorAPIGet());
             }
 
             $id = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array(
@@ -81,7 +80,7 @@ function mediashareImportPhotoshareImages($photoshareFolderId, $mediashareAlbumI
 {
     $images = pnModAPIFunc('photoshare', 'user', 'get_image_list', array('folderID' => $photoshareFolderId, 'usePageCount' => false));
     if ($images === false) {
-        return mediashareErrorAPI(__FILE__, __LINE__, photoshareErrorAPIGet());
+        return LogUtil::registerError(photoshareErrorAPIGet());
     }
 
     $tmpDir = pnModGetVar('mediashare', 'tmpDirName');
@@ -99,10 +98,10 @@ function mediashareImportPhotoshareImages($photoshareFolderId, $mediashareAlbumI
         if (!array_key_exists($image['id'], $importedImages)) {
             $imageData = pnModAPIFunc('photoshare', 'show', 'get_image_info', array('imageID' => $image['id']));
             if ($imageData === false) {
-                return mediashareErrorAPI(__FILE__, __LINE__, photoshareErrorAPIGet());
+                return LogUtil::registerError(photoshareErrorAPIGet());
             }
             if (($photoshareFilename = tempnam($tmpDir, 'imp')) === false) {
-                return mediashareErrorAPI(__FILE__, __LINE__, "Failed to create temporary photoshare file in directory '$tmpDir'");
+                return LogUtil::registerError("Failed to create temporary photoshare file in the '$tmpDir' directory.");
             }
 
             $photoshareImageData = photoshareGetImageData($image['id'], false, true);
@@ -124,7 +123,7 @@ function mediashareImportPhotoshareImages($photoshareFolderId, $mediashareAlbumI
             $result = pnModAPIFunc('mediashare', 'edit', 'addMediaItem', $args);
             unlink($photoshareFilename);
             if ($result === false) {
-                return mediashareErrorAPI(__FILE__, __LINE__, "Got error while converting (" . $imageData['title'] . "): " . mediashareErrorAPIGet());
+                return LogUtil::registerError("Got error while converting ($imageData[title]).");
             }
 
             // Mark album as imported
@@ -143,18 +142,10 @@ function mediashareImportPhotoshareImages($photoshareFolderId, $mediashareAlbumI
 
 function mediashareStartPhotoshareRef()
 {
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $photoshareTable = $pntable['mediashare_photoshare'];
-    $photoshareColumn = $pntable['mediashare_photoshare_column'];
-
-    $sql = "TRUNCATE TABLE $photoshareTable";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"mediashareStartPhotoshareRef" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if (!DBUtil::truncateTable('mediashare_photoshare')) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('importapi.mediashareStartPhotoshareRef', __f("Could not clear the '%s' table.", 'photoshare', $dom)), $dom));
     }
 
     return true;
@@ -162,6 +153,8 @@ function mediashareStartPhotoshareRef()
 
 function mediashareAddPhotoshareRef($photoshareImageId, $args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+    
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
@@ -169,15 +162,15 @@ function mediashareAddPhotoshareRef($photoshareImageId, $args)
     $photoshareColumn = $pntable['mediashare_photoshare_column'];
 
     $sql = "INSERT INTO $photoshareTable
-            ($photoshareColumn[photoshareImageId], $photoshareColumn[mediashareThumbnailRef],
-             $photoshareColumn[mediasharePreviewRef], $photoshareColumn[mediashareOriginalRef])
-          VALUES ($photoshareImageId, '$args[thumbnailFileRef]',
-                  '$args[previewFileRef]', '$args[originalFileRef]')";
+                        ($photoshareColumn[photoshareImageId], $photoshareColumn[mediashareThumbnailRef],
+                         $photoshareColumn[mediasharePreviewRef], $photoshareColumn[mediashareOriginalRef])
+                 VALUES ($photoshareImageId, '$args[thumbnailFileRef]',
+                         '$args[previewFileRef]', '$args[originalFileRef]')";
 
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"mediashareAddPhotoshareRef" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('importapi.mediashareStartPhotoshareRef', 'Could not insert the references to photoshare.'), $dom));
     }
 
     return true;
@@ -185,6 +178,8 @@ function mediashareAddPhotoshareRef($photoshareImageId, $args)
 
 function mediashare_importapi_getMediashareUrl($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $thumbnail = $args['thumbnail'];
 
     list ($dbconn) = pnDBGetConn();
@@ -198,12 +193,12 @@ function mediashare_importapi_getMediashareUrl($args)
             $photoshareColumn[mediasharePreviewRef],
             $photoshareColumn[mediashareOriginalRef]
           FROM $photoshareTable
-          WHERE $photoshareColumn[photoshareImageId] = " . (int) $args[imageId];
+          WHERE $photoshareColumn[photoshareImageId] = ".(int)$args['imageId'];
 
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, '"getMediashareUrl" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('importapi.getMediashareUrl', 'Could not retrieve the references for the media item.'), $dom));
     }
 
     $thumbnailRef = $dbresult->fields[0];

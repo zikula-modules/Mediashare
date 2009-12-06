@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common-edit.php';
 
 function mediashare_source_zipapi_getTitle($args)
@@ -14,10 +13,13 @@ function mediashare_source_zipapi_getTitle($args)
 
 function mediashare_source_zipapi_addMediaItem($args)
 {
-    $uploadFilename = $args['uploadFilename'];
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
-    if (!array_key_exists('albumId', $args))
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Missing albumId in mediashare_source_zipapi_addMediaItem');
+    if (!array_key_exists('albumId', $args)) {
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'source_zipapi.addMediaItem'), $dom));
+    }
+
+    $uploadFilename = $args['uploadFilename'];
 
     $args['mediaFilename'] = $uploadFilename;
 
@@ -25,8 +27,6 @@ function mediashare_source_zipapi_addMediaItem($args)
 
     unlink($uploadFilename);
 
-    if ($result === false)
-        return false;
     return $result;
 }
 
@@ -61,4 +61,3 @@ function mediashare_source_zipapi_getUploadInfo($args)
 
     return array('post_max_size' => (int) ($post_max_size / 1000), 'upload_max_filesize' => (int) ($upload_max_filesize / 1000));
 }
-

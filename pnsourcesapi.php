@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 function mediashare_sourcesapi_getSources(&$args)
 {
     list ($dbconn) = pnDBGetConn();
@@ -20,8 +19,9 @@ function mediashare_sourcesapi_getSources(&$args)
 
     $result = $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"mediashare_sourcesapi_getSources" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('sourcesapi.getSources', 'Could not retrieve the sources.'), $dom));
+    }
 
     $sources = array();
 
@@ -38,24 +38,17 @@ function mediashare_sourcesapi_getSources(&$args)
 
 function mediashare_sourcesapi_scanSources($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     // Check access
-    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN))
-        return mediashareErrorAPI(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError();
+    }
+
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Clear existing sources table
-
-
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
-    $sourcesTable = $pntable['mediashare_sources'];
-    $sql = "TRUNCATE TABLE $sourcesTable";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"scanSources" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if (!DBUtil::truncateTable('mediashare_sources')) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('sourcesapi.scanSources', __f("Could not clear the '%s' table.", 'sources', $dom)), $dom));
+    }
 
     // Scan for sources
     if ($dh = opendir("modules/mediashare")) {
@@ -110,9 +103,9 @@ function mediashare_sourcesapi_addSource($args)
 
     $dbconn->execute($sql);
 
-    if ($dbconn->errorNo() != 0)
-        return mediashareErrorAPI(__FILE__, __LINE__, '"addSource" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+    if ($dbconn->errorNo() != 0) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('sourcesapi.addSource', 'Could not add a source.'), $dom));
+    }
 
     return true;
 }
-

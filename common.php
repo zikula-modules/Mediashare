@@ -147,23 +147,6 @@ function mediashareErrorPage($file, $line, $msg)
     return $smarty->fetch('mediashare_error.html');
 }
 
-function mediashareErrorAPI($file, $line, $msg, $setSession = true)
-{
-    global $mediashareErrorMessageAPI;
-
-    if ($file == null || !SecurityUtil::checkPermission('mediashare::', '', ACCESS_ADMIN)) {
-        $mediashareErrorMessageAPI = $msg;
-    } else {
-        $mediashareErrorMessageAPI = "$file($line): $msg";
-    }
-
-    if ($setSession) {
-        LogUtil::registerError($mediashareErrorMessageAPI);
-    }
-
-    return false;
-}
-
 function mediashareErrorAPIGet()
 {
     global $mediashareErrorMessageAPI;

@@ -22,7 +22,7 @@ class mediashare_vfsHandlerFSDirect
 
     $ok = @copy($filename, $newFilename);
     if ($ok === false) {
-      return mediashareErrorAPI(__FILE__, __LINE__, "Failed to copy file '$filename' to '$newFilename' while creating new file in virtual storage system. Please check media upload directory in admin settings and it's permissions.");
+      return LogUtil::registerError(__f('Unable to copy the file from \'%1$s\' to \'%2$s\'', array($filename, $newFilename), $dom).' '.__("while creating new file in virtual storage system. Please check media upload directory in admin settings and it's permissions.", $dom));
     }
 
     chmod($newFilename, 0777);
@@ -40,7 +40,7 @@ class mediashare_vfsHandlerFSDirect
     $orgFilename = $this->storageDir . '/' . pnVarPrepForOS($orgFileReference);
 
     if (!copy($newFilename, $orgFilename)) {
-      return mediashareErrorAPI(__FILE__, __LINE__, "Failed to copy '$newFilename' to '$orgFileReference'");
+      return LogUtil::registerError(__f('Unable to copy the file from \'%1$s\' to \'%2$s\'', array($newFilename, $orgFileReference), $dom));
     }
 
     return true;

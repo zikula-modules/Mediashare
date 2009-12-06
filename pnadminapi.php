@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once ("modules/mediashare/common-edit.php");
 
 /**
@@ -31,34 +30,24 @@ function mediashare_adminapi_getlinks()
 // =======================================================================
 // Scan for all media
 // =======================================================================
-
-
 function mediashare_adminapi_scanAllPlugins($args)
 {
     // Force load - it is used during pninit
     pnModAPILoad('mediashare', 'mediahandler', true);
 
-    $ok = pnModAPIFunc('mediashare', 'mediahandler', 'scanMediaHandlers');
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'mediahandler', 'scanMediaHandlers')) {
         return false;
     }
 
     // Force load - it is used during pninit
     pnModAPILoad('mediashare', 'sources', true);
 
-    $ok = pnModAPIFunc('mediashare', 'sources', 'scanSources');
-    if ($ok === false) {
-        return false;
-    }
-
-    return true;
+    return pnModAPIFunc('mediashare', 'sources', 'scanSources');
 }
 
 // =======================================================================
 // Set plugins
 // =======================================================================
-
-
 function mediashare_adminapi_setTemplateGlobally($args)
 {
     list ($dbconn) = pnDBGetConn();
@@ -75,8 +64,8 @@ function mediashare_adminapi_setTemplateGlobally($args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorAPI(__FILE__, __LINE__, 'Set template failed: ' . $dbconn->errorMsg() . " while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('adminapi.setTemplateGlobally', 'Could not set the template.'), $dom));
     }
+
     return true;
 }
-
