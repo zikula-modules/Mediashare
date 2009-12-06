@@ -20,7 +20,7 @@ function mediashare_vfs_db_dump()
     }
     // Check access
     if (!mediashareAccessAlbum($media['albumId'], mediashareAccessRequirementView, null)) {
-        return mediashareErrorPage(__FILE__, __LINE__, "You do not have access to this file");
+        return LogUtil::registerPermissionError();
     }
     // Some Photoshare users have reported this to make their setup work. The buffer may contain something
     // due to a buggy template or block
@@ -34,8 +34,6 @@ function mediashare_vfs_db_dump()
     }
 
     // Check cached versus modified date
-
-
     $lastModifiedDate = date('D, d M Y H:i:s T', $media['modifiedDate']);
     $currentETag = $media['modifiedDate'];
 

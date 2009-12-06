@@ -10,29 +10,33 @@ require_once 'modules/mediashare/elfisk/elfisk_common.php';
 
 function mediashare_invitation_send($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $invitationId = mediashareGetIntUrl('iid', $args, -1);
     if ($invitationId > 0) {
         $invitation = pnModAPIFunc('mediashare', 'invitation', 'getById', array('id' => $invitationId));
-        if ($invitation == null)
-            return mediashareErrorPage(__FILE__, __LINE__, "Unknown invitation");
-
+        if ($invitation == null) {
+            return LogUtil::registerError(__('Unknown invitation.', $dom));
+        }
         $albumId = $invitation['albumId'];
     } else {
         $albumId = mediashareGetIntUrl('aid', $args, -1);
-        if ($albumId < 0)
-            return mediashareErrorPage(__FILE__, __LINE__, "Missing URL parameter 'aid'");
-
+        if ($albumId < 0) {
+            return LogUtil::registerError(__f('Missing URL parameter (%s).', 'aid', $dom));
+        }
         $invitation = array('email' => '', 'subject' => __('Hi! See my new pictures', $dom), 'text' => '', 'sender' => pnUserGetVar('uname'), 'expires' => '');
     }
 
     // Check access
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, ''))
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, '')) {
+        return LogUtil::registerPermissionError();
+    }
 
-    if (isset($_POST['saveButton']) && $invitationId < 0)
+    if (isset($_POST['saveButton']) && $invitationId < 0) {
         return mediashareUpdateInvitation($args);
-    else if (isset($_POST['saveButton']) && $invitationId > 0)
+    } else if (isset($_POST['saveButton']) && $invitationId > 0) {
         return mediashareResendInvitation($invitationId, $albumId);
+    }
 
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
@@ -93,28 +97,33 @@ function mediashareResendInvitation($invitationId, $albumId)
 function mediashare_invitation_link($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
+
     $albumId = mediashareGetIntUrl('aid', $args, -1);
-    if ($albumId < 0)
-        return mediashareErrorPage(__FILE__, __LINE__, "Missing URL parameter 'aid'");
+    if ($albumId < 0) {
+        return LogUtil::registerError(__f('Missing URL parameter (%s).', 'aid', $dom));
+    }
 
     // Check access
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, ''))
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, '')) {
+        return LogUtil::registerPermissionError();
+    }
 
     $link = null;
     if (isset($_POST['generateButton'])) {
         $args = array('albumId' => $albumId, 'emails' => '', 'subject' => FormUtil::getPassedValue('subject'), 'text' => '', 'sender' => '', 'expires' => null);
 
         $invitationId = pnModAPIFunc('mediashare', 'invitation', 'createInvitationId', $args);
-        if ($invitationId === false)
+        if ($invitationId === false) {
             return false;
+        }
 
         $link = pnModUrl('mediashare', 'invitation', 'open', array('inv' => $invitationId), false, false, true);
     }
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false)
+    if ($album === false) {
         return false;
+    }
 
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
@@ -131,24 +140,28 @@ function mediashare_invitation_viewlink($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     $invitationId = mediashareGetIntUrl('iid', $args, -1);
-    if ($invitationId < 0)
-        return mediashareErrorPage(__FILE__, __LINE__, "Missing URL parameter 'iid'");
+    if ($invitationId < 0) {
+        return LogUtil::registerError(__f('Missing URL parameter (%s).', 'iid', $dom));
+    }
 
     $invitation = pnModAPIFunc('mediashare', 'invitation', 'getById', array('id' => $invitationId));
-    if ($invitation == null)
-        return mediashareErrorPage(__FILE__, __LINE__, "Unknown invitation");
+    if ($invitation == null) {
+        return LogUtil::registerError(__('Unknown invitation.', $dom));
+    }
 
     $albumId = $invitation['albumId'];
 
     // Check access
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, ''))
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, '')) {
+        return LogUtil::registerPermissionError();
+    }
 
     $link = pnModUrl('mediashare', 'invitation', 'open', array('inv' => $invitation['key']));
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false)
+    if ($album === false) {
         return false;
+    }
 
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
@@ -167,21 +180,25 @@ function mediashare_invitation_list($args)
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     // Check access
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, ''))
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, '')) {
+        return LogUtil::registerPermissionError();
+    }
 
-    if (isset($_POST['expireButton']))
+    if (isset($_POST['expireButton'])) {
         return mediashareExpireInvitations($args);
-    else if (isset($_POST['deleteButton']))
+    } else if (isset($_POST['deleteButton'])) {
         return mediashareDeleteInvitations($args);
+    }
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false)
+    if ($album === false) {
         return false;
+    }
 
     $invitations = pnModAPIFunc('mediashare', 'invitation', 'getInvitations', array('albumId' => $albumId));
-    if ($invitations === false)
+    if ($invitations === false) {
         return false;
+    }
 
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;

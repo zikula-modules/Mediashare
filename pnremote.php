@@ -117,12 +117,14 @@ function mediashare_remote_albumproperties()
 {
     $albumId = $_POST['set_albumName'];
 
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething))
-        return mediashareErrorPageRemote(__FILE__, __LINE__, 'Access denied');
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
+        return LogUtil::registerPermissionError();
+    }
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false)
+    if ($album === false) {
         return mediashareErrorAPIRemote();
+    }
 
     $size = (int) pnModGetVar('mediashare', 'previewSize');
 
@@ -189,8 +191,9 @@ function mediashare_remote_additem()
     $albumId = $_POST['set_albumName'];
     $uploadInfo = $_FILES['userfile'];
 
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, ''))
-        return mediashareErrorPageRemote(__FILE__, __LINE__, 'Access denied');
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, '')) {
+        return LogUtil::registerPermissionError();
+    }
 
     $result = pnModAPIFunc('mediashare', 'source_browser', 'addMediaItem', array(
         'albumId' => $albumId,
@@ -203,8 +206,10 @@ function mediashare_remote_additem()
         'description' => null,
         'width' => $width,
         'height' => $height));
-    if ($result === false)
+
+    if ($result === false) {
         return mediashareErrorAPIRemote();
+    }
 
     echo "__#GR2PROTO__
 status=0
@@ -216,12 +221,14 @@ item_name=$result[mediaId]";
 
 function mediashare_remote_newalbum()
 {
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddAlbum, ''))
-        return mediashareErrorPageRemote(__FILE__, __LINE__, 'Access denied');
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddAlbum, '')) {
+        return LogUtil::registerPermissionError();
+    }
 
     $newAlbumID = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array('title' => $_POST['newAlbumTitle'], 'keywords' => '', 'summary' => '', 'description' => $_POST['newAlbumDesc'], 'template' => null, 'parentAlbumId' => $_POST['set_albumName']));
-    if ($newAlbumID === false)
+    if ($newAlbumID === false) {
         return mediashareErrorAPIRemote();
+    }
 
     echo "__#GR2PROTO__
 status=0
@@ -233,13 +240,14 @@ album_name=$newAlbumID";
 
 function mediashare_remote_movealbum()
 {
-    $albumId = $_POST['set_albumName'];
+    $albumId    = $_POST['set_albumName'];
     $dstAlbumId = $_POST['set_destalbumName'];
 
     // Access control built into API funcion
     $ok = pnModAPIFunc('mediashare', 'edit', 'moveAlbum', array('albumId' => $albumId, 'dstAlbumId' => $dstAlbumId));
-    if ($ok === false)
+    if ($ok === false) {
         return mediashareErrorAPIRemote();
+    }
 
     echo "__#GR2PROTO__
 status=0
@@ -251,8 +259,6 @@ status_text=ok";
 function mediashare_remote_incrementviewcount()
 {
     // Ignore
-
-
     echo "__#GR2PROTO__
 status=0
 status_text=ok";
@@ -295,4 +301,3 @@ status_text=$msg";
 
     return true;
 }
-

@@ -4,15 +4,13 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
 
 function mediashare_import_main($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     $render = & pnRender::getInstance('mediashare');

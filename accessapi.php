@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2003.
 // =======================================================================
 
-
 class mediashareAccessApi
 {
     function hasAlbumAccess($albumId, $access, $viewKey)
@@ -53,18 +52,17 @@ class mediashareAccessApi
             return true;
 
         $sql = "SELECT COUNT(*)
-            FROM $accessTable
-            LEFT JOIN $membershipTable
-                  ON     $membershipColumn[gid] = $accessColumn[groupId]
-                     AND $membershipColumn[uid] = $userId
-            WHERE     $accessColumn[albumId] = $albumId
-                  AND ($accessColumn[access] & $access) != 0
-                  AND ($membershipColumn[gid] IS NOT NULL OR $accessColumn[groupId] = -1)";
+                  FROM $accessTable
+             LEFT JOIN $membershipTable
+                    ON $membershipColumn[gid] = $accessColumn[groupId]
+                   AND $membershipColumn[uid] = $userId
+                 WHERE $accessColumn[albumId] = $albumId
+                   AND ($accessColumn[access] & $access) != 0
+                   AND ($membershipColumn[gid] IS NOT NULL OR $accessColumn[groupId] = -1)";
 
         $dbresult = $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
-            echo mediashareErrorPage(__FILE__, __LINE__, '"hasAlbumAccess" failed: ' . $dbconn->errorMsg() . " while executing: $sql");
-            return false;
+            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('accessapi.hasAlbumAccess', 'Could not retrieve the user privilegies.'), $dom));
         }
 
         $hasAccess = $dbresult->fields[0];

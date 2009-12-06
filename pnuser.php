@@ -4,14 +4,11 @@
 // Mediashare by Jorn Wildt (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common.php';
 
 // =======================================================================
 // View album
 // =======================================================================
-
-
 function mediashare_user_main($args)
 {
     return mediashare_user_view($args);
@@ -35,7 +32,7 @@ function mediashare_user_browse($args)
 
     // Check access to album (media ID won't do a difference if not from this album)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
     // Fetch current album
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
@@ -116,8 +113,6 @@ function mediashare_user_browse($args)
 // =======================================================================
 // View items in slideshow
 // =======================================================================
-
-
 function mediashare_user_slideshow($args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 1);
@@ -130,7 +125,7 @@ function mediashare_user_slideshow($args)
 
     // Check access to album (media ID won't do a difference if not from this album)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     // Fetch current album
@@ -139,7 +134,7 @@ function mediashare_user_slideshow($args)
         return false;
     }
     if ($album === true) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Unknown album');
+        return LogUtil::registerError(__('Unknown album.', $dom));
     }
 
     // Fetch media items
@@ -233,8 +228,6 @@ function mediashare_user_slideshowcenter($args)
 // =======================================================================
 // View thumbnails list
 // =======================================================================
-
-
 function mediashare_user_thumbnails($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -244,7 +237,7 @@ function mediashare_user_thumbnails($args)
 
     // Check access (use albumId since no mediaId was passed)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething, $viewkey)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     // Fetch current album
@@ -253,7 +246,7 @@ function mediashare_user_thumbnails($args)
         return false;
     }
     if ($album === true) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Unknown album');
+        return LogUtil::registerError(__('Unknown album.', $dom));
     }
 
     // Fetch media items
@@ -300,7 +293,7 @@ function mediashare_user_simplethumbnails($args)
 
     // Check access (use albumId since no mediaId was passed)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     // Fetch current album
@@ -309,7 +302,7 @@ function mediashare_user_simplethumbnails($args)
         return false;
     }
     if ($album === true) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Unknown album');
+        return LogUtil::registerError(__('Unknown album.', $dom));
     }
 
     // Fetch media items
@@ -340,7 +333,6 @@ function mediashare_user_simplethumbnails($args)
 // Display single item
 // =======================================================================
 
-
 // Display fullscreen item - including <html> ... </html>
 function mediashare_user_display($args)
 {
@@ -357,13 +349,14 @@ function mediashare_user_display($args)
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething, $viewkey)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('mediaItem', $mediaItem);
 
-    echo $render->fetch('mediashare_user_display.html');
+    $render->display('mediashare_user_display.html');
     return true;
 }
 
@@ -389,7 +382,7 @@ function mediashare_user_simpledisplay($args)
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     $render = & pnRender::getInstance('mediashare');
@@ -408,7 +401,6 @@ function mediashare_user_simpledisplay($args)
 
 function mediashare_user_displaygb($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
     $viewkey = FormUtil::getPassedValue('viewkey');
 
@@ -420,21 +412,20 @@ function mediashare_user_displaygb($args)
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething, $viewkey)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('mediaItem', $mediaItem);
 
-    echo $render->fetch('mediashare_user_displaygb.html');
+    $render->display('mediashare_user_displaygb.html');
     return true;
 }
 
 // =======================================================================
 // View latest items
 // =======================================================================
-
-
 function mediashare_user_latest($args)
 {
     $latestMediaItems = pnModAPIFunc('mediashare', 'user', 'getLatestMediaItems');
@@ -475,8 +466,6 @@ function mediashare_user_latest($args)
 // =======================================================================
 // Keywords
 // =======================================================================
-
-
 function mediashare_user_keys($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -498,8 +487,6 @@ function mediashare_user_keys($args)
 // =======================================================================
 // List
 // =======================================================================
-
-
 function mediashare_user_list($args)
 {
 
@@ -602,8 +589,6 @@ function mediashare_user_albumxmllist($args)
 // =======================================================================
 // Ext. app. help
 // =======================================================================
-
-
 function mediashare_user_extapphelp($args)
 {
     $settings = pnModAPIFunc('mediashare', 'user', 'getSettings');
@@ -615,5 +600,3 @@ function mediashare_user_extapphelp($args)
 
     return $render->fetch('mediashare_user_extapphelp.html');
 }
-
-

@@ -127,7 +127,7 @@ function mediashareGetMimeType($filename)
 function mediashareSourceZipUpload(& $args)
 {
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
 
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -135,18 +135,21 @@ function mediashareSourceZipUpload(& $args)
     $albumId = mediashareGetIntUrl('aid', $args, 0);
 
     // Check access
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, ''))
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, '')) {
+        return LogUtil::registerPermissionError();
+    }
 
     // Get parent album information
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false)
+    if ($album === false) {
         return false;
+    }
 
     // Get user information
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
-    if ($userInfo === false)
+    if ($userInfo === false) {
         return false;
+    }
 
     $totalCapacityUsed = $userInfo['totalCapacityUsed'];
 
@@ -178,10 +181,12 @@ function mediashareSourceZipUpload(& $args)
                 //                  echo "<br>\n";
                 if (zip_entry_filesize($zipEntry) > 0) {
                     $result = mediashareSourceZipAddFile($zip, $zipEntry, $args);
+
                     if ($result === false)
                         $status = array('ok' => false, 'message' => LogUtil::getErrorMessagesText());
                     else
                         $status = array('ok' => true, 'message' => $result['message'], 'mediaId' => $result['mediaId']);
+
                     $statusSet = array_merge($statusSet, array($status));
                 }
             }
@@ -200,13 +205,14 @@ function mediashareSourceZipUpload(& $args)
     }
     $album['imageCount'] += $acceptedImageNum; // Update for showing only
 
-
-    if ($acceptedImageNum == 0)
+    if ($acceptedImageNum == 0) {
         $statusSet[] = array('ok' => false, 'message' => __('No media items', $dom));
+    }
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $editMediaIds));
-    if ($items === false)
+    if ($items === false) {
         return false;
+    }
 
     $render = & pnRender::getInstance('mediashare');
 
@@ -221,7 +227,7 @@ function mediashareSourceZipUpload(& $args)
 function mediashareSourceZipUpdate()
 {
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
 
     $mediaIds = FormUtil::getPassedValue('mediaId');
@@ -235,7 +241,7 @@ function mediashareSourceZipUpdate()
 
         // Check access
         if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
-            return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+            return LogUtil::registerPermissionError();
         }
 
         $ok = pnModAPIFunc('mediashare', 'edit', 'updateItem', array('mediaId' => $mediaId, 'title' => $title, 'keywords' => $keywords, 'description' => $description));

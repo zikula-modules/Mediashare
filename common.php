@@ -122,25 +122,6 @@ function mediashareAddAccess(&$render, $album)
 }
 
 // =======================================================================
-// Error handling
-// =======================================================================
-function mediashareErrorPage($file, $line, $msg)
-{
-    if ($file == null || !SecurityUtil::checkPermission('mediashare::', '', ACCESS_ADMIN)) {
-        $text = $msg;
-    } else {
-        $text = "$file($line): $msg";
-    }
-
-    $text = DataUtil::formatForDisplay($text);
-
-    $smarty = & pnRender::getInstance('mediashare');
-    $smarty->caching = false;
-    $smarty->assign('errorMessage', $text);
-    return $smarty->fetch('mediashare_error.html');
-}
-
-// =======================================================================
 // Other
 // =======================================================================
 function mediashareStripKeywords($keywords)
@@ -164,17 +145,15 @@ function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset)
     $foldersTable  = $pntable['mediashare_albums'];
     $foldersColumn = & $pntable['mediashare_albums_column'];
 
-    $sql = "SELECT
-                $foldersColumn[id]
-            FROM
-                $foldersTable
-            WHERE $foldersColumn[parentAlbumId] = '" . DataUtil::formatForStore($parentFolderID) . "'
-              AND $foldersColumn[title] = '" . DataUtil::formatForStore($folderTitle) . "'";
+    $sql = "SELECT $foldersColumn[id]
+              FROM $foldersTable
+             WHERE $foldersColumn[parentAlbumId] = '" . DataUtil::formatForStore($parentFolderID) . "'
+               AND $foldersColumn[title] = '" . DataUtil::formatForStore($folderTitle) . "'";
 
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return mediashareErrorPage(__FILE__, __LINE__, "'EnsureFolderExists' failed while executing: $sql");
+        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('common.EnsureFolderExists', 'Could not retrieve the folder information.'), $dom), 404);
     }
 
     // No ID => folder does not exist. Create it.

@@ -4,30 +4,27 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
 
 // =======================================================================
 // View album in edit-mode
 // =======================================================================
-
-
 function mediashare_edit_view($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $page = mediashareGetIntUrl('page', $args, 0);
+    $page    = mediashareGetIntUrl('page', $args, 0);
     $showAll = mediashareGetBoolUrl('showall', $args, false);
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditSomething, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     if (!pnUserLoggedIn()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You must be logged in to use this feature', $dom));
+        return LogUtil::registerError(__('You must be logged in to use this feature', $dom));
     }
 
     // Check multi-edit buttons
@@ -47,31 +44,28 @@ function mediashare_edit_view($args)
     }
 
     // Fetch current album
-
-
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return false;
     }
     if ($album === true) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Unknown album');
+        return LogUtil::registerError(__('Unknown album.', $dom));
     }
+
     // Fetch subalbums
-
-
     $subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementEditSomething));
     if ($subAlbums === false) {
         return false;
     }
+
     // Fetch media items
-
-
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
     if ($items === false) {
         return false;
     }
-    $render = & pnRender::getInstance('mediashare');
-    $render->caching = false;
+
+    $render = & pnRender::getInstance('mediashare', false);
+
     $render->assign('album', $album);
     $render->assign('subAlbums', $subAlbums);
     $render->assign('mediaItems', $items);
@@ -79,26 +73,23 @@ function mediashare_edit_view($args)
     if (!mediashareAddAccess($render, $album)) {
         return false;
     }
+
     return $render->fetch('mediashare_edit_view.html');
 }
 
 // =======================================================================
 // Add / edit album
 // =======================================================================
-
-
 global $mediashare_albumFields;
 $mediashare_albumFields = array('title' => array('type' => 'string'), 'keywords' => array('type' => 'string'), 'summary' => array('type' => 'string'), 'description' => array('type' => 'string'), 'template' => array('type' => 'string'), 'extappURL' => array('type' => 'string'));
 
 function mediashare_edit_addalbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddAlbum, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
     if (isset($_POST['saveButton'])) {
         return mediashareAddAlbum($args);
@@ -125,10 +116,8 @@ function mediashare_edit_addalbum($args)
 
 function mediashareAddAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
 
     $parentAlbumId = mediashareGetIntUrl('aid', $args, 1);
@@ -145,13 +134,12 @@ function mediashareAddAlbum($args)
     if ($newAlbumID === false) {
         return false;
     }
+
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $newAlbumID)));
 }
 
 function mediashare_edit_editalbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     if (isset($_POST['saveButton'])) {
@@ -162,8 +150,9 @@ function mediashare_edit_editalbum($args)
     }
 
     // Check access
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, ''))
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, '')) {
+        return LogUtil::registerPermissionError();
+    }
 
     // Get album info
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId, 'enableEscape' => false));
@@ -183,16 +172,15 @@ function mediashare_edit_editalbum($args)
 
 function mediashareUpdateAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     global $mediashare_albumFields;
@@ -208,7 +196,6 @@ function mediashareUpdateAlbum($args)
 
 function mediashare_edit_deleteAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     if (isset($_POST['okButton'])) {
@@ -221,7 +208,7 @@ function mediashare_edit_deleteAlbum($args)
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     // Get album info
@@ -240,16 +227,15 @@ function mediashare_edit_deleteAlbum($args)
 
 function mediashareDeleteAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     // Get album info
@@ -278,11 +264,11 @@ function mediashare_edit_movealbum($args)
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     if ($albumId == 1) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Cannot move top album');
+        return LogUtil::registerError(__('Cannot move top album.', $dom));
     }
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, ''))
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
 
     if (isset($_POST['saveButton'])) {
         return mediashareUpdateMoveAlbum($args);
@@ -326,29 +312,32 @@ function mediashare_edit_addmedia($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
+    $albumId    = mediashareGetIntUrl('aid', $args, 1);
     $sourceName = mediashareGetStringUrl('source', $args);
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
     // Get parent album info (ignore unknown parent => this means we add to a top most album)
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return false;
     }
+
     // Get media sources
     $sources = pnModAPIFunc('mediashare', 'sources', 'getSources');
     if ($sources === false) {
         return false;
     }
     if (count($sources) == 0) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('No media sources found. You need to go to the admin part and make a scan for media sources.', $dom));
+        return LogUtil::registerError(__('No media sources found. You need to go to the admin part and make a scan for media sources.', $dom));
     }
     if ($sourceName == '') {
         $sourceName = $sources[0]['name'];
     }
+
     // Find current source
     $source = null;
     foreach ($sources as $s) {
@@ -357,9 +346,9 @@ function mediashare_edit_addmedia($args)
         }
     }
 
-    $selectedSourceFile = "source_{$sourceName}";
+    $selectedSourceFile = DataUtil::formatForStore("source_{$sourceName}");
     if (!pnModLoad('mediashare', $selectedSourceFile)) {
-        return mediashareErrorPage(__FILE__, __LINE__, "Failed to load Mediashare $selectedSourceFile file");
+        return LogUtil::registerError("Failed to load Mediashare $selectedSourceFile file");
     }
 
     $sourceHtml = pnModFunc('mediashare', $selectedSourceFile, 'view');
@@ -411,7 +400,7 @@ function mediashare_edit_edititem($args)
 
     // Do late access check so we can get "unknown item" error message from 'getMediaItem'
     if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $item['parentAlbumId']));
@@ -431,9 +420,8 @@ function mediashare_edit_edititem($args)
 
 function mediashareUpdateItem($args, $backUrl)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
@@ -441,7 +429,7 @@ function mediashareUpdateItem($args, $backUrl)
 
     // Check access
     if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     global $mediashare_itemFields;
@@ -451,7 +439,7 @@ function mediashareUpdateItem($args, $backUrl)
     $height = FormUtil::getPassedValue('height');
 
     if (isset($uploadInfo['error']) && $uploadInfo['error'] != 0 && $uploadInfo['name'] != '') {
-        return mediashareErrorPage(__FILE__, __LINE__, $uploadInfo['name'] . ': ' . mediashareUploadErrorMsg($uploadInfo['error']));
+        return LogUtil::registerError(DataUtil::formatForDisplay($uploadInfo['name']).': '.mediashareUploadErrorMsg($uploadInfo['error']));
     }
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'updateItem', $values + array(
@@ -462,6 +450,7 @@ function mediashareUpdateItem($args, $backUrl)
         'mimeType' => $uploadInfo['type'],
         'width' => $width,
         'height' => $height));
+
     if ($ok === false) {
         return false;
     }
@@ -471,13 +460,12 @@ function mediashareUpdateItem($args, $backUrl)
 
 function mediashare_edit_deleteitem($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     // Check access
     if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     if (isset($_POST['okButton'])) {
@@ -508,10 +496,8 @@ function mediashare_edit_deleteitem($args)
 
 function mediashareDeleteItem($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
@@ -527,11 +513,10 @@ function mediashareDeleteItem($args)
 
 function mediashare_edit_multieditmedia($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
     $albumId    = mediashareGetIntUrl('aid', $args, 1);
     $mediaIdStr = FormUtil::getPassedValue('mid');
 
@@ -561,10 +546,8 @@ function mediashare_edit_multieditmedia($args)
 
 function mediashareMultiUpdateItems()
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
@@ -580,7 +563,7 @@ function mediashareMultiUpdateItems()
 
         // Check access
         if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
-            return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+            return LogUtil::registerPermissionError();
         }
 
         $ok = pnModAPIFunc('mediashare', 'edit', 'updateItem', array('mediaId' => $mediaId, 'title' => $title, 'keywords' => $keywords, 'description' => $description));
@@ -595,11 +578,10 @@ function mediashareMultiUpdateItems()
 
 function mediashare_edit_multideletemedia($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaIdStr = FormUtil::getPassedValue('mid');
 
@@ -629,11 +611,10 @@ function mediashare_edit_multideletemedia($args)
 
 function mediashareMultiDeleteMedia()
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
+
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     $mediaIds = FormUtil::getPassedValue('mediaId');
@@ -643,8 +624,9 @@ function mediashareMultiDeleteMedia()
 
         // Check access (mediaId is from URL and need not all be from same album)
         if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
-            return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+            return LogUtil::registerPermissionError();
         }
+
         $ok = pnModAPIFunc('mediashare', 'edit', 'deleteMediaItem', array('mediaId' => $mediaId));
         if ($ok === false) {
             return false;
@@ -656,11 +638,10 @@ function mediashareMultiDeleteMedia()
 
 function mediashare_edit_multimovemedia($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaIdStr = FormUtil::getPassedValue('mid');
 
@@ -690,11 +671,10 @@ function mediashare_edit_multimovemedia($args)
 
 function mediashareMultiMoveMedia()
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
+
     $albumId = mediashareGetIntUrl('newalbumid', $args, 1);
 
     $mediaIds = FormUtil::getPassedValue('mediaId');
@@ -704,8 +684,9 @@ function mediashareMultiMoveMedia()
 
         // Check access (mediaId is from URL and need not all be from same album)
         if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
-            return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+            return LogUtil::registerPermissionError();
         }
+
         $ok = pnModAPIFunc('mediashare', 'edit', 'moveMediaItem', array('mediaId' => $mediaId, 'albumId' => $albumId));
         if ($ok === false) {
             return false;
@@ -718,17 +699,14 @@ function mediashareMultiMoveMedia()
 // =======================================================================
 // Set main item
 // =======================================================================
-
-
 function mediashare_edit_setmainitem($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'setMainItem', array('albumId' => $albumId, 'mediaId' => $mediaId));
@@ -741,17 +719,13 @@ function mediashare_edit_setmainitem($args)
 // =======================================================================
 // Arrange items
 // =======================================================================
-
-
 function mediashare_edit_arrange($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia | mediashareAccessRequirementEditMedia, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
     if (isset($_POST['saveButton'])) {
         return mediashareArrangeAlbum($args);
@@ -760,8 +734,10 @@ function mediashare_edit_arrange($args)
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     if (!pnUserLoggedIn()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You must be logged in to use this feature', $dom));
+        return LogUtil::registerError(__('You must be logged in to use this feature', $dom));
     }
 
     // Fetch current album
@@ -770,7 +746,7 @@ function mediashare_edit_arrange($args)
         return false;
     }
     if ($album === true) {
-        return mediashareErrorPage(__FILE__, __LINE__, 'Unknown album');
+        return LogUtil::registerError(__('Unknown album.', $dom));
     }
 
     // Fetch media items
@@ -790,10 +766,8 @@ function mediashare_edit_arrange($args)
 
 function mediashareArrangeAlbum($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
@@ -821,7 +795,7 @@ function mediashare_edit_access($args)
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, '')) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
     if (isset($_POST['saveButton'])) {
         return mediashareUpdateAccess($args);
@@ -853,11 +827,10 @@ function mediashare_edit_access($args)
 
 function mediashareUpdateAccess($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::confirmAuthKey()) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
+        return LogUtil::registerAuthidError();
     }
+
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     $groups = pnModAPIFunc('mediashare', 'edit', 'getAccessGroups');
@@ -868,11 +841,11 @@ function mediashareUpdateAccess($args)
     $access = array();
     foreach ($groups as $group)
     {
-        $accessView = FormUtil::getPassedValue('accessView' . $group['groupId']) != null;
+        $accessView      = FormUtil::getPassedValue('accessView' . $group['groupId']) != null;
         $accessEditAlbum = FormUtil::getPassedValue('accessEditAlbum' . $group['groupId']) != null;
         $accessEditMedia = FormUtil::getPassedValue('accessEditMedia' . $group['groupId']) != null;
-        $accessAddAlbum = FormUtil::getPassedValue('accessAddAlbum' . $group['groupId']) != null;
-        $accessAddMedia = FormUtil::getPassedValue('accessAddMedia' . $group['groupId']) != null;
+        $accessAddAlbum  = FormUtil::getPassedValue('accessAddAlbum' . $group['groupId']) != null;
+        $accessAddMedia  = FormUtil::getPassedValue('accessAddMedia' . $group['groupId']) != null;
 
         $access[] = array('groupId' => $group['groupId'], 'accessView' => $accessView, 'accessEditAlbum' => $accessEditAlbum, 'accessEditMedia' => $accessEditMedia, 'accessAddAlbum' => $accessAddAlbum, 'accessAddMedia' => $accessAddMedia);
     }
@@ -881,6 +854,6 @@ function mediashareUpdateAccess($args)
     if ($ok === false) {
         return false;
     }
+
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
-

@@ -4,21 +4,16 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
 
 // =======================================================================
 // General settings
 // =======================================================================
-
-
 function mediashare_admin_main($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     if (isset($_POST['saveButton']) || isset($_POST['templateButton'])) {
@@ -73,6 +68,7 @@ function mediashareAdminSettings($args)
     if ($ok === false) {
         return false;
     }
+
     if (FormUtil::getPassedValue('templateButton')) {
         $ok = pnModAPIFunc('mediashare', 'admin', 'setTemplateGlobally', array('template' => $settings['defaultAlbumTemplate']));
         if ($ok === false) {
@@ -86,26 +82,26 @@ function mediashareAdminSettings($args)
 // =======================================================================
 // Plugins
 // =======================================================================
-
-
 function mediashare_admin_plugins($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
     if (isset($_POST['scanButton'])) {
         return mediashareAdminScanPlugins();
     }
+
     $mediaHandlers = pnModAPIFunc('mediashare', 'mediahandler', 'getMediaHandlers');
     if ($mediaHandlers === false) {
         return false;
     }
+
     $sources = pnModAPIFunc('mediashare', 'sources', 'getSources');
     if ($sources === false) {
         return false;
     }
+
     $render = & pnRender::getInstance('mediashare');
     $render->caching = false;
     $render->assign('mediaHandlers', $mediaHandlers);
@@ -126,18 +122,16 @@ function mediashareAdminScanPlugins()
 // =======================================================================
 // Recalculate images
 // =======================================================================
-
-
 function mediashare_admin_recalc($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
+
     if (isset($_POST['recalcButton'])) {
         return mediashareAdminRecalculate($args);
     }
+
     $allItems = pnModAPIFunc('mediashare', 'user', 'getList', array('pageSize' => 999999999));
 
     $render = & pnRender::getInstance('mediashare');
@@ -149,10 +143,8 @@ function mediashare_admin_recalc($args)
 
 function mediashare_admin_recalcitem($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
-        return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
+        return LogUtil::registerPermissionError();
     }
 
     $mediaId = mediashareGetIntUrl('id');
@@ -161,6 +153,7 @@ function mediashare_admin_recalcitem($args)
     if ($ok === false) {
         return false;
     }
+
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
     if ($mediaItem === false) {
         return false;
@@ -170,9 +163,6 @@ function mediashare_admin_recalcitem($args)
     $render->caching = false;
     $render->assign('item', $mediaItem);
 
-    echo $render->fetch('mediashare_admin_recalcitem.html');
-
+    $render->display('mediashare_admin_recalcitem.html');
     return true;
 }
-
-
