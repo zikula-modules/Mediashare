@@ -112,7 +112,7 @@ function mediashare_external_pasteitem($args)
 
 function mediashareExternalLoadTheme(&$render)
 {
-    $theme = pnVarPrepForOS(pnUserGetTheme());
+    $theme = DataUtil::formatForOS(pnUserGetTheme());
     if (file_exists("themes/$theme/style/style.css")) {
         $themeCssURL = "themes/$theme/style/style.css";
     } else {

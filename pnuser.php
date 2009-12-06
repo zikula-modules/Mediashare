@@ -69,8 +69,8 @@ function mediashare_user_browse($args)
     $mediaItemPos = 1;
     $pos = 1;
     foreach ($items as $item) {
-        if ($mediaItem != null) // Media-Current item found, so this must be next
-{
+        if ($mediaItem != null) {
+            // Media-Current item found, so this must be next
             $nextMediaId = $item['id'];
             break;
         }
@@ -100,7 +100,7 @@ function mediashare_user_browse($args)
     if (!mediashareAddAccess($render, $album)) {
         return false;
     }
-    $template = pnVarPrepForOS($album['template']);
+    $template = DataUtil::formatForOS($album['template']);
     $templateFilename = "Frontend/$template/album.html";
     if (!$render->template_exists($templateFilename)) {
         $templateFilename = "Frontend/Standard/album.html";
@@ -276,7 +276,7 @@ function mediashare_user_thumbnails($args)
         return false;
     }
 
-    $template = pnVarPrepForOS($album['template']);
+    $template = DataUtil::formatForOS($album['template']);
     $templateFilename = "Frontend/$template/thumbnails.html";
     if (!$render->template_exists($templateFilename)) {
         $templateFilename = "Frontend/Standard/thumbnails.html";
