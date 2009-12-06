@@ -145,7 +145,10 @@ function mediashare_randomblock_modify($blockinfo)
 
 function mediashare_randomblock_update($blockinfo)
 {
-    $vars = array('type' => pnVarCleanFromInput('mstype'), 'albumId' => (int) pnVarCleanFromInput('msalbumId'), 'cacheTime' => (int) pnVarCleanFromInput('cacheTime'), 'html' => pnVarCleanFromInput('mshtml'));
+    $vars = array('type'      => FormUtil::getPassedValue('mstype'),
+                  'albumId'   => (int)FormUtil::getPassedValue('msalbumId'),
+                  'cacheTime' => (int)FormUtil::getPassedValue('cacheTime'),
+                  'html'      => FormUtil::getPassedValue('mshtml'));
 
     $blockinfo['content'] = pnBlockVarsToContent($vars);
     //var_dump($blockinfo); exit(0);

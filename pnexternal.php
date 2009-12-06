@@ -15,12 +15,10 @@ require_once 'modules/mediashare/common.php';
 function mediashare_external_finditem($args)
 {
     // FIXME access check
-
-
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $mediaId = mediashareGetIntUrl('mid', $args, 0);
-    $mode = pnVarCleanFromInput('mode');
-    $cmd = pnVarCleanFromInput('cmd');
+    $albumId  = mediashareGetIntUrl('aid', $args, 1);
+    $mediaId  = mediashareGetIntUrl('mid', $args, 0);
+    $mode     = FormUtil::getPassedValue('mode');
+    $cmd      = FormUtil::getPassedValue('cmd');
     $onlyMine = mediashareGetIntUrl('onlymine', $args, 0);
 
     $uploadFailed = false;
@@ -84,7 +82,7 @@ function mediashare_external_pasteitem($args)
 
     $albumId = mediashareGetIntUrl('aid', $args, 0);
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
-    $mode = pnVarCleanFromInput('mode');
+    $mode = FormUtil::getPassedValue('mode');
 
     if (isset($_POST['backButton'])) {
         $url = pnModUrl('mediashare', 'external', 'finditem', array('aid' => $albumId, 'mid' => $mediaId, 'mode' => $mode));

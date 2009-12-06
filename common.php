@@ -25,7 +25,7 @@ define('mediashareAccessRequirementViewSomething', mediashareAccessRequirementVi
 
 function mediashareGetIntUrl($param, &$args, $default)
 {
-    $i = (array_key_exists($param, $args) ? $args[$param] : pnVarCleanFromInput($param));
+    $i = isset($args[$param]) ? $args[$param] : FormUtil::getPassedValue($param);
 
     if ($i == '') {
         $i = $default;
@@ -36,7 +36,7 @@ function mediashareGetIntUrl($param, &$args, $default)
 
 function mediashareGetBoolUrl($param, &$args, $default)
 {
-    $i = (array_key_exists($param, $args) ? $args[$param] : pnVarCleanFromInput($param));
+    $i = (array_key_exists($param, $args) ? $args[$param] : FormUtil::getPassedValue($param));
 
     if ($i == '') {
         $i = $default;
@@ -49,7 +49,7 @@ function mediashareGetBoolUrl($param, &$args, $default)
 
 function mediashareGetStringUrl($param, &$args, $default = null)
 {
-    $s = (array_key_exists($param, $args) ? $args[$param] : pnVarCleanFromInput($param));
+    $s = (array_key_exists($param, $args) ? $args[$param] : FormUtil::getPassedValue($param));
 
     if ($s == '') {
         $s = $default;

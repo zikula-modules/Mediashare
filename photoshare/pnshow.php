@@ -11,14 +11,13 @@
 
 function photoshare_show_viewimage()
 {
-    $imageID = pnVarCleanFromInput('iid');
-    $thumbnail = intval(pnVarCleanFromInput('thumbnail'));
+    $imageID   = FormUtil::getPassedValue('iid');
+    $thumbnail = (int)FormUtil::getPassedValue('thumbnail');
 
     if (!pnModAPILoad('mediashare', 'import'))
         return photoshareErrorPage(__FILE__, __LINE__, "Failed to load Mediashare import API");
 
     $mediashareUrl = pnModAPIFunc('mediashare', 'import', 'getMediashareUrl', array('imageId' => $imageID, 'thumbnail' => $thumbnail));
 
-    pnRedirect($mediashareUrl);
-    return true;
+    return pnRedirect($mediashareUrl);
 }

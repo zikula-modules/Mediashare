@@ -35,7 +35,7 @@ function mediashare_edit_view($args)
     }
 
     // Check multi-edit buttons
-    $selectedMediaId = pnVarCleanFromInput('selectedMediaId');
+    $selectedMediaId = FormUtil::getPassedValue('selectedMediaId');
     if ((isset($_POST['multiedit_x']) || isset($_POST['multidelete_x']) || isset($_POST['multimove_x'])) && count($selectedMediaId) > 0) {
         $mediaIdList = implode(',', $selectedMediaId);
         if (isset($_POST['multiedit_x'])) {
@@ -147,12 +147,12 @@ function mediashareAddAlbum($args)
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
     }
     $newAlbumID = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array(
-        'title' => pnVarCleanFromInput('title'),
-        'keywords' => pnVarCleanFromInput('keywords'),
-        'summary' => pnVarCleanFromInput('summary'),
-        'description' => pnVarCleanFromInput('description'),
-        'template' => pnVarCleanFromInput('template'),
-        'extappURL' => pnVarCleanFromInput('extappURL'),
+        'title' => FormUtil::getPassedValue('title'),
+        'keywords' => FormUtil::getPassedValue('keywords'),
+        'summary' => FormUtil::getPassedValue('summary'),
+        'description' => FormUtil::getPassedValue('description'),
+        'template' => FormUtil::getPassedValue('template'),
+        'extappURL' => FormUtil::getPassedValue('extappURL'),
         'parentAlbumId' => $parentAlbumId));
     if ($newAlbumID === false) {
         return mediashareErrorAPIGet();
@@ -501,9 +501,9 @@ function mediashareUpdateItem($args, $backUrl)
 
     global $mediashare_itemFields;
     $values = elfisk_decodeInput($mediashare_itemFields);
-    $uploadInfo = $_FILES["upload"];
-    $width = pnVarCleanFromInput("width");
-    $height = pnVarCleanFromInput("height");
+    $uploadInfo = $_FILES['upload'];
+    $width = FormUtil::getPassedValue('width');
+    $height = FormUtil::getPassedValue('height');
 
     if (isset($uploadInfo['error']) && $uploadInfo['error'] != 0 && $uploadInfo['name'] != '') {
         return mediashareErrorPage(__FILE__, __LINE__, $uploadInfo['name'] . ': ' . mediashareUploadErrorMsg($uploadInfo['error']));
@@ -598,8 +598,8 @@ function mediashare_edit_multieditmedia($args)
     if (!pnSecAuthAction(0, 'mediashare::', '::', ACCESS_EDIT)) {
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $mediaIdStr = pnVarCleanFromInput('mid');
+    $albumId    = mediashareGetIntUrl('aid', $args, 1);
+    $mediaIdStr = FormUtil::getPassedValue('mid');
 
     $mediaIdList = explode(',', $mediaIdStr);
 
@@ -644,13 +644,14 @@ function mediashareMultiUpdateItems()
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
     }
 
-    $mediaIds = pnVarCleanFromInput('mediaId');
-    foreach ($mediaIds as $mediaId) {
+    $mediaIds = FormUtil::getPassedValue('mediaId');
+    foreach ($mediaIds as $mediaId)
+    {
         $mediaId = (int) $mediaId;
 
-        $title = pnVarCleanFromInput("title-$mediaId");
-        $keywords = pnVarCleanFromInput("keywords-$mediaId");
-        $description = pnVarCleanFromInput("description-$mediaId");
+        $title = FormUtil::getPassedValue("title-$mediaId");
+        $keywords = FormUtil::getPassedValue("keywords-$mediaId");
+        $description = FormUtil::getPassedValue("description-$mediaId");
 
         // Check access
         if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
@@ -676,7 +677,7 @@ function mediashare_edit_multideletemedia($args)
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $mediaIdStr = pnVarCleanFromInput('mid');
+    $mediaIdStr = FormUtil::getPassedValue('mid');
 
     $mediaIdList = explode(',', $mediaIdStr);
 
@@ -717,8 +718,9 @@ function mediashareMultiDeleteMedia()
     if (!pnModAPILoad('mediashare', 'edit')) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
     }
-    $mediaIds = pnVarCleanFromInput('mediaId');
-    foreach ($mediaIds as $mediaId) {
+    $mediaIds = FormUtil::getPassedValue('mediaId');
+    foreach ($mediaIds as $mediaId)
+    {
         $mediaId = (int) $mediaId;
 
         // Check access (mediaId is from URL and need not all be from same album)
@@ -743,7 +745,7 @@ function mediashare_edit_multimovemedia($args)
         return mediashareErrorPage(__FILE__, __LINE__, __('You do not have access to this feature', $dom));
     }
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $mediaIdStr = pnVarCleanFromInput('mid');
+    $mediaIdStr = FormUtil::getPassedValue('mid');
 
     $mediaIdList = explode(',', $mediaIdStr);
 
@@ -786,7 +788,7 @@ function mediashareMultiMoveMedia()
     if (!pnModAPILoad('mediashare', 'edit')) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
     }
-    $mediaIds = pnVarCleanFromInput('mediaId');
+    $mediaIds = FormUtil::getPassedValue('mediaId');
     foreach ($mediaIds as $mediaId) {
         $mediaId = (int) $mediaId;
 
@@ -895,7 +897,7 @@ function mediashareArrangeAlbum($args)
     }
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $seq = pnVarCleanFromInput('seq');
+    $seq = FormUtil::getPassedValue('seq');
 
     if (!pnModAPILoad('mediashare', 'edit')) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare edit API');
@@ -983,12 +985,13 @@ function mediashareUpdateAccess($args)
     }
 
     $access = array();
-    foreach ($groups as $group) {
-        $accessView = pnVarCleanFromInput('accessView' . $group['groupId']) != null;
-        $accessEditAlbum = pnVarCleanFromInput('accessEditAlbum' . $group['groupId']) != null;
-        $accessEditMedia = pnVarCleanFromInput('accessEditMedia' . $group['groupId']) != null;
-        $accessAddAlbum = pnVarCleanFromInput('accessAddAlbum' . $group['groupId']) != null;
-        $accessAddMedia = pnVarCleanFromInput('accessAddMedia' . $group['groupId']) != null;
+    foreach ($groups as $group)
+    {
+        $accessView = FormUtil::getPassedValue('accessView' . $group['groupId']) != null;
+        $accessEditAlbum = FormUtil::getPassedValue('accessEditAlbum' . $group['groupId']) != null;
+        $accessEditMedia = FormUtil::getPassedValue('accessEditMedia' . $group['groupId']) != null;
+        $accessAddAlbum = FormUtil::getPassedValue('accessAddAlbum' . $group['groupId']) != null;
+        $accessAddMedia = FormUtil::getPassedValue('accessAddMedia' . $group['groupId']) != null;
 
         $access[] = array('groupId' => $group['groupId'], 'accessView' => $accessView, 'accessEditAlbum' => $accessEditAlbum, 'accessEditMedia' => $accessEditMedia, 'accessAddAlbum' => $accessAddAlbum, 'accessAddMedia' => $accessAddMedia);
     }

@@ -29,10 +29,10 @@ function search_mediashare_opt()
   // Do the searching (or rather - let the API do it)
 function search_mediashare()
 {
-    $query = pnVarCleanFromInput('q');
-    $match = pnVarCleanFromInput('bool');
-    $startnum = pnVarCleanFromInput('mediashare_itemindex');
-    $active_mediashare = pnVarCleanFromInput('active_mediashare');
+    $query = FormUtil::getPassedValue('q');
+    $match = FormUtil::getPassedValue('bool');
+    $startnum = FormUtil::getPassedValue('mediashare_itemindex');
+    $active_mediashare = FormUtil::getPassedValue('active_mediashare');
     $pageSize = 10;
 
     if (empty($active_mediashare)) {

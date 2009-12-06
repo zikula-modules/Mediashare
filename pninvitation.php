@@ -60,13 +60,13 @@ function mediashare_invitation_send($args)
 function mediashareUpdateInvitation($args)
 {
     $input = array(
-        'albumId' => pnVarCleanFromInput('albumid'),
-        'emails' => pnVarCleanFromInput('emails'),
-        'subject' => pnVarCleanFromInput('subject'),
-        'text' => pnVarCleanFromInput('text'),
-        'sender' => pnVarCleanFromInput('sender'),
+        'albumId' => FormUtil::getPassedValue('albumid'),
+        'emails' => FormUtil::getPassedValue('emails'),
+        'subject' => FormUtil::getPassedValue('subject'),
+        'text' => FormUtil::getPassedValue('text'),
+        'sender' => FormUtil::getPassedValue('sender'),
         'senderemail' => pnUserGetVar('email'),
-        'expires' => pnVarCleanFromInput('expires'));
+        'expires' => FormUtil::getPassedValue('expires'));
 
     if (!pnModAPILoad('mediashare', 'invitation'))
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare invitation API');
@@ -83,12 +83,12 @@ function mediashareResendInvitation($invitationId, $albumId)
 {
     $args = array(
         'invitationId' => $invitationId,
-        'emails' => pnVarCleanFromInput('emails'),
-        'subject' => pnVarCleanFromInput('subject'),
-        'text' => pnVarCleanFromInput('text'),
-        'sender' => pnVarCleanFromInput('sender'),
+        'emails' => FormUtil::getPassedValue('emails'),
+        'subject' => FormUtil::getPassedValue('subject'),
+        'text' => FormUtil::getPassedValue('text'),
+        'sender' => FormUtil::getPassedValue('sender'),
         'senderemail' => pnUserGetVar('email'),
-        'expires' => pnVarCleanFromInput('expires'));
+        'expires' => FormUtil::getPassedValue('expires'));
 
     if (!pnModAPILoad('mediashare', 'invitation'))
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare invitation API');
@@ -114,7 +114,7 @@ function mediashare_invitation_link($args)
 
     $link = null;
     if (isset($_POST['generateButton'])) {
-        $args = array('albumId' => $albumId, 'emails' => '', 'subject' => pnVarCleanFromInput('subject'), 'text' => '', 'sender' => '', 'expires' => null);
+        $args = array('albumId' => $albumId, 'emails' => '', 'subject' => FormUtil::getPassedValue('subject'), 'text' => '', 'sender' => '', 'expires' => null);
 
         $invitationId = pnModAPIFunc('mediashare', 'invitation', 'createInvitationId', $args);
         if ($invitationId === false)
@@ -213,9 +213,9 @@ function mediashare_invitation_list($args)
 
 function mediashareExpireInvitations($args)
 {
-    $albumId = pnVarCleanFromInput('albumid');
-    $expires = pnVarCleanFromInput('expires');
-    $invitations = pnVarCleanFromInput('invitation');
+    $albumId = FormUtil::getPassedValue('albumid');
+    $expires = FormUtil::getPassedValue('expires');
+    $invitations = FormUtil::getPassedValue('invitation');
 
     if (!empty($invitations)) {
         if (!pnModAPILoad('mediashare', 'invitation'))
@@ -232,8 +232,8 @@ function mediashareExpireInvitations($args)
 
 function mediashareDeleteInvitations($args)
 {
-    $albumId = pnVarCleanFromInput('albumid');
-    $invitations = pnVarCleanFromInput('invitation');
+    $albumId = FormUtil::getPassedValue('albumid');
+    $invitations = FormUtil::getPassedValue('invitation');
 
     if (!empty($invitations)) {
         if (!pnModAPILoad('mediashare', 'invitation'))
@@ -250,7 +250,7 @@ function mediashareDeleteInvitations($args)
 
 function mediashare_invitation_open($args)
 {
-    $key = pnVarCleanFromInput('inv');
+    $key = FormUtil::getPassedValue('inv');
 
     $result = pnModAPIFunc('mediashare', 'invitation', 'register', array('key' => $key));
     if ($result === false)

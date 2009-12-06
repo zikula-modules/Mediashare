@@ -31,7 +31,7 @@ function mediashare_user_browse($args)
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaId = mediashareGetStringUrl('mid', $args, 0); // Ext apps. uses very long IDs, so int is not good
-    $invitation = pnVarCleanFromInput('invitation');
+    $invitation = FormUtil::getPassedValue('invitation');
 
     if (!pnModAPILoad('mediashare', 'user')) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
@@ -128,7 +128,7 @@ function mediashare_user_slideshow($args)
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
     $delay = mediashareGetIntUrl('delay', $args, 5);
     $mode = mediashareGetStringUrl('mode', $args, 'stopped');
-    $viewkey = pnVarCleanFromInput('viewkey');
+    $viewkey = FormUtil::getPassedValue('viewkey');
     $center = isset($args['center']) ? '_center' : '';
     $back = mediashareGetIntUrl('back', $args, 0);
 
@@ -253,7 +253,7 @@ function mediashare_user_thumbnails($args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $viewkey = pnVarCleanFromInput('viewkey');
+    $viewkey = FormUtil::getPassedValue('viewkey');
 
     if (!pnModAPILoad('mediashare', 'user')) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
@@ -312,8 +312,8 @@ function mediashare_user_simplethumbnails($args)
 
     $dom = ZLanguage::getModuleDomain('mediashare');
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $template = isset($args['template']) ? $args['template'] : pnVarCleanFromInput('template');
-    $itemCount = isset($args['count']) ? $args['count'] : pnVarCleanFromInput('count');
+    $template = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template');
+    $itemCount = isset($args['count']) ? $args['count'] : FormUtil::getPassedValue('count');
 
     if (!pnModAPILoad('mediashare', 'user')) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
@@ -366,7 +366,7 @@ function mediashare_user_simplethumbnails($args)
 function mediashare_user_display($args)
 {
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
-    $viewkey = pnVarCleanFromInput('viewkey');
+    $viewkey = FormUtil::getPassedValue('viewkey');
 
     if (!pnModAPILoad('mediashare', 'user')) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');
@@ -442,7 +442,7 @@ function mediashare_user_displaygb($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
-    $viewkey = pnVarCleanFromInput('viewkey');
+    $viewkey = FormUtil::getPassedValue('viewkey');
 
     if (!pnModAPILoad('mediashare', 'user')) {
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare user API');

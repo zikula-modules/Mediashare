@@ -61,28 +61,28 @@ function mediashareAdminSettings($args)
     }
 
     $settings = array(
-        'tmpDirName' => pnVarCleanFromInput('tmpDirName'),
-        'mediaDirName' => pnVarCleanFromInput('mediaDirName'),
-        'thumbnailSize' => pnVarCleanFromInput('thumbnailSize'),
-        'previewSize' => pnVarCleanFromInput('previewSize'),
-        'mediaSizeLimitSingle' => (int) pnVarCleanFromInput('mediaSizeLimitSingle'),
-        'mediaSizeLimitTotal' => (int) pnVarCleanFromInput('mediaSizeLimitTotal'),
-        'defaultAlbumTemplate' => pnVarCleanFromInput('defaultAlbumTemplate'),
-        'allowTemplateOverride' => pnVarCleanFromInput('allowTemplateOverride'),
-        'enableSharpen' => pnVarCleanFromInput('enableSharpen'),
-        'enableThumbnailStart' => pnVarCleanFromInput('enableThumbnailStart'),
-        'flickrAPIKey' => pnVarCleanFromInput('flickrAPIKey'),
-        'smugmugAPIKey' => pnVarCleanFromInput('smugmugAPIKey'),
-        'photobucketAPIKey' => pnVarCleanFromInput('photobucketAPIKey'),
-        'picasaAPIKey' => pnVarCleanFromInput('picasaAPIKey'),
-        'vfs' => pnVarCleanFromInput('vfs'));
+        'tmpDirName' => FormUtil::getPassedValue('tmpDirName'),
+        'mediaDirName' => FormUtil::getPassedValue('mediaDirName'),
+        'thumbnailSize' => FormUtil::getPassedValue('thumbnailSize'),
+        'previewSize' => FormUtil::getPassedValue('previewSize'),
+        'mediaSizeLimitSingle' => (int) FormUtil::getPassedValue('mediaSizeLimitSingle'),
+        'mediaSizeLimitTotal' => (int) FormUtil::getPassedValue('mediaSizeLimitTotal'),
+        'defaultAlbumTemplate' => FormUtil::getPassedValue('defaultAlbumTemplate'),
+        'allowTemplateOverride' => FormUtil::getPassedValue('allowTemplateOverride'),
+        'enableSharpen' => FormUtil::getPassedValue('enableSharpen'),
+        'enableThumbnailStart' => FormUtil::getPassedValue('enableThumbnailStart'),
+        'flickrAPIKey' => FormUtil::getPassedValue('flickrAPIKey'),
+        'smugmugAPIKey' => FormUtil::getPassedValue('smugmugAPIKey'),
+        'photobucketAPIKey' => FormUtil::getPassedValue('photobucketAPIKey'),
+        'picasaAPIKey' => FormUtil::getPassedValue('picasaAPIKey'),
+        'vfs' => FormUtil::getPassedValue('vfs'));
 
     $ok = pnModAPIFunc('mediashare', 'user', 'setSettings', $settings);
     if ($ok === false) {
         return mediashareErrorAPIGet();
     }
-    if (isset($_POST['templateButton'])) {
-        $ok = pnModAPIFunc('mediashare', 'admin', 'setTemplateGlobally', array('template' => pnVarCleanFromInput('defaultAlbumTemplate')));
+    if (FormUtil::getPassedValue('templateButton')) {
+        $ok = pnModAPIFunc('mediashare', 'admin', 'setTemplateGlobally', array('template' => $settings['defaultAlbumTemplate']));
         if ($ok === false) {
             return mediashareErrorAPIGet();
         }

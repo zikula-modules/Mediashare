@@ -49,10 +49,10 @@ function elfisk_decodeInput($fieldSpecs)
         switch ($spec['type'])
         {
             case 'int':
-                $values[$id] = (int) pnVarCleanFromInput($id);
+                $values[$id] = (int)FormUtil::getPassedValue($id);
                 break;
             default:
-                $values[$id] = pnVarCleanFromInput($id);
+                $values[$id] = FormUtil::getPassedValue($id);
                 break;
         }
     }

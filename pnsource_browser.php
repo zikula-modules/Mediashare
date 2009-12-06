@@ -83,13 +83,13 @@ function mediashareSourceBrowserUpload(&$args)
     // Start fetching media items
 
 
-    $imageNum = (int) pnVarCleanFromInput('imagenum');
+    $imageNum = (int) FormUtil::getPassedValue('imagenum');
     $statusSet = array();
 
     for ($i = 1; $i <= $imageNum; ++$i) {
         $uploadInfo = $_FILES["upload$i"];
-        $width = pnVarCleanFromInput("width$i");
-        $height = pnVarCleanFromInput("height$i");
+        $width = FormUtil::getPassedValue("width$i");
+        $height = FormUtil::getPassedValue("height$i");
 
         if (isset($uploadInfo['error']) && $uploadInfo['error'] != 0 && $uploadInfo['name'] != '') {
             $statusSet[] = array('ok' => false, 'message' => $uploadInfo['name'] . ': ' . mediashareUploadErrorMsg($uploadInfo['error']));
@@ -149,13 +149,13 @@ function mediashareSourceBrowserUpdate()
     if (!pnSecConfirmAuthKey())
         return mediashareErrorPage(__FILE__, __LINE__, __('Unknown authentication key: you cannot submit the same form twice.', $dom));
 
-    $mediaIds = pnVarCleanFromInput('mediaId');
+    $mediaIds = FormUtil::getPassedValue('mediaId');
     foreach ($mediaIds as $mediaId) {
         $mediaId = (int) $mediaId;
 
-        $title = pnVarCleanFromInput("title-$mediaId");
-        $keywords = pnVarCleanFromInput("keywords-$mediaId");
-        $description = pnVarCleanFromInput("description-$mediaId");
+        $title = FormUtil::getPassedValue("title-$mediaId");
+        $keywords = FormUtil::getPassedValue("keywords-$mediaId");
+        $description = FormUtil::getPassedValue("description-$mediaId");
 
         // Check access
         if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, ''))
