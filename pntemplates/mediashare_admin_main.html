@@ -35,12 +35,12 @@
         <label for="defaultAlbumTemplate"><!--[gt text="Default album template"]--></label>
         <div>
             <!--[mediashare_templateSelector id="defaultAlbumTemplate"]-->
-            <!--[pnbutton name="templateButton" __alt='Apply globally' __title='Apply globally']-->
+            <input type="checkbox" id="templateButton" name="templateButton" value="1" /> <!--[gt text='Apply globally']-->
         </div>
     </div>
     <div class="z-formrow">
-        <input type="checkbox" id="allowTemplateOverride" name="allowTemplateOverride" value="1"<!--[if $allowTemplateOverride]--> checked="checked"<!--[/if]-->/>
         <label for="allowTemplateOverride"><!--[gt text="Allow template override in albums?"]--></label>
+        <input type="checkbox" id="allowTemplateOverride" name="allowTemplateOverride" value="1"<!--[if $allowTemplateOverride]--> checked="checked"<!--[/if]-->/>
     </div>
     <div class="z-formrow">
         <label for="thumbnailSize"><!--[gt text="Thumbnail size"]--></label>

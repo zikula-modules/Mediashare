@@ -110,9 +110,10 @@ function mediashare_external_pasteitem($args)
     $render->assign('mediaId', $mediaId);
     $render->assign('mediaItem', $mediaItem);
     if ($mediaItem['mediaHandler'] != 'extapp') {
-        $render->assign('thumbnailUrl', "mediashare/$mediaItem[thumbnailRef]");
-        $render->assign('previewUrl', "mediashare/$mediaItem[previewRef]");
-        $render->assign('originalUrl', "mediashare/$mediaItem[originalRef]");
+        $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
+        $render->assign('thumbnailUrl', $mediadir.$mediaItem['thumbnailRef']);
+        $render->assign('previewUrl', $mediadir.$mediaItem['previewRef']);
+        $render->assign('originalUrl', $mediadir.$mediaItem['originalRef']);
     } else {
         $render->assign('thumbnailUrl', "$mediaItem[thumbnailRef]");
         $render->assign('previewUrl', "$mediaItem[previewRef]");
@@ -142,5 +143,3 @@ function mediashareExternalLoadTheme(&$render)
     $render->assign('themeCssURL', $themeCssURL);
     $render->assign('modCssURL', $modCssURL);
 }
-
-?>

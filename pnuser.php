@@ -188,12 +188,13 @@ function mediashare_user_slideshow($args)
         return mediashareErrorPage(__FILE__, __LINE__, 'Failed to load Mediashare mediahandler API');
     }
 
+    $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
     for ($i = 0, $cou = count($items); $i < $cou; ++$i) {
         $handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $items[$i]['mediaHandler']));
         if ($handler === false) {
             return mediashareErrorAPIGet();
         }
-        $result = $handler->getMediaDisplayHtml('mediashare/' . $items[$i]['originalRef'], null, null, 'mediaItem', array());
+        $result = $handler->getMediaDisplayHtml($mediadir.$items[$i]['originalRef'], null, null, 'mediaItem', array());
 
         $items[$i]['html'] = str_replace(array("\r", "\n"), array(' ', ' '), $result);
     }

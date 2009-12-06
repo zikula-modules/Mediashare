@@ -5,11 +5,11 @@
 // =======================================================================
 
 
-define('mediashareAccessRequirementView', 1);
-define('mediashareAccessRequirementEditAlbum', 2);
-define('mediashareAccessRequirementEditMedia', 4);
-define('mediashareAccessRequirementAddAlbum', 8);
-define('mediashareAccessRequirementAddMedia', 16);
+define('mediashareAccessRequirementView',       1);
+define('mediashareAccessRequirementEditAlbum',  2);
+define('mediashareAccessRequirementEditMedia',  4);
+define('mediashareAccessRequirementAddAlbum',   8);
+define('mediashareAccessRequirementAddMedia',   16);
 define('mediashareAccessRequirementEditAccess', 128);
 
 define('mediashareAccessRequirementAddSomething', mediashareAccessRequirementAddAlbum | mediashareAccessRequirementAddMedia);

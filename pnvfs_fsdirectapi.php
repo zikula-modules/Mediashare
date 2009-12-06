@@ -15,7 +15,6 @@ class mediashare_vfsHandlerFSDirect
     $this->storageDir = pnModGetVar('mediashare', 'mediaDirName');
   }
 
-
   function createFile($filename, $args)
   {
     $fileReference = "$args[baseFileRef]-$args[fileMode].$args[fileType]";
@@ -30,13 +29,11 @@ class mediashare_vfsHandlerFSDirect
     return $fileReference;
   }
 
-
   function deleteFile($fileReference)
   {
     $filename = $this->storageDir . '/' . pnVarPrepForOS($fileReference);
     unlink($filename);
   }
-
 
   function updateFile($orgFileReference, $newFilename)
   {
@@ -49,7 +46,6 @@ class mediashare_vfsHandlerFSDirect
     return true;
   }
 
-
   function getNewFileReference()
   {
     $chars = "0123456789abcdefghijklmnopqrstuvwxyz";
@@ -57,24 +53,23 @@ class mediashare_vfsHandlerFSDirect
 
     $id = $chars[mt_rand(0, $charLen-1)] . $chars[mt_rand(0, $charLen-1)];
 
-    if (!file_exists("mediashare/$id")) {
-      mkdir("mediashare/$id");
-      chmod("mediashare/$id", 0777);
+    $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
+    if (!file_exists($mediadir.$id)) {
+        mkdir($mediadir.$id);
+        chmod($mediadir.$id, 0777);
     }
 
     $id .= '/';
 
     for ($i=0; $i<30; ++$i) {
-      $id .= $chars[mt_rand(0, $charLen-1)];
+        $id .= $chars[mt_rand(0, $charLen-1)];
     }
 
     return $id;
   }
 }
 
-
 function mediashare_vfs_fsdirectapi_buildHandler($args)
 {
-  return new mediashare_vfsHandlerFSDirect();
+    return new mediashare_vfsHandlerFSDirect();
 }
-

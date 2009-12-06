@@ -2,11 +2,13 @@
 
 function smarty_function_mediashare_userinfo($params, $smarty)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
     if ($userInfo === false) {
         return mediashareErrorAPIGet();
     }
+
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $maxSize = $userInfo['mediaSizeLimitTotal'];
     $size = $userInfo['totalCapacityUsed'];
 
@@ -23,4 +25,3 @@ function smarty_function_mediashare_userinfo($params, $smarty)
 
     return $result;
 }
-

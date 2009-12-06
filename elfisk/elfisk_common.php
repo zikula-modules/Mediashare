@@ -3,14 +3,17 @@
 function elfisk_getStyleHtml(&$params)
 {
     $style = '';
-    if (array_key_exists('width', $params))
+    if (isset($params['width'])) {
         $style .= "width: $params[width];";
+    }
 
-    if (array_key_exists('height', $params))
+    if (isset($params['height'])) {
         $style .= "height: $params[height];";
+    }
 
-    if ($style != '')
+    if ($style != '') {
         $style = " style=\"$style\"";
+    }
 
     return $style;
 }
@@ -18,8 +21,9 @@ function elfisk_getStyleHtml(&$params)
 function &elfisk_getCurrentValues()
 {
     global $elfisk_currentValues;
-    if ($elfisk_currentValues == null)
+    if ($elfisk_currentValues == null) {
         $elfisk_currentValues = array();
+    }
 
     return $elfisk_currentValues;
 }
@@ -40,8 +44,10 @@ function elfisk_decodeInput($fieldSpecs)
 {
     $values = array();
 
-    foreach ($fieldSpecs as $id => $spec) {
-        switch ($spec['type']) {
+    foreach ($fieldSpecs as $id => $spec)
+    {
+        switch ($spec['type'])
+        {
             case 'int':
                 $values[$id] = (int) pnVarCleanFromInput($id);
                 break;

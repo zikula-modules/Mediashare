@@ -1145,8 +1145,9 @@ function mediashare_editapi_copyMediaData($args)
         fclose($f);
     } else {
         // Copy from disk
-        if (!copy("mediashare/$originalRef", $dstFilename)) {
-            return mediashareErrorAPI(__FILE__, __LINE__, "Failed to copy 'mediashare/$originalRef' to $dstFilename");
+        $originalRef = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir').$originalRef;
+        if (!copy($originalRef, $dstFilename)) {
+            return mediashareErrorAPI(__FILE__, __LINE__, "Failed to copy '$originalRef' to '$dstFilename'");
         }
     }
 

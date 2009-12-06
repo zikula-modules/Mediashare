@@ -148,7 +148,7 @@ function mediashare_remote_fetchalbumimages()
     if ($album === false)
         return mediashareErrorAPIRemote();
 
-    $baseurl = pnGetBaseURL() . 'mediashare/';
+    $baseurl = pnGetBaseURL() . pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
 
     echo "__#GR2PROTO__
 status=0

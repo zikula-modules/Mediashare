@@ -219,9 +219,10 @@ function mediashare_importapi_getMediashareUrl($args)
 
     $dbresult->close();
 
+    $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
     if ($thumbnail) {
-        return "mediashare/$thumbnailRef";
+        return $mediadir.$thumbnailRef;
     } else {
-        return "mediashare/$originalRef";
+        return $mediadir.$originalRef;
     }
 }

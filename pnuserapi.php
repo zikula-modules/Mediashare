@@ -673,7 +673,8 @@ function mediashare_userapi_getMediaUrl(&$args)
         return $url;
     }
 
-    return "mediashare/$mediaItem[$src]";
+    $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
+    return $mediadir.$mediaItem[$src];
 }
 
 function mediashare_userapi_getMediaItems($args)
@@ -952,7 +953,8 @@ function mediashareEscapeItem(&$item, $itemId)
 
 function mediashare_userapi_getSettings($args)
 {
-    return array(
+    // TODO Improve
+	return array(
         'tmpDirName' => pnModGetVar('mediashare', 'tmpDirName'),
         'mediaDirName' => pnModGetVar('mediashare', 'mediaDirName'),
         'thumbnailSize' => pnModGetVar('mediashare', 'thumbnailSize'),
@@ -1016,6 +1018,14 @@ function mediashare_userapi_setSettings($args)
 
     if (!pnModSetVar('mediashare', 'vfs', $args['vfs']))
         return mediashareErrorAPI(__FILE__, __LINE__, "Could not set 'vfs'");
+}
+
+function mediashare_userapi_getRelativeMediadir()
+{
+    $zkroot    = substr(pnServerGetVar('DOCUMENT_ROOT'), 0, -1).pnGetBaseURI();
+    $mediaBase = str_replace($zkroot, '', pnModGetVar('mediashare', 'mediaDirName', 'mediashare'));
+    $mediaBase = substr($mediaBase, 1).'/';
+    return $mediaBase;
 }
 
 // =======================================================================

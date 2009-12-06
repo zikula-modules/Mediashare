@@ -98,7 +98,7 @@ class mediashareItemSelector extends pnFormPlugin
 
         if ($selectedMediaId == $item['id'])
         {
-          $imgSrc = 'mediashare/' . $item['thumbnailRef'];
+          $imgSrc = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir') . $item['thumbnailRef'];
           $selected = ' selected="selected"';
         }
         else

@@ -11,7 +11,8 @@ function mediashareUploadErrorMsg($error)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    switch ($error) {
+    switch ($error)
+    {
         case 1:
             return __('Upload error - image size exceeds server upload limit', $dom);
         case 2:
