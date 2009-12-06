@@ -8,7 +8,7 @@ function smarty_function_mediashare_uservar($params, &$smarty)
     return $smarty->trigger_error('mediashare_uservar: userId parameter required');
 
   $var = pnUserGetVar($params['varName'], $params['userId']);
-  $var = pnVarPrepForDisplay($var);
+  $var = DataUtil::formatForDisplay($var);
 
   if (isset($params['assign']))
     $smarty->assign($params['assign'], $var);

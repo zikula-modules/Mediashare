@@ -20,7 +20,7 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
   $first = true;
   foreach ($breadcrumb as $album)
   {
-    $url = pnVarPrepForDisplay(pnModUrl('mediashare', $urlType, 'view', array('aid' => $album['id'])));
+    $url = DataUtil::formatForDisplay(pnModUrl('mediashare', $urlType, 'view', array('aid' => $album['id'])));
     $result .= ($first ? '' : ' :: ')
              . "<a href=\"$url\">$album[title]</a>";
     $first = false;

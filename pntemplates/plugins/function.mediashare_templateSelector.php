@@ -32,7 +32,7 @@ function smarty_function_mediashare_templateSelector($params, &$smarty)
 
   foreach ($templates as $template)
   {
-    $title = pnVarPrepForDisplay($template['title']);
+    $title = DataUtil::formatForDisplay($template['title']);
     $value = $template['title'];
 
     $selectedHtml = (strcasecmp($value, $selectedTemplate)==0 ? ' selected="selected"' : '');

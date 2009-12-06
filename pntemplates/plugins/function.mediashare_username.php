@@ -12,7 +12,7 @@ function smarty_function_mediashare_username($params, &$smarty)
 
   if (!$name)
     $name = pnUserGetVar('uname', $params['userId']);
-  $name = pnVarPrepForDisplay($name);
+  $name = DataUtil::formatForDisplay($name);
 
   if (isset($params['assign']))
     $smarty->assign($params['assign'], $name);

@@ -394,7 +394,7 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
     }
     $breadcrumb = array();
     for (; !$result->EOF; $result->MoveNext()) {
-        $breadcrumb[] = array('id' => $result->fields[0], 'title' => pnVarPrepForDisplay($result->fields[1]));
+        $breadcrumb[] = array('id' => $result->fields[0], 'title' => DataUtil::formatForDisplay($result->fields[1]));
     }
 
     $result->Close();
@@ -934,15 +934,15 @@ function mediashare_userapi_getRandomMediaItem($args)
 
 function mediashareEscapeAlbum(&$album, $albumId)
 {
-    $album['title'] = pnVarPrepForDisplay($album['title']);
+    $album['title'] = DataUtil::formatForDisplay($album['title']);
     list ($album['summary'], $album['description']) = pnModCallHooks('item', 'transform', "album-$albumId", array(pnVarPrepHTMLDisplay(isset($album['summary']) ? $album['summary'] : ''), pnVarPrepHTMLDisplay(isset($album['description']) ? $album['description'] : '')));
 }
 
 function mediashareEscapeItem(&$item, $itemId)
 {
-    $item['title'] = pnVarPrepForDisplay($item['title']);
-    $item['caption'] = pnVarPrepForDisplay($item['caption']);
-    $item['captionLong'] = pnVarPrepForDisplay($item['captionLong']);
+    $item['title'] = DataUtil::formatForDisplay($item['title']);
+    $item['caption'] = DataUtil::formatForDisplay($item['caption']);
+    $item['captionLong'] = DataUtil::formatForDisplay($item['captionLong']);
     list ($item['description']) = pnModCallHooks('item', 'transform', "item-$itemId", array(pnVarPrepHTMLDisplay($item['description'])));
 }
 

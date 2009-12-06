@@ -563,10 +563,10 @@ function mediashare_user_list($args)
     }
     $filterTexts = array();
     if ($keyword != '') {
-        $filterTexts[] = _MSFILTERKEYWORD . ' "' . pnVarPrepForDisplay($keyword) . '"';
+        $filterTexts[] = _MSFILTERKEYWORD . ' "' . DataUtil::formatForDisplay($keyword) . '"';
     }
     if ($uname != '') {
-        $filterTexts[] = _MSFILTERUNAME . ' ' . pnVarPrepForDisplay($uname);
+        $filterTexts[] = _MSFILTERUNAME . ' ' . DataUtil::formatForDisplay($uname);
     }
     if ($albumId != null) {
         $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
@@ -574,7 +574,7 @@ function mediashare_user_list($args)
             return mediashareErrorAPIGet();
         }
         $albumOwner = pnUserGetVar('uname', $album['ownerId']);
-        $filterTexts[] = str_replace(array('%user%', '%album%'), array(pnVarPrepForDisplay($albumOwner), $album['title']), __('Items from %user%\'s album \'%album%\'', $dom));
+        $filterTexts[] = str_replace(array('%user%', '%album%'), array(DataUtil::formatForDisplay($albumOwner), $album['title']), __('Items from %user%\'s album \'%album%\'', $dom));
     }
 
     if (count($filterTexts)) {

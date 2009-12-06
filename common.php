@@ -147,7 +147,7 @@ function mediashareErrorPage($file, $line, $msg)
         $text = "$file($line): $msg";
     }
 
-    $text = pnVarPrepForDisplay($text);
+    $text = DataUtil::formatForDisplay($text);
 
     $smarty = & pnRender::getInstance('mediashare');
     $smarty->caching = false;
