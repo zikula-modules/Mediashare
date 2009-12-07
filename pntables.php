@@ -10,171 +10,275 @@
  */
 function mediashare_pntables()
 {
-  $pntable = array();
-  $prefix = pnConfigGetVar('prefix');
-
-  // Album and media setup
-  $tableName = $prefix . '_mediashare_albums';
-
-  $pntable['mediashare_albums'] = $tableName;
-
-  $pntable['mediashare_albums_column'] = array('id'             => 'ms_id',
-                                               'ownerId'        => 'ms_ownerid',
-                                               'createdDate'    => 'ms_createddate',
-                                               'modifiedDate'   => 'ms_modifieddate',
-                                               'title'          => 'ms_title',
-                                               'keywords'       => 'ms_keywords',
-                                               'summary'        => 'ms_summary',
-                                               'description'    => 'ms_description',
-                                               'template'       => 'ms_template',
-                                               'parentAlbumId'  => 'ms_parentAlbumId',
-                                               'access'         => 'ms_accesslevel',
-                                               'viewKey'        => 'ms_viewkey',
-                                               'mainMediaId'    => 'ms_mainmediaid',
-                                               'thumbnailSize'  => 'ms_thumbnailsize',
-                                               'nestedSetLeft'  => 'ms_nestedsetleft',
-                                               'nestedSetRight' => 'ms_nestedsetright',
-                                               'nestedSetLevel' => 'ms_nestedsetlevel',
-                                               'extappURL'      => 'ms_extappURL',
-                                               'extappData'     => 'ms_extappData');
-
-  $tableName = $prefix . '_mediashare_media';
-
-  $pntable['mediashare_media'] = $tableName;
-
-  $pntable['mediashare_media_column'] = array('id'            => 'ms_id',
-                                              'ownerId'       => 'ms_ownerid',
-                                              'createdDate'   => 'ms_createddate',
-                                              'modifiedDate'  => 'ms_modifieddate',
-                                              'title'         => 'ms_title',
-                                              'keywords'      => 'ms_keywords',
-                                              'description'   => 'ms_description',
-                                              'parentAlbumId' => 'ms_parentalbumid',
-                                              'position'      => 'ms_position',
-                                              'mediaHandler'  => 'ms_mediahandler',
-                                              'thumbnailId'   => 'ms_thumbnailid',
-                                              'previewId'     => 'ms_previewid',
-                                              'originalId'    => 'ms_originalid');
+    $pntable = array();
 
 
+    // Album and media setup
+    $pntable['mediashare_albums'] = DBUtil::getLimitedTablename('mediashare_albums');
+
+    $pntable['mediashare_albums_column'] = array(
+        'id'             => 'ms_id',
+        'ownerId'        => 'ms_ownerid',
+        'createdDate'    => 'ms_createddate',
+        'modifiedDate'   => 'ms_modifieddate',
+        'title'          => 'ms_title',
+        'keywords'       => 'ms_keywords',
+        'summary'        => 'ms_summary',
+        'description'    => 'ms_description',
+        'template'       => 'ms_template',
+        'parentAlbumId'  => 'ms_parentAlbumId',
+        'access'         => 'ms_accesslevel',
+        'viewKey'        => 'ms_viewkey',
+        'mainMediaId'    => 'ms_mainmediaid',
+        'thumbnailSize'  => 'ms_thumbnailsize',
+        'nestedSetLeft'  => 'ms_nestedsetleft',
+        'nestedSetRight' => 'ms_nestedsetright',
+        'nestedSetLevel' => 'ms_nestedsetlevel',
+        'extappURL'      => 'ms_extappURL',
+        'extappData'     => 'ms_extappData'
+    );
+    $pntable['mediashare_albums_column_def'] = array(
+        'id'             => 'I NOTNULL AUTOINCREMENT KEY',
+        'ownerId'        => 'I NOTNULL',
+        'createdDate'    => 'T NOTNULL',
+        'modifiedDate'   => 'T NOTNULL DEFTIMESTAMP',
+        'title'          => "C(255) NOTNULL DEFAULT ''",
+        'keywords'       => "C(255) NOTNULL DEFAULT ''",
+        'summary'        => "X NOTNULL DEFAULT ''",
+        'description'    => "X NOTNULL DEFAULT ''",
+        'template'       => "C(255) NOTNULL DEFAULT 'msslideshow'",
+        'parentAlbumId'  => 'I',
+        'access'         => 'I1 NOTNULL DEFAULT 0',
+        'viewKey'        => 'C(32) NOTNULL',
+        'mainMediaId'    => 'T',
+        'thumbnailSize'  => 'I NOTNULL',
+        'nestedSetLeft'  => 'I NOTNULL DEFAULT 0',
+        'nestedSetRight' => 'I NOTNULL DEFAULT 0',
+        'nestedSetLevel' => 'I NOTNULL DEFAULT 0',
+        'extappURL'      => 'C(255)',
+        'extappData'     => 'C(512)'
+    );
+
+
+    // Media information
+    $pntable['mediashare_media'] = DBUtil::getLimitedTablename('mediashare_media');
+
+    $pntable['mediashare_media_column'] = array(
+        'id'            => 'ms_id',
+        'ownerId'       => 'ms_ownerid',
+        'createdDate'   => 'ms_createddate',
+        'modifiedDate'  => 'ms_modifieddate',
+        'title'         => 'ms_title',
+        'keywords'      => 'ms_keywords',
+        'description'   => 'ms_description',
+        'parentAlbumId' => 'ms_parentalbumid',
+        'position'      => 'ms_position',
+        'mediaHandler'  => 'ms_mediahandler',
+        'thumbnailId'   => 'ms_thumbnailid',
+        'previewId'     => 'ms_previewid',
+        'originalId'    => 'ms_originalid'
+    );
+    $pntable['mediashare_media_column_def'] = array(
+        'id'            => 'I NOTNULL AUTOINCREMENT KEY',
+        'ownerId'       => 'I NOTNULL',
+        'createdDate'   => 'T NOTNULL',
+        'modifiedDate'  => 'T NOTNULL DEFTIMESTAMP',
+        'title'         => "C(255) NOTNULL DEFAULT ''",
+        'keywords'      => "C(255) NOTNULL DEFAULT ''",
+        'description'   => "X NOTNULL DEFAULT ''",
+        'parentAlbumId' => 'I NOTNULL',
+        'position'      => 'I NOTNULL',
+        'mediaHandler'  => 'C(50) NOTNULL',
+        'thumbnailId'   => 'I NOTNULL',
+        'previewId'     => 'I NOTNULL',
+        'originalId'    => 'I NOTNULL'
+    );
+
+ 
     // Keyword handling
+    $pntable['mediashare_keywords'] = DBUtil::getLimitedTablename('mediashare_keywords');
 
-  $tableName = $prefix . '_mediashare_keywords';
-
-  $pntable['mediashare_keywords'] = $tableName;
-
-  $pntable['mediashare_keywords_column'] = array('itemId'  => 'ms_itemid',
-                                                 'type'    => 'ms_type',
-                                                 'keyword' => 'ms_keyword');
+    $pntable['mediashare_keywords_column'] = array(
+        'itemId'  => 'ms_itemid',
+        'type'    => 'ms_type',
+        'keyword' => 'ms_keyword'
+    );
+    $pntable['mediashare_keywords_column_def'] = array(
+        'itemId'  => 'I NOTNULL',
+        'type'    => 'C(5) NOTNULL',
+        'keyword' => 'C(50) NOTNULL'
+    );
+    $pntable['mediashare_keywords_column_idx'] = array('keywordsKeywordIdx' => array('keyword'));
 
 
     // Media storage (image information)
+    $pntable['mediashare_mediastore'] = DBUtil::getLimitedTablename('mediashare_mediastore');
 
-  $tableName = $prefix . '_mediashare_mediastore';
-
-  $pntable['mediashare_mediastore'] = $tableName;
-
-  $pntable['mediashare_mediastore_column'] = array('id'       => 'mss_id',
-                                                   'fileRef'  => 'mss_fileref',
-                                                   'mimeType' => 'mss_mimetype',
-                                                   'width'    => 'mss_width',
-                                                   'height'   => 'mss_height',
-                                                   'bytes'    => 'mss_bytes',
-                                                   'data'     => 'mss_data'); // Unused!!
+    $pntable['mediashare_mediastore_column'] = array(
+        'id'       => 'mss_id',
+        'fileRef'  => 'mss_fileref',
+        'mimeType' => 'mss_mimetype',
+        'width'    => 'mss_width',
+        'height'   => 'mss_height',
+        'bytes'    => 'mss_bytes'
+    );
+    $pntable['mediashare_mediastore_column_def'] = array(
+        'id'       => 'I NOTNULL AUTOINCREMENT KEY',
+        'fileRef'  => 'C(300) NOTNULL',
+        'mimeType' => 'C(100) NOTNULL',
+        'width'    => 'I2 NOTNULL',
+        'height'   => 'I2 NOTNULL',
+        'bytes'    => 'I NOTNULL'
+    );
 
 
     // Media DB storage (image data for storing images in DB)
+    $pntable['mediashare_mediadb'] = DBUtil::getLimitedTablename('mediashare_mediadb');
 
-  $tableName = $prefix . '_mediashare_mediadb';
-
-  $pntable['mediashare_mediadb'] = $tableName;
-
-  $pntable['mediashare_mediadb_column'] = array('id'      => 'mdb_id',
-                                                'fileref' => 'mdb_ref',
-                                                'mode'    => 'mdb_mode',
-                                                'type'    => 'mdb_type',
-                                                'bytes'   => 'mdb_bytes',
-                                                'data'    => 'mdb_data');
-
+    $pntable['mediashare_mediadb_column'] = array(
+        'id'      => 'mdb_id',
+        'fileref' => 'mdb_ref',
+        'mode'    => 'mdb_mode',
+        'type'    => 'mdb_type',
+        'bytes'   => 'mdb_bytes',
+        'data'    => 'mdb_data'
+    );
+    $pntable['mediashare_mediadb_column_def'] = array(
+        'id'      => 'I NOTNULL AUTOINCREMENT KEY',
+        'fileref' => 'C(50) NOTNULL',
+        'mode'    => 'C(20) NOTNULL',
+        'type'    => 'C(10) NOTNULL',
+        'bytes'   => 'I NOTNULL',
+        'data'    => 'B NOTNULL'
+    );
+ 
 
     // Media handlers
+    $pntable['mediashare_mediahandlers'] = DBUtil::getLimitedTablename('mediashare_mediahandlers');
 
-  $tableName = $prefix . '_mediashare_mediahandlers';
+    $pntable['mediashare_mediahandlers_column'] = array(
+      'id'            => 'ms_id',
+      'mimeType'      => 'ms_mimetype',
+      'fileType'      => 'ms_filetype',
+      'foundMimeType' => 'ms_foundmimetype',
+      'foundFileType' => 'ms_foundfiletype',
+      'handler'       => 'ms_handler',
+      'title'         => 'ms_title',
+      'active'        => 'ms_active'
+    );
+    $pntable['mediashare_mediahandlers_column_def'] = array(
+      'id'            => 'I NOTNULL AUTOINCREMENT KEY',
+      'mimeType'      => 'C(50)',
+      'fileType'      => 'C(10)',
+      'foundMimeType' => 'C(50) NOTNULL',
+      'foundFileType' => 'C(50) NOTNULL',
+      'handler'       => 'C(50) NOTNULL',
+      'title'         => "C(50) NOTNULL DEFAULT ''",
+      'active'        => 'I1 NOTNULL DEFAULT 1'
+    );
 
-  $pntable['mediashare_mediahandlers'] = $tableName;
-
-  $pntable['mediashare_mediahandlers_column'] = array('id'            => 'ms_id',
-                                                      'mimeType'      => 'ms_mimetype',
-                                                      'fileType'      => 'ms_filetype',
-                                                      'foundMimeType' => 'ms_foundmimetype',
-                                                      'foundFileType' => 'ms_foundfiletype',
-                                                      'handler'       => 'ms_handler',
-                                                      'title'         => 'ms_title',
-                                                      'active'        => 'ms_active');
 
     // Sources
+    $pntable['mediashare_sources'] = DBUtil::getLimitedTablename('mediashare_sources');
 
-  $tableName = $prefix . '_mediashare_sources';
+    $pntable['mediashare_sources_column'] = array(
+        'id'          => 'ms_id',
+        'name'        => 'ms_name',
+        'title'       => 'ms_title',
+        'formEncType' => 'ms_formenctype',
+        'active'      => 'ms_active'
+    );
+    $pntable['mediashare_sources_column_def'] = array(
+        'id'          => 'I NOTNULL AUTOINCREMENT KEY',
+        'name'        => 'C(50) NOTNULL',
+        'title'       => "C(50) NOTNULL DEFAULT ''",
+        'formEncType' => "C(50) NOTNULL DEFAULT 'multipart/form-data'",
+        'active'      => 'I1 NOTNULL DEFAULT 1'
+    );
 
-  $pntable['mediashare_sources'] = $tableName;
-
-  $pntable['mediashare_sources_column'] = array('id'          => 'ms_id',
-                                                'name'        => 'ms_name',
-                                                'title'       => 'ms_title',
-                                                'formEncType' => 'ms_formenctype',
-                                                'active'      => 'ms_active');
-
+ 
     // Access table setup
+    $pntable['mediashare_access'] = DBUtil::getLimitedTablename('mediashare_access');
 
-  $tableName = $prefix . '_mediashare_access';
+    $pntable['mediashare_access_column'] = array(
+        'id'       => 'msa_id',       // Unique ID
+        'albumId'  => 'msa_albumid',  // album ID for which access applies
+        'groupId'  => 'msa_groupid',  // (user) group ID for which access applies
+        'access'   => 'msa_access'    // access type
+    );
+    $pntable['mediashare_access_column_def'] = array(
+        'id'       => 'I NOTNULL AUTOINCREMENT KEY',
+        'albumId'  => 'I NOTNULL',
+        'groupId'  => 'I NOTNULL',
+        'access'   => 'I NOTNULL'
+    );
+    $pntable['mediashare_access_column_idx'] = array('accessAlbumIdx' => array('albumId'));
 
-  $pntable['mediashare_access'] = $tableName;
-
-  $pntable['mediashare_access_column'] = array('id'       => 'msa_id',       // Unique ID
-                                               'albumId'  => 'msa_albumid',  // album ID for which access applies
-                                               'groupId'  => 'msa_groupid',  // (user) group ID for which access applies
-                                               'access'   => 'msa_access');  // access type
 
     // Setup table setup
+    $pntable['mediashare_setup'] = DBUtil::getLimitedTablename('mediashare_setup');
 
-  $tableName = $prefix . '_mediashare_setup';
-
-  $pntable['mediashare_setup'] = $tableName;
-
-  $pntable['mediashare_setup_column'] = array('id'            => 'ms_id',           // Unique ID
-                                              'kind'          => 'ms_kind',         // 0: group, 1: user
-                                              'storageLimit'  => 'ms_storagelimit', // Storage limit
-                                              'unitId'        => 'ms_unitid');      // User or group id this applies to
-
+    $pntable['mediashare_setup_column'] = array(
+        'id'            => 'ms_id',           // Unique ID
+        'kind'          => 'ms_kind',         // 0: group, 1: user
+        'storageLimit'  => 'ms_storagelimit', // Storage limit
+        'unitId'        => 'ms_unitid'        // User or group id this applies to
+    );
+    $pntable['mediashare_setup_column_def'] = array(
+        'id'            => 'I NOTNULL AUTOINCREMENT KEY',
+        'kind'          => 'I1 NOTNULL',
+        'storageLimit'  => 'I NOTNULL',
+        'unitId'        => 'I NOTNULL'
+    );
+ 
 
     // Photoshare conversion table
+    $pntable['mediashare_photoshare'] = DBUtil::getLimitedTablename('mediashare_photoshare');
 
-  $tableName = $prefix . '_mediashare_photoshare';
-
-  $pntable['mediashare_photoshare'] = $tableName;
-
-  $pntable['mediashare_photoshare_column'] = array('photoshareImageId'      => 'msph_photoshareimageid',
-                                                   'mediashareThumbnailRef' => 'msph_mediasharethumbnailref',
-                                                   'mediasharePreviewRef'   => 'msph_mediasharepreviewref',
-                                                   'mediashareOriginalRef'  => 'msph_mediashareoriginalref');
+    $pntable['mediashare_photoshare_column'] = array(
+        'id'                     => 'ms_id',
+        'photoshareImageId'      => 'msph_photoshareimageid',
+        'mediashareThumbnailRef' => 'msph_mediasharethumbnailref',
+        'mediasharePreviewRef'   => 'msph_mediasharepreviewref',
+        'mediashareOriginalRef'  => 'msph_mediashareoriginalref'
+    );
+    $pntable['mediashare_photoshare_column'] = array(
+        'id'                     => 'I NOTNULL AUTOINCREMENT KEY',
+        'photoshareImageId'      => 'I NOTNULL',
+        'mediashareThumbnailRef' => 'C(50) NOTNULL',
+        'mediasharePreviewRef'   => 'C(50) NOTNULL',
+        'mediashareOriginalRef'  => 'C(50) NOTNULL'
+    );
 
 
     // Invitations table
+    $pntable['mediashare_invitation'] = DBUtil::getLimitedTablename('mediashare_photoshare');
 
-  $tableName = $prefix . '_mediashare_invitation';
+    $pntable['mediashare_invitation_column'] = array(
+        'id'         => 'msinv_id',
+        'created'    => 'msinv_created',
+        'albumId'    => 'msinv_albumid',
+        'key'        => 'msinv_key',
+        'viewCount'  => 'msinv_count',
+        'email'      => 'msinv_email',
+        'subject'    => 'msinv_subject',
+        'text'       => 'msinv_text',
+        'sender'     => 'msinv_sender',
+        'expires'    => 'msinv_expires'
+    );
+    $pntable['mediashare_invitation_column_ref'] = array(
+        'id'         => 'I NOTNULL AUTOINCREMENT KEY',
+        'created'    => 'T NOTNULL',
+        'albumId'    => 'I NOTNULL',
+        'key'        => "C(20) NOTNULL DEFAULT ''",
+        'viewCount'  => 'I NOTNULL DEFAULT 0',
+        'email'      => "C(100) NOTNULL DEFAULT ''",
+        'subject'    => "C(255) NOTNULL DEFAULT ''",
+        'text'       => "X NOTNULL DEFAULT ''",
+        'sender'     => "C(50) NOTNULL DEFAULT ''",
+        'expires'    => 'T'
+    );
+ 
 
-  $pntable['mediashare_invitation'] = $tableName;
-
-  $pntable['mediashare_invitation_column'] = array('id'         => 'msinv_id',
-                                                   'created'    => 'msinv_created',
-                                                   'albumId'    => 'msinv_albumid',
-                                                   'key'        => 'msinv_key',
-                                                   'viewCount'  => 'msinv_count',
-                                                   'email'      => 'msinv_email',
-                                                   'subject'    => 'msinv_subject',
-                                                   'text'       => 'msinv_text',
-                                                   'sender'     => 'msinv_sender',
-                                                   'expires'    => 'msinv_expires');
-
-  return $pntable;
+    return $pntable;
 }
