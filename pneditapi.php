@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once ("modules/mediashare/common-edit.php");
 
 // =======================================================================
@@ -794,8 +793,6 @@ function mediashare_editapi_ensureMainAlbumId($args)
 // =======================================================================
 // Update media item
 // =======================================================================
-
-
 function mediashare_editapi_updateItem(&$args)
 {
 
@@ -1579,15 +1576,11 @@ function mediashare_editapi_extappGetApps(&$args)
     $apps = array();
 
     // Scan for application APIs
-    if ($dh = opendir("modules/mediashare")) {
-        while (($filename = readdir($dh)) !== false) {
-            if (preg_match('/^pnextapp_([-a-zA-Z0-9_]+)api.php$/', $filename, $matches)) {
-                $appName = $matches[1];
-                $apps[] = $appName;
-            }
+    $files = FileUtil::getFiles('modules/mediashare', false, true, 'php', 'f');
+    foreach ($files as $file) {
+        if (preg_match('/^pnextapp_([-a-zA-Z0-9_]+)api.php$/', $file, $matches)) {
+            $apps[] = $matches[1];
         }
-
-        closedir($dh);
     }
 
     return $apps;

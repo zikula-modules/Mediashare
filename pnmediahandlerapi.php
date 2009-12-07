@@ -27,18 +27,20 @@ function mediashare_mediahandlerapi_getMediaHandlers($args)
                             'mediaTypes' => array());
     }
 
+    $handlersTable  = $pntable['mediashare_mediahandlers']; 
+    $handlersColumn = $pntable['mediashare_mediahandlers_column'];
+
     // Get media types per handler
     for ($i = 0, $count = count($handlers); $i < $count; ++$i)
     {
         $handler = &$handlers[$i];
 
-        $sql = "SELECT
-              $handlersColumn[mimeType],
-              $handlersColumn[fileType],
-              $handlersColumn[foundMimeType],
-              $handlersColumn[foundFileType]
-            FROM $handlersTable
-            WHERE $handlersColumn[handler] = '" . DataUtil::formatForStore($handler['handler']) . "'";
+        $sql = "SELECT $handlersColumn[mimeType],
+                       $handlersColumn[fileType],
+                       $handlersColumn[foundMimeType],
+                       $handlersColumn[foundFileType]
+                  FROM $handlersTable
+                 WHERE $handlersColumn[handler] = '" . DataUtil::formatForStore($handler['handler']) . "'";
 
         $result = $dbconn->execute($sql);
 
@@ -138,46 +140,41 @@ function mediashare_mediahandlerapi_scanMediaHandlers($args)
     }
 
     $dom = ZLanguage::getModuleDomain('mediashare');
-
+    
     // Clear existing handler table
     if (!DBUtil::truncateTable('mediashare_mediahandlers')) {
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.scanMediaHandlers', __f("Could not clear the '%s' table.", 'mediahandlers', $dom)), $dom));
     }
 
-    // Scan for handlers
-    if ($dh = opendir("modules/mediashare")) {
-        while (($filename = readdir($dh)) !== false)
-        {
-            if (preg_match('/^pnmedia_([-a-zA-Z0-9_]+)api.php$/', $filename, $matches)) {
-                $handlerName = $matches[1];
-                $handlerApi = "media_$handlerName";
+    // Scan for handlers APIs
+    $files = FileUtil::getFiles('modules/mediashare', false, true, 'php', 'f');
+    foreach ($files as $file)
+    {
+        if (preg_match('/^pnmedia_([-a-zA-Z0-9_]+)api.php$/', $file, $matches)) {
+            $handlerName = $matches[1];
+            $handlerApi = "media_$handlerName";
 
-                // Force load - it is used during pninit
-                pnModAPILoad('mediashare', $handlerApi, true);
+            // Force load - it is used during pninit
+            pnModAPILoad('mediashare', $handlerApi, true);
 
-                $handler = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler');
+            $handler = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler');
 
-                if ($handler === false) {
-                    closedir($dh);
+            if ($handler === false) {
+                return false;
+            }
+
+            $fileTypes = $handler->getMediaTypes();
+            foreach ($fileTypes as $fileType)
+            {
+                $fileType['handler'] = $handlerName;
+                $fileType['title'] = $handler->getTitle();
+
+                $ok = pnModAPIFunc('mediashare', 'mediahandler', 'addMediaHandler', $fileType);
+                if ($ok === false) {
                     return false;
-                }
-
-                $fileTypes = $handler->getMediaTypes();
-                foreach ($fileTypes as $fileType)
-                {
-                    $fileType['handler'] = $handlerName;
-                    $fileType['title'] = $handler->getTitle();
-
-                    $ok = pnModAPIFunc('mediashare', 'mediahandler', 'addMediaHandler', $fileType);
-                    if ($ok === false) {
-                        closedir($dh);
-                        return false;
-                    }
                 }
             }
         }
-
-        closedir($dh);
     }
 
     return true;

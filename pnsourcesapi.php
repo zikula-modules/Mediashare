@@ -50,32 +50,28 @@ function mediashare_sourcesapi_scanSources($args)
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('sourcesapi.scanSources', __f("Could not clear the '%s' table.", 'sources', $dom)), $dom));
     }
 
-    // Scan for sources
-    if ($dh = opendir("modules/mediashare")) {
-        while (($filename = readdir($dh)) !== false) {
-            if (preg_match('/^pnsource_([-a-zA-Z0-9_]+)api.php$/', $filename, $matches)) {
-                $sourceName = $matches[1];
-                $sourceApi = "source_$sourceName";
+    // Scan for sources APIs
+    $files = FileUtil::getFiles('modules/mediashare', false, true, 'php', 'f');
+    foreach ($files as $file)
+    {
+        if (preg_match('/^pnsource_([-a-zA-Z0-9_]+)api.php$/', $file, $matches)) {
+            $sourceName = $matches[1];
+            $sourceApi = "source_$sourceName";
 
-                // Force load - it is used during pninit
-                pnModAPILoad('mediashare', $sourceApi, true);
+            // Force load - it is used during pninit
+            pnModAPILoad('mediashare', $sourceApi, true);
 
-                $title = pnModAPIFunc('mediashare', $sourceApi, 'getTitle');
+            $title = pnModAPIFunc('mediashare', $sourceApi, 'getTitle');
 
-                if ($title === false) {
-                    closedir($dh);
-                    return false;
-                }
+            if ($title === false) {
+                return false;
+            }
 
-                $ok = pnModAPIFunc('mediashare', 'sources', 'addSource', array('title' => $title, 'name' => $sourceName));
-                if ($ok === false) {
-                    closedir($dh);
-                    return false;
-                }
+            $ok = pnModAPIFunc('mediashare', 'sources', 'addSource', array('title' => $title, 'name' => $sourceName));
+            if ($ok === false) {
+                return false;
             }
         }
-
-        closedir($dh);
     }
 
     return true;

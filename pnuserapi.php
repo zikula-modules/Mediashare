@@ -1688,14 +1688,10 @@ function mediashare_userapi_getAllTemplates($args)
 {
     $templates = array();
 
-    if ($dh = opendir("modules/mediashare/pntemplates/Frontend")) {
-        while (($filename = readdir($dh)) !== false) {
-            if ($filename != '.' && $filename != '..' && $filename != 'CVS' && $filename != '.svn') {
-                $templates[] = array('title' => $filename, 'value' => $filename);
-            }
-        }
-
-        closedir($dh);
+    $sets = FileUtil::getFiles('modules/mediashare/pntemplates/Frontend', false, true, null, 'd');
+    foreach ($sets as $set) {
+        $templates[] = array('title' => $set,
+                             'value' => $set);
     }
 
     return $templates;
