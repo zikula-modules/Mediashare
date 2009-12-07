@@ -6,16 +6,18 @@
 
 function mediashare_sourcesapi_getSources(&$args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $sourcesTable = $pntable['mediashare_sources'];
+    $sourcesTable  = $pntable['mediashare_sources'];
     $sourcesColumn = $pntable['mediashare_sources_column'];
 
     $sql = "SELECT $sourcesColumn[name],
-                 $sourcesColumn[title],
-                 $sourcesColumn[formEncType]
-          FROM $sourcesTable";
+                   $sourcesColumn[title],
+                   $sourcesColumn[formEncType]
+              FROM $sourcesTable";
 
     $result = $dbconn->execute($sql);
 
@@ -26,9 +28,9 @@ function mediashare_sourcesapi_getSources(&$args)
     $sources = array();
 
     for (; !$result->EOF; $result->moveNext()) {
-        $source = array('name' => $result->fields[0], 'title' => $result->fields[1], 'formEncType' => $result->fields[2]);
-
-        $sources[] = $source;
+        $sources[] = array('name' => $result->fields[0],
+                           'title' => $result->fields[1],
+                           'formEncType' => $result->fields[2]);
     }
 
     $result->close();
@@ -80,12 +82,12 @@ function mediashare_sourcesapi_scanSources($args)
 function mediashare_sourcesapi_addSource($args)
 {
     $title = $args['title'];
-    $name = $args['name'];
+    $name  = $args['name'];
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $sourcesTable = $pntable['mediashare_sources'];
+    $sourcesTable  = $pntable['mediashare_sources'];
     $sourcesColumn = $pntable['mediashare_sources_column'];
 
     $sql = "INSERT INTO $sourcesTable (

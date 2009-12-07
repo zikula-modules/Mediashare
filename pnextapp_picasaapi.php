@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once ("modules/mediashare/common.php");
 require_once ("modules/mediashare/pnincludes/phpPicasa/Picasa.php");
 
@@ -128,4 +127,3 @@ function mediashare_extapp_picasaapi_getAlbumInstance($args)
 {
     return new MediasharePicasaAlbum($args['albumId'], $args['albumData']);
 }
-

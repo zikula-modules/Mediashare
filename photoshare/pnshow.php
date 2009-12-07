@@ -4,7 +4,6 @@
 // Photoshare by Jorn Lind-Nielsen (C) 2002-2004.
 // =======================================================================
 
-
 // This file contains just enough to display an image, with the sole purpose
 // of reducing the load and CPU time needed for image display.
 

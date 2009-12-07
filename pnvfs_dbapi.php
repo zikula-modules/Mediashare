@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common.php';
 
 class mediashare_vfsHandlerDB
@@ -15,15 +14,17 @@ class mediashare_vfsHandlerDB
 
     function createFile($filename, $args)
     {
+        $dom = ZLanguage::getModuleDomain('mediashare');
+
         $fileReference = "vfsdb/$args[baseFileRef]-$args[fileMode].$args[fileType]";
 
         list ($dbconn) = pnDBGetConn();
         $pntable = pnDBGetTables();
 
-        $mediadbTable = $pntable['mediashare_mediadb'];
+        $mediadbTable  = $pntable['mediashare_mediadb'];
         $mediadbColumn = &$pntable['mediashare_mediadb_column'];
 
-        $data = file_get_contents($filename);
+        $data  = file_get_contents($filename);
         $bytes = count($data);
 
         $sql = "INSERT INTO $mediadbTable
@@ -46,15 +47,18 @@ class mediashare_vfsHandlerDB
 
     function deleteFile($fileReference)
     {
+        $dom = ZLanguage::getModuleDomain('mediashare');
+
         list ($dbconn) = pnDBGetConn();
         $pntable = pnDBGetTables();
 
-        $mediadbTable = $pntable['mediashare_mediadb'];
+        $mediadbTable  = $pntable['mediashare_mediadb'];
         $mediadbColumn = &$pntable['mediashare_mediadb_column'];
 
         $fileReference = DataUtil::formatForStore($fileReference);
 
-        $sql = "DELETE FROM $mediadbTable WHERE $mediadbColumn[fileref] = '$fileReference'";
+        $sql = "DELETE FROM $mediadbTable
+                      WHERE $mediadbColumn[fileref] = '$fileReference'";
 
         $result = $dbconn->execute($sql);
 
@@ -67,27 +71,29 @@ class mediashare_vfsHandlerDB
 
     function updateFile($orgFileReference, $newFilename)
     {
+        $dom = ZLanguage::getModuleDomain('mediashare');
+
         list ($dbconn) = pnDBGetConn();
         $pntable = pnDBGetTables();
 
-        $mediadbTable = $pntable['mediashare_mediadb'];
+        $mediadbTable  = $pntable['mediashare_mediadb'];
         $mediadbColumn = &$pntable['mediashare_mediadb_column'];
 
-        $data = file_get_contents($newFilename);
+        $data  = file_get_contents($newFilename);
         $bytes = count($data);
         $orgFileReference = DataUtil::formatForStore($orgFileReference);
 
-        $sql = "
-UPDATE $mediadbTable SET
-  $mediadbColumn[data] = '" . DataUtil::formatForStore($data) . "',
-  $mediadbColumn[bytes] = $bytes
-WHERE $mediadbColumn[fileref] = '$orgFileReference'";
+        $sql = "UPDATE $mediadbTable
+                   SET $mediadbColumn[data] = '" . DataUtil::formatForStore($data) . "',
+                       $mediadbColumn[bytes] = $bytes
+                 WHERE $mediadbColumn[fileref] = '$orgFileReference'";
 
         $result = $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
             return LogUtil::registerError(__f('Error in %1$s: %2$%', array('vfsHandlerDB.updateFile', 'Could not update the file information.'), $dom));
         }
+
         return true;
     }
 
@@ -105,7 +111,6 @@ WHERE $mediadbColumn[fileref] = '$orgFileReference'";
         return $id;
     }
 }
-;
 
 function mediashare_vfs_dbapi_buildHandler($args)
 {
@@ -121,30 +126,29 @@ function mediashare_vfs_dbapi_getMedia($args)
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $mediaTable = $pntable['mediashare_media'];
-    $mediaColumn = $pntable['mediashare_media_column'];
-    $storageTable = $pntable['mediashare_mediastore'];
+    $mediaTable    = $pntable['mediashare_media'];
+    $mediaColumn   = $pntable['mediashare_media_column'];
+    $storageTable  = $pntable['mediashare_mediastore'];
     $storageColumn = $pntable['mediashare_mediastore_column'];
-    $mediadbTable = $pntable['mediashare_mediadb'];
+    $mediadbTable  = $pntable['mediashare_mediadb'];
     $mediadbColumn = &$pntable['mediashare_mediadb_column'];
 
-    $sql = "
-SELECT db.$mediadbColumn[data],
-       store.$storageColumn[mimeType],
-       store.$storageColumn[bytes],
-       media.$mediaColumn[id],
-       media.$mediaColumn[parentAlbumId],
-       media.$mediaColumn[title],
-       UNIX_TIMESTAMP(media.$mediaColumn[modifiedDate])
-FROM $mediadbTable db
-LEFT JOIN $storageTable store
-     ON store.$storageColumn[fileRef] = db.$mediadbColumn[fileref]
-LEFT JOIN $mediaTable media
-     ON (   media.$mediaColumn[thumbnailId] = store.$storageColumn[id]
-         OR media.$mediaColumn[previewId] = store.$storageColumn[id]
-         OR media.$mediaColumn[originalId] = store.$storageColumn[id])
-        AND media.$mediaColumn[title] IS NOT NULL
-WHERE     db.$mediadbColumn[fileref] = '$fileref'";
+    $sql = "SELECT db.$mediadbColumn[data],
+                   store.$storageColumn[mimeType],
+                   store.$storageColumn[bytes],
+                   media.$mediaColumn[id],
+                   media.$mediaColumn[parentAlbumId],
+                   media.$mediaColumn[title],
+                   UNIX_TIMESTAMP(media.$mediaColumn[modifiedDate])
+              FROM $mediadbTable db
+         LEFT JOIN $storageTable store
+                ON store.$storageColumn[fileRef] = db.$mediadbColumn[fileref]
+         LEFT JOIN $mediaTable media
+                ON (media.$mediaColumn[thumbnailId] = store.$storageColumn[id]
+                    OR media.$mediaColumn[previewId] = store.$storageColumn[id]
+                    OR media.$mediaColumn[originalId] = store.$storageColumn[id])
+               AND media.$mediaColumn[title] IS NOT NULL
+             WHERE db.$mediadbColumn[fileref] = '$fileref'";
 
     $result = $dbconn->execute($sql);
 

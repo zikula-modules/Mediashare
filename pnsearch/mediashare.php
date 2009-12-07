@@ -11,7 +11,7 @@ $search_modules[] = array('title'       => 'Mediashare files',
                           'func_search' => 'search_mediashare',
                           'func_opt'    => 'search_mediashare_opt');
 
-  // "Print" search form in advanced search
+// "Print" search form in advanced search
 function search_mediashare_opt()
 {
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
@@ -25,8 +25,7 @@ function search_mediashare_opt()
          . "<label for=\"active_mediashare\">" . __('Search Mediashare', $dom) . "</label></td></tr></table>";
 }
 
-
-  // Do the searching (or rather - let the API do it)
+// Do the searching (or rather - let the API do it)
 function search_mediashare()
 {
     $query = FormUtil::getPassedValue('q');
@@ -36,7 +35,7 @@ function search_mediashare()
     $pageSize = 10;
 
     if (empty($active_mediashare)) {
-      return;
+        return;
     }
 
     if (!isset($startnum) || !is_numeric($startnum)) {

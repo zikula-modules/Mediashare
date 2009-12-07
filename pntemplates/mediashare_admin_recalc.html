@@ -1,18 +1,19 @@
 <!--[* $Id$ *]-->
-<!--[gt text="Regenerate thumbnails and previews" assign=templatetitle]-->
-<!--[include file="mediashare_admin_header.html"]-->
+<!--[gt text='Regenerate thumbnails and previews' assign=templatetitle]-->
+
+<!--[include file='mediashare_admin_header.html']-->
 
 <div class="mediashare-recalc">
     <p class="z-informationmsg"><!--[gt text="Regenerating all thumbnails and previews takes a good deal of time. This feature uses JavaScript to regenerate one file at a time without running into PHP's execution time limits. The iframe to the right is used for communication with the server. You can follow the progress in both the iframe and in the checkbox list below."]--></p>
     <fieldset>
-        <legend><!--[gt text="Regenerate]--></legend>
+        <legend><!--[gt text='Regenerate']--></legend>
         <div class="z-formbuttons">
             <button style="border:1px solid; padding:3px;" type="button" onclick="mediashareRecalcStart()"><!--[gt text="Start"]--></button>
             <button style="border:1px solid; padding:3px;" type="button" onclick="mediashareRecalcPause()"><!--[gt text="Pause"]--></button>
         </div>
 
         <div class="mediashare-recalclist">
-            <!--[foreach from=$allItems item=item]-->
+            <!--[foreach from=$allItems item='item']-->
             <input type="checkbox" id="cbok-<!--[$item.media.id]-->" checked="checked"/>
             <input type="checkbox" id="cbitem-<!--[$item.media.id]-->" disabled="disabled"/>
             <a href="<!--[pnmodurl modname=mediashare func=view aid=$item.album.id mid=$item.media.id]-->"><!--[$item.media.title]--></a><br/>
@@ -22,10 +23,10 @@
 
     <iframe id="mediashareFrame" frameborder="0" scrolling="no">
     </iframe>
-
 </div>
 
 <script type="text/javascript">
+	// <![CDATA[
     var mediashareAllItems =
     [
     <!--[foreach from=$allItems item=item]-->
@@ -44,12 +45,10 @@
         mediashareRecalc();
     }
 
-
     function mediashareRecalcPause()
     {
         mediashareRecalcPaused = true;
     }
-
 
     function mediashareRecalc()
     {
@@ -59,29 +58,26 @@
 
             if (mediashareAllItems[mediashareRecalcIndex].url != null)
             {
-                if (okcheckbox.checked)
-                {
+                if (okcheckbox.checked) {
                     var iframe = document.getElementById("mediashareFrame");
                     iframe.src = mediashareAllItems[mediashareRecalcIndex].url;
-                }
-                else
-                    {
-                        ++mediashareRecalcIndex;
-                        mediashareRecalc();
-                    }
+                } else {
+                    ++mediashareRecalcIndex;
+                    mediashareRecalc();
                 }
             }
         }
+    }
 
-        // Called from code in iframe when recalc finished
-        function mediashareNext()
-        {
-            var checkbox = document.getElementById("cbitem-"+mediashareAllItems[mediashareRecalcIndex].id);
-            checkbox.checked = true;
-            ++mediashareRecalcIndex;
-            mediashareRecalc();
-        }
+    // Called from code in iframe when recalc finished
+    function mediashareNext()
+    {
+        var checkbox = document.getElementById("cbitem-"+mediashareAllItems[mediashareRecalcIndex].id);
+        checkbox.checked = true;
+        ++mediashareRecalcIndex;
+        mediashareRecalc();
+    }
+	// ]]>
+</script>
 
-    </script>
-
-    <!--[include file="mediashare_admin_footer.html"]-->
+<!--[include file='mediashare_admin_footer.html']-->

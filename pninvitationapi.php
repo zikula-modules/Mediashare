@@ -4,34 +4,32 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 // =======================================================================
 // Invitations
 // =======================================================================
-
-
 function mediashare_invitationapi_sendInvitation(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
+
     $emails = $args['emails'];
 
     // Split and trim e-mails
-
-
     $emails = str_replace("\n", ' ', $emails);
     $emails = str_replace("\r", ' ', $emails);
     $emails = str_replace(";", ' ', $emails);
     $emails = str_replace(",", ' ', $emails);
     $emailList = explode(' ', $emails);
 
-    foreach ($emailList as $email) {
+    foreach ($emailList as $email)
+    {
         $email = trim($email);
         if ($email != '') {
             $args['email'] = $email;
 
             $invitationId = pnModAPIFunc('mediashare', 'invitation', 'createInvitationId', $args);
-            if ($invitationId === false)
+            if ($invitationId === false) {
                 return false;
+            }
 
             $message = $args['text'];
             $message .= "\n\n";
@@ -42,8 +40,9 @@ function mediashare_invitationapi_sendInvitation(&$args)
             $message = str_replace("\n", '<br/>', $message);
 
             $ok = pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email, 'fromname' => $args['sender'], 'fromaddress' => $args['senderemail'], 'subject' => $args['subject'], 'body' => $message, 'html' => true));
-            if ($ok === false)
+            if ($ok === false) {
                 return LogUtil::registerError(__('Some error occured while trying to send invitation.', $dom));
+            }
         }
     }
 
@@ -94,6 +93,7 @@ VALUES
 function mediashareCreateInvitationKey()
 {
     static $chars = 'abcdefghijklmnopqrstuvwxyz';
+
     $key = '';
     for ($i = 0; $i < 10; ++$i) {
         $key .= $chars[mt_rand(0, strlen($chars) - 1)];
@@ -105,24 +105,25 @@ function mediashareCreateInvitationKey()
 function mediashare_invitationapi_resendInvitation(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
+
     $invitationId = $args['invitationId'];
 
     $invitation = pnModAPIFunc('mediashare', 'invitation', 'getById', array('id' => $invitationId));
-    if ($invitation == null)
+    if ($invitation == null) {
         return false;
+    }
 
     $emails = $args['emails'];
 
     // Split and trim e-mails
-
-
     $emails = str_replace("\n", ' ', $emails);
     $emails = str_replace("\r", ' ', $emails);
     $emails = str_replace(";", ' ', $emails);
     $emails = str_replace(",", ' ', $emails);
     $emailList = explode(' ', $emails);
 
-    foreach ($emailList as $email) {
+    foreach ($emailList as $email)
+    {
         $email = trim($email);
         if ($email != '') {
             $args['email'] = $email;
@@ -136,8 +137,9 @@ function mediashare_invitationapi_resendInvitation(&$args)
             $message = str_replace("\n", '<br/>', $message);
 
             $ok = pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email, 'fromname' => $args['sender'], 'fromaddress' => $args['senderemail'], 'subject' => $args['subject'], 'body' => $message, 'html' => true));
-            if ($ok === false)
+            if ($ok === false) {
                 return LogUtil::registerError(__('Some error occured sending the invitation.', $dom));
+            }
         }
     }
 
@@ -146,12 +148,14 @@ function mediashare_invitationapi_resendInvitation(&$args)
 
 function mediashare_invitationapi_getByKey($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $key = DataUtil::formatForStore($args['key']);
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $invitationTable = $pntable['mediashare_invitation'];
+    $invitationTable  = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];
 
     $sql = "
@@ -176,9 +180,9 @@ WHERE     $invitationColumn[key] = '$key'
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getByKey', 'Could not retrieve the invitation.'), $dom));
     }
 
-    if ($dbresult->EOF)
+    if ($dbresult->EOF) {
         $invitation = null;
-    else
+    } else {
         $invitation = array(
             'id' => $dbresult->fields[0],
             'created' => $dbresult->fields[1],
@@ -190,6 +194,7 @@ WHERE     $invitationColumn[key] = '$key'
             'text' => $dbresult->fields[7],
             'sender' => $dbresult->fields[8],
             'expires' => $dbresult->fields[9]);
+    }
 
     $dbresult->close();
 
@@ -198,12 +203,14 @@ WHERE     $invitationColumn[key] = '$key'
 
 function mediashare_invitationapi_getById($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $id = (int) $args['id'];
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $invitationTable = $pntable['mediashare_invitation'];
+    $invitationTable  = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];
 
     $sql = "
@@ -227,9 +234,9 @@ WHERE $invitationColumn[id] = $id";
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getById', 'Could not retrieve the invitation.'), $dom));
     }
 
-    if ($dbresult->EOF)
+    if ($dbresult->EOF) {
         $invitation = null;
-    else
+    } else {
         $invitation = array(
             'id' => $dbresult->fields[0],
             'created' => $dbresult->fields[1],
@@ -241,6 +248,7 @@ WHERE $invitationColumn[id] = $id";
             'text' => $dbresult->fields[7],
             'sender' => $dbresult->fields[8],
             'expires' => $dbresult->fields[9]);
+    }
 
     $dbresult->close();
 
@@ -249,6 +257,8 @@ WHERE $invitationColumn[id] = $id";
 
 function mediashare_invitationapi_updateViewCount($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $res = DBUtil::incrementObjectFieldByID('mediashare_invitation', 'viewCount', $args['key'], 'key');
     if ($res === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.updateViewCount', 'Could not update the counter.'), $dom));
@@ -259,12 +269,14 @@ function mediashare_invitationapi_updateViewCount($args)
 
 function mediashare_invitationapi_getInvitations(&$args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $albumId = (int) $args['albumId'];
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $invitationTable = $pntable['mediashare_invitation'];
+    $invitationTable  = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];
 
     $sql = "
@@ -311,14 +323,16 @@ ORDER BY $invitationColumn[created] DESC";
 
 function mediashare_invitationapi_expireInvitations(&$args)
 {
-    $albumId = (int) $args['albumId'];
-    $expires = $args['expires'];
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+    $albumId     = (int) $args['albumId'];
+    $expires     = $args['expires'];
     $invitations = $args['invitations'];
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $invitationTable = $pntable['mediashare_invitation'];
+    $invitationTable  = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];
 
     // Safeguard againt SQL injections
@@ -345,13 +359,15 @@ function mediashare_invitationapi_expireInvitations(&$args)
 
 function mediashare_invitationapi_deleteInvitations(&$args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $albumId = (int) $args['albumId'];
     $invitations = $args['invitations'];
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $invitationTable = $pntable['mediashare_invitation'];
+    $invitationTable  = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];
 
     // Safeguard againt SQL injections
@@ -362,10 +378,9 @@ function mediashare_invitationapi_deleteInvitations(&$args)
     $ids = implode(',', $ids);
 
     // Access control done on album ID so include that in SQL
-    $sql = "
-DELETE FROM $invitationTable
-WHERE     $invitationColumn[albumId] = $albumId
-      AND $invitationColumn[id] IN ($ids)";
+    $sql = "DELETE FROM $invitationTable
+                  WHERE $invitationColumn[albumId] = $albumId
+                    AND $invitationColumn[id] IN ($ids)";
 
     $dbresult = $dbconn->execute($sql);
 
@@ -378,21 +393,25 @@ WHERE     $invitationColumn[albumId] = $albumId
 
 function mediashare_invitationapi_register(&$args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $key = $args['key'];
 
     $invitation = pnModAPIFunc('mediashare', 'invitation', 'getByKey', $args);
-    if ($invitation === false)
+    if ($invitation === false) {
         return false;
-    else if ($invitation === null)
-        return array('ok' => false, 'message' => 'Unknown or expired invitation ID.');
+    } else if ($invitation === null) {
+        return array('ok' => false, 'message' => __('Unknown or expired invitation ID.', $dom));
+    }
 
     $ok = pnModAPIFunc('mediashare', 'invitation', 'updateViewCount', $args);
     if ($ok === false)
         return false;
 
     $albums = SessionUtil::getVar('mediashareInvitedAlbums');
-    if ($albums == false || $albums == null)
+    if ($albums == false || $albums == null) {
         $albums = array('version' => 1, 'keys' => array());
+    }
 
     $albums['keys'][$key] = true;
     SessionUtil::setVar('mediashareInvitedAlbums', $albums);
@@ -406,19 +425,18 @@ function mediashare_invitationapi_getInvitedAlbums($args)
     if ($invitedAlbums == null)
         return $invitedAlbums;
 
-    $keys = '';
+    $keys = array();
     foreach ($invitedAlbums['keys'] as $key => $ok) {
         if ($ok) {
-            if ($keys != '')
-                $keys .= ',';
-            $keys .= '\'' . DataUtil::formatForStore($key) . '\'';
+            $keys[] = '\'' . DataUtil::formatForStore($key) . '\'';
         }
     }
+    $keys = implode(', ', $keys);
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $invitationTable = $pntable['mediashare_invitation'];
+    $invitationTable  = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];
 
     $sql = "SELECT $invitationColumn[albumId]

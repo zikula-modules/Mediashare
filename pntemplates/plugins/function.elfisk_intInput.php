@@ -27,9 +27,9 @@ function smarty_function_elfisk_intInput($params, &$smarty)
 
     $result = "<input{$idHtml}{$nameHtml}{$styleHtml} class=\"int\" value=\"$text\"/>";
 
-    if (array_key_exists('assign', $params))
+    if (array_key_exists('assign', $params)) {
         $smarty->assign($params['assign'], $result);
-    else
-        return $result;
-}
+    }
 
+    return $result;
+}

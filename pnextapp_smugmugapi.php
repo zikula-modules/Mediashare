@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once ("modules/mediashare/common.php");
 require_once ("modules/mediashare/pnincludes/phpSmug/phpSmug.php");
 
@@ -98,7 +97,6 @@ function mediashare_extapp_smugmugapi_parseURL($args)
     // Gallery: http://bilroy.smugmug.com/gallery/5146474_BLeSn#316967890_QjBHz
     // Popular: http://bilroy.smugmug.com/popular/#312830908_gzKhz
     // Keyword: http://bilroy.smugmug.com/keyword/architecture#312830908_gzKhz
-
 
     $r = '/smugmug\.com\/gallery\/([-a-zA-Z0-9_]+)_([-a-zA-Z0-9_]+)/';
     if (preg_match($r, $args['url'], $matches)) {

@@ -16,10 +16,11 @@ function mediashare_user_main($args)
 
 function mediashare_user_view($args)
 {
-    if (pnModGetVar('mediashare', 'enableThumbnailStart'))
+    if (pnModGetVar('mediashare', 'enableThumbnailStart')) {
         return mediashare_user_thumbnails($args);
-    else
-        return mediashare_user_browse($args);
+    }
+
+    return mediashare_user_browse($args);
 }
 
 function mediashare_user_browse($args)
@@ -34,21 +35,25 @@ function mediashare_user_browse($args)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
         return LogUtil::registerPermissionError();
     }
+
     // Fetch current album
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
     if ($album === false) {
         return false;
     }
+
     // Fetch subalbums
     $subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething));
     if ($subAlbums === false) {
         return false;
     }
+
     // Fetch media items
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
     if ($items === false) {
         return false;
     }
+
     // Locate current/prev/next items
     if ($mediaId <= 0) {
         $mediaId = $album['mainMediaId'];
@@ -68,7 +73,8 @@ function mediashare_user_browse($args)
 
     $mediaItemPos = 1;
     $pos = 1;
-    foreach ($items as $item) {
+    foreach ($items as $item)
+    {
         if ($mediaItem != null) {
             // Media-Current item found, so this must be next
             $nextMediaId = $item['id'];
@@ -85,8 +91,12 @@ function mediashare_user_browse($args)
     if ($mediaItem == null && count($items) > 0) {
         $mediaItem = $items[0];
     } else if ($mediaItem == null) {
-        $mediaItem = array('title' => '', 'description' => '', 'id' => 0);
+        $mediaItem = array('title' => '',
+                           'description' => '',
+                           'id' => 0);
     }
+
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);
@@ -97,17 +107,22 @@ function mediashare_user_browse($args)
     $render->assign('prevMediaId', $prevMediaId);
     $render->assign('nextMediaId', $nextMediaId);
     $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
+
+    // Assign the access array
     if (!mediashareAddAccess($render, $album)) {
         return false;
     }
-    $template = DataUtil::formatForOS($album['template']);
-    $templateFilename = "Frontend/$template/album.html";
-    if (!$render->template_exists($templateFilename)) {
-        $templateFilename = "Frontend/Standard/album.html";
-    }
-    PageUtil::addVar('stylesheet', 'modules/mediashare/pntemplates/Frontend/' . $template . '/style.css');
 
-    return $render->fetch($templateFilename);
+    $template = DataUtil::formatForOS($album['template']);
+    if (!$render->template_exists("Frontend/$template/album.html")) {
+        $template = 'Standard';
+    }
+    // Add the template stylesheets
+    if (file_exists("modules/mediashare/pntemplates/Frontend/$template/style.css")) {
+        PageUtil::addVar('stylesheet', "modules/mediashare/pntemplates/Frontend/$template/style.css");
+    }
+
+    return $render->fetch("Frontend/$template/album.html");
 }
 
 // =======================================================================
@@ -117,11 +132,11 @@ function mediashare_user_slideshow($args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
-    $delay = mediashareGetIntUrl('delay', $args, 5);
-    $mode = mediashareGetStringUrl('mode', $args, 'stopped');
+    $delay   = mediashareGetIntUrl('delay', $args, 5);
+    $mode    = mediashareGetStringUrl('mode', $args, 'stopped');
     $viewkey = FormUtil::getPassedValue('viewkey');
-    $center = isset($args['center']) ? '_center' : '';
-    $back = mediashareGetIntUrl('back', $args, 0);
+    $center  = isset($args['center']) ? '_center' : '';
+    $back    = mediashareGetIntUrl('back', $args, 0);
 
     // Check access to album (media ID won't do a difference if not from this album)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {
@@ -192,6 +207,7 @@ function mediashare_user_slideshow($args)
         $quitUrl = pnModUrl('mediashare', 'user', 'view', array('aid' => $album['id']));
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('viewUrl', $viewUrl);
@@ -208,10 +224,11 @@ function mediashare_user_slideshow($args)
     $render->assign('theme', pnUserGetTheme());
     $render->assign('templateName', "slideshow{$center}.html");
     $render->assign('quitUrl', $quitUrl);
+
+    // Add the access array
     if (!mediashareAddAccess($render, $album)) {
         return false;
     }
-    $viewURL = pnModUrl('mediashare', 'user', 'slideshow', array('mid' => $mediaItem['id']));
 
     $render->load_filter('output', 'pagevars');
     if (pnConfigGetVar('shorturls')) {
@@ -263,6 +280,7 @@ function mediashare_user_thumbnails($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('mediaItems', $items);
@@ -272,25 +290,23 @@ function mediashare_user_thumbnails($args)
     $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
     $render->assign('itemCount', count($items));
     $render->assign('theme', pnUserGetTheme());
+
     if (!mediashareAddAccess($render, $album)) {
         return false;
     }
 
     $template = DataUtil::formatForOS($album['template']);
-    $templateFilename = "Frontend/$template/thumbnails.html";
-    if (!$render->template_exists($templateFilename)) {
-        $templateFilename = "Frontend/Standard/thumbnails.html";
+    if (!$render->template_exists("Frontend/$template/thumbnails.html")) {
+        $template = 'Standard';
     }
 
-    return $render->fetch($templateFilename);
+    return $render->fetch("Frontend/$template/thumbnails.html");
 }
 
 function mediashare_user_simplethumbnails($args)
 {
-
-    $dom = ZLanguage::getModuleDomain('mediashare');
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $template = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template');
+    $albumId   = mediashareGetIntUrl('aid', $args, 1);
+    $template  = isset($args['template']) ? $args['template'] : FormUtil::getPassedValue('template');
     $itemCount = isset($args['count']) ? $args['count'] : FormUtil::getPassedValue('count');
 
     // Check access (use albumId since no mediaId was passed)
@@ -313,6 +329,7 @@ function mediashare_user_simplethumbnails($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('itemCount', count($items));
@@ -324,12 +341,12 @@ function mediashare_user_simplethumbnails($args)
 
     mediashareLoadLightbox();
 
-    $templateFile = 'mediashare_user_simplethumbnails.html';
-    if ($template == 'filmstrip') {
-        $templateFile = 'mediashare_user_contentfilmstrip.html';
+    $template = 'content'.DataUtil::formatForOS($template); // filmstrip
+    if (!$render->template_exists("mediashare_user_{$template}.html")) {
+        $template = 'simplethumbnails';
     }
 
-    return $render->fetch($templateFile);
+    return $render->fetch("mediashare_user_{$template}.html");
 }
 
 // =======================================================================
@@ -355,6 +372,7 @@ function mediashare_user_display($args)
         return LogUtil::registerPermissionError();
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('mediaItem', $mediaItem);
@@ -366,10 +384,10 @@ function mediashare_user_display($args)
 // Display item with as little framing as possible
 function mediashare_user_simpledisplay($args)
 {
-    $mediaId = mediashareGetIntUrl('mid', $args, 0);
-    $showAlbumLink = isset($args['showAlbumLink']) ? $args['showAlbumLink'] : false;
+    $mediaId        = mediashareGetIntUrl('mid', $args, 0);
+    $showAlbumLink  = isset($args['showAlbumLink']) ? $args['showAlbumLink'] : false;
     $containerWidth = isset($args['containerWidth']) ? $args['containerWidth'] : 'auto';
-    $text = isset($args['text']) ? $args['text'] : '';
+    $text           = isset($args['text']) ? $args['text'] : '';
 
     // Fetch media item
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
@@ -388,6 +406,7 @@ function mediashare_user_simpledisplay($args)
         return LogUtil::registerPermissionError();
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('mediaItem', $mediaItem);
@@ -395,10 +414,8 @@ function mediashare_user_simpledisplay($args)
     $render->assign('text', $text);
     $render->assign('width', $containerWidth == 'wauto' ? null : '100%');
 
-    $csssrc = ThemeUtil::getModuleStylesheet('mediashare');
-    PageUtil::addVar('stylesheet', $csssrc);
-
     mediashareLoadLightbox();
+
     return $render->fetch('mediashare_user_simpledisplay.html');
 }
 
@@ -418,6 +435,7 @@ function mediashare_user_displaygb($args)
         return LogUtil::registerPermissionError();
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('mediaItem', $mediaItem);
@@ -455,6 +473,7 @@ function mediashare_user_latest($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('latestMediaItems', $latestMediaItems);
@@ -472,7 +491,6 @@ function mediashare_user_latest($args)
 // =======================================================================
 function mediashare_user_keys($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     $keyword = mediashareGetStringUrl('key', $args);
 
     $items = pnModAPIFunc('mediashare', 'user', 'getByKeyword', array('keyword' => $keyword));
@@ -480,6 +498,7 @@ function mediashare_user_keys($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('keyword', $keyword);
@@ -493,15 +512,13 @@ function mediashare_user_keys($args)
 // =======================================================================
 function mediashare_user_list($args)
 {
-
-    $dom = ZLanguage::getModuleDomain('mediashare');
-    $keyword = mediashareGetStringUrl('key', $args);
-    $uname = mediashareGetStringUrl('uname', $args);
-    $albumId = mediashareGetIntUrl('aid', $args, null);
-    $order = mediashareGetStringUrl('order', $args, 'title');
-    $orderDir = mediashareGetStringUrl('orderdir', $args);
+    $keyword   = mediashareGetStringUrl('key', $args);
+    $uname     = mediashareGetStringUrl('uname', $args);
+    $albumId   = mediashareGetIntUrl('aid', $args, null);
+    $order     = mediashareGetStringUrl('order', $args, 'title');
+    $orderDir  = mediashareGetStringUrl('orderdir', $args);
     $recordPos = mediashareGetIntUrl('pos', $args, 0);
-    $template = (isset($args['tpl']) ? $args['tpl'] : 'list');
+    $template  = (isset($args['tpl']) ? $args['tpl'] : 'list');
 
     $items = pnModAPIFunc('mediashare', 'user', 'getList', compact('keyword', 'uname', 'albumId', 'order', 'orderDir', 'recordPos'));
     if ($items === false) {
@@ -512,12 +529,15 @@ function mediashare_user_list($args)
     if ($itemCount === false) {
         return false;
     }
+
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $filterTexts = array();
     if ($keyword != '') {
-        $filterTexts[] = _MSFILTERKEYWORD . ' "' . DataUtil::formatForDisplay($keyword) . '"';
+        $filterTexts[] = __('Items tagged with "%s"', DataUtil::formatForDisplay($keyword), $dom);
     }
     if ($uname != '') {
-        $filterTexts[] = _MSFILTERUNAME . ' ' . DataUtil::formatForDisplay($uname);
+        $filterTexts[] = __('Items by %s', DataUtil::formatForDisplay($uname), $dom);
     }
     if ($albumId != null) {
         $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
@@ -525,7 +545,7 @@ function mediashare_user_list($args)
             return false;
         }
         $albumOwner = pnUserGetVar('uname', $album['ownerId']);
-        $filterTexts[] = str_replace(array('%user%', '%album%'), array(DataUtil::formatForDisplay($albumOwner), $album['title']), __('Items from %user%\'s album \'%album%\'', $dom));
+        $filterTexts[] = __('Items from %1$s\'s album \'%2$s\'', array(DataUtil::formatForDisplay($albumOwner), $album['title']), $dom);
     }
 
     if (count($filterTexts)) {
@@ -533,6 +553,8 @@ function mediashare_user_list($args)
     } else {
         $filterText = __('All items', $dom);
     }
+
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('keyword', $keyword);
@@ -546,14 +568,17 @@ function mediashare_user_list($args)
     $render->assign('orderModifiedClass', ($order == 'modified' ? ' class="selected"' : ''));
     $render->assign('pos', $recordPos);
 
-    $templateFile = "mediashare_user_{$template}.html";
-    return $render->fetch($templateFile);
+    $template = DataUtil::formatForOS($template);
+    if (!$render->template_exists("mediashare_user_{$template}.html")) {
+        $template = 'list';
+    }
+
+    return $render->fetch("mediashare_user_{$template}.html");
 }
 
 function mediashare_user_albumlist($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-    $order = mediashareGetStringUrl('order', $args, 'createdDate');
+    $order    = mediashareGetStringUrl('order', $args, 'createdDate');
     $orderDir = mediashareGetStringUrl('orderdir', $args, 'desc');
     $template = (isset($args['tpl']) ? $args['tpl'] : 'list');
 
@@ -562,12 +587,17 @@ function mediashare_user_albumlist($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('albums', $albums);
 
-    $templateFile = "mediashare_user_album{$template}.html";
-    return $render->fetch($templateFile);
+    $template = DataUtil::formatForOS($template);
+    if (!$render->template_exists("mediashare_user_album{$template}.html")) {
+        $template = 'list';
+    }
+
+    return $render->fetch("mediashare_user_album{$template}.html");
 }
 
 function mediashare_user_xmllist($args)
@@ -599,6 +629,8 @@ function mediashare_user_extapphelp($args)
     if ($settings === false) {
         return false;
     }
+
+    // Build the output
     $render = & pnRender::getInstance('mediashare');
     $render->assign('settings', $settings);
 

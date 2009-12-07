@@ -44,13 +44,13 @@ function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
                 return LogUtil::registerError(photoshareErrorAPIGet());
             }
 
-            $id = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array(
-                'title' => $folderData['title'],
-                'keywords' => '',
-                'summary' => '',
-                'description' => $folderData['description'],
-                'ownerId' => $folderData['owner'],
-                'parentAlbumId' => $mediashareAlbumId));
+            $id = pnModAPIFunc('mediashare', 'edit', 'addAlbum',
+                               array('title' => $folderData['title'],
+                                     'keywords' => '',
+                                     'summary' => '',
+                                     'description' => $folderData['description'],
+                                     'ownerId' => $folderData['owner'],
+                                     'parentAlbumId' => $mediashareAlbumId));
             if ($id === false) {
                 return false;
             }
@@ -58,6 +58,7 @@ function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
             // Mark album as created
             $importedAlbums[$folder['id']] = $id;
             pnModSetVar('Mediashare', 'ImportedPhotoshareAlbums', serialize($importedAlbums));
+
         } else {
             $id = $importedAlbums[$folder['id']];
         }
@@ -162,10 +163,14 @@ function mediashareAddPhotoshareRef($photoshareImageId, $args)
     $photoshareColumn = $pntable['mediashare_photoshare_column'];
 
     $sql = "INSERT INTO $photoshareTable
-                        ($photoshareColumn[photoshareImageId], $photoshareColumn[mediashareThumbnailRef],
-                         $photoshareColumn[mediasharePreviewRef], $photoshareColumn[mediashareOriginalRef])
-                 VALUES ($photoshareImageId, '$args[thumbnailFileRef]',
-                         '$args[previewFileRef]', '$args[originalFileRef]')";
+                   ($photoshareColumn[photoshareImageId],
+                    $photoshareColumn[mediashareThumbnailRef],
+                    $photoshareColumn[mediasharePreviewRef],
+                    $photoshareColumn[mediashareOriginalRef])
+            VALUES ($photoshareImageId,
+                    '$args[thumbnailFileRef]',
+                    '$args[previewFileRef]',
+                    '$args[originalFileRef]')";
 
     $dbconn->execute($sql);
 
@@ -185,15 +190,14 @@ function mediashare_importapi_getMediashareUrl($args)
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $photoshareTable = $pntable['mediashare_photoshare'];
+    $photoshareTable  = $pntable['mediashare_photoshare'];
     $photoshareColumn = $pntable['mediashare_photoshare_column'];
 
-    $sql = "SELECT
-            $photoshareColumn[mediashareThumbnailRef],
-            $photoshareColumn[mediasharePreviewRef],
-            $photoshareColumn[mediashareOriginalRef]
-          FROM $photoshareTable
-          WHERE $photoshareColumn[photoshareImageId] = ".(int)$args['imageId'];
+    $sql = "SELECT $photoshareColumn[mediashareThumbnailRef],
+                   $photoshareColumn[mediasharePreviewRef],
+                   $photoshareColumn[mediashareOriginalRef]
+              FROM $photoshareTable
+             WHERE $photoshareColumn[photoshareImageId] = ".(int)$args['imageId'];
 
     $dbresult = $dbconn->execute($sql);
 
@@ -207,9 +211,10 @@ function mediashare_importapi_getMediashareUrl($args)
     $dbresult->close();
 
     $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
+
     if ($thumbnail) {
         return $mediadir.$thumbnailRef;
-    } else {
-        return $mediadir.$originalRef;
     }
+
+    return $mediadir.$originalRef;
 }

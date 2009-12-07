@@ -4,7 +4,6 @@
 // Mediashare by Jorn Wildt (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common.php';
 
 /**
@@ -12,7 +11,10 @@ require_once 'modules/mediashare/common.php';
  **/
 function mediashare_searchapi_info()
 {
-    return array('title' => 'mediashare', 'functions' => array('Media files' => 'search'));
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+    return array('title' => 'mediashare',
+                 'functions' => array(__('Media files', $dom) => 'search'));
 }
 
 /**
@@ -21,9 +23,9 @@ function mediashare_searchapi_info()
 function mediashare_searchapi_options($args)
 {
     if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
-        $pnRender = pnRender::getInstance('mediashare');
-        $pnRender->assign('active', (isset($args['active']) && isset($args['active']['mediashare'])) || (!isset($args['active'])));
-        return $pnRender->fetch('mediashare_search_options.html');
+        $render = pnRender::getInstance('mediashare');
+        $render->assign('active', !isset($args['active']) && isset($args['active']['mediashare']));
+        return $render->fetch('mediashare_search_options.html');
     }
 
     return '';
@@ -31,22 +33,26 @@ function mediashare_searchapi_options($args)
 
 function mediashare_searchapi_search($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     pnModDBInfoLoad('mediashare');
     pnModDBInfoLoad('Search');
     $dbconn = pnDBGetConn(true);
     $pntable = pnDBGetTables();
 
-    $mediaTable = $pntable['mediashare_media'];
-    $mediaColumn = $pntable['mediashare_media_column'];
-    $albumsTable = $pntable['mediashare_albums'];
+    $mediaTable   = $pntable['mediashare_media'];
+    $mediaColumn  = $pntable['mediashare_media_column'];
+    $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = $pntable['mediashare_albums_column'];
-    $searchTable = &$pntable['search_result'];
+    $searchTable  = &$pntable['search_result'];
     $searchColumn = &$pntable['search_result_column'];
 
     $sessionId = session_id();
 
     // Find accessible albums
-    $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql', array('access' => mediashareAccessRequirementViewSomething, 'field' => "media.$mediaColumn[parentAlbumId]"));
+    $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
+                                       array('access' => mediashareAccessRequirementViewSomething,
+                                             'field'  => "media.$mediaColumn[parentAlbumId]"));
 
     $albumText = __('Multimedia file in album: ', $dom);
 
@@ -72,8 +78,9 @@ WHERE ($accessibleAlbumSql) AND ";
     $sql .= search_construct_where($args, array("media.$mediaColumn[title]", "media.$mediaColumn[description]", "media.$mediaColumn[keywords]"));
 
     $dbresult = DBUtil::executeSQL($sql);
-    if (!$dbresult)
+    if (!$dbresult) {
         return LogUtil::registerError(__('Error! Could not load items.', $dom));
+    }
 
     return true;
 }
@@ -87,4 +94,3 @@ function mediashare_searchapi_search_check(&$args)
 
     return true;
 }
-

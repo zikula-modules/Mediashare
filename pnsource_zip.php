@@ -12,14 +12,16 @@ function mediashare_source_zip_view(& $args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 0);
 
-    if (isset($_POST['saveButton']))
+    if (isset($_POST['saveButton'])) {
         return mediashareSourceZipUpload($args);
+    }
 
     if (isset($_POST['moreButton']) || isset($_POST['continueButton'])) {
         // After upload - update items and then continue to next page
         $ok = mediashareSourceZipUpdate();
-        if ($ok === false)
+        if ($ok === false) {
             return false;
+        }
     }
 
     if (isset($_POST['cancelButton']) || isset($_POST['continueButton'])) {
@@ -30,7 +32,7 @@ function mediashare_source_zip_view(& $args)
         return pnRedirect(pnModURL('mediashare', 'edit', 'addmedia', array('aid' => $albumId, 'source' => 'zip')));
     }
 
-    // TODO Required globals??
+    // FIXME Required globals??
     pnModAPILoad('mediashare', 'edit');
 
     $uploadInfo = pnModAPIFunc('mediashare', 'source_zip', 'getUploadInfo');
@@ -47,12 +49,15 @@ function mediashare_source_zip_view(& $args)
 
 function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     // Read zip info and file data into buffer
     $zipSize = zip_entry_filesize($zipEntry);
     $zipName = zip_entry_name($zipEntry);
 
-    if (!zip_entry_open($zip, $zipEntry, "rb"))
-        return array(array('ok' => false, 'message' => _MSZIPENTRYOPENERROR . ": $zipName"));
+    if (!zip_entry_open($zip, $zipEntry, 'rb')) {
+        return array(array('ok' => false, 'message' => __f('Could not open the ZIP: %s', "$zipName", $dom)));
+    }
 
     $buffer = zip_entry_read($zipEntry, $zipSize);
     zip_entry_close($zipEntry);
@@ -62,8 +67,10 @@ function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args)
     $folders = explode('/', $zipName);
     $albumId = $args['albumId'];
     $subFolderID = mediashareEnsureFolderExists($albumId, $folders, 0);
-    if ($subFolderID === false)
+    if ($subFolderID === false) {
         return false;
+    }
+
     $args['albumId'] = $subFolderID;
 
     // Get actual filename from folderlist (last item in the array)
@@ -72,7 +79,7 @@ function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args)
     // Create tmp. file and copy image data into it
     $tmpdir = pnModGetVar('mediashare', 'tmpDirName');
     $tmpfilename = tempnam($tmpdir, 'IMG');
-    if (!($f = fopen($tmpfilename, "wb"))) {
+    if (!($f = fopen($tmpfilename, 'wb'))) {
         @ unlink($tmpfilename);
         return false;
     }
@@ -82,11 +89,13 @@ function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args)
     $args['mimeType'] = '';
     if (function_exists('mime_content_type')) {
         $args['mimeType'] = mime_content_type($tmpfilename);
-        if (empty($args['mimeType']))
+        if (empty($args['mimeType'])) {
             $args['mimeType'] = mime_content_type($imageName);
+        }
     }
-    if (empty($args['mimeType']))
+    if (empty($args['mimeType'])) {
         $args['mimeType'] = mediashareGetMimeType($imageName);
+    }
 
     $args['uploadFilename'] = $tmpfilename;
     $args['fileSize'] = $zipSize;
@@ -97,10 +106,11 @@ function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args)
     // Create image (or add recursively zip archive)
     $result = pnModAPIFunc('mediashare', 'source_zip', 'addMediaItem', $args);
 
-    if ($result === false)
+    if ($result === false) {
         $status = array('ok' => false, 'message' => LogUtil::getErrorMessagesText());
-    else
+    } else {
         $status = array('ok' => true, 'message' => $result['message'], 'mediaId' => $result['mediaId']);
+    }
     $args['albumId'] = $albumId;
 
     return $status;
@@ -111,14 +121,17 @@ function mediashareGetMimeType($filename)
     $i = strpos($filename, '.');
     if ($i >= 0) {
         $ext = strtolower(substr($filename, $i + 1));
-        if ($ext == 'gif')
-            return 'image/gif';
-        if ($ext == 'jpg')
-            return 'image/jpeg';
-        if ($ext == 'jpeg')
-            return 'image/jpeg';
-        if ($ext == 'png')
-            return 'image/png';
+        switch ($ext)
+        {
+            case 'gif':
+                return 'image/gif';
+            case 'jpg':
+                return 'image/jpeg';
+            case 'jpeg':
+                return 'image/jpeg';
+            case 'png':
+                return 'image/png';
+        }
     }
 
     return 'unknown';
@@ -234,8 +247,8 @@ function mediashareSourceZipUpdate()
     {
         $mediaId = (int) $mediaId;
 
-        $title = FormUtil::getPassedValue("title-$mediaId");
-        $keywords = FormUtil::getPassedValue("keywords-$mediaId");
+        $title       = FormUtil::getPassedValue("title-$mediaId");
+        $keywords    = FormUtil::getPassedValue("keywords-$mediaId");
         $description = FormUtil::getPassedValue("description-$mediaId");
 
         // Check access

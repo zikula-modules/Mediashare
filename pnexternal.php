@@ -27,17 +27,17 @@ function mediashare_external_finditem($args)
 
         if (!empty($file) && $file['error'] == 0 && mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum)) {
             pnModAPILoad('mediashare', 'source_browser');
-            $result = pnModAPIFunc('mediashare', 'source_browser', 'addMediaItem', array(
-                'albumId' => $albumId,
-                'uploadFilename' => $file['tmp_name'],
-                'fileSize' => $file['size'],
-                'filename' => $file['name'],
-                'mimeType' => $file['type'],
-                'title' => null,
-                'keywords' => null,
-                'description' => null,
-                'width' => 0,
-                'height' => 0));
+            $result = pnModAPIFunc('mediashare', 'source_browser', 'addMediaItem',
+                                   array('albumId' => $albumId,
+                                         'uploadFilename' => $file['tmp_name'],
+                                         'fileSize' => $file['size'],
+                                         'filename' => $file['name'],
+                                         'mimeType' => $file['type'],
+                                         'title' => null,
+                                         'keywords' => null,
+                                         'description' => null,
+                                         'width' => 0,
+                                         'height' => 0));
             if ($result === false) {
                 $uploadFailed = true;
             } else {
@@ -113,16 +113,15 @@ function mediashare_external_pasteitem($args)
 function mediashareExternalLoadTheme(&$render)
 {
     $theme = DataUtil::formatForOS(pnUserGetTheme());
+
+    $themeCssURL = '';
     if (file_exists("themes/$theme/style/style.css")) {
         $themeCssURL = "themes/$theme/style/style.css";
-    } else {
-        $themeCssURL = '';
     }
 
+    $modCssURL = '';
     if (file_exists("modules/mediashare/pnstyle/style.css")) {
         $modCssURL = "modules/mediashare/pnstyle/style.css";
-    } else {
-        $modCssURL = '';
     }
 
     $render->assign('themeCssURL', $themeCssURL);

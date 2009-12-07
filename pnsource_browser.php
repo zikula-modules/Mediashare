@@ -11,14 +11,16 @@ function mediashare_source_browser_view(&$args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 0);
 
-    if (isset($_POST['saveButton']))
+    if (isset($_POST['saveButton'])) {
         return mediashareSourceBrowserUpload($args);
+    }
 
     if (isset($_POST['moreButton']) || isset($_POST['continueButton'])) {
         // After upload - update items and then continue to next page
         $ok = mediashareSourceBrowserUpdate();
-        if ($ok === false)
+        if ($ok === false) {
             return false;
+        }
     }
 
     if (isset($_POST['cancelButton']) || isset($_POST['continueButton'])) {
@@ -29,7 +31,7 @@ function mediashare_source_browser_view(&$args)
         return pnRedirect(pnModURL('mediashare', 'edit', 'addmedia', array('aid' => $albumId, 'source' => 'browser')));
     }
 
-    // TODO Required for globals??
+    // FIXME Required for globals??
     pnModAPILoad('mediashare', 'edit');
 
     $uploadInfo = pnModAPIFunc('mediashare', 'source_browser', 'getUploadInfo');
@@ -98,10 +100,11 @@ function mediashareSourceBrowserUpload(&$args)
                 'width' => $width,
                 'height' => $height));
 
-            if ($result === false)
+            if ($result === false) {
                 $status = array('ok' => false, 'message' => LogUtil::getErrorMessagesText());
-            else
+            } else {
                 $status = array('ok' => true, 'message' => $result['message'], 'mediaId' => $result['mediaId']);
+            }
 
             $statusSet = array_merge($statusSet, array($status));
         }
@@ -117,6 +120,7 @@ function mediashareSourceBrowserUpload(&$args)
             $editMediaIds[] = $status['mediaId'];
         }
     }
+
     $album['imageCount'] += $acceptedImageNum; // Update for showing only
 
     if ($acceptedImageNum == 0) {
@@ -136,7 +140,8 @@ function mediashareSourceBrowserUpload(&$args)
     return $render->fetch('mediashare_source_browser_uploadet.html');
 }
 
-// Second page in upload sequence - user has entered media titles and such like, and it needs to be updated
+// Second page in upload sequence
+// user has entered media titles and such like, and it needs to be updated
 function mediashareSourceBrowserUpdate()
 {
     if (!SecurityUtil::confirmAuthKey()) {
@@ -148,8 +153,8 @@ function mediashareSourceBrowserUpdate()
     {
         $mediaId = (int) $mediaId;
 
-        $title = FormUtil::getPassedValue("title-$mediaId");
-        $keywords = FormUtil::getPassedValue("keywords-$mediaId");
+        $title       = FormUtil::getPassedValue("title-$mediaId");
+        $keywords    = FormUtil::getPassedValue("keywords-$mediaId");
         $description = FormUtil::getPassedValue("description-$mediaId");
 
         // Check access

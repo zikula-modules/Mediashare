@@ -2,36 +2,39 @@
 
 function smarty_function_mediashare_breadcrumb($params, &$smarty)
 {
-  if (!isset($params['albumId'])) 
-    return $smarty->trigger_error('mediashare_breadcrumb: albumId parameter required');
+    if (!isset($params['albumId'])) {
+        return $smarty->trigger_error('mediashare_breadcrumb: albumId parameter required');
+    }
 
-  $albumId = (int)$params['albumId'];
+    $albumId = (int)$params['albumId'];
 
-  $mode = array_key_exists('mode',$params) ? $params['mode'] : 'view';
+    $mode = array_key_exists('mode',$params) ? $params['mode'] : 'view';
 
-  $breadcrumb = pnModAPIFunc('mediashare', 'user', 'getAlbumBreadcrumb',
-                              array('albumId' => $params['albumId']));
-  if ($breadcrumb === false) {
-    $smarty->trigger_error(LogUtil::getErrorMessagesText());
-    return false;
-  }
+    $breadcrumb = pnModAPIFunc('mediashare', 'user', 'getAlbumBreadcrumb',
+                               array('albumId' => $params['albumId']));
 
-  $urlType = $mode == 'edit' ? 'edit' : 'user';
-  $url = pnModUrl('mediashare', $urlType, 'view', array('aid' => 0));
-  $result = "<span class=\"mediashare-breadcrumb\">";
-  $first = true;
-  foreach ($breadcrumb as $album)
-  {
-    $url = DataUtil::formatForDisplay(pnModUrl('mediashare', $urlType, 'view', array('aid' => $album['id'])));
-    $result .= ($first ? '' : ' :: ')
-             . "<a href=\"$url\">$album[title]</a>";
-    $first = false;
-  }
+    if ($breadcrumb === false) {
+        $smarty->trigger_error(LogUtil::getErrorMessagesText());
+        return false;
+    }
 
-  $result .= "</span>";
+    $urlType = $mode == 'edit' ? 'edit' : 'user';
+    $url     = pnModUrl('mediashare', $urlType, 'view', array('aid' => 0));
+    $result  = "<span class=\"mediashare-breadcrumb\">";
+    $first   = true;
+    foreach ($breadcrumb as $album)
+    {
+        $url = DataUtil::formatForDisplay(pnModUrl('mediashare', $urlType, 'view', array('aid' => $album['id'])));
+        $result .= ($first ? '' : ' :: ')
+                 . "<a href=\"$url\">$album[title]</a>";
+        $first = false;
+    }
 
-  if (array_key_exists('assign', $params))
-    $smarty->assign($params['assign'], $result);
-  else
+    $result .= "</span>";
+
+    if (array_key_exists('assign', $params)) {
+        $smarty->assign($params['assign'], $result);
+    }
+
     return $result;
 }

@@ -10,15 +10,18 @@ class mediashare_contenttypesapi_mediaItemPlugin extends contentTypeBase
     {
         return 'mediashare';
     }
+
     function getName()
     {
         return 'mediaitem';
     }
+   
     function getTitle()
     {
         $dom = ZLanguage::getModuleDomain('mediashare');
         return __('Mediashare item', $dom);
     }
+
     function getDescription()
     {
         $dom = ZLanguage::getModuleDomain('mediashare');
@@ -34,17 +37,28 @@ class mediashare_contenttypesapi_mediaItemPlugin extends contentTypeBase
 
     function display()
     {
-        if (!empty($this->mediaItemId))
-            return pnModFunc('mediashare', 'user', 'simpledisplay', array('mid' => $this->mediaItemId, 'showAlbumLink' => $this->showAlbumLink, 'text' => $this->text, 'containerWidth' => $this->styleWidth));
+        if (!empty($this->mediaItemId)) {
+            return pnModFunc('mediashare', 'user', 'simpledisplay',
+                             array('mid'            => $this->mediaItemId,
+                                   'showAlbumLink'  => $this->showAlbumLink,
+                                   'text'           => $this->text,
+                                   'containerWidth' => $this->styleWidth));
+        }
         return '';
     }
 
     function displayEditing()
     {
         $dom = ZLanguage::getModuleDomain('mediashare');
+
         if (!empty($this->mediaItemId)) {
-            return pnModFunc('mediashare', 'user', 'simpledisplay', array('mid' => $this->mediaItemId, 'showAlbumLink' => $this->showAlbumLink, 'text' => $this->text, 'containerWidth' => $this->styleWidth));
+            return pnModFunc('mediashare', 'user', 'simpledisplay',
+                             array('mid'            => $this->mediaItemId,
+                                   'showAlbumLink'  => $this->showAlbumLink,
+                                   'text'           => $this->text,
+                                   'containerWidth' => $this->styleWidth));
         }
+
         return __('No media item selected', $dom);
     }
 

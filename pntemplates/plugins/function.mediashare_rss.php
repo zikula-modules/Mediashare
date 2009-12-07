@@ -17,9 +17,8 @@ function smarty_function_mediashare_rss($params, $smarty)
 
     $title = $params['title'];
 
-    global $additional_header;
     $link = "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"$title\" href=\"$url\"/>\n";
-    $additional_header[] = $link;
+    PageUtil::addVar('rawtext', $link);
 
     $imageUrl = DataUtil::formatForDisplay('modules/mediashare/pnimages/rss.gif');
 
@@ -31,5 +30,3 @@ function smarty_function_mediashare_rss($params, $smarty)
 
     return $html;
 }
-
-

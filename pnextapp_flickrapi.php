@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once ("modules/mediashare/common.php");
 require_once ("modules/mediashare/pnincludes/phpFlickr/phpFlickr.php");
 
@@ -31,8 +30,9 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
     function getMediaItems()
     {
         $images = $this->getRawImages();
-        if ($images === false)
+        if ($images === false) {
             return false;
+        }
 
         for ($i = 0, $cou = count($images); $i < $cou; ++$i) {
             $images[$i] = $this->convertImage($images[$i]);
@@ -59,12 +59,12 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
                 $search['tags'] = $data['tag'];
             }
             $images = $this->getApi()->photos_search($search);
+
         } else {
             $setId = $data['set'];
             $images = $this->getApi()->photosets_getPhotos($setId);
         }
 
-        //var_dump($images); exit(0);
         $images = $images['photo'];
 
         return $images;
@@ -123,7 +123,6 @@ function mediashare_extapp_flickrapi_parseURL($args)
     // Tags: http://flickr.com/photos/tags/winter/
     // Photo: http://www.flickr.com/photos/jornwildt/2224446102/in/set-72157603807044854/
     // User: http://www.flickr.com/photos/jornwildt/
-
 
     $r = '/flickr.com\/photos\/([-a-zA-Z0-9@_]+)\/tags\/([-a-zA-Z0-9_]+)\//';
     if (preg_match($r, $args['url'], $matches)) {

@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2003.
 // =======================================================================
 
-
 require_once ("modules/mediashare/common.php");
 
 function mediashareUploadErrorMsg($error)
@@ -25,4 +24,3 @@ function mediashareUploadErrorMsg($error)
             return __('Unknown upload error', $dom);
     }
 }
-

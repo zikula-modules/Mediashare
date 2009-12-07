@@ -11,7 +11,7 @@ define('mediashareAccessRequirementAddAlbum',   8);
 define('mediashareAccessRequirementAddMedia',   16);
 define('mediashareAccessRequirementEditAccess', 128);
 
-define('mediashareAccessRequirementAddSomething', mediashareAccessRequirementAddAlbum | mediashareAccessRequirementAddMedia);
+define('mediashareAccessRequirementAddSomething',  mediashareAccessRequirementAddAlbum | mediashareAccessRequirementAddMedia);
 
 define('mediashareAccessRequirementEditSomething', mediashareAccessRequirementEditAlbum | mediashareAccessRequirementEditMedia | mediashareAccessRequirementAddAlbum | mediashareAccessRequirementAddMedia);
 
@@ -71,12 +71,18 @@ function mediashareGetAccessAPI()
 
 function mediashareAccessAlbum($albumId, $access, $viewKey = null)
 {
-    return pnModAPIFunc('mediashare', 'user', 'hasAlbumAccess', array('albumId' => $albumId, 'access' => $access, 'viewKey' => $viewKey));
+    return pnModAPIFunc('mediashare', 'user', 'hasAlbumAccess',
+                        array('albumId' => $albumId,
+                              'access'  => $access,
+                              'viewKey' => $viewKey));
 }
 
 function mediashareAccessItem($mediaId, $access, $viewKey = null)
 {
-    return pnModAPIFunc('mediashare', 'user', 'hasItemAccess', array('mediaId' => $mediaId, 'access' => $access, 'viewKey' => $viewKey));
+    return pnModAPIFunc('mediashare', 'user', 'hasItemAccess',
+                        array('mediaId' => $mediaId,
+                              'access'  => $access,
+                              'viewKey' => $viewKey));
 }
 
 function mediashareAccessUserRealName()
@@ -108,13 +114,14 @@ function mediashareAddAccess(&$render, $album)
     }
 
     $access = array(
-        'hasEditAlbumAccess' => ($access & mediashareAccessRequirementEditAlbum) != 0,
-        'hasEditMediaAccess' => ($access & mediashareAccessRequirementEditMedia) != 0 && $album['allowMediaEdit'],
-        'hasAddAlbumAccess' => ($access & mediashareAccessRequirementAddAlbum) != 0,
-        'hasAddMediaAccess' => ($access & mediashareAccessRequirementAddMedia) != 0 && $album['allowMediaEdit'],
+        'hasEditAlbumAccess'  => ($access & mediashareAccessRequirementEditAlbum) != 0,
+        'hasEditMediaAccess'  => ($access & mediashareAccessRequirementEditMedia) != 0 && $album['allowMediaEdit'],
+        'hasAddAlbumAccess'   => ($access & mediashareAccessRequirementAddAlbum) != 0,
+        'hasAddMediaAccess'   => ($access & mediashareAccessRequirementAddMedia) != 0 && $album['allowMediaEdit'],
         'hasEditAccessAccess' => ($access & mediashareAccessRequirementEditAccess) != 0,
-        'hasAnyEditAccess' => ($access & mediashareAccessRequirementEditSomething) != 0,
-        'hasParentAccess' => ($parentAccess & mediashareAccessRequirementEditSomething) != 0);
+        'hasAnyEditAccess'    => ($access & mediashareAccessRequirementEditSomething) != 0,
+        'hasParentAccess'     => ($parentAccess & mediashareAccessRequirementEditSomething) != 0
+    );
 
     $render->assign('access', $access);
 
@@ -184,12 +191,17 @@ function mediashareGetVFSHandlerName($fileref)
 function mediashareLoadLightbox()
 {
     if (file_exists('javascript/ajax/prototype.js')) {
-        // Use PN .8 scripts
-        $scripts = array('javascript/ajax/prototype.js', 'javascript/ajax/scriptaculous.js?load=effects,dragdrop,builder', 'javascript/ajax/lightbox.js');
+        // Use Zikula scripts if available
+        $scripts = array('javascript/ajax/prototype.js',
+                         'javascript/ajax/scriptaculous.js?load=effects,dragdrop,builder',
+                         'javascript/ajax/lightbox.js');
         PageUtil::addVar('stylesheet', 'javascript/ajax/lightbox/lightbox.css');
         PageUtil::addVar('javascript', $scripts);
+
     } else {
-        $scripts = array('modules/mediashare/lightbox/js/prototype.js', 'modules/mediashare/lightbox/js/scriptaculous.js?load=effects', 'modules/mediashare/lightbox/js/lightbox.js');
+        $scripts = array('modules/mediashare/lightbox/js/prototype.js',
+                         'modules/mediashare/lightbox/js/scriptaculous.js?load=effects',
+                         'modules/mediashare/lightbox/js/lightbox.js');
         PageUtil::addVar('stylesheet', 'modules/mediashare/lightbox/css/lightbox.css');
         PageUtil::addVar('javascript', $scripts);
     }

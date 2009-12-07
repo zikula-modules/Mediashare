@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
 
@@ -32,14 +31,13 @@ function mediashare_invitation_send($args)
         return LogUtil::registerPermissionError();
     }
 
+    if (isset($_POST['cancelButton'])) {
+        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
     if (isset($_POST['saveButton']) && $invitationId < 0) {
         return mediashareUpdateInvitation($args);
     } else if (isset($_POST['saveButton']) && $invitationId > 0) {
         return mediashareResendInvitation($invitationId, $albumId);
-    }
-
-    if (isset($_POST['cancelButton'])) {
-        return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
     }
 
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
@@ -139,6 +137,7 @@ function mediashare_invitation_link($args)
 function mediashare_invitation_viewlink($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
+
     $invitationId = mediashareGetIntUrl('iid', $args, -1);
     if ($invitationId < 0) {
         return LogUtil::registerError(__f('Missing URL parameter (%s).', 'iid', $dom));
@@ -176,7 +175,6 @@ function mediashare_invitation_viewlink($args)
 
 function mediashare_invitation_list($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     // Check access
@@ -218,9 +216,12 @@ function mediashareExpireInvitations($args)
     $invitations = FormUtil::getPassedValue('invitation');
 
     if (!empty($invitations)) {
-        $ok = pnModAPIFunc('mediashare', 'invitation', 'expireInvitations', array('albumId' => $albumId, 'expires' => $expires, 'invitations' => $invitations));
-        if ($ok === false)
+        if (!pnModAPIFunc('mediashare', 'invitation', 'expireInvitations',
+                          array('albumId' => $albumId,
+                                'expires' => $expires,
+                                'invitations' => $invitations))) {
             return false;
+        }
     }
 
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
@@ -228,13 +229,15 @@ function mediashareExpireInvitations($args)
 
 function mediashareDeleteInvitations($args)
 {
-    $albumId = FormUtil::getPassedValue('albumid');
+    $albumId     = FormUtil::getPassedValue('albumid');
     $invitations = FormUtil::getPassedValue('invitation');
 
     if (!empty($invitations)) {
-        $ok = pnModAPIFunc('mediashare', 'invitation', 'deleteInvitations', array('albumId' => $albumId, 'invitations' => $invitations));
-        if ($ok === false)
+        if (!pnModAPIFunc('mediashare', 'invitation', 'deleteInvitations',
+                           array('albumId' => $albumId,
+                           'invitations' => $invitations))) {
             return false;
+        }
     }
 
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
@@ -245,10 +248,11 @@ function mediashare_invitation_open($args)
     $key = FormUtil::getPassedValue('inv');
 
     $result = pnModAPIFunc('mediashare', 'invitation', 'register', array('key' => $key));
-    if ($result === false)
+    if ($result === false) {
         return false;
-    else if (!$result['ok'])
+    } else if (!$result['ok']) {
         return $result['message'];
+    }
 
     return pnRedirect(pnModURL('mediashare', 'user', 'view', array('aid' => $result['albumId'])));
 }

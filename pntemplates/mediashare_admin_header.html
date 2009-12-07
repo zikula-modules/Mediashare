@@ -1,10 +1,11 @@
 <!--[* $Id$ *]-->
 <!--[pnmodgetinfo module=mediashare info=all assign=modinfo]-->
+
 <!--[admincategorymenu xhtml=1]-->
 
 <div class="z-adminbox">
-    <h1><!--[gt text="Mediashare"]--></h1>
-    <div class="z-menu"><!--[moduleadminlinks modname=mediashare]--></div>
+    <h1><!--[gt text='Mediashare']--></h1>
+    <div class="z-menu"><!--[moduleadminlinks modname='mediashare']--></div>
 </div>
 
 <div class="mediashare z-admincontainer">
@@ -12,7 +13,7 @@
 
     <h2><!--[$templatetitle]--></h2>
 
-    <!--[if $formEncType!='']-->
+    <!--[if $formEncType|default:'' != '']-->
     <form class="z-form" method="post" action="<!--[pngetcurrenturi]-->" enctype="<!--[$formEncType]-->">
         <!--[else]-->
         <form class="z-form" method="post" action="<!--[pngetcurrenturi]-->">

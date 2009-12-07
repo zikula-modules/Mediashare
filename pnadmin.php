@@ -16,7 +16,7 @@ function mediashare_admin_main($args)
         return LogUtil::registerPermissionError();
     }
 
-    if (isset($_POST['saveButton']) || isset($_POST['templateButton'])) {
+    if (FormUtil::getPassedValue('saveButton') || FormUtil::getPassedValue('templateButton')) {
         return mediashareAdminSettings($args);
     }
 
@@ -46,21 +46,21 @@ function mediashareDirIsWritable($dir)
 function mediashareAdminSettings($args)
 {
     $settings = array(
-        'tmpDirName' => FormUtil::getPassedValue('tmpDirName'),
-        'mediaDirName' => FormUtil::getPassedValue('mediaDirName'),
-        'thumbnailSize' => FormUtil::getPassedValue('thumbnailSize'),
-        'previewSize' => FormUtil::getPassedValue('previewSize'),
-        'mediaSizeLimitSingle' => (int) FormUtil::getPassedValue('mediaSizeLimitSingle'),
-        'mediaSizeLimitTotal' => (int) FormUtil::getPassedValue('mediaSizeLimitTotal'),
-        'defaultAlbumTemplate' => FormUtil::getPassedValue('defaultAlbumTemplate'),
+        'tmpDirName'            => FormUtil::getPassedValue('tmpDirName'),
+        'mediaDirName'          => FormUtil::getPassedValue('mediaDirName'),
+        'thumbnailSize'         => FormUtil::getPassedValue('thumbnailSize'),
+        'previewSize'           => FormUtil::getPassedValue('previewSize'),
+        'mediaSizeLimitSingle'  => (int) FormUtil::getPassedValue('mediaSizeLimitSingle'),
+        'mediaSizeLimitTotal'   => (int) FormUtil::getPassedValue('mediaSizeLimitTotal'),
+        'defaultAlbumTemplate'  => FormUtil::getPassedValue('defaultAlbumTemplate'),
         'allowTemplateOverride' => FormUtil::getPassedValue('allowTemplateOverride'),
-        'enableSharpen' => FormUtil::getPassedValue('enableSharpen'),
-        'enableThumbnailStart' => FormUtil::getPassedValue('enableThumbnailStart'),
-        'flickrAPIKey' => FormUtil::getPassedValue('flickrAPIKey'),
-        'smugmugAPIKey' => FormUtil::getPassedValue('smugmugAPIKey'),
-        'photobucketAPIKey' => FormUtil::getPassedValue('photobucketAPIKey'),
-        'picasaAPIKey' => FormUtil::getPassedValue('picasaAPIKey'),
-        'vfs' => FormUtil::getPassedValue('vfs'));
+        'enableSharpen'         => FormUtil::getPassedValue('enableSharpen'),
+        'enableThumbnailStart'  => FormUtil::getPassedValue('enableThumbnailStart'),
+        'flickrAPIKey'          => FormUtil::getPassedValue('flickrAPIKey'),
+        'smugmugAPIKey'         => FormUtil::getPassedValue('smugmugAPIKey'),
+        'photobucketAPIKey'     => FormUtil::getPassedValue('photobucketAPIKey'),
+        'picasaAPIKey'          => FormUtil::getPassedValue('picasaAPIKey'),
+        'vfs'                   => FormUtil::getPassedValue('vfs'));
 
     $ok = pnModAPIFunc('mediashare', 'user', 'setSettings', $settings);
     if ($ok === false) {
@@ -74,6 +74,10 @@ function mediashareAdminSettings($args)
         }
     }
 
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+    LogUtil::registerStatus(__('Done! Module configuration updated.', $dom));
+
     return pnRedirect(pnModURL('mediashare', 'admin', 'main'));
 }
 
@@ -86,7 +90,7 @@ function mediashare_admin_plugins($args)
         return LogUtil::registerPermissionError();
     }
 
-    if (isset($_POST['scanButton'])) {
+    if (FormUtil::getPassedValue('scanButton')) {
         return mediashareAdminScanPlugins();
     }
 
@@ -103,7 +107,7 @@ function mediashare_admin_plugins($args)
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('mediaHandlers', $mediaHandlers);
-    $render->assign('sources', $sources);
+    $render->assign('sources',       $sources);
 
     return $render->fetch('mediashare_admin_plugins.html');
 }
@@ -114,6 +118,8 @@ function mediashareAdminScanPlugins()
     if ($ok === false) {
         return false;
     }
+
+    LogUtil::registerStatus(__('Done! Plugins list regenerated.', $dom));
 
     return pnRedirect(pnModURL('mediashare', 'admin', 'plugins'));
 }
@@ -127,11 +133,8 @@ function mediashare_admin_recalc($args)
         return LogUtil::registerPermissionError();
     }
 
-    if (isset($_POST['recalcButton'])) {
-        return mediashareAdminRecalculate($args);
-    }
-
-    $allItems = pnModAPIFunc('mediashare', 'user', 'getList', array('pageSize' => 999999999));
+    $allItems = pnModAPIFunc('mediashare', 'user', 'getList',
+                             array('pageSize' => 999999999));
 
     $render = & pnRender::getInstance('mediashare', false);
 

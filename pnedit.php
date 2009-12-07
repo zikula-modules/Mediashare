@@ -39,8 +39,7 @@ function mediashare_edit_view($args)
             $func = 'multimovemedia';
         }
 
-        $url = pnModUrl('mediashare', 'edit', $func, array('mid' => $mediaIdList, 'aid' => $albumId));
-        return pnRedirect($url);
+        return pnRedirect(pnModUrl('mediashare', 'edit', $func, array('mid' => $mediaIdList, 'aid' => $albumId)));
     }
 
     // Fetch current album
@@ -64,12 +63,14 @@ function mediashare_edit_view($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);
     $render->assign('subAlbums', $subAlbums);
     $render->assign('mediaItems', $items);
     $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
+
     if (!mediashareAddAccess($render, $album)) {
         return false;
     }
@@ -81,7 +82,12 @@ function mediashare_edit_view($args)
 // Add / edit album
 // =======================================================================
 global $mediashare_albumFields;
-$mediashare_albumFields = array('title' => array('type' => 'string'), 'keywords' => array('type' => 'string'), 'summary' => array('type' => 'string'), 'description' => array('type' => 'string'), 'template' => array('type' => 'string'), 'extappURL' => array('type' => 'string'));
+$mediashare_albumFields = array('title'       => array('type' => 'string'),
+                                'keywords'    => array('type' => 'string'),
+                                'summary'     => array('type' => 'string'),
+                                'description' => array('type' => 'string'),
+                                'template'    => array('type' => 'string'),
+                                'extappURL'   => array('type' => 'string'));
 
 function mediashare_edit_addalbum($args)
 {
@@ -91,11 +97,11 @@ function mediashare_edit_addalbum($args)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddAlbum, '')) {
         return LogUtil::registerPermissionError();
     }
-    if (isset($_POST['saveButton'])) {
-        return mediashareAddAlbum($args);
-    }
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['saveButton'])) {
+        return mediashareAddAlbum($args);
     }
 
     // Get parent album info (ignore unknown parent => this means we add a top most album)
@@ -104,6 +110,7 @@ function mediashare_edit_addalbum($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);
@@ -141,11 +148,11 @@ function mediashare_edit_editalbum($args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
-    if (isset($_POST['saveButton'])) {
-        return mediashareUpdateAlbum($args);
-    }
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['saveButton'])) {
+        return mediashareUpdateAlbum($args);
     }
 
     // Check access
@@ -159,6 +166,7 @@ function mediashare_edit_editalbum($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);
@@ -196,12 +204,11 @@ function mediashare_edit_deleteAlbum($args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
-    if (isset($_POST['okButton'])) {
-        return mediashareDeleteAlbum($args);
-    }
-
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['okButton'])) {
+        return mediashareDeleteAlbum($args);
     }
 
     // Check access
@@ -215,6 +222,7 @@ function mediashare_edit_deleteAlbum($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);
@@ -264,15 +272,15 @@ function mediashare_edit_movealbum($args)
         return LogUtil::registerError(__('Cannot move top album.', $dom));
     }
     // Check access
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, ''))
+    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, '')) {
         return LogUtil::registerPermissionError();
-
-    if (isset($_POST['saveButton'])) {
-        return mediashareUpdateMoveAlbum($args);
     }
 
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['saveButton'])) {
+        return mediashareUpdateMoveAlbum($args);
     }
 
     // Fetch current album
@@ -281,6 +289,7 @@ function mediashare_edit_movealbum($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);
@@ -290,25 +299,22 @@ function mediashare_edit_movealbum($args)
 
 function mediashareUpdateMoveAlbum($args)
 {
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
+    $albumId    = mediashareGetIntUrl('aid', $args, 1);
     $dstAlbumId = mediashareGetIntUrl('daid', $args, 1);
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'moveAlbum', array('albumId' => $albumId, 'dstAlbumId' => $dstAlbumId));
     if ($ok === false) {
         return false;
     }
+
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
 // =======================================================================
 // Add / edit media items
 // =======================================================================
-
-
 function mediashare_edit_addmedia($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     $albumId    = mediashareGetIntUrl('aid', $args, 1);
     $sourceName = mediashareGetStringUrl('source', $args);
 
@@ -316,6 +322,8 @@ function mediashare_edit_addmedia($args)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia, '')) {
         return LogUtil::registerPermissionError();
     }
+
+    $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Get parent album info (ignore unknown parent => this means we add to a top most album)
     $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
@@ -353,6 +361,7 @@ function mediashare_edit_addmedia($args)
         return $sourceHtml;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);
@@ -366,11 +375,14 @@ function mediashare_edit_addmedia($args)
 }
 
 global $mediashare_itemFields;
-$mediashare_itemFields = array('title' => array('type' => 'string'), 'keywords' => array('type' => 'string'), 'description' => array('type' => 'string'));
+$mediashare_itemFields = array('title'       => array('type' => 'string'),
+                               'keywords'    => array('type' => 'string'),
+                               'description' => array('type' => 'string'));
 
 function mediashare_edit_edititem($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
+
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
 
     $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId, 'enableEscape' => false));
@@ -386,12 +398,11 @@ function mediashare_edit_edititem($args)
         $backUrl = pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId));
     }
 
-    if (isset($_POST['saveButton'])) {
-        return mediashareUpdateItem($args, $backUrl);
-    }
-
     if (isset($_POST['cancelButton'])) {
         return pnRedirect($backUrl);
+    }
+    if (isset($_POST['saveButton'])) {
+        return mediashareUpdateItem($args, $backUrl);
     }
 
     // Do late access check so we can get "unknown item" error message from 'getMediaItem'
@@ -404,6 +415,7 @@ function mediashare_edit_edititem($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign($item);
@@ -428,23 +440,23 @@ function mediashareUpdateItem($args, $backUrl)
     }
 
     global $mediashare_itemFields;
-    $values = elfisk_decodeInput($mediashare_itemFields);
+    $values     = elfisk_decodeInput($mediashare_itemFields);
     $uploadInfo = $_FILES['upload'];
-    $width = FormUtil::getPassedValue('width');
-    $height = FormUtil::getPassedValue('height');
+    $width      = FormUtil::getPassedValue('width');
+    $height     = FormUtil::getPassedValue('height');
 
     if (isset($uploadInfo['error']) && $uploadInfo['error'] != 0 && $uploadInfo['name'] != '') {
         return LogUtil::registerError(DataUtil::formatForDisplay($uploadInfo['name']).': '.mediashareUploadErrorMsg($uploadInfo['error']));
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateItem', $values + array(
-        'mediaId' => $mediaId,
-        'uploadFilename' => $uploadInfo['tmp_name'],
-        'fileSize' => $uploadInfo['size'],
-        'filename' => $uploadInfo['name'],
-        'mimeType' => $uploadInfo['type'],
-        'width' => $width,
-        'height' => $height));
+    $ok = pnModAPIFunc('mediashare', 'edit', 'updateItem', $values +
+                       array('mediaId'  => $mediaId,
+                             'uploadFilename' => $uploadInfo['tmp_name'],
+                             'fileSize' => $uploadInfo['size'],
+                             'filename' => $uploadInfo['name'],
+                             'mimeType' => $uploadInfo['type'],
+                             'width'    => $width,
+                             'height'   => $height));
 
     if ($ok === false) {
         return false;
@@ -463,12 +475,11 @@ function mediashare_edit_deleteitem($args)
         return LogUtil::registerPermissionError();
     }
 
-    if (isset($_POST['okButton'])) {
-        return mediashareDeleteItem($args);
-    }
-
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['okButton'])) {
+        return mediashareDeleteItem($args);
     }
 
     $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
@@ -481,6 +492,7 @@ function mediashare_edit_deleteitem($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('item', $item);
@@ -517,12 +529,11 @@ function mediashare_edit_multieditmedia($args)
 
     $mediaIdList = explode(',', $mediaIdStr);
 
-    if (isset($_POST['saveButton'])) {
-        return mediashareMultiUpdateItems();
-    }
-
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['saveButton'])) {
+        return mediashareMultiUpdateItems();
     }
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia, 'enableEscape' => false));
@@ -530,6 +541,7 @@ function mediashare_edit_multieditmedia($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('items', $items);
@@ -551,8 +563,8 @@ function mediashareMultiUpdateItems()
     {
         $mediaId = (int) $mediaId;
 
-        $title = FormUtil::getPassedValue("title-$mediaId");
-        $keywords = FormUtil::getPassedValue("keywords-$mediaId");
+        $title       = FormUtil::getPassedValue("title-$mediaId");
+        $keywords    = FormUtil::getPassedValue("keywords-$mediaId");
         $description = FormUtil::getPassedValue("description-$mediaId");
 
         // Check access
@@ -564,7 +576,6 @@ function mediashareMultiUpdateItems()
         if ($ok === false) {
             return false;
         }
-        //echo "$itemId: $title, $keywords, $description. ";
     }
 
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
@@ -576,16 +587,16 @@ function mediashare_edit_multideletemedia($args)
         return LogUtil::registerPermissionError();
     }
 
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
+    $albumId    = mediashareGetIntUrl('aid', $args, 1);
     $mediaIdStr = FormUtil::getPassedValue('mid');
 
     $mediaIdList = explode(',', $mediaIdStr);
 
-    if (isset($_POST['saveButton'])) {
-        return mediashareMultiDeleteMedia();
-    }
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['saveButton'])) {
+        return mediashareMultiDeleteMedia();
     }
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia));
@@ -593,6 +604,7 @@ function mediashare_edit_multideletemedia($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('items', $items);
@@ -613,7 +625,7 @@ function mediashareMultiDeleteMedia()
     $mediaIds = FormUtil::getPassedValue('mediaId');
     foreach ($mediaIds as $mediaId)
     {
-        $mediaId = (int) $mediaId;
+        $mediaId = (int)$mediaId;
 
         // Check access (mediaId is from URL and need not all be from same album)
         if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
@@ -635,16 +647,16 @@ function mediashare_edit_multimovemedia($args)
         return LogUtil::registerPermissionError();
     }
 
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
+    $albumId    = mediashareGetIntUrl('aid', $args, 1);
     $mediaIdStr = FormUtil::getPassedValue('mid');
 
     $mediaIdList = explode(',', $mediaIdStr);
 
-    if (isset($_POST['saveButton'])) {
-        return mediashareMultiMoveMedia();
-    }
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['saveButton'])) {
+        return mediashareMultiMoveMedia();
     }
 
     $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia));
@@ -652,6 +664,7 @@ function mediashare_edit_multimovemedia($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('items', $items);
@@ -705,6 +718,7 @@ function mediashare_edit_setmainitem($args)
     if ($ok === false) {
         return false;
     }
+
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
@@ -719,11 +733,12 @@ function mediashare_edit_arrange($args)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddMedia | mediashareAccessRequirementEditMedia, '')) {
         return LogUtil::registerPermissionError();
     }
-    if (isset($_POST['saveButton'])) {
-        return mediashareArrangeAlbum($args);
-    }
+
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['saveButton'])) {
+        return mediashareArrangeAlbum($args);
     }
 
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -747,6 +762,7 @@ function mediashare_edit_arrange($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);
@@ -762,10 +778,9 @@ function mediashareArrangeAlbum($args)
     }
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $seq = FormUtil::getPassedValue('seq');
+    $seq     = FormUtil::getPassedValue('seq');
 
     $ok = pnModAPIFunc('mediashare', 'edit', 'arrangeAlbum', array('albumId' => $albumId, 'seq' => explode(',', $seq)));
-
     if ($ok === false) {
         return false;
     }
@@ -780,19 +795,18 @@ function mediashareArrangeAlbum($args)
 
 function mediashare_edit_access($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     $albumId = mediashareGetIntUrl('aid', $args, 1);
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAccess, '')) {
         return LogUtil::registerPermissionError();
     }
-    if (isset($_POST['saveButton'])) {
-        return mediashareUpdateAccess($args);
-    }
+
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
+    }
+    if (isset($_POST['saveButton'])) {
+        return mediashareUpdateAccess($args);
     }
 
     // Fetch current album
@@ -806,6 +820,7 @@ function mediashare_edit_access($args)
         return false;
     }
 
+    // Build the output
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);

@@ -8,18 +8,21 @@ require_once 'modules/mediashare/common-edit.php';
 
 function mediashare_source_browserapi_getTitle($args)
 {
-    return 'Browser upload';
+    $dom = ZLanguage::getModuleDomain('mediashare');
+    return __('Browser upload', $dom);
 }
 
 function mediashare_source_browserapi_addMediaItem($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     if (!isset($args['albumId'])) {
         return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'source_browserapi.addMediaItem'), $dom));
     }
 
     $uploadFilename = $args['uploadFilename'];
 
-    // TODO Required because the globals??
+    // FIXME Required because the globals??
     pnModAPILoad('mediashare', 'edit');
 
     // For OPEN_BASEDIR reasons we move the uploaded file as fast as possible to an accessible place
@@ -50,39 +53,43 @@ function mediashare_source_browserapi_addMediaItem($args)
 
     unlink($tmpFilename);
 
-    if ($result === false)
-        return false;
     return $result;
 }
 
 function mediashareSourceBrowserParseIni($ini)
 {
     $l = strlen($ini);
-    if ($ini[$l - 1] == 'M' || $ini[$l - 1] == 'm')
+    if ($ini[$l - 1] == 'M' || $ini[$l - 1] == 'm') {
         return intval($ini) * 1000000;
-    else if ($ini[$l - 1] == 'K' || $ini[$l - 1] == 'k')
+    } else if ($ini[$l - 1] == 'K' || $ini[$l - 1] == 'k') {
         return intval($ini) * 1000;
-    else
-        return intval($ini);
+    }
+
+    return intval($ini);
 }
 
 function mediashare_source_browserapi_getUploadInfo($args)
 {
     $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
-    if ($userInfo === false)
+    if ($userInfo === false) {
         return false;
+    }
 
     $totalCapacityUsed = $userInfo['totalCapacityUsed'];
 
     $upload_max_filesize = mediashareSourceBrowserParseIni(ini_get('upload_max_filesize'));
-    if ($userInfo['totalCapacityLeft'] < $upload_max_filesize)
+    if ($userInfo['totalCapacityLeft'] < $upload_max_filesize) {
         $upload_max_filesize = $userInfo['totalCapacityLeft'];
-    if ($userInfo['mediaSizeLimitSingle'] < $upload_max_filesize)
+    }
+    if ($userInfo['mediaSizeLimitSingle'] < $upload_max_filesize) {
         $upload_max_filesize = $userInfo['mediaSizeLimitSingle'];
+    }
 
     $post_max_size = mediashareSourceBrowserParseIni(ini_get('post_max_size'));
-    if ($userInfo['totalCapacityLeft'] < $post_max_size)
+    if ($userInfo['totalCapacityLeft'] < $post_max_size) {
         $post_max_size = $userInfo['totalCapacityLeft'];
+    }
 
-    return array('post_max_size' => (int) ($post_max_size / 1000), 'upload_max_filesize' => (int) ($upload_max_filesize / 1000));
+    return array('post_max_size'       => (int) ($post_max_size / 1000),
+                 'upload_max_filesize' => (int) ($upload_max_filesize / 1000));
 }

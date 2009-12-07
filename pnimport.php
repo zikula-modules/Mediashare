@@ -27,12 +27,11 @@ function mediashare_import_photoshare($args)
         return LogUtil::registerPermissionError();
     }
 
-    if (isset($_POST['importButton'])) {
-        return mediashareImportPhotoshare();
-    }
-
     if (isset($_POST['cancelButton'])) {
         return pnRedirect(pnModURL('mediashare', 'import', 'main'));
+    }
+    if (isset($_POST['importButton'])) {
+        return mediashareImportPhotoshare();
     }
 
     $render = & pnRender::getInstance('mediashare', false);

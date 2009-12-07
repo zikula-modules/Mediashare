@@ -2,9 +2,9 @@
 
 function smarty_function_mediashare_templateSelector($params, &$smarty)
 {
-    $id = isset($params['id']) ? $params['id'] : 'album';
+    $id               = isset($params['id']) ? $params['id'] : 'album';
     $selectedTemplate = $smarty->get_template_vars($id);
-    $name = isset($params['name']) ? $params['name'] : $id;
+    $name             = isset($params['name']) ? $params['name'] : $id;
 
     $templates = pnModAPIFunc('mediashare', 'user', 'getAllTemplates');
     if ($templates === false) {

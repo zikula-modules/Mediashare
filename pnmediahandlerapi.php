@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
 function mediashare_mediahandlerapi_getMediaHandlers($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -83,22 +82,22 @@ function mediashare_mediahandlerapi_getHandlerInfo($args)
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $handlersTable = $pntable['mediashare_mediahandlers'];
+    $handlersTable  = $pntable['mediashare_mediahandlers'];
     $handlersColumn = $pntable['mediashare_mediahandlers_column'];
 
     $sql = "SELECT DISTINCT $handlersColumn[handler],
-                          $handlersColumn[foundMimeType],
-                          $handlersColumn[foundFileType]
-          FROM $handlersTable
-          WHERE    $handlersColumn[mimeType] = '" . DataUtil::formatForStore($mimeType) . "'
-                OR $handlersColumn[fileType] = '" . DataUtil::formatForStore($fileType) . "'";
+                            $handlersColumn[foundMimeType],
+                            $handlersColumn[foundFileType]
+                       FROM $handlersTable
+                      WHERE $handlersColumn[mimeType] = '" . DataUtil::formatForStore($mimeType) . "'
+                         OR $handlersColumn[fileType] = '" . DataUtil::formatForStore($fileType) . "'";
 
     $result = $dbconn->execute($sql);
 
     $errormsg = __('Unable to locate media handler for \'%1$s\' (%2$s)', array($filename, $mimeType), $dom);
     if ($dbconn->errorNo() != 0) {
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.getHandlerInfo', $errormsg), $dom));
-    }    
+    }
 
     if ($result->EOF) {
         return LogUtil::registerError($errormsg);
@@ -125,9 +124,7 @@ function mediashare_mediahandlerapi_loadHandler($args)
         $handlerName = $args['handlerName'];
     }
 
-    $handlerApi = "media_$handlerName";
-
-    $handler = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler');
+    $handler = pnModAPIFunc('mediashare', "media_{$handlerName}", 'buildHandler');
 
     return $handler;
 }
@@ -169,8 +166,7 @@ function mediashare_mediahandlerapi_scanMediaHandlers($args)
                 $fileType['handler'] = $handlerName;
                 $fileType['title'] = $handler->getTitle();
 
-                $ok = pnModAPIFunc('mediashare', 'mediahandler', 'addMediaHandler', $fileType);
-                if ($ok === false) {
+                if (!pnModAPIFunc('mediashare', 'mediahandler', 'addMediaHandler', $fileType)) {
                     return false;
                 }
             }
@@ -192,7 +188,7 @@ function mediashare_mediahandlerapi_addMediaHandler($args)
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
-    $handlersTable = $pntable['mediashare_mediahandlers'];
+    $handlersTable  = $pntable['mediashare_mediahandlers'];
     $handlersColumn = $pntable['mediashare_mediahandlers_column'];
 
     $sql = "INSERT INTO $handlersTable (

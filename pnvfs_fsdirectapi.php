@@ -20,7 +20,7 @@ class mediashare_vfsHandlerFSDirect
         $dom = ZLanguage::getModuleDomain('mediashare');
 
         $fileReference = "$args[baseFileRef]-$args[fileMode].$args[fileType]";
-        $newFilename = $this->storageDir . '/' . DataUtil::formatForOS($fileReference);
+        $newFilename   = $this->storageDir . '/' . DataUtil::formatForOS($fileReference);
 
         $ok = @copy($filename, $newFilename);
         if ($ok === false) {
@@ -65,7 +65,7 @@ class mediashare_vfsHandlerFSDirect
         $id .= '/';
 
         for ($i=0; $i<30; ++$i) {
-                $id .= $chars[mt_rand(0, $charLen-1)];
+            $id .= $chars[mt_rand(0, $charLen-1)];
         }
 
         return $id;

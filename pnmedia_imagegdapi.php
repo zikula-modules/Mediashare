@@ -4,24 +4,33 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2005.
 // =======================================================================
 
-
-//require_once 'modules/mediashare/mediaHandler.php';
-
-
 class mediashare_imageHandlerGD
 {
     function getTitle()
     {
-        return 'Mediashare GD Image Handler';
+        $dom = ZLanguage::getModuleDomain('mediashare');
+        return __('Mediashare GD Image Handler', $dom);
     }
 
     function getMediaTypes()
     {
         return array(
-            array('mimeType' => 'image/pjpeg', 'fileType' => 'jpg', 'foundMimeType' => 'image/jpeg', 'foundFileType' => 'jpg'),
-            array('mimeType' => 'image/jpeg', 'fileType' => 'jpeg', 'foundMimeType' => 'image/jpeg', 'foundFileType' => 'jpg'),
-            array('mimeType' => 'image/png', 'fileType' => 'png', 'foundMimeType' => 'image/png', 'foundFileType' => 'png'),
-            array('mimeType' => 'image/gif', 'fileType' => 'gif', 'foundMimeType' => 'image/gif', 'foundFileType' => 'gif'));
+            array('mimeType' => 'image/pjpeg',
+                  'fileType' => 'jpg',
+                  'foundMimeType' => 'image/jpeg',
+                  'foundFileType' => 'jpg'),
+            array('mimeType' => 'image/jpeg',
+                  'fileType' => 'jpeg',
+                  'foundMimeType' => 'image/jpeg',
+                  'foundFileType' => 'jpg'),
+            array('mimeType' => 'image/png',
+                  'fileType' => 'png',
+                  'foundMimeType' => 'image/png',
+                  'foundFileType' => 'png'),
+            array('mimeType' => 'image/gif',
+                  'fileType' => 'gif',
+                  'foundMimeType' => 'image/gif',
+                  'foundFileType' => 'gif'));
     }
 
     function createPreviews($args, $previews)
@@ -31,26 +40,40 @@ class mediashare_imageHandlerGD
         $mediaFileType = $args['fileType'];
 
         $originalImageData = $this->createImageFromFile($mediaFilename, $mimeType);
-        if ($originalImageData == false)
+        if ($originalImageData == false) {
             return false;
+        }
 
         $result = array();
 
-        foreach ($previews as $preview) {
+        foreach ($previews as $preview)
+        {
             $imPreview = $this->createResizedImage($originalImageData, $mimeType, $preview['imageSize']);
 
             if ($mimeType == 'image/jpeg' && !$preview['isThumbnail']) {
                 imagejpeg($imPreview, $preview['outputFilename'], 90);
-                $result[] = array('fileType' => 'jpg', 'mimeType' => 'image/jpg', 'width' => imagesx($imPreview), 'height' => imagesy($imPreview), 'bytes' => filesize($preview['outputFilename']));
+                $result[] = array('fileType' => 'jpg',
+                                  'mimeType' => 'image/jpg',
+                                  'width'    => imagesx($imPreview),
+                                  'height'   => imagesy($imPreview),
+                                  'bytes'    => filesize($preview['outputFilename']));
             } else {
                 imagepng($imPreview, $preview['outputFilename']);
-                $result[] = array('fileType' => 'png', 'mimeType' => 'image/png', 'width' => imagesx($imPreview), 'height' => imagesy($imPreview), 'bytes' => filesize($preview['outputFilename']));
+                $result[] = array('fileType' => 'png',
+                                  'mimeType' => 'image/png',
+                                  'width'    => imagesx($imPreview),
+                                  'height'   => imagesy($imPreview),
+                                  'bytes'    => filesize($preview['outputFilename']));
             }
 
             imagedestroy($imPreview);
         }
 
-        $result[] = array('fileType' => $mediaFileType, 'mimeType' => $mimeType, 'width' => imagesx($originalImageData), 'height' => imagesy($originalImageData), 'bytes' => filesize($mediaFilename));
+        $result[] = array('fileType' => $mediaFileType,
+                          'mimeType' => $mimeType,
+                          'width'    => imagesx($originalImageData),
+                          'height'   => imagesy($originalImageData),
+                          'bytes' => filesize($mediaFilename));
 
         imagedestroy($originalImageData);
 
@@ -59,21 +82,22 @@ class mediashare_imageHandlerGD
 
     function getMediaDisplayHtml($url, $width, $height, $id, $args)
     {
-        if ((string) (int) $width == "$width")
+        if ((string) (int) $width == "$width") {
             $width = "{$width}px";
-        $widthHtml = ($width == null ? '' : " width:{$width}");
-        $heightHtml = ($height == null ? '' : " height:$height");
+        }
+        $widthHtml   = ($width == null ? '' : " width:{$width}");
+        $heightHtml  = ($height == null ? '' : " height:$height");
         $onclickHtml = (empty($args['onclick']) ? '' : " onclick=\"$args[onclick]\"");
-        $classHtml = (empty($args['class']) ? '' : " class=\"$args[class]\"");
-        $idHtml = ($id != '' ? " id=\"$id\"" : '');
-        $style = " style=\"$widthHtml$heightHtml\"";
-        $title = (isset($args['title']) ? $args['title'] : '');
+        $classHtml   = (empty($args['class']) ? '' : " class=\"$args[class]\"");
+        $idHtml      = ($id != '' ? " id=\"$id\"" : '');
+        $style       = " style=\"$widthHtml$heightHtml\"";
+        $title       = (isset($args['title']) ? $args['title'] : '');
 
-        $url = pnGetBaseURI() . '/' . $url;
+        $url  = pnGetBaseURI() . '/' . $url;
         $html = "<img src=\"$url\"$style$idHtml title=\"$title\" alt=\"$title\"$onclickHtml$classHtml/>";
 
         if (isset($args['url'])) {
-            $rel = (isset($args['urlRel']) ? " rel=\"$args[urlRel]\"" : '');
+            $rel  = (isset($args['urlRel']) ? " rel=\"$args[urlRel]\"" : '');
             $html = "<a href=\"$args[url]\"$rel>$html</a>";
         }
 
@@ -129,19 +153,22 @@ class mediashare_imageHandlerGD
         imagesavealpha($thumbnail, true);
 
         $white = imagecolorallocate($thumbnail, 255, 255, 255); // First allocated - becomes background
-        $gray = imagecolorallocate($thumbnail, 100, 100, 100);
+        $gray  = imagecolorallocate($thumbnail, 100, 100, 100);
 
         // Copy resized image into center of thumbnail
         if ($isTrueColor && function_exists("imagecopyresampled")) {
-            if (!@imagecopyresampled($thumbnail, $im, 0, 0, 0, 0, $resizedXSize, $resizedYSize, $xs, $ys))
+            if (!@imagecopyresampled($thumbnail, $im, 0, 0, 0, 0, $resizedXSize, $resizedYSize, $xs, $ys)) {
                 mediashareImageCopyResampleBicubic($thumbnail, $im, 0, 0, 0, 0, $resizedXSize, $resizedYSize, $xs, $ys);
-        } else
+            }
+        } else {
             imagecopyresized($thumbnail, $im, 0, 0, 0, 0, $resizedXSize, $resizedYSize, $xs, $ys);
+        }
 
-        if (pnModGetVar('mediashare', 'enableSharpen'))
+        if (pnModGetVar('mediashare', 'enableSharpen')) {
             $thumbnailEnhanced = $this->UnsharpMask($thumbnail, 80, .5, 3);
-        else
+        } else {
             $thumbnailEnhanced = $thumbnail;
+        }
 
         return $thumbnailEnhanced;
     }
@@ -154,20 +181,24 @@ class mediashare_imageHandlerGD
     function UnsharpMask($img, $amount, $radius, $threshold)
     {
         // Attempt to calibrate the parameters to Photoshop:
-        if ($amount > 500)
+        if ($amount > 500) {
             $amount = 500;
+        }
         $amount = $amount * 0.016;
 
-        if ($radius > 50)
+        if ($radius > 50) {
             $radius = 50;
+        }
         $radius = $radius * 2;
 
-        if ($threshold > 255)
+        if ($threshold > 255) {
             $threshold = 255;
+        }
 
         $radius = abs(round($radius)); // Only integers make sense.
-        if ($radius == 0)
+        if ($radius == 0) {
             return null;
+        }
 
         $w = imagesx($img);
         $h = imagesy($img);
@@ -179,7 +210,6 @@ class mediashare_imageHandlerGD
         //  1   2   1
         //  2   4   2
         //  1   2   1
-
 
         // Move copies of the image around one pixel at the time and merge them with weight
         // according to the matrix. The same matrix is simply repeated for higher radii.
@@ -198,10 +228,10 @@ class mediashare_imageHandlerGD
         $imgCanvas = $imgBlur;
 
         // Calculate the difference between the blurred pixels and the original and set the pixels
-        for ($x = 0; $x < $w; $x++) // each row
-{
-            for ($y = 0; $y < $h; $y++) // each pixel
-{
+        for ($x = 0; $x < $w; $x++) {
+            // each row
+            for ($y = 0; $y < $h; $y++) {
+                // each pixel
                 $rgbOrig = ImageColorAt($imgCanvas2, $x, $y);
                 $rOrig = (($rgbOrig >> 16) & 0xFF);
                 $gOrig = (($rgbOrig >> 8) & 0xFF);
@@ -233,28 +263,29 @@ class mediashare_imageHandlerGD
         // Detect presense of ImageCreateTrueColor() - although this apparently doesn't say anything about GD2 existing ...
         $hasTrueColorImage = false;
         $gdfunctions = get_extension_funcs("gd");
-        foreach ($gdfunctions as $f)
-            if ($f == 'imagecreatetruecolor')
+        foreach ($gdfunctions as $f) {
+            if ($f == 'imagecreatetruecolor') {
                 $hasTrueColorImage = true;
+            }
+        }
 
         // If the check for imagecreatetruecolor fails then insert the next line
         // $hasTrueColorImage = false;
 
-
         $isTrueColor = false;
 
         // Create actual image
-        if (/*$mimeType == 'image/gif'  ||  */!$hasTrueColorImage)
+        if (/*$mimeType == 'image/gif'  ||  */!$hasTrueColorImage) {
             $image = ImageCreate($xsize, $ysize); // Create white background image
-        else {
+        } else {
             $image = @ImageCreateTrueColor($xsize, $ysize); // Create black background image
 
-
             // Didn't work ... perhaps ImageCreateTrueColor doesn't exist?
-            if (!$image)
+            if (!$image) {
                 $image = ImageCreate($xsize, $ysize); // Create white background image
-            else
+            } else {
                 $isTrueColor = true;
+            }
         }
 
         return $image;

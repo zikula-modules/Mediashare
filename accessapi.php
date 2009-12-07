@@ -156,39 +156,40 @@ class mediashareAccessApi
         $membershipColumn = &$pntable['group_membership_column'];
 
         $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums', array());
-        $invitedSql = '';
 
-        if (is_array($invitedAlbums) && ($access & mediashareAccessRequirementView) == mediashareAccessRequirementView) {
+        $invitedSql = array();
+        if (is_array($invitedAlbums) && ($access & mediashareAccessRequirementView)) {
             foreach ($invitedAlbums as $invAlbumId => $ok) {
                 if ($ok) {
-                    if (!empty($invitedSql))
-                        $invitedSql .= ',';
-                    $invitedSql .= (int) $invAlbumId;
+                    $invitedSql[] = (int)$invAlbumId;
                 }
             }
         }
+        $invitedSql = implode(', ', $invitedSql);
 
         $parentAlbumSql = '';
         if ($albumId != null) {
             $parentAlbumSql = "$albumsColumn[parentAlbumId] = $albumId AND";
         }
-        $sql = "SELECT DISTINCT $albumsColumn[id]
-            FROM $albumsTable
-            LEFT JOIN $accessTable
-                 ON $accessColumn[albumId] = $albumsColumn[id]
-            LEFT JOIN $membershipTable
-                  ON     $membershipColumn[gid] = $accessColumn[groupId]
-                     AND $membershipColumn[uid] = $userId
-            WHERE $parentAlbumSql
-                  (    ($accessColumn[access] & $access) != 0
-                   AND ($membershipColumn[gid] IS NOT NULL OR $accessColumn[groupId] = -1)
-                   OR  $albumsColumn[ownerId] = $userId)";
 
-        //echo "<pre>$sql</pre><br/>\n";
+        $sql = "SELECT DISTINCT $albumsColumn[id]
+                           FROM $albumsTable
+                      LEFT JOIN $accessTable
+                             ON $accessColumn[albumId] = $albumsColumn[id]
+                      LEFT JOIN $membershipTable
+                             ON $membershipColumn[gid] = $accessColumn[groupId]
+                            AND $membershipColumn[uid] = $userId
+                          WHERE $parentAlbumSql
+                                (
+                                  ($accessColumn[access] & $access) != 0 AND ($membershipColumn[gid] IS NOT NULL OR $accessColumn[groupId] = -1)
+                                  OR  $albumsColumn[ownerId] = $userId
+                                )";
+
         $dbresult = $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
             return LogUtil::registerError(__f('Error in %1$s: %2$%', array('accessapi.getAccessibleAlbumsSql', 'Could not retrieve the accessible albums.'), $dom));
         }
+
         $albumIds = $invitedSql;
         for (; !$dbresult->EOF; $dbresult->MoveNext()) {
             if ($albumIds != '') {
@@ -198,7 +199,7 @@ class mediashareAccessApi
         }
         $dbresult->close();
 
-        //echo "Acces bits = $access. Albums = ($albumIds). ";
+        //echo "Access bits = $access. Albums = ($albumIds). ";
         return $albumIds == '' ? '1=0' : "$field IN ($albumIds)";
     }
 
@@ -208,12 +209,13 @@ class mediashareAccessApi
         if ($item === false) {
             return false;
         }
+
         // Owner can do everything
         $userId = (int) pnUserGetVar('uid');
-
         if ($item['ownerId'] == $userId) {
             return true;
         }
+
         $albumId = $item['parentAlbumId'];
 
         return $this->hasAlbumAccess($albumId, $access, $viewKey);

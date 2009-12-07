@@ -21,6 +21,7 @@ function elfisk_getStyleHtml(&$params)
 function &elfisk_getCurrentValues()
 {
     global $elfisk_currentValues;
+
     if ($elfisk_currentValues == null) {
         $elfisk_currentValues = array();
     }
