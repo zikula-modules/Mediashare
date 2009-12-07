@@ -1,0 +1,61 @@
+
+  INTEGRATING MEDIASHARE WITH OTHER MODULES
+
+    In order to use Mediashare's media item selector from other modules you must
+    do the following:
+
+    1) Make sure the "mediashare/pnjavascript/finditem.js" JavaScript file is
+       included in the web page from which the media selector is opened. This 
+       script supplies a function named "mediashareFindItem" which opens the media
+       selector window when called.
+
+       Example:
+       <script type="text/javascript" src="modules/mediashare/pnjavascript/finditem.js"></script>
+
+    2) Specify an HTML "id" attribute on the input element that Mediashare should
+       paste the media tag or URL into. The actual ID is up to you. The input
+       element may either be a text input or a textarea element (even works with
+       the Xinha/HtmlArea editor).
+
+       Examples:
+       <textarea id="articleTextarea"></textarea>
+       <input type="text" id="mediaURL"/>
+
+    3) Add a button (or other clickable element) with an "onclick" handler that
+       calls mediashareFindItem(inputId, selectorURL). The "inputId" parameter 
+       holds the ID of the input from step (2). The selector URL holds the URL to
+       Mediashare's media selector window. You can get this URL from PHP/Zikula
+       by calling:
+
+       pnModUrl('mediashare', 'external', 'finditem', 
+                array('url'  => 'relative',
+                      'mode' => 'url'));
+
+       or
+
+       pnModUrl('mediashare', 'external', 'finditem', 
+                array('url'  => 'relative',
+                      'mode' => 'html'));
+
+     The "url" and "mode" arguments specifies how the media selector should paste
+     the result back into the external input. If "url" is "relative" then only
+     the relative part of the media URL is pasted - otherwise the full absolute
+     path is used. If "mode" is "html" then a complete media tag is pasted, 
+     otherwise only the URL is pasted.
+
+     In addition to "url" and "mode" you can set "onlymine=1" which will restrict
+     the selection to albums of the current user.
+
+     Example:
+     <input type="button" value="Insert media item" 
+            onclick="mediashareFindItem('articleTextarea', 'http://...&url=relative&mode=html')">
+
+    4) Make sure to include the following on the pages that contains medias:
+
+    <script type="text/javascript" src="modules/mediashare/pnjavascript/view.js"></script>
+
+    This ensure Mediashare's popup windows works.
+
+
+    Mediashare does also have a media item selector for pnForms in Zikula.
+    Contact me directly if you are interested.

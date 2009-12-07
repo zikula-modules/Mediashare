@@ -1,0 +1,69 @@
+
+  INSTALLATION
+
+    Start the same way as width any other Zikula module:
+
+    1) Copy the files into Zikula's /modules directory.
+
+    2) Go to Zikula's module admin page and regenerate the list.
+
+    3) Install and activate the Mediashare module.
+
+    4) Try to create a new album - if it fails with the message
+       "calling mediashareUpdateNestedSetValues() failed" then you probably have
+       MySQL version 4.x - and Mediashare works best with MySQL 5.x. To fix this,
+       open file pneditapi.php and search for "MySQL switch" and then 
+       change (true) to (false).
+
+    If you are using short URLs then you may have to add the line below to your 
+    .htaccess file. This ensures media files are found in the right place.
+
+    RewriteRule ^mediashare/.*/mediashare/(.+) mediashare/$1
+
+
+  UNINSTALL
+
+    First, uninstall Mediashare like any other Zikula module.
+    Then manually delete all media files from the "mediashare" directory.
+
+
+  CONFIGURATION
+
+    1) Decide if you want to store media files on the local file system or in 
+       the database.
+
+       Normal user should store files in the local file system. This is much
+       faster but slightly less secure. If you really need 100% bullet proof
+       access control then store files in the database (see the section on
+       security).
+
+       Storing files in the database can make backup easier (no need to backup any
+       thing else than the database) and it may be the only way to setup Mediashare
+       on multiple web servers using the same database. But it slows down performance
+       considerably.
+
+    1.1) Files on the local file system
+
+         Create a upload directory and configure it in the Mediashare admin panel. Make
+         sure this directory is writable by the webserver. This will be the place for
+         all the files that you upload.
+
+         For SAFE_MODE reasons you may have to set the GID or UID bits on this 
+         directory. Don't ask me why - but my webserver didn't work without.
+
+         Go to Mediashare's admin page and write the full path to this directory as
+         the "Media upload dir.".
+
+    1.2) Files in the database
+
+         Add this line to your .htaccess file:
+
+         RewriteRule ^mediashare/(vfsdb/[a-z0-9]+-[a-z]+\.[a-z]+)$ index.php?module=mediashare&type=vfs_db&func=dump&ref=$1 [PT]
+
+         This converts /mediashare/vfsdb/xxxx file references to a Zikula 
+         function call for Mediashare.
+
+    2) Make sure the "Temporary dir." points to a writable directory. This 
+       directory will be used by Mediashare when converting and resizing media 
+       files.
+  

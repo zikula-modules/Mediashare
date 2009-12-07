@@ -1,0 +1,30 @@
+
+  MEDIASHARE CUSTOMIZATION
+
+    TEMPLATES
+    You can modify the looks by adding your own theme specific templates (as with
+    any other pnRender based module).
+
+    Just copy any of the files from /modules/mediashare/pntemplates/* to 
+    /themes/YourTheme/templates/modules/mediashare/* or
+    /config/templates/mediashare/* and edit the copies.
+
+    TEMPLATE SETS
+    The album viewer, thumbnail list, and the slideshow viewer supports templates 
+    selected by album. The templates can be located in:
+    /config/templates/mediashare/TemplateSet/*
+    /themes/YourTheme/templates/modules/mediashare/TemplateSet/*
+
+    Add your own "TemplateSet" directory and place any of the following files in it:
+      album.html      - album viewer template
+      thumbnails.html - thumbnail viewer template
+      slideshow.html  - slideshow template
+      head.html       - header template included in the slideshow viewer (for CSS and scripting)
+
+
+  SCRIPTACULOUS AND LIGHTBOX SCRIPTS
+
+    Mediashare ships with it's own copy of the lightbox script used for the cool
+    image viewer effects. If you want to use another instance of the library then
+    copy the template "mediashare_include_lightbox.html" to your theme template
+    directory and modify it to suit your needs.

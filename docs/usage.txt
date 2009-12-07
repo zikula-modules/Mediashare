@@ -1,0 +1,43 @@
+
+  USAGE
+
+    The very short guide is: 
+    - Create albums and start uploading media files into these.
+    - Browse albums and view their images in slideshows.
+
+    The album browsing URL is:
+    http://somewhere/index.php?module=mediashare
+
+    The editing URL is:
+    http://somewhere/index.php?module=Mediashare&type=edit&func=view&aid=1
+
+    Image URLs are:
+    http://somewhere/mediashare/xxx
+
+    Where xxx is a random identifier (see the security chapter below)
+
+    You can also use {mediashare} in Zikula's menu
+    this leads to the top album.
+
+
+  USING WITH GALLERY REMOTE
+
+    The Menalto Gallery project has a Java based image uploader which can be used
+    together with Mediashare (tested with Gallery Remote 1.5). You can download 
+    the uploader here:
+
+    http://gallery.menalto.com/wiki/Gallery_Remote
+
+
+    Install the uploader on your local machine and start it. First thing to do is
+    to add a URL for your Mediashare interface. USE THE STANDALONE GALLERY TYPE!
+    The URL is:
+
+    http://YOURHOST/index.php?module=mediashare&type=remote&func=main&
+
+    BE VERY CAREFULL TO REMEMBER THE LAST AMPERSAND!
+
+    Now you are ready to go. That was easy :-)
+
+    This interface can probably also be used with some of the Gallery screensaver
+    programs (untested).

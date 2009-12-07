@@ -1,0 +1,6 @@
+
+  PLUGINS
+
+    Mediashare uses a plugin framework for managing the various file formats.
+    The plugins have not yet been documented - and won't until somebody asks for it. 
+    Please check the files pnmedia_XXXapi.php for examples.

@@ -1,0 +1,16 @@
+
+  SPECIAL UPGRADE INSTRUCTIONS
+
+    To 4.0.x
+    * Do a normal upgrade
+    * If you are using MySQL 5.x then open the file pneditapi.php and search for 
+      "MySQL switch" and then change (false) to (true). This will improve 
+      performance of album creation by using stored procedures instead of PHP for
+      nested set values calculation.
+
+    From 2.1.1 to 2.1.2
+    * Do a normal Zikula module upgrade.
+
+    From any version to 2.1.1
+    * Do a normal Zikula module upgrade.
+    * Goto Mediashare's admin panel (the plugin section) and "scan for plugins".

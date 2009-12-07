@@ -1,8 +1,14 @@
-Mediashare (C) 2005 Jorn Wildt
-==============================
 
-Version 4.0
------------
+  CHANGELOG
+
+
+  Version 4.0.1
+  * Converted to Zikula 1.2 and Gettext
+  * Code update to the Zikula API
+  * Database queries executed by DBUtil
+
+
+  Version 4.0
   * Added embedding of Flickr, SmugMug, and Picasa albums.
   * Added some missing danish translations.
   * Added a missing line-break after plugin-tabs.
@@ -24,41 +30,33 @@ Version 4.0
   * Fixed menu positions.
   * Now using Zikula prototype scripts.
 
-Please check upgrade instructions in readme.txt!
+  Please check upgrade instructions in upgrade.txt!
 
 
-Version 3.2.0
--------------
+  Version 3.2.0
   * Adding plugins for new Content module
   * Adding album selector for pnForms.
   * Adding album and media item plugins for the Content module.
   * Bugfix: fixing some language define issues with _MSBACK
 
 
-Version 3.1.1
--------------
+  Version 3.1.1
   * Bugfix: removing hardcoded URL in remote API.
 
 
-Version 3.1.0
--------------
+  Version 3.1.0
   * Adding interface to Gallery Remote - a Java application for uploading 
     images (see http://gallery.menalto.com/wiki/Gallery_Remote)
-  * The admin icon from Thomas didn't really fit into PN .76x, so
-    back to the old one. The new one is there as admin8.gif
   * Bugfix: adding missing <embed> tag when pasting Windows Media Player HTML
   * Bugfix: subalbums was shown twice in the thumbnail view
 
 
-Version 3.0.1
--------------
-  * New admin icon from Thomas
+  Version 3.0.1
   * Bugfix: browse back/fwd goes to thumbnails
   * Bugfix: [ 1774342 ] Hardcoded Script-Refs to www.pn760.dk
 
 
-Version 3.0.0
--------------
+  Version 3.0.0
   * Added ability to store images in database
   * Added upload of media files while selecting item for pasting into other application
   * Added sharpening of thumbnails (thanks to http://www.cerdmann.com/thumb/)
@@ -67,7 +65,7 @@ Version 3.0.0
   * Added "latest" overview (latest media files, albums, most active, "tag cloud")
   * Added "move media files to other album"
   * Improved browse- and edit- navigation and display of media and album information
-  * Added PostNuke .8 compliant search API
+  * Added Zikula compliant search API
   * Modernizing HTML
   * Extended use of Lightbox display in edit-mode
   * Reworked the way of doing HTML escapes in order to fix some missing escapes
@@ -86,13 +84,11 @@ Version 3.0.0
   * Bugfix: album template was reset to unknown album when updating album (if template not selectable) 
 
 
-Version 2.1.2
--------------
-  * Added media item selector for PostNuke .8 pnForms
+  Version 2.1.2
+  * Added media item selector for Zikula pnForms
 
 
-Version 2.1.1
--------------
+  Version 2.1.1
   * Added template selection from admin panel
   * Added Lightbox javascript template
   * Added re-upload of media items
@@ -106,35 +102,30 @@ Version 2.1.1
   * Fix: [ 1480674 ] link to user side of mediashare
 
 
-Version 2.0.0
--------------
-  * Making slideshow run in it's own window (no PostNuke frame)
+  Version 2.0.0
+  * Making slideshow run in it's own window (no frame)
     and restyling it.
   * Now possible to edit/delete multiple media items at once.
   * Made web upload easier to use.
   * Improved browsing through thumbnails.
   * Showing filmstrip with all thumbnails in slideshow
-  * Showing album and media title in browser title (Xantia themes only?)
+  * Showing album and media title in browser title (Xanthia themes only?)
   * Showing icons ok/error in upload status window.
   * Showing item count in album browser.
   * Showing a bit more author information in the album edit view.
   * Bugfix: wrong database schema for "modified date" of albums.
   * Bugfix: [ 1553038 ] Bug: click on "access" in albums
-  * Bugfix: [ 1523047 ] Invalid SQL if postnukes topics module not present
+  * Bugfix: [ 1523047 ] Invalid SQL if topics module not present
 
 
-Version 1.0.1
--------------
+  Version 1.0.1
   * Bugfix: slideshow did not handle empty albums very well.
   * Bugfix: edit popup menu on albums had double "aid=ID" parameters.
 
 
-Version 1.0.0
--------------
+  Version 1.0.0
   Initial release
 
 
-Version 0.0.0.0
----------------
+  Version 0.0.0.0
   Demo release - functional but *not* upgradable.
-

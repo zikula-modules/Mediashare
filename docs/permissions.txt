@@ -1,0 +1,51 @@
+
+  PERMISSIONS
+
+     Group          Component       Instance   Permission
+     Users          mediashare::    .*         edit
+     All groups     mediashare::    .*         read
+
+    This will give all users access to viewing published albums,
+    and "Editors" access to create albums.
+
+
+  ACCESS
+
+    You can implement your completely own access control mechanism by copying
+    "accessapi.php" to "localaccessapi.php" and then modify that.
+    No documentation supplied but feel free to contact me if needed.
+
+
+  SECURITY
+
+    Mediashare bases it's security on three elements:
+      1) Zikula's permission system
+      2) Mediashare's access control
+      3) Unguessable media file names.
+
+    1 - Users need READ access to view any item and EDIT access to add anything.
+        (see the install instructions)
+
+    2 - Mediashare handles view/add/edit access for both albums and media items.
+
+    3 - The last point is for performance reasons, but it depends on the setup.
+        It is only used when storing media files in the local file system.
+
+    Photoshare depended on Zikula's permissions when showing a single image. 
+    This meant loading both the Zikula API and the Mediashare API each time an 
+    image was displayed, and then streaming the image data through PHP. This 
+    really slowed things down.
+
+    Mediashare uses another technique (when storing files in the local file 
+    system): all images are stored in the filesystem in a place where the 
+    webserver can access them (in the "media upload directory"). This means 
+    all items are accessible to everybody! 
+
+    To avoid everybody accessing the files we name them randomly with filenames 
+    that should not be possible to guess by outsiders. You will only get these 
+    filenames if you are able to browse the Mediashare albums containing them (and
+    thereby serving links to them).
+
+    This is *not* a completely bullet proof solution - but the best compromise
+    between performance and security. If you need more security then store the
+    images in the database.
