@@ -63,8 +63,7 @@ class mediashareItemSelector extends pnFormPlugin
         $thumbnailSize = (int)pnModGetVar('mediashare', 'thumbnailSize') + 10;
         $html = "<div class=\"mediashareItemSelector\">\n<table><tr>\n";
 
-        $albums = pnModAPIFunc('mediashare', 'user', 'getAllAlbums', array('albumId' => 1));
-        if ($albums === false) {
+        if (!($albums = pnModAPIFunc('mediashare', 'user', 'getAllAlbums', array('albumId' => 1)))) {
             return false;
         }
 

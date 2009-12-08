@@ -16,8 +16,7 @@ class mediashareAccessApi
         $userId = (int) pnUserGetVar('uid');
 
         // Owner can do everything
-        $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-        if ($album === false) {
+        if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
             return false;
         }
         if ($album['ownerId'] == $userId) {
@@ -25,19 +24,21 @@ class mediashareAccessApi
         }
 
         // Don't enable any edit access if not having normal Zikula edit access
-        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT))
+        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
             $access = $access & ~mediashareAccessRequirementEditSomething;
+        }
 
         // Must have normal PN read access to the module
-        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ))
+        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
             return false;
+        }
 
         // Anonymous is not allowed to add stuff, so remove those bits
         if (!pnUserLoggedIn()) {
             $access = $access & ~mediashareAccessRequirementAddSomething;
         }
-        pnModDBInfoLoad('Groups'); // Make sure groups database info is available
 
+        pnModDBInfoLoad('Groups'); // Make sure groups database info is available
 
         list ($dbconn) = pnDBGetConn();
         $pntable = pnDBGetTables();
@@ -48,8 +49,9 @@ class mediashareAccessApi
         $membershipColumn = &$pntable['group_membership_column'];
 
         $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums', array());
-        if (is_array($invitedAlbums) && $invitedAlbums[$albumId] && ($access & mediashareAccessRequirementView) == mediashareAccessRequirementView)
+        if (is_array($invitedAlbums) && $invitedAlbums[$albumId] && ($access & mediashareAccessRequirementView) == mediashareAccessRequirementView) {
             return true;
+        }
 
         $sql = "SELECT COUNT(*)
                   FROM $accessTable
@@ -78,11 +80,11 @@ class mediashareAccessApi
         if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
             return 0xFF;
         }
+
         $userId = (int) pnUserGetVar('uid');
 
         // Owner can do everything
-        $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-        if ($album === false) {
+        if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
             return false;
         }
         if ($album['ownerId'] == $userId) {
@@ -105,12 +107,12 @@ class mediashareAccessApi
         }
 
         $sql = "SELECT $accessColumn[access]
-            FROM $accessTable
-            LEFT JOIN $membershipTable
-                  ON     $membershipColumn[gid] = $accessColumn[groupId]
-                     AND $membershipColumn[uid] = $userId
-            WHERE     $accessColumn[albumId] = $albumId
-                  AND ($membershipColumn[gid] IS NOT NULL OR $accessColumn[groupId] = -1)";
+                  FROM $accessTable
+             LEFT JOIN $membershipTable
+                    ON $membershipColumn[gid] = $accessColumn[groupId]
+                   AND $membershipColumn[uid] = $userId
+                 WHERE $accessColumn[albumId] = $albumId
+                   AND ($membershipColumn[gid] IS NOT NULL OR $accessColumn[groupId] = -1)";
 
         $dbresult = $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
@@ -128,6 +130,7 @@ class mediashareAccessApi
         if (is_array($invitedAlbums) && $invitedAlbums[$albumId]) {
             $access |= mediashareAccessRequirementView;
         }
+
         return $access;
     }
 
@@ -148,11 +151,11 @@ class mediashareAccessApi
         list ($dbconn) = pnDBGetConn();
         $pntable = pnDBGetTables();
 
-        $albumsTable = $pntable['mediashare_albums'];
-        $albumsColumn = $pntable['mediashare_albums_column'];
-        $accessTable = $pntable['mediashare_access'];
-        $accessColumn = $pntable['mediashare_access_column'];
-        $membershipTable = $pntable['group_membership'];
+        $albumsTable      = $pntable['mediashare_albums'];
+        $albumsColumn     = $pntable['mediashare_albums_column'];
+        $accessTable      = $pntable['mediashare_access'];
+        $accessColumn     = $pntable['mediashare_access_column'];
+        $membershipTable  = $pntable['group_membership'];
         $membershipColumn = &$pntable['group_membership_column'];
 
         $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums', array());
@@ -205,8 +208,7 @@ class mediashareAccessApi
 
     function hasItemAccess($mediaId, $access, $viewKey)
     {
-        $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-        if ($item === false) {
+        if (!($item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
             return false;
         }
 

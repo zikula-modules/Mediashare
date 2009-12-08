@@ -26,8 +26,7 @@ function mediashare_invitationapi_sendInvitation(&$args)
         if ($email != '') {
             $args['email'] = $email;
 
-            $invitationId = pnModAPIFunc('mediashare', 'invitation', 'createInvitationId', $args);
-            if ($invitationId === false) {
+            if (!($invitationId = pnModAPIFunc('mediashare', 'invitation', 'createInvitationId', $args))) {
                 return false;
             }
 
@@ -39,8 +38,14 @@ function mediashare_invitationapi_sendInvitation(&$args)
             $message .= str_replace('%url%', $invitationUrl, __('<p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%url%">%url%</a></p>', $dom));
             $message = str_replace("\n", '<br/>', $message);
 
-            $ok = pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email, 'fromname' => $args['sender'], 'fromaddress' => $args['senderemail'], 'subject' => $args['subject'], 'body' => $message, 'html' => true));
-            if ($ok === false) {
+            $params = array('toaddress' => $email,
+                            'fromname' => $args['sender'],
+                            'fromaddress' => $args['senderemail'],
+                            'subject' => $args['subject'],
+                            'body' => $message,
+                            'html' => true);
+
+            if (!pnModAPIFunc('Mailer', 'user', 'sendmessage', $params)) {
                 return LogUtil::registerError(__('Some error occured while trying to send invitation.', $dom));
             }
         }
@@ -136,8 +141,14 @@ function mediashare_invitationapi_resendInvitation(&$args)
             $message .= str_replace('%url%', $invitationUrl, __('<p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%url%">%url%</a></p>', $dom));
             $message = str_replace("\n", '<br/>', $message);
 
-            $ok = pnModAPIFunc('Mailer', 'user', 'sendmessage', array('toaddress' => $email, 'fromname' => $args['sender'], 'fromaddress' => $args['senderemail'], 'subject' => $args['subject'], 'body' => $message, 'html' => true));
-            if ($ok === false) {
+            $params = array('toaddress' => $email,
+                            'fromname' => $args['sender'],
+                            'fromaddress' => $args['senderemail'],
+                            'subject' => $args['subject'],
+                            'body' => $message,
+                            'html' => true);
+
+            if (!pnModAPIFunc('Mailer', 'user', 'sendmessage', $params)) {
                 return LogUtil::registerError(__('Some error occured sending the invitation.', $dom));
             }
         }
@@ -259,8 +270,7 @@ function mediashare_invitationapi_updateViewCount($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $res = DBUtil::incrementObjectFieldByID('mediashare_invitation', 'viewCount', $args['key'], 'key');
-    if ($res === false) {
+    if (!(DBUtil::incrementObjectFieldByID('mediashare_invitation', 'viewCount', $args['key'], 'key'))) {
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.updateViewCount', 'Could not update the counter.'), $dom));
     }
 
@@ -404,9 +414,9 @@ function mediashare_invitationapi_register(&$args)
         return array('ok' => false, 'message' => __('Unknown or expired invitation ID.', $dom));
     }
 
-    $ok = pnModAPIFunc('mediashare', 'invitation', 'updateViewCount', $args);
-    if ($ok === false)
+    if (!pnModAPIFunc('mediashare', 'invitation', 'updateViewCount', $args)) {
         return false;
+    }
 
     $albums = SessionUtil::getVar('mediashareInvitedAlbums');
     if ($albums == false || $albums == null) {

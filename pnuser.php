@@ -37,20 +37,17 @@ function mediashare_user_browse($args)
     }
 
     // Fetch current album
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
     // Fetch subalbums
-    $subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething));
-    if ($subAlbums === false) {
+    if (!($subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething)))) {
         return false;
     }
 
     // Fetch media items
-    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
-    if ($items === false) {
+    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -144,8 +141,7 @@ function mediashare_user_slideshow($args)
     }
 
     // Fetch current album
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
     if ($album === true) {
@@ -153,8 +149,7 @@ function mediashare_user_slideshow($args)
     }
 
     // Fetch media items
-    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
-    if ($items === false) {
+    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -187,8 +182,7 @@ function mediashare_user_slideshow($args)
     // Add media display HTML
     $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
     for ($i = 0, $cou = count($items); $i < $cou; ++$i) {
-        $handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $items[$i]['mediaHandler']));
-        if ($handler === false) {
+        if (!($handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $items[$i]['mediaHandler'])))) {
             return false;
         }
         $result = $handler->getMediaDisplayHtml($mediadir.$items[$i]['originalRef'], null, null, 'mediaItem', array());
@@ -260,8 +254,7 @@ function mediashare_user_thumbnails($args)
     }
 
     // Fetch current album
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
     if ($album === true) {
@@ -269,14 +262,12 @@ function mediashare_user_thumbnails($args)
     }
 
     // Fetch media items
-    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
-    if ($items === false) {
+    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
         return false;
     }
 
     // Fetch subalbums
-    $subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething));
-    if ($subAlbums === false) {
+    if (!($subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething)))) {
         return false;
     }
 
@@ -315,8 +306,7 @@ function mediashare_user_simplethumbnails($args)
     }
 
     // Fetch current album
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
     if ($album === true) {
@@ -324,8 +314,7 @@ function mediashare_user_simplethumbnails($args)
     }
 
     // Fetch media items
-    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
-    if ($items === false) {
+    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -360,8 +349,7 @@ function mediashare_user_display($args)
     $viewkey = FormUtil::getPassedValue('viewkey');
 
     // Fetch media item
-    $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-    if ($mediaItem === false) {
+    if (!($mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
         return false;
     }
 
@@ -390,8 +378,7 @@ function mediashare_user_simpledisplay($args)
     $text           = isset($args['text']) ? $args['text'] : '';
 
     // Fetch media item
-    $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-    if ($mediaItem === false) {
+    if (!($mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
         return false;
     }
     if ($text == '.') {
@@ -424,10 +411,10 @@ function mediashare_user_displaygb($args)
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
     $viewkey = FormUtil::getPassedValue('viewkey');
 
-    $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-    if ($mediaItem === false) {
+    if (!($mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
         return false;
     }
+
     $albumId = $mediaItem['parentAlbumId'];
 
     // Check access
@@ -449,27 +436,23 @@ function mediashare_user_displaygb($args)
 // =======================================================================
 function mediashare_user_latest($args)
 {
-    $latestMediaItems = pnModAPIFunc('mediashare', 'user', 'getLatestMediaItems');
-    if ($latestMediaItems === false) {
+    if (!($latestMediaItems = pnModAPIFunc('mediashare', 'user', 'getLatestMediaItems'))) {
         return false;
     }
 
-    $latestAlbums = pnModAPIFunc('mediashare', 'user', 'getLatestAlbums');
-    if ($latestAlbums === false) {
+    if (!($latestAlbums = pnModAPIFunc('mediashare', 'user', 'getLatestAlbums'))) {
         return false;
     }
 
-    $mostActiveUsers = pnModAPIFunc('mediashare', 'user', 'getMostActiveUsers');
-    if ($mostActiveUsers === false) {
+    if (!($mostActiveUsers = pnModAPIFunc('mediashare', 'user', 'getMostActiveUsers'))) {
         return false;
     }
 
-    $mostActiveKeywords = pnModAPIFunc('mediashare', 'user', 'getMostActiveKeywords');
-    if ($mostActiveKeywords === false) {
+    if (!($mostActiveKeywords = pnModAPIFunc('mediashare', 'user', 'getMostActiveKeywords'))) {
         return false;
     }
-    $summary = pnModAPIFunc('mediashare', 'user', 'getSummary');
-    if ($summary === false) {
+
+    if (!($summary = pnModAPIFunc('mediashare', 'user', 'getSummary'))) {
         return false;
     }
 
@@ -493,8 +476,7 @@ function mediashare_user_keys($args)
 {
     $keyword = mediashareGetStringUrl('key', $args);
 
-    $items = pnModAPIFunc('mediashare', 'user', 'getByKeyword', array('keyword' => $keyword));
-    if ($items === false) {
+    if (!($items = pnModAPIFunc('mediashare', 'user', 'getByKeyword', array('keyword' => $keyword)))) {
         return false;
     }
 
@@ -520,13 +502,11 @@ function mediashare_user_list($args)
     $recordPos = mediashareGetIntUrl('pos', $args, 0);
     $template  = (isset($args['tpl']) ? $args['tpl'] : 'list');
 
-    $items = pnModAPIFunc('mediashare', 'user', 'getList', compact('keyword', 'uname', 'albumId', 'order', 'orderDir', 'recordPos'));
-    if ($items === false) {
+    if (!($items = pnModAPIFunc('mediashare', 'user', 'getList', compact('keyword', 'uname', 'albumId', 'order', 'orderDir', 'recordPos')))) {
         return false;
     }
 
-    $itemCount = pnModAPIFunc('mediashare', 'user', 'getListCount', compact('keyword', 'uname', 'albumId'));
-    if ($itemCount === false) {
+    if (!($itemCount = pnModAPIFunc('mediashare', 'user', 'getListCount', compact('keyword', 'uname', 'albumId')))) {
         return false;
     }
 
@@ -540,8 +520,7 @@ function mediashare_user_list($args)
         $filterTexts[] = __('Items by %s', DataUtil::formatForDisplay($uname), $dom);
     }
     if ($albumId != null) {
-        $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-        if ($album === false) {
+        if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
             return false;
         }
         $albumOwner = pnUserGetVar('uname', $album['ownerId']);
@@ -582,8 +561,7 @@ function mediashare_user_albumlist($args)
     $orderDir = mediashareGetStringUrl('orderdir', $args, 'desc');
     $template = (isset($args['tpl']) ? $args['tpl'] : 'list');
 
-    $albums = pnModAPIFunc('mediashare', 'user', 'getAlbumList', compact('order', 'orderDir'));
-    if ($albums === false) {
+    if (!($albums = pnModAPIFunc('mediashare', 'user', 'getAlbumList', compact('order', 'orderDir')))) {
         return false;
     }
 
@@ -625,8 +603,7 @@ function mediashare_user_albumxmllist($args)
 // =======================================================================
 function mediashare_user_extapphelp($args)
 {
-    $settings = pnModAPIFunc('mediashare', 'user', 'getSettings');
-    if ($settings === false) {
+    if (!($settings = pnModAPIFunc('mediashare', 'user', 'getSettings'))) {
         return false;
     }
 

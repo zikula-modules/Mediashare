@@ -29,9 +29,9 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
 
     function getMediaItems()
     {
-        $images = $this->getRawImages();
-        if ($images === false)
+        if (!($images = $this->getRawImages())) {
             return false;
+        }
 
         for ($i = 0, $cou = count($images); $i < $cou; ++$i) {
             $images[$i] = $this->convertImage($images[$i]);

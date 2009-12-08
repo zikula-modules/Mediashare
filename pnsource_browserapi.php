@@ -70,8 +70,7 @@ function mediashareSourceBrowserParseIni($ini)
 
 function mediashare_source_browserapi_getUploadInfo($args)
 {
-    $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
-    if ($userInfo === false) {
+    if (!($userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo'))) {
         return false;
     }
 

@@ -12,9 +12,7 @@ function mediashare_mediahandlerapi_getMediaHandlers($args)
     $pntable = pnDBGetTables();
 
     // Get handlers
-    $result = DBUtil::selectFieldArray('mediashare_mediahandlers', 'handler', '', '', true, 'title');
-
-    if ($result === false) {
+    if (!($result = DBUtil::selectFieldArray('mediashare_mediahandlers', 'handler', '', '', true, 'title'))) {
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.getMediaHandlers', 'Could not load the handlers.'), $dom));
     }
 
@@ -115,8 +113,7 @@ function mediashare_mediahandlerapi_getHandlerInfo($args)
 function mediashare_mediahandlerapi_loadHandler($args)
 {
     if (!empty($args['mimeType'])) {
-        $handlerInfo = pnModAPIFunc('mediashare', 'mediahandler', 'getHandlerInfo', array('mimeType' => $args['mimeType']));
-        if ($handlerInfo === false) {
+        if (!($handlerInfo = pnModAPIFunc('mediashare', 'mediahandler', 'getHandlerInfo', array('mimeType' => $args['mimeType'])))) {
             return false;
         }
         $handlerName = $handlerInfo['handlerName'];
@@ -154,9 +151,7 @@ function mediashare_mediahandlerapi_scanMediaHandlers($args)
             // Force load - it is used during pninit
             pnModAPILoad('mediashare', $handlerApi, true);
 
-            $handler = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler');
-
-            if ($handler === false) {
+            if (!($handler = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler'))) {
                 return false;
             }
 

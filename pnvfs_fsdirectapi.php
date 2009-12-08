@@ -22,8 +22,7 @@ class mediashare_vfsHandlerFSDirect
         $fileReference = "$args[baseFileRef]-$args[fileMode].$args[fileType]";
         $newFilename   = $this->storageDir . '/' . DataUtil::formatForOS($fileReference);
 
-        $ok = @copy($filename, $newFilename);
-        if ($ok === false) {
+        if (!@copy($filename, $newFilename)) {
             return LogUtil::registerError(__f('Unable to copy the file from \'%1$s\' to \'%2$s\'', array($filename, $newFilename), $dom).' '.__("while creating new file in virtual storage system. Please check media upload directory in admin settings and it's permissions.", $dom));
         }
 

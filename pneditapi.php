@@ -75,25 +75,21 @@ function mediashare_editapi_addAlbum(&$args)
 
     $newAlbumId = $dbconn->insert_ID();
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateNestedSetValues');
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateNestedSetValues')) {
         return false;
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'setDefaultAccess', array('albumId' => $newAlbumId));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'setDefaultAccess', array('albumId' => $newAlbumId))) {
         return false;
     }
 
     pnModCallHooks('item', 'create', "album-$newAlbumId", array('module' => 'mediashare', 'albumId' => $newAlbumId));
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $newAlbumId, 'type' => 'album', 'keywords' => $args['keywords']));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $newAlbumId, 'type' => 'album', 'keywords' => $args['keywords']))) {
         return false;
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'fetchExternalImages', array('albumId' => $newAlbumId));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'fetchExternalImages', array('albumId' => $newAlbumId))) {
         return false;
     }
 
@@ -216,13 +212,11 @@ function mediashare_editapi_updateAlbum(&$args)
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateAlbum', 'Could not update the album.'), $dom));
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $albumId, 'type' => 'album', 'keywords' => $args['keywords']));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $albumId, 'type' => 'album', 'keywords' => $args['keywords']))) {
         return false;
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'fetchExternalImages', array('albumId' => $albumId));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'fetchExternalImages', array('albumId' => $albumId))) {
         return false;
     }
 
@@ -252,20 +246,19 @@ function mediashare_editapi_deleteAlbum(&$args)
     $mediaTable   = $pntable['mediashare_media'];
     $mediaColumn  = &$pntable['mediashare_media_column'];
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateAccessSettings', array('albumId' => $albumId, 'access' => array()));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateAccessSettings', array('albumId' => $albumId, 'access' => array()))) {
         return false;
     }
 
-    $ok = mediashareDeleteAlbumRec($dbconn, $albumsTable, $albumsColumn, $mediaTable, $mediaColumn, $albumId);
-
-    $ok = $ok && pnModAPIFunc('mediashare', 'edit', 'updateNestedSetValues');
-    if ($ok === false) {
+    if (!mediashareDeleteAlbumRec($dbconn, $albumsTable, $albumsColumn, $mediaTable, $mediaColumn, $albumId)) {
         return false;
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $albumId, 'type' => 'album', 'keywords' => ''));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateNestedSetValues')) {
+        return false;
+    }
+
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $albumId, 'type' => 'album', 'keywords' => ''))) {
         return false;
     }
 
@@ -275,8 +268,7 @@ function mediashare_editapi_deleteAlbum(&$args)
 function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $mediaTable, &$mediaColumn, $albumId)
 {
     // Get album info
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -321,8 +313,7 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     $result->Close();
 
     foreach ($mediaIds as $mediaId) {
-        $ok = pnModAPIFunc('mediashare', 'edit', 'deleteMediaItem', array('mediaId' => $mediaId));
-        if ($ok === false) {
+        if (!pnModAPIFunc('mediashare', 'edit', 'deleteMediaItem', array('mediaId' => $mediaId))) {
             return false;
         }
     }
@@ -370,13 +361,11 @@ function mediashare_editapi_moveAlbum(&$args)
     }
 
     // Process
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
-    $dstAlbum = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $dstAlbumId));
-    if ($dstAlbum === false) {
+    if (!($dstAlbum = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $dstAlbumId)))) {
         return false;
     }
 
@@ -409,8 +398,7 @@ function mediashare_editapi_moveAlbum(&$args)
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.moveAlbum', 'Could not move the album.'), $dom));
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateNestedSetValues');
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateNestedSetValues')) {
         return false;
     }
 
@@ -422,13 +410,11 @@ function mediashare_editapi_isChildAlbum(&$args)
     $albumId       = (int) $args['albumId'];
     $parentAlbumId = (int) $args['parentAlbumId'];
 
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
-    $parentAlbum = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $parentAlbumId));
-    if ($parentAlbum === false) {
+    if (!($parentAlbum = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $parentAlbumId)))) {
         return false;
     }
 
@@ -474,8 +460,7 @@ function mediashare_editapi_addMediaItem(&$args)
     $mediaTitle = str_replace('_', ' ', $mediaTitle);
 
     // Check upload limits
-    $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
-    if ($userInfo === false) {
+    if (!($userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo'))) {
         return false;
     }
 
@@ -492,8 +477,7 @@ function mediashare_editapi_addMediaItem(&$args)
     }
 
     // Find a media handler
-    $handlerInfo = pnModAPIFunc('mediashare', 'mediahandler', 'getHandlerInfo', array('mimeType' => $args['mimeType'], 'filename' => $args['filename']));
-    if ($handlerInfo === false) {
+    if (!($handlerInfo = pnModAPIFunc('mediashare', 'mediahandler', 'getHandlerInfo', array('mimeType' => $args['mimeType'], 'filename' => $args['filename'])))) {
         return false;
     }
 
@@ -545,8 +529,7 @@ function mediashare_editapi_addMediaItem(&$args)
         return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array($vfsHandlerApi, 'editapi.addMediaItem'), $dom));
     }
 
-    $vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler');
-    if ($vfsHandler === false) {
+    if (!($vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler'))) {
         return false;
     }
 
@@ -616,8 +599,7 @@ function mediashare_editapi_addMediaItem(&$args)
     @unlink($thumbnailFilename);
     @unlink($previewFilename);
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'ensureMainAlbumId', array('albumId' => $albumId, 'mediaId' => $id));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'ensureMainAlbumId', array('albumId' => $albumId, 'mediaId' => $id))) {
         // Don't clean up, just report error. Upload actually worked.
         return false;
     }
@@ -642,23 +624,19 @@ function mediashare_editapi_storeMediaItem(&$args)
         $args['ownerId'] = pnUserGetVar('uid');
     }
 
-    $position = mediashareGetNewPosition($albumId);
-    if ($position === false) {
+    if (!($position = mediashareGetNewPosition($albumId))) {
         return false;
     }
 
-    $thumbnailId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['thumbnail']);
-    if ($thumbnailId === false) {
+    if (!($thumbnailId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['thumbnail']))) {
         return false;
     }
 
-    $previewId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['preview']);
-    if ($previewId === false) {
+    if (!($previewId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['preview']))) {
         return false;
     }
 
-    $originalId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['original']);
-    if ($originalId === false) {
+    if (!($originalId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['original']))) {
         return false;
     }
 
@@ -695,8 +673,7 @@ function mediashare_editapi_storeMediaItem(&$args)
 
     $newMediaId = $dbconn->insert_ID();
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $newMediaId, 'type' => 'media', 'keywords' => $args['keywords']));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $newMediaId, 'type' => 'media', 'keywords' => $args['keywords']))) {
         return false;
     }
 
@@ -835,13 +812,11 @@ function mediashare_editapi_updateItem(&$args)
         return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateItem', 'Could not update the media item.'), $dom));
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $mediaId, 'type' => 'media', 'keywords' => $args['keywords']));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $mediaId, 'type' => 'media', 'keywords' => $args['keywords']))) {
         return false;
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateItemFileUpload', $args);
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateItemFileUpload', $args)) {
         return false;
     }
 
@@ -861,8 +836,7 @@ function mediashare_editapi_updateItemFileUpload(&$args)
     $uploadFilename = $args['uploadFilename'];
 
     // Fetch media data - we need it to locate the media files
-    $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-    if ($mediaItem === false) {
+    if (!($mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
         return false;
     }
 
@@ -870,8 +844,7 @@ function mediashare_editapi_updateItemFileUpload(&$args)
     $vfsHandlerName = mediashareGetVFSHandlerName($mediaItem['thumbnailRef']);
 
     // Check upload limits
-    $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
-    if ($userInfo === false) {
+    if (!($userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo'))) {
         return false;
     }
 
@@ -887,8 +860,7 @@ function mediashare_editapi_updateItemFileUpload(&$args)
     }
 
     // Find a media handler
-    $handlerInfo = pnModAPIFunc('mediashare', 'mediahandler', 'getHandlerInfo', array('mimeType' => $args['mimeType'], 'filename' => $args['filename']));
-    if ($handlerInfo === false) {
+    if (!($handlerInfo = pnModAPIFunc('mediashare', 'mediahandler', 'getHandlerInfo', array('mimeType' => $args['mimeType'], 'filename' => $args['filename'])))) {
         return false;
     }
 
@@ -1058,8 +1030,7 @@ function mediashare_editapi_recalcItem($args)
 {
     $mediaId = $args['mediaId'];
 
-    $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-    if ($item === false) {
+    if (!($item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
         return false;
     }
 
@@ -1068,18 +1039,21 @@ function mediashare_editapi_recalcItem($args)
         return LogUtil::registerError(__("Unable to create a temporary file in '%s'", $tmpDir, $dom).' - '.__('(regenerating image)', $dom));
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'copyMediaData', array('mediaId' => $item['id'], 'dstFilename' => $tmpFilename));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'copyMediaData', array('mediaId' => $item['id'], 'dstFilename' => $tmpFilename))) {
         return false;
     }
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateItemFileUpload', array('fileSize' => $item['originalBytes'], 'mediaId' => $mediaId, 'uploadFilename' => $tmpFilename, 'ignoreSizeLimits' => true, 'filename' => null, 'mimeType' => $item['originalMimeType']));
+    $ok = pnModAPIFunc('mediashare', 'edit', 'updateItemFileUpload',
+                       array('fileSize' => $item['originalBytes'],
+                             'mediaId'  => $mediaId,
+                             'uploadFilename' => $tmpFilename,
+                             'ignoreSizeLimits' => true,
+                             'filename' => null,
+                             'mimeType' => $item['originalMimeType']));
+
     unlink($tmpFilename);
-    if ($ok === false) {
-        return false;
-    }
 
-    return true;
+    return $ok ? true : false;
 }
 
 function mediashare_editapi_copyMediaData($args)
@@ -1089,8 +1063,7 @@ function mediashare_editapi_copyMediaData($args)
     $mediaId     = $args['mediaId'];
     $dstFilename = $args['dstFilename'];
 
-    $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-    if ($item === false) {
+    if (!($item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
         return false;
     }
 
@@ -1099,8 +1072,7 @@ function mediashare_editapi_copyMediaData($args)
 
     if (substr($originalRef, 0, 5) == 'vfsdb') {
         // Fetch and save from database
-        $media = pnModAPIFunc('mediashare', 'vfs_db', 'getMedia', array('fileref' => $originalRef));
-        if ($media === false) {
+        if (!($media = pnModAPIFunc('mediashare', 'vfs_db', 'getMedia', array('fileref' => $originalRef)))) {
             return false;
         }
         if (($f = fopen($dstFilename, 'w')) === false) {
@@ -1128,16 +1100,14 @@ function mediashare_editapi_deleteMediaItem(&$args)
 
     $mediaId = (int) $args['mediaId'];
 
-    $item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-    if ($item === false) {
+    if (!($item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
         return false;
     }
 
     $albumId  = (int) $item['parentAlbumId'];
     $position = (int) $item['position'];
 
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -1145,8 +1115,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
     $vfsHandlerName = mediashareGetVFSHandlerName($item['thumbnailRef']);
     $vfsHandlerApi = "vfs_$vfsHandlerName";
 
-    $vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler');
-    if ($vfsHandler === false) {
+    if (!($vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler'))) {
         return false;
     }
 
@@ -1193,8 +1162,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
     }
 
     // Remove keyword references
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $mediaId, 'type' => 'media', 'keywords' => ''));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $mediaId, 'type' => 'media', 'keywords' => ''))) {
         return false;
     }
 
@@ -1213,8 +1181,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
 
     // Update main album item
     if ($album['mainMediaId'] == $mediaId) {
-        $ok = pnModAPIFunc('mediashare', 'edit', 'setMainItem', array('albumId' => $albumId, 'mediaId' => null));
-        if ($ok === false) {
+        if (!pnModAPIFunc('mediashare', 'edit', 'setMainItem', array('albumId' => $albumId, 'mediaId' => null))) {
             return false;
         }
     }
@@ -1251,8 +1218,7 @@ function mediashare_editapi_moveMediaItem(&$args)
     }
 
     // Check main media item
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -1622,8 +1588,7 @@ function mediashare_editapi_setDefaultAccess($args)
               'accessAddAlbum'  => $usersMayAddAlbum,
               'accessAddMedia'  => false));
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'updateAccessSettings', array('albumId' => $albumId, 'access' => $access));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateAccessSettings', array('albumId' => $albumId, 'access' => $access))) {
         return false;
     }
 
@@ -1681,21 +1646,18 @@ function mediashare_editapi_extappLocateApp(&$args)
 
 function mediashare_editapi_fetchExternalImages($args)
 {
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbumObject', $args);
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbumObject', $args))) {
         return false;
     }
 
     $albumId = $album->albumId;
 
     // FIXME: don't get album, get extapp instead
-    $mediaItems = $album->getMediaItems();
-    if ($mediaItems === false) {
+    if (!($mediaItems = $album->getMediaItems())) {
         return false;
     }
 
-    $existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
-    if ($existingMediaItems === false) {
+    if (!($existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -1738,8 +1700,7 @@ function mediashare_editapi_fetchExternalImages($args)
                                  'description'  => $item['description'],
                                  'mediaHandler' => $item['mediaHandler']);
 
-                $id = pnModAPIFunc('mediashare', 'edit', 'storeMediaItem', $newItem);
-                if ($id === false) {
+                if (!($id = pnModAPIFunc('mediashare', 'edit', 'storeMediaItem', $newItem))) {
                     return false;
                 }
                 if ($mainMediaItemId === null) {
@@ -1766,8 +1727,7 @@ function mediashare_editapi_fetchExternalImages($args)
 
     // Set main item
     // Fetch again to see what is available
-    $existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
-    if ($existingMediaItems === false) {
+    if (!($existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
         return false;
     }
 

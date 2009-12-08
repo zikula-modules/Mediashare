@@ -18,8 +18,7 @@ function mediashare_source_zip_view(& $args)
 
     if (isset($_POST['moreButton']) || isset($_POST['continueButton'])) {
         // After upload - update items and then continue to next page
-        $ok = mediashareSourceZipUpdate();
-        if ($ok === false) {
+        if (!mediashareSourceZipUpdate()) {
             return false;
         }
     }
@@ -66,8 +65,7 @@ function mediashareSourceZipAddFile(& $zip, & $zipEntry, & $args)
     // Split name by slashes into folders and filename and create/verify the folders recursively
     $folders = explode('/', $zipName);
     $albumId = $args['albumId'];
-    $subFolderID = mediashareEnsureFolderExists($albumId, $folders, 0);
-    if ($subFolderID === false) {
+    if (!($subFolderID = mediashareEnsureFolderExists($albumId, $folders, 0))) {
         return false;
     }
 
@@ -153,14 +151,12 @@ function mediashareSourceZipUpload(& $args)
     }
 
     // Get parent album information
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
     // Get user information
-    $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
-    if ($userInfo === false) {
+    if (!($userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo'))) {
         return false;
     }
 
@@ -195,10 +191,11 @@ function mediashareSourceZipUpload(& $args)
                 if (zip_entry_filesize($zipEntry) > 0) {
                     $result = mediashareSourceZipAddFile($zip, $zipEntry, $args);
 
-                    if ($result === false)
+                    if ($result === false) {
                         $status = array('ok' => false, 'message' => LogUtil::getErrorMessagesText());
-                    else
+                    } else {
                         $status = array('ok' => true, 'message' => $result['message'], 'mediaId' => $result['mediaId']);
+                    }
 
                     $statusSet = array_merge($statusSet, array($status));
                 }
@@ -222,8 +219,7 @@ function mediashareSourceZipUpload(& $args)
         $statusSet[] = array('ok' => false, 'message' => __('No media items', $dom));
     }
 
-    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $editMediaIds));
-    if ($items === false) {
+    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $editMediaIds)))) {
         return false;
     }
 
@@ -256,8 +252,12 @@ function mediashareSourceZipUpdate()
             return LogUtil::registerPermissionError();
         }
 
-        $ok = pnModAPIFunc('mediashare', 'edit', 'updateItem', array('mediaId' => $mediaId, 'title' => $title, 'keywords' => $keywords, 'description' => $description));
-        if ($ok === false) {
+        $args = array('mediaId'     => $mediaId,
+                      'title'       => $title,
+                      'keywords'    => $keywords,
+                      'description' => $description);
+
+        if (!pnModAPIFunc('mediashare', 'edit', 'updateItem', $args)) {
             return false;
         }
     }

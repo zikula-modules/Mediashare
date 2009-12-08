@@ -17,8 +17,7 @@ function mediashare_source_browser_view(&$args)
 
     if (isset($_POST['moreButton']) || isset($_POST['continueButton'])) {
         // After upload - update items and then continue to next page
-        $ok = mediashareSourceBrowserUpdate();
-        if ($ok === false) {
+        if (!mediashareSourceBrowserUpdate()) {
             return false;
         }
     }
@@ -62,14 +61,12 @@ function mediashareSourceBrowserUpload(&$args)
     }
 
     // Get parent album information
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
     // Get user information
-    $userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo');
-    if ($userInfo === false) {
+    if (!($userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo'))) {
         return false;
     }
 
@@ -127,8 +124,7 @@ function mediashareSourceBrowserUpload(&$args)
         $statusSet[] = array('ok' => false, 'message' => __('No media items', $dom));
     }
 
-    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $editMediaIds));
-    if ($items === false) {
+    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $editMediaIds)))) {
         return false;
     }
 
@@ -161,9 +157,13 @@ function mediashareSourceBrowserUpdate()
         if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {
             return LogUtil::registerPermissionError();
         }
+        
+        $args = array('mediaId'     => $mediaId,
+                      'title'       => $title,
+                      'keywords'    => $keywords,
+                      'description' => $description);
 
-        $ok = pnModAPIFunc('mediashare', 'edit', 'updateItem', array('mediaId' => $mediaId, 'title' => $title, 'keywords' => $keywords, 'description' => $description));
-        if ($ok === false) {
+        if (!pnModAPIFunc('mediashare', 'edit', 'updateItem', $args)) {
             return false;
         }
     }

@@ -26,7 +26,6 @@ function mediashare_external_finditem($args)
         $file = (isset($_FILES['upload']) ? $_FILES['upload'] : null);
 
         if (!empty($file) && $file['error'] == 0 && mediashareAccessAlbum($albumId, mediashareAccessRequirementEditAlbum)) {
-            pnModAPILoad('mediashare', 'source_browser');
             $result = pnModAPIFunc('mediashare', 'source_browser', 'addMediaItem',
                                    array('albumId' => $albumId,
                                          'uploadFilename' => $file['tmp_name'],
@@ -83,8 +82,7 @@ function mediashare_external_pasteitem($args)
 
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
 
-    $handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $mediaItem['mediaHandler']));
-    if ($handler === false) {
+    if (!($handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $mediaItem['mediaHandler'])))) {
         return false;
     }
 

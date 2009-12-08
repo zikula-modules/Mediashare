@@ -14,14 +14,15 @@ function mediashare_vfs_db_dump()
     // Retrieve image information
     pnModAPILoad('mediashare', 'vfs_db');
 
-    $media = pnModAPIFunc('mediashare', 'vfs_db', 'getMedia', array('fileref' => $fileref));
-    if ($media === false) {
+    if (!($media = pnModAPIFunc('mediashare', 'vfs_db', 'getMedia', array('fileref' => $fileref)))) {
         return false;
     }
+
     // Check access
     if (!mediashareAccessAlbum($media['albumId'], mediashareAccessRequirementView, null)) {
         return LogUtil::registerPermissionError();
     }
+
     // Some Photoshare users have reported this to make their setup work. The buffer may contain something
     // due to a buggy template or block
     while (@ob_end_clean());

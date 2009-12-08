@@ -165,9 +165,7 @@ function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset)
 
     // No ID => folder does not exist. Create it.
     if ($result->EOF) {
-        $folderID = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array('parentAlbumId' => $parentFolderID, 'title' => $folderTitle, 'description' => '', 'keywords' => '', 'summary' => ''));
-
-        if (folderID === false) {
+        if (!($folderID = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array('parentAlbumId' => $parentFolderID, 'title' => $folderTitle, 'description' => '', 'keywords' => '', 'summary' => '')))) {
             return false;
         }
     } else {

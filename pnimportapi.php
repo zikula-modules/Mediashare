@@ -23,8 +23,7 @@ function mediashare_importapi_photoshare($args)
 
 function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
 {
-    $folders = pnModAPIFunc('photoshare', 'user', 'get_accessible_folders', array('getForList' => true, 'order' => 'title', 'parentFolderID' => $photoshareFolderId));
-    if ($folders === false) {
+    if (!($folders = pnModAPIFunc('photoshare', 'user', 'get_accessible_folders', array('getForList' => true, 'order' => 'title', 'parentFolderID' => $photoshareFolderId)))) {
         return LogUtil::registerError(photoshareErrorAPIGet());
     }
 
@@ -39,8 +38,7 @@ function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
         }
 
         if (!array_key_exists($folder['id'], $importedAlbums)) {
-            $folderData = pnModAPIFunc('photoshare', 'user', 'get_folder_info', array('folderID' => $folder['id']));
-            if ($folderData === false) {
+            if (!($folderData = pnModAPIFunc('photoshare', 'user', 'get_folder_info', array('folderID' => $folder['id'])))) {
                 return LogUtil::registerError(photoshareErrorAPIGet());
             }
 
@@ -63,13 +61,11 @@ function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
             $id = $importedAlbums[$folder['id']];
         }
 
-        $ok = mediashareImportPhotoshareImages($folder['id'], $id);
-        if ($ok === false) {
+        if (!mediashareImportPhotoshareImages($folder['id'], $id)) {
             return false;
         }
 
-        $ok = mediashareImportPhotoshareRec($folder['id'], $id);
-        if ($ok === false) {
+        if (!mediashareImportPhotoshareRec($folder['id'], $id)) {
             return false;
         }
     }
@@ -79,8 +75,7 @@ function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
 
 function mediashareImportPhotoshareImages($photoshareFolderId, $mediashareAlbumId)
 {
-    $images = pnModAPIFunc('photoshare', 'user', 'get_image_list', array('folderID' => $photoshareFolderId, 'usePageCount' => false));
-    if ($images === false) {
+    if (!($images = pnModAPIFunc('photoshare', 'user', 'get_image_list', array('folderID' => $photoshareFolderId, 'usePageCount' => false)))) {
         return LogUtil::registerError(photoshareErrorAPIGet());
     }
 
@@ -97,8 +92,7 @@ function mediashareImportPhotoshareImages($photoshareFolderId, $mediashareAlbumI
         }
 
         if (!array_key_exists($image['id'], $importedImages)) {
-            $imageData = pnModAPIFunc('photoshare', 'show', 'get_image_info', array('imageID' => $image['id']));
-            if ($imageData === false) {
+            if (!($imageData = pnModAPIFunc('photoshare', 'show', 'get_image_info', array('imageID' => $image['id'])))) {
                 return LogUtil::registerError(photoshareErrorAPIGet());
             }
             if (($photoshareFilename = tempnam($tmpDir, 'imp')) === false) {

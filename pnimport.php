@@ -41,8 +41,7 @@ function mediashare_import_photoshare($args)
 
 function mediashareImportPhotoshare()
 {
-    $ok = pnModAPIFunc('mediashare', 'import', 'photoshare');
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'import', 'photoshare')) {
         return false;
     }
 

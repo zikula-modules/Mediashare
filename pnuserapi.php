@@ -265,14 +265,13 @@ function mediashare_userapi_getSubAlbumsData($args)
                                              'access'  => $access,
                                              'field'   => $albumsColumn['id']));
 
-    if ($accessibleAlbumSql === false) {
+    if (!$accessibleAlbumSql) {
         return false;
     }
 
     $excludeRestriction = '';
     if ($excludeAlbumId != null) {
-        $excludeAlbum = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $excludeAlbumId));
-        if ($excludeAlbum === false) {
+        if (!($excludeAlbum = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $excludeAlbumId)))) {
             return false;
         }
 
@@ -422,7 +421,7 @@ function mediashare_userapi_getAlbumList($args)
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                        array('access' => $access,
                                              'field'  => $albumsColumn['id']));
-    if ($accessibleAlbumSql === false) {
+    if (!$accessibleAlbumSql) {
         return false;
     }
 
@@ -747,7 +746,7 @@ function mediashareGetMediaItemsData($args)
         $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                            array('access' => $access,
                                                  'field'  => "$mediaColumn[parentAlbumId]"));
-        if ($accessibleAlbumSql === false) {
+        if (!$accessibleAlbumSql) {
             return false;
         }
         $albumRestriction .= ' AND ' . $accessibleAlbumSql;
@@ -886,7 +885,7 @@ function mediashare_userapi_getRandomMediaItem($args)
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                        array('access' => mediashareAccessRequirementView,
                                              'field'  => "album.$albumsColumn[id]"));
-    if ($accessibleAlbumSql === false) {
+    if (!$accessibleAlbumSql) {
         return false;
     }
 
@@ -1122,7 +1121,7 @@ function mediashare_userapi_getSummary($args)
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                        array('access' => mediashareAccessRequirementViewSomething,
                                              'field'  => "$mediaColumn[parentAlbumId]"));
-    if ($accessibleAlbumSql === false) {
+    if (!$accessibleAlbumSql) {
         return false;
     }
 
@@ -1144,7 +1143,7 @@ function mediashare_userapi_getSummary($args)
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                        array('access' => mediashareAccessRequirementViewSomething,
                                              'field'  => "$albumsColumn[id]"));
-    if ($accessibleAlbumSql === false) {
+    if (!$accessibleAlbumSql) {
         return false;
     }
 
@@ -1198,7 +1197,7 @@ function mediashare_userapi_getByKeyword($args)
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                        array('access' => mediashareAccessRequirementViewSomething,
                                              'field'  => "media.$mediaColumn[parentAlbumId]"));
-    if ($accessibleAlbumSql === false) {
+    if (!$accessibleAlbumSql) {
         return false;
     }
 
@@ -1298,7 +1297,7 @@ function mediashare_userapi_getList($args)
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                        array('access' => mediashareAccessRequirementViewSomething,
                                              'field'  => "media.$mediaColumn[parentAlbumId]"));
-    if ($accessibleAlbumSql === false) {
+    if (!$accessibleAlbumSql) {
         return false;
     }
 
@@ -1537,7 +1536,7 @@ function mediashare_userapi_getListCount($args)
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                        array('access' => mediashareAccessRequirementViewSomething,
                                              'field'  => "media.$mediaColumn[parentAlbumId]"));
-    if ($accessibleAlbumSql === false) {
+    if (!$accessibleAlbumSql) {
         return false;
     }
 
@@ -1663,7 +1662,7 @@ function mediashare_userapi_search($args)
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                        array('access' => mediashareAccessRequirementViewSomething,
                                              'field'  => "album.$albumsColumn[id]"));
-    if ($accessibleAlbumSql === false) {
+    if (!$accessibleAlbumSql) {
         return false;
     }
 

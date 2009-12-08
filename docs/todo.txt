@@ -1,6 +1,7 @@
 
   TODO
 
+    Review the screens that lacks of feedback messages
     MySQL version check 5.0+ to set a modvar and use the stored procedures?
 
 
@@ -21,12 +22,14 @@
 
   FIX OR DEPRECATE THE USE OF
 
+    Error in %2$%
+    Remaining pnModAPILoad
     TemplateSets detection
-    $ok === false
     mb_convert_encoding($image['title'], __('ISO-8859-1', $dom), 'UTF-8'),
     array_key_exists
     (int)_$something remove blank
     $smarty->trigger_error texts
     list ($dbconn) = pnDBGetConn();
+    global $vars
     Rework the random block
     FIXME notes

@@ -30,8 +30,7 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
 
     function getMediaItems()
     {
-        $images = $this->getRawImages();
-        if ($images === false) {
+        if (!($images = $this->getRawImages())) {
             return array();
         }
 

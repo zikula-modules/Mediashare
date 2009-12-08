@@ -40,8 +40,7 @@ function mediashare_invitation_send($args)
         return mediashareResendInvitation($invitationId, $albumId);
     }
 
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -67,9 +66,9 @@ function mediashareUpdateInvitation($args)
         'senderemail' => pnUserGetVar('email'),
         'expires' => FormUtil::getPassedValue('expires'));
 
-    $ok = pnModAPIFunc('mediashare', 'invitation', 'sendInvitation', $input);
-    if ($ok === false)
+    if (!pnModAPIFunc('mediashare', 'invitation', 'sendInvitation', $input)) {
         return false;
+    }
 
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $input['albumId'])));
 }
@@ -85,9 +84,9 @@ function mediashareResendInvitation($invitationId, $albumId)
         'senderemail' => pnUserGetVar('email'),
         'expires' => FormUtil::getPassedValue('expires'));
 
-    $ok = pnModAPIFunc('mediashare', 'invitation', 'resendInvitation', $args);
-    if ($ok === false)
+    if (!pnModAPIFunc('mediashare', 'invitation', 'resendInvitation', $args)) {
         return false;
+    }
 
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
 }
@@ -110,16 +109,14 @@ function mediashare_invitation_link($args)
     if (isset($_POST['generateButton'])) {
         $args = array('albumId' => $albumId, 'emails' => '', 'subject' => FormUtil::getPassedValue('subject'), 'text' => '', 'sender' => '', 'expires' => null);
 
-        $invitationId = pnModAPIFunc('mediashare', 'invitation', 'createInvitationId', $args);
-        if ($invitationId === false) {
+        if (!($invitationId = pnModAPIFunc('mediashare', 'invitation', 'createInvitationId', $args))) {
             return false;
         }
 
         $link = pnModUrl('mediashare', 'invitation', 'open', array('inv' => $invitationId), false, false, true);
     }
 
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -157,8 +154,7 @@ function mediashare_invitation_viewlink($args)
 
     $link = pnModUrl('mediashare', 'invitation', 'open', array('inv' => $invitation['key']));
 
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -188,13 +184,11 @@ function mediashare_invitation_list($args)
         return mediashareDeleteInvitations($args);
     }
 
-    $album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId));
-    if ($album === false) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
-    $invitations = pnModAPIFunc('mediashare', 'invitation', 'getInvitations', array('albumId' => $albumId));
-    if ($invitations === false) {
+    if (!($invitations = pnModAPIFunc('mediashare', 'invitation', 'getInvitations', array('albumId' => $albumId)))) {
         return false;
     }
 

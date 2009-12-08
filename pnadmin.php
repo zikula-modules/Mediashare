@@ -20,8 +20,7 @@ function mediashare_admin_main($args)
         return mediashareAdminSettings($args);
     }
 
-    $settings = pnModAPIFunc('mediashare', 'user', 'getSettings');
-    if ($settings === false) {
+    if (!($settings = pnModAPIFunc('mediashare', 'user', 'getSettings'))) {
         return false;
     }
 
@@ -62,14 +61,12 @@ function mediashareAdminSettings($args)
         'picasaAPIKey'          => FormUtil::getPassedValue('picasaAPIKey'),
         'vfs'                   => FormUtil::getPassedValue('vfs'));
 
-    $ok = pnModAPIFunc('mediashare', 'user', 'setSettings', $settings);
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'user', 'setSettings', $settings)) {
         return false;
     }
 
     if (FormUtil::getPassedValue('templateButton')) {
-        $ok = pnModAPIFunc('mediashare', 'admin', 'setTemplateGlobally', array('template' => $settings['defaultAlbumTemplate']));
-        if ($ok === false) {
+        if (!pnModAPIFunc('mediashare', 'admin', 'setTemplateGlobally', array('template' => $settings['defaultAlbumTemplate']))) {
             return false;
         }
     }
@@ -94,13 +91,11 @@ function mediashare_admin_plugins($args)
         return mediashareAdminScanPlugins();
     }
 
-    $mediaHandlers = pnModAPIFunc('mediashare', 'mediahandler', 'getMediaHandlers');
-    if ($mediaHandlers === false) {
+    if (!($mediaHandlers = pnModAPIFunc('mediashare', 'mediahandler', 'getMediaHandlers'))) {
         return false;
     }
 
-    $sources = pnModAPIFunc('mediashare', 'sources', 'getSources');
-    if ($sources === false) {
+    if (!($sources = pnModAPIFunc('mediashare', 'sources', 'getSources'))) {
         return false;
     }
 
@@ -114,8 +109,7 @@ function mediashare_admin_plugins($args)
 
 function mediashareAdminScanPlugins()
 {
-    $ok = pnModAPIFunc('mediashare', 'admin', 'scanAllPlugins');
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'admin', 'scanAllPlugins')) {
         return false;
     }
 
@@ -151,13 +145,11 @@ function mediashare_admin_recalcitem($args)
 
     $mediaId = mediashareGetIntUrl('id');
 
-    $ok = pnModAPIFunc('mediashare', 'edit', 'recalcItem', array('mediaId' => $mediaId));
-    if ($ok === false) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'recalcItem', array('mediaId' => $mediaId))) {
         return false;
     }
 
-    $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-    if ($mediaItem === false) {
+    if (!($mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
         return false;
     }
 

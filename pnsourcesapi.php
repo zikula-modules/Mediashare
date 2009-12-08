@@ -63,14 +63,11 @@ function mediashare_sourcesapi_scanSources($args)
             // Force load - it is used during pninit
             pnModAPILoad('mediashare', $sourceApi, true);
 
-            $title = pnModAPIFunc('mediashare', $sourceApi, 'getTitle');
-
-            if ($title === false) {
+            if (!($title = pnModAPIFunc('mediashare', $sourceApi, 'getTitle'))) {
                 return false;
             }
 
-            $ok = pnModAPIFunc('mediashare', 'sources', 'addSource', array('title' => $title, 'name' => $sourceName));
-            if ($ok === false) {
+            if (!pnModAPIFunc('mediashare', 'sources', 'addSource', array('title' => $title, 'name' => $sourceName))) {
                 return false;
             }
         }
