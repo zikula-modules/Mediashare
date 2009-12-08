@@ -186,24 +186,3 @@ function mediashareGetVFSHandlerName($fileref)
         return 'fsdirect'; // Stored in local file system
     }
 }
-
-function mediashareLoadLightbox()
-{
-    if (file_exists('javascript/ajax/prototype.js')) {
-        // Use Zikula scripts if available
-        $scripts = array('javascript/ajax/prototype.js',
-                         'javascript/ajax/scriptaculous.js?load=effects',
-                         'javascript/ajax/scriptaculous.js?load=dragdrop',
-                         'javascript/ajax/scriptaculous.js?load=builder',
-                         'javascript/ajax/lightbox.js');
-        PageUtil::addVar('stylesheet', 'javascript/ajax/lightbox/lightbox.css');
-        PageUtil::addVar('javascript', $scripts);
-
-    } else {
-        $scripts = array('modules/mediashare/lightbox/js/prototype.js',
-                         'modules/mediashare/lightbox/js/scriptaculous.js?load=effects',
-                         'modules/mediashare/lightbox/js/lightbox.js');
-        PageUtil::addVar('stylesheet', 'modules/mediashare/lightbox/css/lightbox.css');
-        PageUtil::addVar('javascript', $scripts);
-    }
-}

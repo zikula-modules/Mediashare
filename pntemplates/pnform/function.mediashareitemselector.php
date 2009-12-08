@@ -54,6 +54,7 @@ class mediashareItemSelector extends pnFormPlugin
         $dom = ZLanguage::getModuleDomain('mediashare');
 
         PageUtil::AddVar('javascript', 'javascript/ajax/prototype.js');
+        PageUtil::AddVar('javascript', 'javascript/ajax/scriptaculous.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/pnajax.js');
         PageUtil::AddVar('javascript', 'javascript/ajax/lightbox.js');
         PageUtil::AddVar('stylesheet', 'javascript/ajax/lightbox/lightbox.css');

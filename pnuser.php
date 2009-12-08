@@ -328,8 +328,6 @@ function mediashare_user_simplethumbnails($args)
     $render->assign('thumbnailSize', pnModGetVar('mediashare', 'thumbnailSize'));
     $render->assign('theme', pnUserGetTheme());
 
-    mediashareLoadLightbox();
-
     $template = 'content'.DataUtil::formatForOS($template); // filmstrip
     if (!$render->template_exists("mediashare_user_{$template}.html")) {
         $template = 'simplethumbnails';
@@ -400,8 +398,6 @@ function mediashare_user_simpledisplay($args)
     $render->assign('showAlbumLink', $showAlbumLink);
     $render->assign('text', $text);
     $render->assign('width', $containerWidth == 'wauto' ? null : '100%');
-
-    mediashareLoadLightbox();
 
     return $render->fetch('mediashare_user_simpledisplay.html');
 }
