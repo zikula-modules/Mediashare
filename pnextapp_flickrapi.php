@@ -29,7 +29,7 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
 
     function getMediaItems()
     {
-        if (!($images = $this->getRawImages())) {
+        if (($images = $this->getRawImages()) === false) {
             return false;
         }
 

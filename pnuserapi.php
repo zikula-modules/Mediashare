@@ -56,7 +56,7 @@ function &mediashareGetAlbumInstance($albumId, $albumData)
             $albumInstances[$albumId] = & new MediashareAlbum($albumId, $albumData);
         } else {
             $data = $albumData['extappData'];
-            $albumInstances[$albumId] = pnModAPIFunc('mediashare', "extapp_$data[appName]", 'getAlbumInstance', array('albumId' => $albumId, 'albumData' => $albumData));
+            $albumInstances[$albumId] = pnModAPIFunc('mediashare', "extapp_{$data['appName']}", 'getAlbumInstance', array('albumId' => $albumId, 'albumData' => $albumData));
         }
     }
 
@@ -242,6 +242,8 @@ function mediashare_userapi_getSubAlbumsData($args)
         return LogUtil::registerPermissionError();
     }
 
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     // Argument check
     if (!isset($args['albumId'])) {
         return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getSubAlbumsData'), $dom));
@@ -275,13 +277,13 @@ function mediashare_userapi_getSubAlbumsData($args)
             return false;
         }
 
-        $excludeRestriction = "  (album.$albumsColumn[nestedSetLeft] < $excludeAlbum[nestedSetLeft]
-                               OR album.$albumsColumn[nestedSetRight] > $excludeAlbum[nestedSetRight]) AND ";
+        $excludeRestriction = " AND (album.$albumsColumn[nestedSetLeft] < $excludeAlbum[nestedSetLeft]
+                                  OR album.$albumsColumn[nestedSetRight] > $excludeAlbum[nestedSetRight]) ";
     }
 
     $mineSql = '';
     if ($onlyMine) {
-        $mineSql = " album.$albumsColumn[ownerId] = $ownerId";
+        $mineSql = " AND album.$albumsColumn[ownerId] = $ownerId";
     }
 
     $sql = "SELECT album.$albumsColumn[id],
@@ -303,7 +305,7 @@ function mediashare_userapi_getSubAlbumsData($args)
                    album.$albumsColumn[extappURL],
                    album.$albumsColumn[extappData]
           FROM $albumsTable album
-          WHERE ($accessibleAlbumSql) AND $excludeRestriction $mineSql";
+          WHERE ($accessibleAlbumSql) $excludeRestriction $mineSql";
 
     if ($recursively) {
         $sql .= "     AND 1=1
@@ -749,7 +751,7 @@ function mediashareGetMediaItemsData($args)
         if (!$accessibleAlbumSql) {
             return false;
         }
-        $albumRestriction .= ' AND ' . $accessibleAlbumSql;
+        $albumRestriction .= " AND $accessibleAlbumSql";
     }
 
     $sql = "SELECT $mediaColumn[id],
@@ -1084,13 +1086,16 @@ function mediashare_userapi_getMostActiveKeywords($args)
     $max = -1;
     $min = -1;
     for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        $keyword = array('keyword' => $dbresult->fields[0], 'count' => (int)$dbresult->fields[1]);
+        $keyword = array('keyword' => $dbresult->fields[0],
+                         'count'   => (int)$dbresult->fields[1]);
 
-        if ($keyword['count'] > $max)
+        if ($keyword['count'] > $max) {
             $max = $keyword['count'];
+        }
 
-        if ($keyword['count'] < $min || $min == -1)
+        if ($keyword['count'] < $min || $min == -1) {
             $min = $keyword['count'];
+        }
 
         $result[] = $keyword;
     }
@@ -1101,7 +1106,7 @@ function mediashare_userapi_getMostActiveKeywords($args)
 
     for ($i = 0, $cou = count($result); $i < $cou; ++$i) {
         $result[$i]['percentage'] = (int)(($result[$i]['count'] - $min) * 100 / $max);
-        $result[$i]['fontsize'] = $result[$i]['percentage'] + 100;
+        $result[$i]['fontsize']   = $result[$i]['percentage'] + 100;
     }
 
     return $result;
@@ -1269,6 +1274,8 @@ function mediashare_userapi_getByKeyword($args)
  */
 function mediashare_userapi_getList($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $keyword   = isset($args['keyword']) ? $args['keyword'] : null;
     $uname     = isset($args['uname']) ? $args['uname'] : null;
     $albumId   = isset($args['albumId']) ? $args['albumId'] : null;

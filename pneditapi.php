@@ -202,8 +202,8 @@ function mediashare_editapi_updateAlbum(&$args)
                    $albumsColumn[summary] = '" . DataUtil::formatForStore($args['summary']) . "',
                    $albumsColumn[description] = '" . DataUtil::formatForStore($args['description']) . "',
                    $templateSql
-                   $albumsColumn[extappURL] = '" . DataUtil::formatForStore($args['extappURL']) . "',
-                   $albumsColumn[extappData] = '" . DataUtil::formatForStore($args['extappData']) . "'
+                   $albumsColumn[extappURL] = '" . (isset($args['extappURL']) ? DataUtil::formatForStore($args['extappURL']) : '') . "',
+                   $albumsColumn[extappData] = '" . (isset($args['extappData']) ? DataUtil::formatForStore($args['extappData']) : '') . "'
              WHERE $albumsColumn[id] = $albumId";
 
     $dbconn->execute($sql);
@@ -1653,11 +1653,11 @@ function mediashare_editapi_fetchExternalImages($args)
     $albumId = $album->albumId;
 
     // FIXME: don't get album, get extapp instead
-    if (!($mediaItems = $album->getMediaItems())) {
+    if (($mediaItems = $album->getMediaItems()) === false) {
         return false;
     }
 
-    if (!($existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
+    if (($existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId))) === false) {
         return false;
     }
 
@@ -1727,7 +1727,7 @@ function mediashare_editapi_fetchExternalImages($args)
 
     // Set main item
     // Fetch again to see what is available
-    if (!($existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
+    if (($existingMediaItems = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId))) === false) {
         return false;
     }
 

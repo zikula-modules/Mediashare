@@ -56,7 +56,7 @@ function mediashare_edit_view($args)
     }
 
     // Fetch media items
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId))) === false) {
         return false;
     }
 
@@ -512,7 +512,7 @@ function mediashare_edit_multieditmedia($args)
         return mediashareMultiUpdateItems();
     }
 
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia, 'enableEscape' => false)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia, 'enableEscape' => false))) === false) {
         return false;
     }
 
@@ -573,7 +573,7 @@ function mediashare_edit_multideletemedia($args)
         return mediashareMultiDeleteMedia();
     }
 
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia))) === false) {
         return false;
     }
 
@@ -631,7 +631,7 @@ function mediashare_edit_multimovemedia($args)
         return mediashareMultiMoveMedia();
     }
 
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia))) === false) {
         return false;
     }
 
@@ -725,7 +725,7 @@ function mediashare_edit_arrange($args)
     }
 
     // Fetch media items
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId))) === false) {
         return false;
     }
 

@@ -47,7 +47,7 @@ function mediashare_user_browse($args)
     }
 
     // Fetch media items
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId))) === false) {
         return false;
     }
 
@@ -149,7 +149,7 @@ function mediashare_user_slideshow($args)
     }
 
     // Fetch media items
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId))) === false) {
         return false;
     }
 
@@ -262,7 +262,7 @@ function mediashare_user_thumbnails($args)
     }
 
     // Fetch media items
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId))) === false) {
         return false;
     }
 
@@ -314,7 +314,7 @@ function mediashare_user_simplethumbnails($args)
     }
 
     // Fetch media items
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId))) === false) {
         return false;
     }
 

@@ -141,7 +141,7 @@ function mediashare_remote_fetchalbumimages()
 {
     $albumId = $_POST['set_albumName'];
 
-    if (!($images = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('access' => mediashareAccessRequirementView, 'albumId' => $albumId)))) {
+    if (($images = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('access' => mediashareAccessRequirementView, 'albumId' => $albumId))) === false) {
         return mediashareErrorAPIRemote();
     }
 

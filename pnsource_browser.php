@@ -124,7 +124,7 @@ function mediashareSourceBrowserUpload(&$args)
         $statusSet[] = array('ok' => false, 'message' => __('No media items', $dom));
     }
 
-    if (!($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $editMediaIds)))) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $editMediaIds))) === false) {
         return false;
     }
 

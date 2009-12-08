@@ -13,8 +13,7 @@ function smarty_function_mediashare_itemSelector($params, &$smarty)
     $albumId = $params['albumId'];
     $mediaId = $params['mediaId'];
 
-    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems',
-                          array('albumId' => $albumId));
+    $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId));
 
     if ($items === false) {
         return false;
