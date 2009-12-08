@@ -83,9 +83,9 @@ class mediashare_quicktimeHandler
             } else {
                 $width = $preview['imageSize'];
                 $height = $preview['imageSize'];
-                if (isset($args['width']) && (int) $args['width'] > 0 && isset($args['height']) && (int) $args['height'] > 0) {
-                    $w = (int) $args['width'];
-                    $h = (int) $args['height'];
+                if (isset($args['width']) && (int)$args['width'] > 0 && isset($args['height']) && (int)$args['height'] > 0) {
+                    $w = (int)$args['width'];
+                    $h = (int)$args['height'];
 
                     if ($w < $width || $h < $height) {
                         $width = $w;
@@ -106,8 +106,8 @@ class mediashare_quicktimeHandler
             }
         }
 
-        $width  = (isset($args['width']) && (int) $args['width'] > 0   ? (int) $args['width']  : $preview['imageSize']);
-        $height = (isset($args['height']) && (int) $args['height'] > 0 ? (int) $args['height'] : $preview['imageSize']);
+        $width  = (isset($args['width']) && (int)$args['width'] > 0   ? (int)$args['width']  : $preview['imageSize']);
+        $height = (isset($args['height']) && (int)$args['height'] > 0 ? (int)$args['height'] : $preview['imageSize']);
 
         $result[] = array('fileType' => $mediaFileType,
                           'mimeType' => $mimeType,

@@ -81,8 +81,8 @@ function mediashare_remote_fetchalbumsprune()
         return mediashareErrorAPIRemote();
     }
 
-    $thumbnailSize = (int) pnModGetVar('mediashare', 'thumbnailSize');
-    $previewSize = (int) pnModGetVar('mediashare', 'previewSize');
+    $thumbnailSize = (int)pnModGetVar('mediashare', 'thumbnailSize');
+    $previewSize = (int)pnModGetVar('mediashare', 'previewSize');
 
     echo "__#GR2PROTO__
 status=0
@@ -125,7 +125,7 @@ function mediashare_remote_albumproperties()
         return mediashareErrorAPIRemote();
     }
 
-    $size = (int) pnModGetVar('mediashare', 'previewSize');
+    $size = (int)pnModGetVar('mediashare', 'previewSize');
 
     echo "__#GR2PROTO__
 status=0

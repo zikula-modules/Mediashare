@@ -28,7 +28,7 @@ function mediashareGetIntUrl($param, &$args, $default)
         $i = $default;
     }
 
-    return (int) $i;
+    return (int)$i;
 }
 
 function mediashareGetBoolUrl($param, &$args, $default)

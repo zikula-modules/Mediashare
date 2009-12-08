@@ -76,7 +76,7 @@ INSERT INTO $invitationTable
    $invitationColumn[sender],
    $invitationColumn[expires])
 VALUES
-   (" . (int) $args['albumId'] . ",
+   (" . (int)$args['albumId'] . ",
     NOW(),
     '" . $key . "',
     '" . DataUtil::formatForStore($args['email']) . "',
@@ -216,7 +216,7 @@ function mediashare_invitationapi_getById($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $id = (int) $args['id'];
+    $id = (int)$args['id'];
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
@@ -281,7 +281,7 @@ function mediashare_invitationapi_getInvitations(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $albumId = (int) $args['albumId'];
+    $albumId = (int)$args['albumId'];
 
     list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
@@ -335,7 +335,7 @@ function mediashare_invitationapi_expireInvitations(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $albumId     = (int) $args['albumId'];
+    $albumId     = (int)$args['albumId'];
     $expires     = $args['expires'];
     $invitations = $args['invitations'];
 
@@ -348,7 +348,7 @@ function mediashare_invitationapi_expireInvitations(&$args)
     // Safeguard againt SQL injections
     $ids = array();
     foreach ($invitations as $id) {
-        $ids[] = (int) $id;
+        $ids[] = (int)$id;
     }
     $ids = implode(',', $ids);
 
@@ -371,7 +371,7 @@ function mediashare_invitationapi_deleteInvitations(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $albumId = (int) $args['albumId'];
+    $albumId = (int)$args['albumId'];
     $invitations = $args['invitations'];
 
     list ($dbconn) = pnDBGetConn();
@@ -383,7 +383,7 @@ function mediashare_invitationapi_deleteInvitations(&$args)
     // Safeguard againt SQL injections
     $ids = array();
     foreach ($invitations as $id) {
-        $ids[] = (int) $id;
+        $ids[] = (int)$id;
     }
     $ids = implode(',', $ids);
 
@@ -462,7 +462,7 @@ function mediashare_invitationapi_getInvitedAlbums($args)
 
     $albums = array();
     for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        $albums[(int) $dbresult->fields[0]] = true;
+        $albums[(int)$dbresult->fields[0]] = true;
     }
 
     return $albums;

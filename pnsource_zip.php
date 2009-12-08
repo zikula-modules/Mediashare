@@ -163,7 +163,7 @@ function mediashareSourceZipUpload(& $args)
     $totalCapacityUsed = $userInfo['totalCapacityUsed'];
 
     // Start fetching media items
-    $imageNum = (int) FormUtil::getPassedValue('imagenum');
+    $imageNum = (int)FormUtil::getPassedValue('imagenum');
     $statusSet = array();
 
     $args['albumId'] = $albumId;
@@ -241,7 +241,7 @@ function mediashareSourceZipUpdate()
     $mediaIds = FormUtil::getPassedValue('mediaId');
     foreach ($mediaIds as $mediaId)
     {
-        $mediaId = (int) $mediaId;
+        $mediaId = (int)$mediaId;
 
         $title       = FormUtil::getPassedValue("title-$mediaId");
         $keywords    = FormUtil::getPassedValue("keywords-$mediaId");

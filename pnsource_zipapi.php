@@ -63,6 +63,6 @@ function mediashare_source_zipapi_getUploadInfo($args)
         $post_max_size = $userInfo['totalCapacityLeft'];
     }
 
-    return array('post_max_size'       => (int) ($post_max_size / 1000),
-                 'upload_max_filesize' => (int) ($upload_max_filesize / 1000));
+    return array('post_max_size'       => (int)($post_max_size / 1000),
+                 'upload_max_filesize' => (int)($upload_max_filesize / 1000));
 }

@@ -13,7 +13,7 @@ class mediashareAccessApi
             return true;
         }
 
-        $userId = (int) pnUserGetVar('uid');
+        $userId = (int)pnUserGetVar('uid');
 
         // Owner can do everything
         if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
@@ -81,7 +81,7 @@ class mediashareAccessApi
             return 0xFF;
         }
 
-        $userId = (int) pnUserGetVar('uid');
+        $userId = (int)pnUserGetVar('uid');
 
         // Owner can do everything
         if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
@@ -121,7 +121,7 @@ class mediashareAccessApi
 
         $access = 0x00;
         for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-            $access |= (int) $dbresult->fields[0];
+            $access |= (int)$dbresult->fields[0];
         }
 
         $dbresult->close();
@@ -143,7 +143,7 @@ class mediashareAccessApi
         if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
             return '1=0';
         }
-        $userId = (int) pnUserGetVar('uid');
+        $userId = (int)pnUserGetVar('uid');
 
         // Make sure groups database info is available
         pnModDBInfoLoad('Groups');
@@ -213,7 +213,7 @@ class mediashareAccessApi
         }
 
         // Owner can do everything
-        $userId = (int) pnUserGetVar('uid');
+        $userId = (int)pnUserGetVar('uid');
         if ($item['ownerId'] == $userId) {
             return true;
         }

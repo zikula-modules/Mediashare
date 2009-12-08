@@ -536,7 +536,7 @@ function mediashareMultiUpdateItems()
     $mediaIds = FormUtil::getPassedValue('mediaId');
     foreach ($mediaIds as $mediaId)
     {
-        $mediaId = (int) $mediaId;
+        $mediaId = (int)$mediaId;
 
         $title       = FormUtil::getPassedValue("title-$mediaId");
         $keywords    = FormUtil::getPassedValue("keywords-$mediaId");
@@ -656,7 +656,7 @@ function mediashareMultiMoveMedia()
     $mediaIds = FormUtil::getPassedValue('mediaId');
     foreach ($mediaIds as $mediaId)
     {
-        $mediaId = (int) $mediaId;
+        $mediaId = (int)$mediaId;
 
         // Check access (mediaId is from URL and need not all be from same album)
         if (!mediashareAccessItem($mediaId, mediashareAccessRequirementEditMedia, '')) {

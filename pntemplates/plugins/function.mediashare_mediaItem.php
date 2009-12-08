@@ -12,7 +12,7 @@ function smarty_function_mediashare_mediaItem($params, &$smarty)
 
     $title       = isset($params['title']) ? $params['title'] : '';
     $id          = isset($params['id']) ? $params['id'] : null;
-    $isThumbnail = isset($params['isThumbnail']) ? (bool) $params['isThumbnail'] : false;
+    $isThumbnail = isset($params['isThumbnail']) ? (bool)$params['isThumbnail'] : false;
     $width       = isset($params['width']) ? $params['width'] : null;
     $height      = isset($params['height']) ? $params['height'] : null;
     $class       = isset($params['class']) ? $params['class'] : null;

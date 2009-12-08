@@ -82,7 +82,7 @@ class mediashare_imageHandlerGD
 
     function getMediaDisplayHtml($url, $width, $height, $id, $args)
     {
-        if ((string) (int) $width == "$width") {
+        if ((string) (int)$width == "$width") {
             $width = "{$width}px";
         }
         $widthHtml   = ($width == null ? '' : " width:{$width}");
