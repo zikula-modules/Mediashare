@@ -1085,6 +1085,7 @@ function mediashare_userapi_getMostActiveKeywords($args)
     $result = array();
     $max = -1;
     $min = -1;
+    $total = 0;
     for (; !$dbresult->EOF; $dbresult->MoveNext()) {
         $keyword = array('keyword' => $dbresult->fields[0],
                          'count'   => (int)$dbresult->fields[1]);
@@ -1097,6 +1098,8 @@ function mediashare_userapi_getMostActiveKeywords($args)
             $min = $keyword['count'];
         }
 
+        $total += (int)$keyword['count'];
+
         $result[] = $keyword;
     }
 
@@ -1104,7 +1107,13 @@ function mediashare_userapi_getMostActiveKeywords($args)
 
     $max -= $min;
 
-    for ($i = 0, $cou = count($result); $i < $cou; ++$i) {
+    // equal values case
+    if ($max == 0) {
+        $max = 1;
+        $min = 1 - 1/$total;
+    }
+
+    foreach (array_keys($result) as $i) {
         $result[$i]['percentage'] = (int)(($result[$i]['count'] - $min) * 100 / $max);
         $result[$i]['fontsize']   = $result[$i]['percentage'] + 100;
     }
