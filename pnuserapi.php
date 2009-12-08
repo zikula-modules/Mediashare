@@ -175,6 +175,8 @@ function mediashare_userapi_getAlbumData($args)
 
     $result = $dbconn->execute($sql);
 
+    $result = DBUtil::executeSQL($sql);
+
     if ($dbconn->errorNo() != 0) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getAlbumData', 'Could not retrieve the album information.'), $dom));
     }
@@ -185,8 +187,8 @@ function mediashare_userapi_getAlbumData($args)
     $album = array(
         'id'              => $result->fields[0],
         'ownerId'         => $result->fields[1],
-        'createdDate'     => strftime(__('%B %Y', $dom), $result->fields[2]),
-        'modifiedDate'    => strftime(__('%B %Y', $dom), $result->fields[3]),
+        'createdDate'     => $result->fields[2],
+        'modifiedDate'    => $result->fields[3],
         'createdDateRaw'  => $result->fields[2],
         'modifiedDateRaw' => $result->fields[3],
         'title'           => $result->fields[4],
@@ -326,8 +328,8 @@ function mediashare_userapi_getSubAlbumsData($args)
         $album = array(
             'id' => $result->fields[0],
             'ownerId' => $result->fields[1],
-            'createdDate' => strftime(__('%B %Y', $dom), $result->fields[2]),
-            'modifiedDate' => strftime(__('%B %Y', $dom), $result->fields[3]),
+            'createdDate' => $result->fields[2],
+            'modifiedDate' => $result->fields[3],
             'title' => $result->fields[4],
             'summary' => $result->fields[5],
             'description' => $result->fields[6],
@@ -460,8 +462,8 @@ function mediashare_userapi_getAlbumList($args)
         $album = array(
             'id' => $result->fields[0],
             'ownerId' => $result->fields[1],
-            'createdDate' => strftime(__('%B %Y', $dom), $result->fields[2]),
-            'modifiedDate' => strftime(__('%B %Y', $dom), $result->fields[3]),
+            'createdDate' => $result->fields[2],
+            'modifiedDate' => $result->fields[3],
             'title' => $result->fields[4],
             'summary' => $result->fields[5],
             'description' => $result->fields[6],
@@ -619,8 +621,8 @@ function mediashare_userapi_getMediaItem($args)
     $item = array(
         'id' => $result->fields[0],
         'ownerId' => $result->fields[1],
-        'createdDate' => strftime(__('%B %Y', $dom), $result->fields[2]),
-        'modifiedDate' => strftime(__('%B %Y', $dom), $result->fields[3]),
+        'createdDate' => $result->fields[2],
+        'modifiedDate' => $result->fields[3],
         'title' => $result->fields[4],
         'keywords' => $result->fields[5],
         'description' => $result->fields[6],
@@ -812,8 +814,8 @@ function mediashareGetMediaItemsData($args)
             'id' => $result->fields[0],
             'isExternal' => false,
             'ownerId' => $result->fields[1],
-            'createdDate' => strftime(__('%B %Y', $dom), $result->fields[2]),
-            'modifiedDate' => strftime(__('%B %Y', $dom), $result->fields[3]),
+            'createdDate' => $result->fields[2],
+            'modifiedDate' => $result->fields[3],
             'createdDateRaw' => $result->fields[2],
             'modifiedDateRaw' => $result->fields[3],
             'title' => $result->fields[4],
@@ -1494,8 +1496,8 @@ function mediashare_userapi_getList($args)
             'id' => $dbresult->fields[3],
             'ownerId' => $dbresult->fields[4],
             'ownerName' => $dbresult->fields[5],
-            'createdDate' => strftime(__('%B %Y', $dom), $dbresult->fields[6]),
-            'modifiedDate' => strftime(__('%B %Y', $dom), $dbresult->fields[7]),
+            'createdDate' => $dbresult->fields[6],
+            'modifiedDate' => $dbresult->fields[7],
             'createdDateRaw' => $dbresult->fields[6],
             'modifiedDateRaw' => $dbresult->fields[7],
             'title' => $dbresult->fields[8],
