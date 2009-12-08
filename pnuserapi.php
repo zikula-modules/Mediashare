@@ -1714,6 +1714,12 @@ function mediashare_userapi_getAllTemplates($args)
     $templates = array();
 
     $sets = FileUtil::getFiles('modules/mediashare/pntemplates/Frontend', false, true, null, 'd');
+
+    if (file_exists('config/templates/mediashare/Frontend')) {
+        $add = FileUtil::getFiles('config/templates/mediashare/Frontend', false, true, null, 'd');
+        $sets = array_merge($sets, $add);
+    }
+
     foreach ($sets as $set) {
         $templates[] = array('title' => $set,
                              'value' => $set);

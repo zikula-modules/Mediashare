@@ -12,8 +12,7 @@
     TEMPLATE SETS
     The album viewer, thumbnail list, and the slideshow viewer supports templates 
     selected by album. The templates can be located in:
-    /config/templates/mediashare/TemplateSet/*
-    /themes/YourTheme/templates/modules/mediashare/TemplateSet/*
+    /config/templates/mediashare/Frontend/TemplateSet/*.html
 
     Add your own "TemplateSet" directory and place any of the following files in it:
       album.html      - album viewer template

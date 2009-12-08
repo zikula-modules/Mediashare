@@ -22,7 +22,6 @@
 
   FIX OR DEPRECATE THE USE OF
 
-    TemplateSets detection
     mb_convert_encoding($image['title'], __('ISO-8859-1', $dom), 'UTF-8'),
     array_key_exists
     (int)_$something remove blank
