@@ -54,7 +54,7 @@ function mediashare_adminapi_setTemplateGlobally($args)
     $new = array('template' => DataUtil::formatForStore($args['template']));
 
     if (!DBUtil::updateObject($new, 'mediashare_albums', '1=1', 'id')) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('adminapi.setTemplateGlobally', 'Could not set the template.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('adminapi.setTemplateGlobally', 'Could not set the template.'), $dom));
     }
 
     return true;

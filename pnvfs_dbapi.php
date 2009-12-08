@@ -39,7 +39,7 @@ class mediashare_vfsHandlerDB
         $result = $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('vfsHandlerDB.createFile', 'Could not retrieve insert the file information.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('vfsHandlerDB.createFile', 'Could not retrieve insert the file information.'), $dom));
         }
 
         return $fileReference;
@@ -63,7 +63,7 @@ class mediashare_vfsHandlerDB
         $result = $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('vfsHandlerDB.deleteFile', 'Could not delete the file information.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('vfsHandlerDB.deleteFile', 'Could not delete the file information.'), $dom));
         }
 
         return true;
@@ -91,7 +91,7 @@ class mediashare_vfsHandlerDB
         $result = $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('vfsHandlerDB.updateFile', 'Could not update the file information.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('vfsHandlerDB.updateFile', 'Could not update the file information.'), $dom));
         }
 
         return true;
@@ -153,7 +153,7 @@ function mediashare_vfs_dbapi_getMedia($args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('vfsHandlerDB.getMedia', 'Could not retrieve the file information.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('vfsHandlerDB.getMedia', 'Could not retrieve the file information.'), $dom));
     }
 
     if ($result->EOF) {

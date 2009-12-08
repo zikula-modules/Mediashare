@@ -22,7 +22,6 @@
 
   FIX OR DEPRECATE THE USE OF
 
-    Error in %2$%
     Remaining pnModAPILoad
     TemplateSets detection
     mb_convert_encoding($image['title'], __('ISO-8859-1', $dom), 'UTF-8'),

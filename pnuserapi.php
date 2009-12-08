@@ -176,7 +176,7 @@ function mediashare_userapi_getAlbumData($args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getAlbumData', 'Could not retrieve the album information.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getAlbumData', 'Could not retrieve the album information.'), $dom));
     }
     if ($result->EOF) {
         return LogUtil::registerError(__('Unknown album ID (%s).', $albumId, $dom));
@@ -316,7 +316,7 @@ function mediashare_userapi_getSubAlbumsData($args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getSubAlbumsData', 'Could not retrieve the sub albums information.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getSubAlbumsData', 'Could not retrieve the sub albums information.'), $dom));
     }
 
     $albums = array();
@@ -385,7 +385,7 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getAlbumBreadcrumb', 'Could not retrieve the breadcrumb information.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getAlbumBreadcrumb', 'Could not retrieve the breadcrumb information.'), $dom));
     }
 
     $breadcrumb = array();
@@ -450,7 +450,7 @@ function mediashare_userapi_getAlbumList($args)
     $result = $dbconn->selectLimit($sql, $pageSize, $recordPos);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getAlbumList', 'Could not retrieve the albums list.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getAlbumList', 'Could not retrieve the albums list.'), $dom));
     }
 
     $albums = array();
@@ -523,7 +523,7 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
 
     $result = $dbconn->selectLimit($sql, 1, 0);
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getFirstItemInAlbum', 'Could not retrieve the album information.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getFirstItemInAlbum', 'Could not retrieve the album information.'), $dom));
     }
 
     if ($result->EOF) {
@@ -608,7 +608,7 @@ function mediashare_userapi_getMediaItem($args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getMediaItem', 'Could not retrieve the media information.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getMediaItem', 'Could not retrieve the media information.'), $dom));
     }
     if ($result->EOF) {
         return null;
@@ -799,7 +799,7 @@ function mediashareGetMediaItemsData($args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getMediaItems', 'Could not retrieve the media items.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getMediaItems', 'Could not retrieve the media items.'), $dom));
     }
 
     $items = array();
@@ -897,7 +897,7 @@ function mediashare_userapi_getRandomMediaItem($args)
 
         $dbresult = $dbconn->selectLimit($sql, 1, 0);
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
         }
         $albumId = (int) $dbresult->fields[0];
         $dbresult->Close();
@@ -919,7 +919,7 @@ function mediashare_userapi_getRandomMediaItem($args)
 
     $dbresult = $dbconn->execute($sql);
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
     }
 
     $count = (int) $dbresult->fields[0];
@@ -934,7 +934,7 @@ function mediashare_userapi_getRandomMediaItem($args)
 
     $dbresult = $dbconn->selectLimit($sql, 1, rand(0, $count - 1));
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
     }
 
     $result = array('mediaId' => (int) $dbresult->fields[0], 'albumId' => (int) $dbresult->fields[1]);
@@ -1039,7 +1039,7 @@ function mediashare_userapi_getMostActiveUsers($args)
     $dbresult = $dbconn->selectLimit($sql, 10, 0);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.mostActiveUsers', 'Could not retrieve the most active users.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.mostActiveUsers', 'Could not retrieve the most active users.'), $dom));
     }
 
     $result = array();
@@ -1077,7 +1077,7 @@ function mediashare_userapi_getMostActiveKeywords($args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.mostActiveKeywords', 'Could not retrieve the most active keywords.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.mostActiveKeywords', 'Could not retrieve the most active keywords.'), $dom));
     }
 
     $result = array();
@@ -1134,7 +1134,7 @@ function mediashare_userapi_getSummary($args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getSummary', 'Could not count the media table.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getSummary', 'Could not count the media table.'), $dom));
     }
 
     $summary['mediaCount'] = (int) $dbresult->fields[0];
@@ -1154,7 +1154,7 @@ function mediashare_userapi_getSummary($args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getSummary', 'Could not count the albums table.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getSummary', 'Could not count the albums table.'), $dom));
     }
 
     $summary['albumCount'] = (int) $dbresult->fields[0];
@@ -1243,7 +1243,7 @@ function mediashare_userapi_getByKeyword($args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getByKeyword', 'Could not retrieve the search results.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getByKeyword', 'Could not retrieve the search results.'), $dom));
     }
 
     $result = array();
@@ -1463,7 +1463,7 @@ function mediashare_userapi_getList($args)
     $dbresult = $dbconn->selectLimit($sql, $pageSize, $recordPos);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getList', 'Could not retrieve the media list.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getList', 'Could not retrieve the media list.'), $dom));
     }
 
     $result = array();
@@ -1599,7 +1599,7 @@ function mediashare_userapi_getListCount($args)
     //echo "<pre>$sql</pre>\n"; exit(0);
     $dbresult = $dbconn->execute($sql);
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
     }
 
     $count = (int) $dbresult->fields[0];
@@ -1609,7 +1609,7 @@ function mediashare_userapi_getListCount($args)
     if ($sql2 != null) {
         $dbresult = $dbconn->execute($sql2);
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
         }
 
         $count += (int) $dbresult->fields[0];
@@ -1680,7 +1680,7 @@ function mediashare_userapi_search($args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('userapi.search', 'Could not retrieve the search results.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.search', 'Could not retrieve the search results.'), $dom));
     }
 
     $result = array();

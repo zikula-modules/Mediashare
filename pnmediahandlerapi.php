@@ -13,7 +13,7 @@ function mediashare_mediahandlerapi_getMediaHandlers($args)
 
     // Get handlers
     if (!($result = DBUtil::selectFieldArray('mediashare_mediahandlers', 'handler', '', '', true, 'title'))) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.getMediaHandlers', 'Could not load the handlers.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('mediahandlerapi.getMediaHandlers', 'Could not load the handlers.'), $dom));
     }
 
     $handlers = array();
@@ -42,7 +42,7 @@ function mediashare_mediahandlerapi_getMediaHandlers($args)
         $result = $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.getMediaHandlers', "Could not load the types for the handler $handler[handler]."), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('mediahandlerapi.getMediaHandlers', "Could not load the types for the handler $handler[handler]."), $dom));
         }
 
         $types = array();
@@ -94,7 +94,7 @@ function mediashare_mediahandlerapi_getHandlerInfo($args)
 
     $errormsg = __('Unable to locate media handler for \'%1$s\' (%2$s)', array($filename, $mimeType), $dom);
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.getHandlerInfo', $errormsg), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('mediahandlerapi.getHandlerInfo', $errormsg), $dom));
     }
 
     if ($result->EOF) {
@@ -137,7 +137,7 @@ function mediashare_mediahandlerapi_scanMediaHandlers($args)
     
     // Clear existing handler table
     if (!DBUtil::truncateTable('mediashare_mediahandlers')) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.scanMediaHandlers', __f("Could not clear the '%s' table.", 'mediahandlers', $dom)), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('mediahandlerapi.scanMediaHandlers', __f("Could not clear the '%s' table.", 'mediahandlers', $dom)), $dom));
     }
 
     // Scan for handlers APIs
@@ -204,7 +204,7 @@ function mediashare_mediahandlerapi_addMediaHandler($args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('mediahandlerapi.addHandler', 'Could not add a handler.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('mediahandlerapi.addHandler', 'Could not add a handler.'), $dom));
     }
 
     return true;

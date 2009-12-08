@@ -64,7 +64,7 @@ class mediashareAccessApi
 
         $dbresult = $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('accessapi.hasAlbumAccess', 'Could not retrieve the user privilegies.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('accessapi.hasAlbumAccess', 'Could not retrieve the user privilegies.'), $dom));
         }
 
         $hasAccess = $dbresult->fields[0];
@@ -116,7 +116,7 @@ class mediashareAccessApi
 
         $dbresult = $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('accessapi.getAlbumAccess', 'Could not retrieve the access level.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('accessapi.getAlbumAccess', 'Could not retrieve the access level.'), $dom));
         }
 
         $access = 0x00;
@@ -190,7 +190,7 @@ class mediashareAccessApi
 
         $dbresult = $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('accessapi.getAccessibleAlbumsSql', 'Could not retrieve the accessible albums.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('accessapi.getAccessibleAlbumsSql', 'Could not retrieve the accessible albums.'), $dom));
         }
 
         $albumIds = $invitedSql;

@@ -88,7 +88,7 @@ VALUES
         $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.createInvitationId', 'Could not create the invitation.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('invitationapi.createInvitationId', 'Could not create the invitation.'), $dom));
         }
     } while (false); // FIXME: add "key exists" check
 
@@ -188,7 +188,7 @@ WHERE     $invitationColumn[key] = '$key'
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getByKey', 'Could not retrieve the invitation.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('invitationapi.getByKey', 'Could not retrieve the invitation.'), $dom));
     }
 
     if ($dbresult->EOF) {
@@ -242,7 +242,7 @@ WHERE $invitationColumn[id] = $id";
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getById', 'Could not retrieve the invitation.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('invitationapi.getById', 'Could not retrieve the invitation.'), $dom));
     }
 
     if ($dbresult->EOF) {
@@ -271,7 +271,7 @@ function mediashare_invitationapi_updateViewCount($args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!(DBUtil::incrementObjectFieldByID('mediashare_invitation', 'viewCount', $args['key'], 'key'))) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.updateViewCount', 'Could not update the counter.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('invitationapi.updateViewCount', 'Could not update the counter.'), $dom));
     }
 
     return true;
@@ -308,7 +308,7 @@ ORDER BY $invitationColumn[created] DESC";
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getInvitations', 'Could not retrieve the invitation.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('invitationapi.getInvitations', 'Could not retrieve the invitation.'), $dom));
     }
 
     $result = array();
@@ -361,7 +361,7 @@ function mediashare_invitationapi_expireInvitations(&$args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.expireInvitations', 'Could not set the expiration for the invitations.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('invitationapi.expireInvitations', 'Could not set the expiration for the invitations.'), $dom));
     }
 
     return true;
@@ -395,7 +395,7 @@ function mediashare_invitationapi_deleteInvitations(&$args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.deleteInvitations', 'Could not delete the invitations.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('invitationapi.deleteInvitations', 'Could not delete the invitations.'), $dom));
     }
 
     return true;
@@ -457,7 +457,7 @@ function mediashare_invitationapi_getInvitedAlbums($args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('invitationapi.getInvitedAlbums', 'Could not retrieve the invited albums.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('invitationapi.getInvitedAlbums', 'Could not retrieve the invited albums.'), $dom));
     }
 
     $albums = array();

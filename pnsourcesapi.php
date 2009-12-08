@@ -22,7 +22,7 @@ function mediashare_sourcesapi_getSources(&$args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('sourcesapi.getSources', 'Could not retrieve the sources.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('sourcesapi.getSources', 'Could not retrieve the sources.'), $dom));
     }
 
     $sources = array();
@@ -49,7 +49,7 @@ function mediashare_sourcesapi_scanSources($args)
 
     // Clear existing sources table
     if (!DBUtil::truncateTable('mediashare_sources')) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('sourcesapi.scanSources', __f("Could not clear the '%s' table.", 'sources', $dom)), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('sourcesapi.scanSources', __f("Could not clear the '%s' table.", 'sources', $dom)), $dom));
     }
 
     // Scan for sources APIs
@@ -99,7 +99,7 @@ function mediashare_sourcesapi_addSource($args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('sourcesapi.addSource', 'Could not add a source.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('sourcesapi.addSource', 'Could not add a source.'), $dom));
     }
 
     return true;

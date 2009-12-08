@@ -160,7 +160,7 @@ function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('common.EnsureFolderExists', 'Could not retrieve the folder information.'), $dom), 404);
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('common.EnsureFolderExists', 'Could not retrieve the folder information.'), $dom), 404);
     }
 
     // No ID => folder does not exist. Create it.

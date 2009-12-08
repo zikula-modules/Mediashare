@@ -140,7 +140,7 @@ function mediashareStartPhotoshareRef()
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!DBUtil::truncateTable('mediashare_photoshare')) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('importapi.mediashareStartPhotoshareRef', __f("Could not clear the '%s' table.", 'photoshare', $dom)), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('importapi.mediashareStartPhotoshareRef', __f("Could not clear the '%s' table.", 'photoshare', $dom)), $dom));
     }
 
     return true;
@@ -169,7 +169,7 @@ function mediashareAddPhotoshareRef($photoshareImageId, $args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('importapi.mediashareStartPhotoshareRef', 'Could not insert the references to photoshare.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('importapi.mediashareStartPhotoshareRef', 'Could not insert the references to photoshare.'), $dom));
     }
 
     return true;
@@ -196,7 +196,7 @@ function mediashare_importapi_getMediashareUrl($args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('importapi.getMediashareUrl', 'Could not retrieve the references for the media item.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('importapi.getMediashareUrl', 'Could not retrieve the references for the media item.'), $dom));
     }
 
     $thumbnailRef = $dbresult->fields[0];

@@ -70,7 +70,7 @@ function mediashare_editapi_addAlbum(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.addAlbum', 'Could not add the new album.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.addAlbum', 'Could not add the new album.'), $dom));
     }
 
     $newAlbumId = $dbconn->insert_ID();
@@ -108,7 +108,7 @@ function mediashare_editapi_updateNestedSetValues(&$args)
         $sql = "call mediashareUpdateNestedSetValues()";
         $dbconn->execute($sql);
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateNestedSetValues', 'Calling mediashareUpdateNestedSetValues() failed.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateNestedSetValues', 'Calling mediashareUpdateNestedSetValues() failed.'), $dom));
         }
         return true;
     } else {
@@ -136,7 +136,7 @@ function mediashareUpdateNestedSetValues_Rec($albumId, $level, &$count, &$dbconn
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareUpdateNestedSetValues_Rec', 'Could not retrieve the subalbums.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareUpdateNestedSetValues_Rec', 'Could not retrieve the subalbums.'), $dom));
     }
 
     for (; !$result->EOF; $result->MoveNext()) {
@@ -158,7 +158,7 @@ function mediashareUpdateNestedSetValues_Rec($albumId, $level, &$count, &$dbconn
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareUpdateNestedSetValues_Rec', 'Could not update the album.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareUpdateNestedSetValues_Rec', 'Could not update the album.'), $dom));
     }
 
     return true;
@@ -209,7 +209,7 @@ function mediashare_editapi_updateAlbum(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateAlbum', 'Could not update the album.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateAlbum', 'Could not update the album.'), $dom));
     }
 
     if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $albumId, 'type' => 'album', 'keywords' => $args['keywords']))) {
@@ -280,7 +280,7 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareDeleteAlbumRec', 'Could not delete the album.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareDeleteAlbumRec', 'Could not delete the album.'), $dom));
     }
 
     $albumIds = array();
@@ -303,7 +303,7 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareDeleteAlbumRec', 'Could not select the album.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareDeleteAlbumRec', 'Could not select the album.'), $dom));
     }
 
     $mediaIds = array();
@@ -325,7 +325,7 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareDeleteAlbumRec', 'Could not delete the album.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareDeleteAlbumRec', 'Could not delete the album.'), $dom));
     }
 
     pnModCallHooks('item', 'delete', "album-$albumId", array('module' => 'mediashare', 'albumId' => $albumId));
@@ -395,7 +395,7 @@ function mediashare_editapi_moveAlbum(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.moveAlbum', 'Could not move the album.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.moveAlbum', 'Could not move the album.'), $dom));
     }
 
     if (!pnModAPIFunc('mediashare', 'edit', 'updateNestedSetValues')) {
@@ -668,7 +668,7 @@ function mediashare_editapi_storeMediaItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.storeMediaItem', __('Could not insert the media item.', $dom)), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.storeMediaItem', __('Could not insert the media item.', $dom)), $dom));
     }
 
     $newMediaId = $dbconn->insert_ID();
@@ -704,7 +704,7 @@ function mediashare_editapi_registerMediaItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.registerMediaItem', __('Could not insert the media item.', $dom)), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.registerMediaItem', __('Could not insert the media item.', $dom)), $dom));
     }
 
     $id = $dbconn->insert_ID();
@@ -727,7 +727,7 @@ function mediashareGetNewPosition($albumId)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.mediashareGetNewPosition', 'Could not get the max position.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareGetNewPosition', 'Could not get the max position.'), $dom));
     }
 
     $position = $result->fields[0];
@@ -774,7 +774,7 @@ function mediashare_editapi_ensureMainAlbumId($args)
 
     $dbconn->execute($sql);
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.ensureMainAlbumId', 'Could not ensure the main media for the album.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.ensureMainAlbumId', 'Could not ensure the main media for the album.'), $dom));
     }
 
     return true;
@@ -809,7 +809,7 @@ function mediashare_editapi_updateItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateItem', 'Could not update the media item.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateItem', 'Could not update the media item.'), $dom));
     }
 
     if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $mediaId, 'type' => 'media', 'keywords' => $args['keywords']))) {
@@ -1020,7 +1020,7 @@ function mediashare_editapi_updateMediaStorage($args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateMediaStorage', 'Could not update the storage.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateMediaStorage', 'Could not update the storage.'), $dom));
     }
 
     return true;
@@ -1144,7 +1144,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.deleteMediaItem', 'Could not delete the media item.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.deleteMediaItem', 'Could not delete the media item.'), $dom));
     }
 
     pnModCallHooks('item', 'delete', "media-$mediaId", array('module' => 'mediashare', 'mediaId' => $mediaId));
@@ -1158,7 +1158,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.deleteMediaItem', 'Could not delete the media item.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.deleteMediaItem', 'Could not delete the media item.'), $dom));
     }
 
     // Remove keyword references
@@ -1176,7 +1176,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.deleteMediaItem', 'Could not delete the storage.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.deleteMediaItem', 'Could not delete the storage.'), $dom));
     }
 
     // Update main album item
@@ -1214,7 +1214,7 @@ function mediashare_editapi_moveMediaItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.moveMediaItem', 'Could not move the media item.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.moveMediaItem', 'Could not move the media item.'), $dom));
     }
 
     // Check main media item
@@ -1230,7 +1230,7 @@ function mediashare_editapi_moveMediaItem(&$args)
         $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.moveMediaItem', 'Could not move the media item.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.moveMediaItem', 'Could not move the media item.'), $dom));
         }
     }
 
@@ -1260,7 +1260,7 @@ function mediashare_editapi_setMainItem(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.setMainItem', 'Could not set the main media item.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.setMainItem', 'Could not set the main media item.'), $dom));
     }
 
     return true;
@@ -1295,7 +1295,7 @@ function mediashare_editapi_arrangeAlbum(&$args)
         $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.arrangeAlbum', 'Could not arrange the album.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.arrangeAlbum', 'Could not arrange the album.'), $dom));
         }
     }
 
@@ -1328,7 +1328,7 @@ function mediashare_editapi_getUserInfo(&$args)
     $result = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.getUserInfo', 'Could not retrieve the user information.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.getUserInfo', 'Could not retrieve the user information.'), $dom));
     }
 
     $limitTotal = (int) pnModGetVar('mediashare', 'mediaSizeLimitTotal');
@@ -1369,7 +1369,7 @@ function mediashare_editapi_updateKeywords(&$args)
     $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateKeywords', 'Could not update the keywords.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateKeywords', 'Could not update the keywords.'), $dom));
     }
 
     // Split keywords string into keywords array
@@ -1389,7 +1389,7 @@ function mediashare_editapi_updateKeywords(&$args)
 
             $dbconn->execute($sql);
             if ($dbconn->errorNo() != 0) {
-                return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateKeywords', 'Could not insert the keywords.'), $dom));
+                return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateKeywords', 'Could not insert the keywords.'), $dom));
             }
         }
     }
@@ -1451,7 +1451,7 @@ function mediashare_editapi_getAccessSettings(&$args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.getAccessSettings', 'Could not retrieve the access settings.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.getAccessSettings', 'Could not retrieve the access settings.'), $dom));
     }
 
     $result = array();
@@ -1508,7 +1508,7 @@ function mediashare_editapi_updateAccessSettings(&$args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateAccessSettings', 'Could not delete the access registries.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateAccessSettings', 'Could not delete the access registries.'), $dom));
     }
 
     foreach ($access as $accessRow)
@@ -1529,7 +1529,7 @@ function mediashare_editapi_updateAccessSettings(&$args)
         $dbresult = $dbconn->execute($sql);
 
         if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.updateAccessSettings', 'Could not insert the access registry.'), $dom));
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateAccessSettings', 'Could not insert the access registry.'), $dom));
         }
     }
 
@@ -1553,7 +1553,7 @@ function mediashare_editapi_getAccessGroups(&$args)
     $dbresult = $dbconn->execute($sql);
 
     if ($dbconn->errorNo() != 0) {
-        return LogUtil::registerError(__f('Error in %1$s: %2$%', array('editapi.getAccessGroups', 'Could not retrieve the groups information.'), $dom));
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.getAccessGroups', 'Could not retrieve the groups information.'), $dom));
     }
 
     $result = array();
