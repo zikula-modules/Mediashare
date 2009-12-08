@@ -50,7 +50,7 @@ function mediashare_init()
 
     // Add top album
     pnModAPILoad('mediashare', 'edit', true);
-    pnModAPILoad('mediashare', 'user', true);
+    pnModAPILoad('mediashare', 'user', true); // FIXME why this?
 
     $topAlbum = array('title'    => __('Top Album', $dom),
                       'description' => __('This is the top album (of which there can be only one). You can edit this album to change the title and other attributes of it.', $dom),

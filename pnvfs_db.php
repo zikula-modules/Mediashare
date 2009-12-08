@@ -12,8 +12,6 @@ function mediashare_vfs_db_dump()
     $fileref = $_GET['ref'];
 
     // Retrieve image information
-    pnModAPILoad('mediashare', 'vfs_db');
-
     if (!($media = pnModAPIFunc('mediashare', 'vfs_db', 'getMedia', array('fileref' => $fileref)))) {
         return false;
     }
