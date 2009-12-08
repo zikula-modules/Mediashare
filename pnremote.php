@@ -1,8 +1,8 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Lind-Nielsen (C) 2005.
-// ----------------------------------------------------------------------
+//
+// Mediashare by Jorn Lind-Nielsen (C)
+//
 // LICENSE
 //
 // This program is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
 // GNU General Public License for more details.
 //
 // To read the license please visit http://www.gnu.org/copyleft/gpl.html
-// =======================================================================
+//
 
 
 require_once ("modules/mediashare/common.php");

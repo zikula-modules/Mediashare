@@ -1,15 +1,15 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Lind-Nielsen (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Lind-Nielsen (C)
+//
 
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
 
-// =======================================================================
-// General settings
-// =======================================================================
+/**
+ * General settings
+ */
 function mediashare_admin_main($args)
 {
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
@@ -78,9 +78,9 @@ function mediashareAdminSettings($args)
     return pnRedirect(pnModURL('mediashare', 'admin', 'main'));
 }
 
-// =======================================================================
-// Plugins
-// =======================================================================
+/**
+ * Plugins
+ */
 function mediashare_admin_plugins($args)
 {
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
@@ -118,9 +118,9 @@ function mediashareAdminScanPlugins()
     return pnRedirect(pnModURL('mediashare', 'admin', 'plugins'));
 }
 
-// =======================================================================
-// Recalculate images
-// =======================================================================
+/**
+ * Recalculate images
+ */
 function mediashare_admin_recalc($args)
 {
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {

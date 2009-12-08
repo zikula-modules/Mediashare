@@ -1,8 +1,8 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Lind-Nielsen (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Lind-Nielsen (C)
+//
 
 require_once 'modules/mediashare/common.php';
 

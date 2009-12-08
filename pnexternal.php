@@ -1,14 +1,14 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Wildt (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Wildt (C)
+//
 
 require_once 'modules/mediashare/common.php';
 
-// =======================================================================
-// Find / paste
-// =======================================================================
+/**
+ * Find / paste
+ */
 function mediashare_external_finditem($args)
 {
     // FIXME access check

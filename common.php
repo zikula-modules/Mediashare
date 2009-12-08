@@ -1,8 +1,8 @@
 <?php
 // $Id$
-// =======================================================================
+//
 // Mediashare by Jorn Lind-Nielsen (C) 2003.
-// =======================================================================
+//
 
 define('mediashareAccessRequirementView',       1);
 define('mediashareAccessRequirementEditAlbum',  2);
@@ -17,9 +17,10 @@ define('mediashareAccessRequirementEditSomething', mediashareAccessRequirementEd
 
 define('mediashareAccessRequirementViewSomething', mediashareAccessRequirementView | mediashareAccessRequirementEditSomething);
 
-// =======================================================================
-// URL helpers
-// =======================================================================
+
+/**
+ * URL helpers
+ */
 function mediashareGetIntUrl($param, &$args, $default)
 {
     $i = isset($args[$param]) ? $args[$param] : FormUtil::getPassedValue($param);
@@ -55,9 +56,9 @@ function mediashareGetStringUrl($param, &$args, $default = null)
     return $s;
 }
 
-// =======================================================================
-// Access control
-// =======================================================================
+/**
+ * Access control
+ */
 function mediashareGetAccessAPI()
 {
     if (file_exists('modules/mediashare/localaccessapi.php')) {
@@ -128,9 +129,9 @@ function mediashareAddAccess(&$render, $album)
     return true;
 }
 
-// =======================================================================
-// Other
-// =======================================================================
+/**
+ * Other
+ */
 function mediashareStripKeywords($keywords)
 {
     return preg_replace('/[^\w ]/i', '', $keywords);

@@ -1,8 +1,8 @@
 <?php
 // $Id: mediashare.php,v 1.2 2006/03/16 20:14:48 jornlind Exp $
-// =======================================================================
-// Mediashare by Jorn Wildt (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Wildt (C)
+//
 
 require_once("modules/mediashare/common.php");
 

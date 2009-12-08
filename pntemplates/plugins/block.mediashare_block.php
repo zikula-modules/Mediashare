@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 function smarty_block_mediashare_block($params, $content, $smarty)
 {

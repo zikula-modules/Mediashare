@@ -1,4 +1,8 @@
 <?php
+// $Id: common-edit.php 93 2009-12-07 22:43:20Z mateo $
+//
+// Mediashare by Jorn Lind-Nielsen (C) 2003.
+//
 
 class mediashare_contenttypesapi_albumPlugin extends contentTypeBase
 {

@@ -62,7 +62,6 @@ function elfisk_decodeInput($fieldSpecs)
 }
 
 /*
-
 class elfisk_Control
 {
   var $id;
@@ -90,6 +89,4 @@ function elfisk_getControl($id)
 {
   $controls =& elfisk_ensureControlsList();
 }
-
 */
-

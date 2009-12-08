@@ -1,3 +1,5 @@
+/* $Id$ */
+
 div.mediashare td.top {
     vertical-align: top;
 }
@@ -562,7 +564,7 @@ table.mediashare-grid
     margin-bottom: 10px;
 }
 
-/*=[ Recalculating ]==========================================================*/
+/* Recalculating */
 
 div.mediashare-recalc iframe
 {
@@ -573,7 +575,7 @@ div.mediashare-recalc iframe
     border: 1px solid #000;
 }
 
-/*=[ pnForms itemselector ]===================================================*/
+/* pnForms itemselector */
 
 div.mediashareItemSelector td.selector
 {
@@ -593,7 +595,7 @@ div.mediashareItemSelector td.selector input.file
 }
 
 
-/*=[ Simplefied pages using microformat ideas ]===============================*/
+/* Simplefied pages using microformat ideas */
 
 dl.figure
 {
@@ -624,7 +626,7 @@ span.mediashare-filmstrip-info
     font-size: 90%;
 }
 
-/*=[ Menu handling ]==========================================================*/
+/* Menu handling */
 
 /* Surrounding DIV tag */
 #mediashare div.psmenu
@@ -685,7 +687,7 @@ span.mediashare-filmstrip-info
     text-decoration: none;
 }
 
-/*=[ Admin-Interface ]==========================================================*/
+/* Admin-Interface */
 
 div.pn-adminformrow .ms-adminhint {
     margin-left:26em;

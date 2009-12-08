@@ -1,8 +1,8 @@
 <?php
 // $Id: random.php,v 1.5 2007/07/22 06:17:04 jornlind Exp $
-// =======================================================================
-// Mediashare by Jorn Wildt (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Wildt (C)
+//
 
 require_once 'modules/mediashare/common.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';

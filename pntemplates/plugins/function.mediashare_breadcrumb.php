@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 function smarty_function_mediashare_breadcrumb($params, &$smarty)
 {

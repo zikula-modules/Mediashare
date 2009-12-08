@@ -1,8 +1,8 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Lind-Nielsen (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Lind-Nielsen (C)
+//
 
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
@@ -18,9 +18,9 @@ function mediashare_import_main($args)
     return $render->fetch('mediashare_import_main.html');
 }
 
-// =======================================================================
-// Import Photoshare
-// =======================================================================
+/**
+ * Import Photoshare
+ */
 function mediashare_import_photoshare($args)
 {
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {

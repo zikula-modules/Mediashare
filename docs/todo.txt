@@ -24,6 +24,6 @@
 
     list ($dbconn) = pnDBGetConn();
     global $vars
-    Docblocks format
     Rework the random block
     FIXME notes
+    Javascript with fixed 'mediaattach/' and photoshare stuff

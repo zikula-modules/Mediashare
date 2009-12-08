@@ -1,12 +1,12 @@
-//=============================================================================
+// $Id$
+//
 // Stand alone file selector for Mediashare
-// (C) Jorn Wildt 2006
-//=============================================================================
+// (C) Jorn Wildt
+//
 
-//=============================================================================
-// External interface functions
-//=============================================================================
-
+/**
+ * External interface functions
+ */
 function mediashareFindItem(targetId, mediashareURL)
 {
   currentMediashareInput = document.getElementById(targetId);
@@ -28,11 +28,11 @@ function mediashareFindItemHtmlArea30(editor, mediashareURL)
 }
 
 
-//=============================================================================
-// Internal stuff
-//=============================================================================
+/**
+ * Internal stuff
+ */
 
-  // htmlArea 3.0 editor for access in selector window
+// htmlArea 3.0 editor for access in selector window
 var currentMediashareEditor = null;
 var currentMediashareInput = null;
 
@@ -76,7 +76,7 @@ mediashare.find.handleCancel = function()
 }
 
 
-  // User clicks on "select item" button
+// User clicks on "select item" button
 mediashare.find.selectItem = function()
 {
   if (window.opener.currentMediashareEditor != null)
@@ -93,22 +93,21 @@ mediashare.find.selectItem = function()
 
     if (currentInput.tagName == 'INPUT')
     {
-        // Simply overwrite value of input elements
+      // Simply overwrite value of input elements
       currentInput.value = html;
     }
     else if (currentInput.tagName == 'TEXTAREA')
     {
-        // Try to paste into textarea - technique depends on environment
-        
+      // Try to paste into textarea - technique depends on environment
       if (typeof document.selection != "undefined")
       {
-          // IE: Move focus to textarea (which fortunately keeps its current selection) and overwrite selection
+        // IE: Move focus to textarea (which fortunately keeps its current selection) and overwrite selection
         currentInput.focus();
         window.opener.document.selection.createRange().text = html;
       }
       else if (typeof currentInput.selectionStart != "undefined")
       {
-          // Firefox: Get start and end points of selection and create new value based on old value
+        // Firefox: Get start and end points of selection and create new value based on old value
         var startPos = currentInput.selectionStart;
         var endPos = currentInput.selectionEnd;
         currentInput.value = currentInput.value.substring(0, startPos)
@@ -117,7 +116,7 @@ mediashare.find.selectItem = function()
       } 
       else 
       {
-          // Others: just append to the current value
+        // Others: just append to the current value
         currentInput.value += html;
       }
     }
@@ -135,10 +134,9 @@ function handleOnClickCancel()
 }
 
 
-//=============================================================================
-// Mediashare item selector for pnForms
-//=============================================================================
-
+/**
+ * Mediashare item selector for pnForms
+ */
 mediashare.itemSelector = {};
 mediashare.itemSelector.items = {};
 
@@ -210,6 +208,7 @@ mediashare.itemSelector.gotItems = function(response, baseId, updateListOnly)
         $(baseId+'_img').src = result.mediaItems[0].thumbnailRef;
       else
         $(baseId+'_img').src = 'mediashare/' + result.mediaItems[0].thumbnailRef;
+
       $(baseId+'_img').show();
     }
     else

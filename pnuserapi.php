@@ -1,14 +1,14 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Lind-Nielsen (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Lind-Nielsen (C)
+//
 
 require_once ("modules/mediashare/common.php");
 
-// =======================================================================
-// Album class definition
-// =======================================================================
+/**
+ * Album class definition
+ */
 class MediashareBaseAlbum
 {
     var $albumId;
@@ -63,9 +63,9 @@ function &mediashareGetAlbumInstance($albumId, $albumData)
     return $albumInstances[$albumId];
 }
 
-// =======================================================================
-// Access
-// =======================================================================
+/**
+ * Access
+ */
 function mediashare_userapi_hasAlbumAccess($args)
 {
     $albumId = (int)$args['albumId'];
@@ -108,9 +108,9 @@ function mediashare_userapi_hasItemAccess($args)
     return $accessApi->hasItemAccess($mediaId, $access, $viewKey);
 }
 
-// =======================================================================
-// Albums
-// =======================================================================
+/**
+ * Albums
+ */
 function mediashare_userapi_getAlbum($args)
 {
     return mediashare_userapi_getAlbumData($args);
@@ -537,9 +537,9 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
     return $id;
 }
 
-// =======================================================================
-// Media items
-// =======================================================================
+/**
+ * Media items
+ */
 function mediashare_userapi_getMediaItem($args)
 {
     // Check access
@@ -853,9 +853,9 @@ function mediashareGetMediaItemsData($args)
     return $items;
 }
 
-// =======================================================================
-// Latest, random and more
-// =======================================================================
+/**
+ * Latest, random and more
+ */
 function mediashare_userapi_getLatestMediaItems($args)
 {
     return pnModAPIFunc('mediashare', 'user', 'getList', array('order' => 'created', 'orderDir' => 'desc'));
@@ -944,9 +944,9 @@ function mediashare_userapi_getRandomMediaItem($args)
     return $result;
 }
 
-// =======================================================================
-// Escaping
-// =======================================================================
+/**
+ * Escaping
+ */
 function mediashareEscapeAlbum(&$album, $albumId)
 {
     $album['title'] = DataUtil::formatForDisplay($album['title']);
@@ -961,9 +961,9 @@ function mediashareEscapeItem(&$item, $itemId)
     list ($item['description']) = pnModCallHooks('item', 'transform', "item-$itemId", array(pnVarPrepHTMLDisplay($item['description'])));
 }
 
-// =======================================================================
-// Settings
-// =======================================================================
+/**
+ * Settings
+ */
 function mediashare_userapi_getSettings($args)
 {
     // TODO Improve
@@ -1013,9 +1013,9 @@ function mediashare_userapi_getRelativeMediadir()
     return $mediaBase;
 }
 
-// =======================================================================
-// Most xxx
-// =======================================================================
+/**
+ * Most xxx
+ */
 function mediashare_userapi_getMostActiveUsers($args)
 {
     list ($dbconn) = pnDBGetConn();
@@ -1162,9 +1162,9 @@ function mediashare_userapi_getSummary($args)
     return $summary;
 }
 
-// =======================================================================
-// Keywords
-// =======================================================================
+/**
+ * Keywords
+ */
 function mediashareAddKeywords(&$item)
 {
     $k = trim(mediashareStripKeywords($item['keywords']));
@@ -1264,9 +1264,9 @@ function mediashare_userapi_getByKeyword($args)
     return $result;
 }
 
-// =======================================================================
-// Lists
-// =======================================================================
+/**
+ * Lists
+ */
 function mediashare_userapi_getList($args)
 {
     $keyword   = isset($args['keyword']) ? $args['keyword'] : null;
@@ -1620,9 +1620,9 @@ function mediashare_userapi_getListCount($args)
     return $count;
 }
 
-// =======================================================================
-// Searching
-// =======================================================================
+/**
+ * Searching
+ */
 function mediashare_userapi_search($args)
 {
     $query = $args['query'];
@@ -1706,9 +1706,9 @@ function mediashare_userapi_search($args)
     return array('result' => $result, 'hitCount' => $i);
 }
 
-// =======================================================================
-// Templates
-// =======================================================================
+/**
+ * Templates
+ */
 function mediashare_userapi_getAllTemplates($args)
 {
     $templates = array();

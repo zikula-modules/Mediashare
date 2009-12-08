@@ -1,15 +1,15 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Lind-Nielsen (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Lind-Nielsen (C)
+//
 
 require_once 'modules/mediashare/common-edit.php';
 require_once 'modules/mediashare/elfisk/elfisk_common.php';
 
-// =======================================================================
-// View album in edit-mode
-// =======================================================================
+/**
+ * View album in edit-mode
+ */
 function mediashare_edit_view($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -75,9 +75,9 @@ function mediashare_edit_view($args)
     return $render->fetch('mediashare_edit_view.html');
 }
 
-// =======================================================================
-// Add / edit album
-// =======================================================================
+/**
+ * Add / edit album
+ */
 global $mediashare_albumFields;
 $mediashare_albumFields = array('title'       => array('type' => 'string'),
                                 'keywords'    => array('type' => 'string'),
@@ -248,9 +248,9 @@ function mediashareDeleteAlbum($args)
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $album['parentAlbumId'])));
 }
 
-// =======================================================================
-// Move album
-// =======================================================================
+/**
+ * Move album
+ */
 function mediashare_edit_movealbum($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -297,9 +297,9 @@ function mediashareUpdateMoveAlbum($args)
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
-// =======================================================================
-// Add / edit media items
-// =======================================================================
+/**
+ * Add / edit media items
+ */
 function mediashare_edit_addmedia($args)
 {
     $albumId    = mediashareGetIntUrl('aid', $args, 1);
@@ -671,9 +671,9 @@ function mediashareMultiMoveMedia()
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
-// =======================================================================
-// Set main item
-// =======================================================================
+/**
+ * Set main item
+ */
 function mediashare_edit_setmainitem($args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 1);
@@ -691,9 +691,9 @@ function mediashare_edit_setmainitem($args)
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
-// =======================================================================
-// Arrange items
-// =======================================================================
+/**
+ * Arrange items
+ */
 function mediashare_edit_arrange($args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 1);
@@ -754,9 +754,9 @@ function mediashareArrangeAlbum($args)
     return pnRedirect(pnModURL('mediashare', 'edit', 'view', array('aid' => $albumId)));
 }
 
-// =======================================================================
-// Access edit
-// =======================================================================
+/**
+ * Access edit
+ */
 function mediashare_edit_access($args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 1);

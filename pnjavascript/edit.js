@@ -1,3 +1,5 @@
+// $Id$
+
 var currentImage   = null;  // Points to the selected image when only one image is selected
 var selectedImages = {};    // Contains set of selected images
 var imageCount     = 0;     // Number of selected images
@@ -22,94 +24,91 @@ mediashare.isLeftButton = function(b)
 }
 
 
-/* ======================================================================================================
-  Event shortcuts
-====================================================================================================== */
-
+/**
+ * Event shortcuts
+ */
 function Evt(evt) 
 {
   evt = evt ? evt : window.event; 
-	this.evt = evt; 
-	this.source = evt.target ? evt.target : evt.srcElement;
-	this.x = evt.pageX ? evt.pageX : evt.clientX;
-	this.y = evt.pageY ? evt.pageY : evt.clientY;
-	
-	
-	if (mediashare.isNetscape)
-	{
-	  this.button = e.which;
-	  /*
-	  if (this.button == 0)
-	   this.button = mediashare.button_left;
-	  */
-	}
-	else
-	  this.button = evt.button;
-	
-	//this.docX = this.x + document.body.scrollLeft - document.body.clientLeft;
-	//this.docY = this.y + document.body.scrollTop  - document.body.clientTop;
-	//alert("ST:" + document.body.scrollTop);
-	//alert("CT:"+document.body.clientTop);
+  this.evt = evt; 
+  this.source = evt.target ? evt.target : evt.srcElement;
+  this.x = evt.pageX ? evt.pageX : evt.clientX;
+  this.y = evt.pageY ? evt.pageY : evt.clientY;
+
+  if (mediashare.isNetscape)
+  {
+    this.button = e.which;
+    /*
+    if (this.button == 0)
+     this.button = mediashare.button_left;
+    */
+  } else {
+    this.button = evt.button;
+  }
+  
+  //this.docX = this.x + document.body.scrollLeft - document.body.clientLeft;
+  //this.docY = this.y + document.body.scrollTop  - document.body.clientTop;
+  //alert("ST:" + document.body.scrollTop);
+  //alert("CT:"+document.body.clientTop);
 }
 
 Evt.prototype.toString = function () 
 {
-	return "Evt [ x = " + this.x + ", y = " + this.y + " ]";
+  return "Evt [ x = " + this.x + ", y = " + this.y + " ]";
 };
 
 Evt.prototype.consume = function () 
 {
-	if (this.evt.stopPropagation) 
-	{
-		this.evt.stopPropagation();
-		this.evt.preventDefault();
-	} 
-	else if (this.evt.cancelBubble) 
-	{
-		this.evt.cancelBubble = true;
-		this.evt.returnValue  = false;
-	}
+  if (this.evt.stopPropagation) 
+  {
+    this.evt.stopPropagation();
+    this.evt.preventDefault();
+  } 
+  else if (this.evt.cancelBubble) 
+  {
+    this.evt.cancelBubble = true;
+    this.evt.returnValue  = false;
+  }
 };
 
 Evt.addEventListener = function (target,type,func,bubbles) 
 {
-	if (document.addEventListener) 
-	{
-		target.addEventListener(type,func,bubbles);
-	} 
-	else if (document.attachEvent) 
-	{
-		target.attachEvent("on"+type,func,bubbles);
-	} 
-	else 
-	{
-		target["on"+type] = func;
-	}
+  if (document.addEventListener) 
+  {
+    target.addEventListener(type,func,bubbles);
+  } 
+  else if (document.attachEvent) 
+  {
+    target.attachEvent("on"+type,func,bubbles);
+  } 
+  else 
+  {
+    target["on"+type] = func;
+  }
 };
 
 
 Evt.removeEventListener = function (target,type,func,bubbles) 
 {
-	if (document.removeEventListener) 
-	{
-		target.removeEventListener(type,func,bubbles);
-	} 
-	else if (document.detachEvent) 
-	{
-		target.detachEvent("on"+type,func,bubbles);
-	} 
-	else 
-	{
-		target["on"+type] = null;
-	}
+  if (document.removeEventListener) 
+  {
+    target.removeEventListener(type,func,bubbles);
+  } 
+  else if (document.detachEvent) 
+  {
+    target.detachEvent("on"+type,func,bubbles);
+  } 
+  else 
+  {
+    target["on"+type] = null;
+  }
 };
 
 
 
-// =======================================================================
-// Event handlers
-// =======================================================================
-
+/**
+ * Event handlers
+ */
 function toggleSelectImage(img)
 {
   if (img.className == "photoshare-selected")
@@ -231,7 +230,7 @@ function handleOnClickTarget(target, page)
     var imageID  = currentImage.id;
     var position = target.id.substr(6);
 
-    window.location = "index.php?module=photoshare&func=moveimage&iid=" + imageID + "&pos=" + position + "&page=" + page;
+    window.location = "index.php?module=mediashare&func=moveimage&iid=" + imageID + "&pos=" + position + "&page=" + page;
   }
   else
   {
@@ -279,10 +278,9 @@ function handleOnClickCommand(command, requireSelectedImages)
 }
 
 
-/*=============================================================================
-  Context dependent menus
-=============================================================================*/
-
+/**
+ * Context dependent menus
+ */
 var contextmenu =
 {
   album:
@@ -335,8 +333,9 @@ contextmenu.onClick = function(element, itemId, evt, menuId, context)
 }
 
 
-//-[ Listener methods for psmenu ]---------------------------------------------
-
+/**
+ * Listener methods for psmenu
+ */
 function addUrlParam(url, param, value)
 {
   return url.replace(/XXX/, value);
@@ -379,65 +378,64 @@ contextmenu.menuClosed = function(context)
 }
 
 
-/* ======================================================================================================
-  Dragging utilities
-====================================================================================================== */
+/**
+ * Dragging utilities
+ */
 mediashare.drag = {};
 
 mediashare.drag.disableTextSelection = function()
 {
-	// Ensure cursor movement with mouse down do not function as "select text".
-	
-	mediashare.oldOndrag = document.body.ondrag;
-	mediashare.oldOnselectstart = document.body.onselectstart;
-	
-	document.body.ondrag = function () { return false; };
-	document.body.onselectstart = function () { return false; };
+  // Ensure cursor movement with mouse down do not function as "select text".
+  
+  mediashare.oldOndrag = document.body.ondrag;
+  mediashare.oldOnselectstart = document.body.onselectstart;
+  
+  document.body.ondrag = function () { return false; };
+  document.body.onselectstart = function () { return false; };
 }
 
 
 mediashare.drag.enableTextSelection = function()
 {
- 	document.body.ondrag = mediashare.oldOndrag;
- 	document.body.onselectstart = mediashare.oldOnselectstart;
+   document.body.ondrag = mediashare.oldOndrag;
+   document.body.onselectstart = mediashare.oldOnselectstart;
 }
 
 
-// =======================================================================
-// Arranging items
-// =======================================================================
-
+/**
+ * Arranging items
+ */
 mediashare.drag.dragPress = function(evt)
 {
-	evt = new Evt(evt);
+  evt = new Evt(evt);
 
   if (!mediashare.isLeftButton(evt.button))
-	  return;
+    return;
 
   evt.consume();
 
-	mediashare.drag.startItem = evt.source;
+  mediashare.drag.startItem = evt.source;
 
-	Evt.addEventListener(document, "mousemove", mediashare.drag.dragMove, false);
-	Evt.addEventListener(document, "mouseup", mediashare.drag.dragRelease, false);
-	
-	mediashare.drag.disableTextSelection();
+  Evt.addEventListener(document, "mousemove", mediashare.drag.dragMove, false);
+  Evt.addEventListener(document, "mouseup", mediashare.drag.dragRelease, false);
+  
+  mediashare.drag.disableTextSelection();
 }
 
 
 mediashare.drag.dragMove = function(evt) 
 {
-	var evt = new Evt(evt);
+  var evt = new Evt(evt);
 
-  //mediashare.drag.startItem.style.position = 'absolute';
+    //mediashare.drag.startItem.style.position = 'absolute';
 
-	evt.consume();
+  evt.consume();
 }
 
 
 mediashare.drag.dragRelease = function(evt) 
 {
-	evt = new Evt(evt);
+  evt = new Evt(evt);
   var rowEnd = evt.source.parentNode.parentNode;
 
   if (rowEnd.className == "mr")
@@ -456,8 +454,8 @@ mediashare.drag.dragRelease = function(evt)
 
   mediashare.drag.enableTextSelection();
 
-	Evt.removeEventListener(document, "mousemove", mediashare.drag.dragMove, false);
- 	Evt.removeEventListener(document, "mouseup", mediashare.drag.dragRelease, false);
+  Evt.removeEventListener(document, "mousemove", mediashare.drag.dragMove, false);
+  Evt.removeEventListener(document, "mouseup", mediashare.drag.dragRelease, false);
 
   mediashare.drag.startItem.style.position = 'static';
 }

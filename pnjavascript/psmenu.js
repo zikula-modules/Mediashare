@@ -1,7 +1,8 @@
-/*=============================================================================
-  Some utility functions
-=============================================================================*/
+// $Id$
 
+/**
+ * Some utility functions
+ */
 function getPositionOfElement(element)
 {
   var pos = { top: 0, left: 0 };
@@ -36,10 +37,10 @@ function getPositionOfEvent(evt)
   return { left: 0, top: 0 };
 };
 
-/*=============================================================================
-  PS Menu navigation handling
-=============================================================================*/
 
+/**
+ * PS Menu navigation handling
+ */
 var psmenu =
 {
   closeDelay: 800,
@@ -48,8 +49,10 @@ var psmenu =
   currentListener: null
 };
 
-//-[ Open/close menu ]---------------------------------------------------------
 
+/**
+ * Open/close menu
+ */
 psmenu.openMenu = function(evt, listener, menuDivElement, pos)
 {
   if (psmenu.isOpen())
@@ -115,8 +118,10 @@ psmenu.isOpen = function()
   return psmenu.currentMenuDivElement != null;
 }
 
-//-[ Event handlers ]----------------------------------------------------------
 
+/**
+ * Event handlers
+ */
 psmenu.onMouseOutDiv = function(menuDivElement)
 {
   psmenu.delayedCloseMenu(menuDivElement);
@@ -156,8 +161,9 @@ psmenu.onClick = function(linkElement, index)
 }
 
 
-//-[ DOM navigation ]----------------------------------------------------------
-
+/**
+ * DOM navigation
+ */
 psmenu.getParentDivElement = function(rowElement)
 {
   var element = rowElement.parentNode;
@@ -166,4 +172,3 @@ psmenu.getParentDivElement = function(rowElement)
 
   return element;
 }
-

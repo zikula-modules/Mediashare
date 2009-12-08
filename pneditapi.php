@@ -1,14 +1,14 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Lind-Nielsen (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Lind-Nielsen (C)
+//
 
 require_once ("modules/mediashare/common-edit.php");
 
-// =======================================================================
-// Add/edit albums
-// =======================================================================
+/**
+ * Add/edit albums
+ */
 function mediashare_editapi_addAlbum(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -333,9 +333,9 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
     return true;
 }
 
-// =======================================================================
-// Move album
-// =======================================================================
+/**
+ * Move album
+ */
 function mediashare_editapi_moveAlbum(&$args)
 {
     // Check access
@@ -421,9 +421,9 @@ function mediashare_editapi_isChildAlbum(&$args)
     return $parentAlbum['nestedSetLeft'] < $album['nestedSetLeft'] && $parentAlbum['nestedSetRight'] > $album['nestedSetRight'];
 }
 
-// =======================================================================
-// Adding media items
-// =======================================================================
+/**
+ * Adding media items
+ */
 
 /**
  * addMediaItem
@@ -780,9 +780,9 @@ function mediashare_editapi_ensureMainAlbumId($args)
     return true;
 }
 
-// =======================================================================
-// Update media item
-// =======================================================================
+/**
+ * Update media item
+ */
 function mediashare_editapi_updateItem(&$args)
 {
     // Check access
@@ -1091,9 +1091,9 @@ function mediashare_editapi_copyMediaData($args)
     return true;
 }
 
-// =======================================================================
-// Delete media item
-// =======================================================================
+/**
+ * Delete media item
+ */
 function mediashare_editapi_deleteMediaItem(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -1189,9 +1189,9 @@ function mediashare_editapi_deleteMediaItem(&$args)
     return true;
 }
 
-// =======================================================================
-// Move media item
-// =======================================================================
+/**
+ * Move media item
+ */
 function mediashare_editapi_moveMediaItem(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -1237,9 +1237,9 @@ function mediashare_editapi_moveMediaItem(&$args)
     return true;
 }
 
-// =======================================================================
-// Main media item
-// =======================================================================
+/**
+ * Main media item
+ */
 function mediashare_editapi_setMainItem(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -1266,9 +1266,9 @@ function mediashare_editapi_setMainItem(&$args)
     return true;
 }
 
-// =======================================================================
-// Arrange items
-// =======================================================================
+/**
+ * Arrange items
+ */
 function mediashare_editapi_arrangeAlbum(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -1302,9 +1302,9 @@ function mediashare_editapi_arrangeAlbum(&$args)
     return true;
 }
 
-// =======================================================================
-// User info
-// =======================================================================
+/**
+ * User info
+ */
 function mediashare_editapi_getUserInfo(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -1344,9 +1344,9 @@ function mediashare_editapi_getUserInfo(&$args)
     return $user;
 }
 
-// =======================================================================
-// Keywords update
-// =======================================================================
+/**
+ * Keywords update
+ */
 function mediashare_editapi_updateKeywords(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -1397,9 +1397,9 @@ function mediashare_editapi_updateKeywords(&$args)
     return true;
 }
 
-// =======================================================================
-// Access
-// =======================================================================
+/**
+ * Access
+ */
 function mediashare_editapi_getAccessSettings(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -1595,9 +1595,9 @@ function mediashare_editapi_setDefaultAccess($args)
     return true;
 }
 
-// =======================================================================
-// External applications
-// =======================================================================
+/**
+ * External applications
+ */
 function mediashare_editapi_extappGetApps(&$args)
 {
     $apps = array();

@@ -1,6 +1,8 @@
+// $Id$
 
-/* Popup functions */
-
+/**
+ * Popup functions
+ */
 function popupMediaViewer(url)
 {
   var imageWindow = window.open(url,'image','toolbar=0,location=0,directories=0,menuBar=0,scrollbars=0,resizable=1');
@@ -13,8 +15,10 @@ function mediashareGreyboxOpen(width, height, url)
   GB_showCenter('blah', url, width, height);
 }
 
-/* Slideshow */
 
+/**
+ * Slideshow
+ */
 var slideshowTimerId = null;
 
 function onchangeSlideshowIndex(selectElement, url, delay)

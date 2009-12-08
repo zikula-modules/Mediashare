@@ -1,8 +1,11 @@
+<!--[* $Id$ *]-->
+
 <!--[if empty($mediaItem)]-->
 <!--[pnmodurl modname=mediashare func=slideshow aid=$album.id back=1 assign=slideshowUrl]-->
 <!--[else]-->
 <!--[pnmodurl modname=mediashare func=slideshow aid=$album.id mid=$mediaItem.id back=1 assign=slideshowUrl]-->
 <!--[/if]-->
+
 <div class="mediashare-browseicons">
     <!--[if $itemCount > 0]-->
     <a href="<!--[$slideshowUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/slideshow.gif" alt="" /><!--[gt text="Slideshow"]--></a>

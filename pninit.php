@@ -1,14 +1,14 @@
 <?php
 // $Id$
-// =======================================================================
+//
 // Mediashare by Jorn Lind-Nielsen (C) 2002.
-// =======================================================================
+//
 
 require_once ("modules/mediashare/common-edit.php");
 
-// -----------------------------------------------------------------------
-// Module initialization
-// -----------------------------------------------------------------------
+/**
+ * Module initialization
+ */
 function mediashare_init()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -162,9 +162,9 @@ function mediashareCreateMediashareUpdateNestedSetValues()
     return true;
 }
 
-// -----------------------------------------------------------------------
-// Module upgrade
-// -----------------------------------------------------------------------
+/**
+ * Module upgrade
+ */
 function mediashare_upgrade($oldVersion)
 {
     $ok = true;
@@ -304,9 +304,9 @@ function mediashare_upgrade_to_3_4_2()
     return true;
 }
 
-// -----------------------------------------------------------------------
-// Module delete
-// -----------------------------------------------------------------------
+/**
+ * Module delete
+ */
 function mediashare_delete()
 {
     $tables = array('albums',

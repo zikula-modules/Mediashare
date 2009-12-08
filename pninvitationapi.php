@@ -1,12 +1,12 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Lind-Nielsen (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Lind-Nielsen (C)
+//
 
-// =======================================================================
-// Invitations
-// =======================================================================
+/**
+ * Invitations
+ */
 function mediashare_invitationapi_sendInvitation(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');

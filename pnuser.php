@@ -1,14 +1,14 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Wildt (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Wildt (C)
+//
 
 require_once 'modules/mediashare/common.php';
 
-// =======================================================================
-// View album
-// =======================================================================
+/**
+ * View album
+ */
 function mediashare_user_main($args)
 {
     return mediashare_user_view($args);
@@ -122,9 +122,9 @@ function mediashare_user_browse($args)
     return $render->fetch("Frontend/$template/album.html");
 }
 
-// =======================================================================
-// View items in slideshow
-// =======================================================================
+/**
+ * View items in slideshow
+ */
 function mediashare_user_slideshow($args)
 {
     $albumId = mediashareGetIntUrl('aid', $args, 1);
@@ -238,9 +238,9 @@ function mediashare_user_slideshowcenter($args)
     return pnModFunc('mediashare', 'user', 'slideshow', array('center' => true));
 }
 
-// =======================================================================
-// View thumbnails list
-// =======================================================================
+/**
+ * View thumbnails list
+ */
 function mediashare_user_thumbnails($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
@@ -338,9 +338,9 @@ function mediashare_user_simplethumbnails($args)
     return $render->fetch("mediashare_user_{$template}.html");
 }
 
-// =======================================================================
-// Display single item
-// =======================================================================
+/**
+ * Display single item
+ */
 
 // Display fullscreen item - including <html> ... </html>
 function mediashare_user_display($args)
@@ -431,9 +431,9 @@ function mediashare_user_displaygb($args)
     return true;
 }
 
-// =======================================================================
-// View latest items
-// =======================================================================
+/**
+ * View latest items
+ */
 function mediashare_user_latest($args)
 {
     if (!($latestMediaItems = pnModAPIFunc('mediashare', 'user', 'getLatestMediaItems'))) {
@@ -469,9 +469,9 @@ function mediashare_user_latest($args)
     return $render->fetch('mediashare_user_latest.html');
 }
 
-// =======================================================================
-// Keywords
-// =======================================================================
+/**
+ * Keywords
+ */
 function mediashare_user_keys($args)
 {
     $keyword = mediashareGetStringUrl('key', $args);
@@ -489,9 +489,9 @@ function mediashare_user_keys($args)
     return $render->fetch('mediashare_user_keys.html');
 }
 
-// =======================================================================
-// List
-// =======================================================================
+/**
+ * List
+ */
 function mediashare_user_list($args)
 {
     $keyword   = mediashareGetStringUrl('key', $args);
@@ -598,9 +598,9 @@ function mediashare_user_albumxmllist($args)
     return true;
 }
 
-// =======================================================================
-// Ext. app. help
-// =======================================================================
+/**
+ * Ext. app. help
+ */
 function mediashare_user_extapphelp($args)
 {
     if (!($settings = pnModAPIFunc('mediashare', 'user', 'getSettings'))) {

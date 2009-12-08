@@ -1,8 +1,8 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Wildt (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Wildt (C)
+//
 
 /**
  * This function is called internally by the core whenever the module is

@@ -1,8 +1,8 @@
 <?php
 // $Id$
-// =======================================================================
-// Mediashare by Jorn Lind-Nielsen (C) 2005.
-// =======================================================================
+//
+// Mediashare by Jorn Lind-Nielsen (C)
+//
 
 require_once ("modules/mediashare/common-edit.php");
 
@@ -28,9 +28,9 @@ function mediashare_adminapi_getlinks()
     return $links;
 }
 
-// =======================================================================
-// Scan for all media
-// =======================================================================
+/**
+ * Scan for all media
+ */
 function mediashare_adminapi_scanAllPlugins($args)
 {
     // Force load - it is used during pninit
@@ -46,9 +46,9 @@ function mediashare_adminapi_scanAllPlugins($args)
     return pnModAPIFunc('mediashare', 'sources', 'scanSources');
 }
 
-// =======================================================================
-// Set plugins
-// =======================================================================
+/**
+ * Set plugins
+ */
 function mediashare_adminapi_setTemplateGlobally($args)
 {
     $new = array('template' => DataUtil::formatForStore($args['template']));
