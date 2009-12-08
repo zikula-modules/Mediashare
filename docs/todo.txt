@@ -22,8 +22,11 @@
 
   FIX OR DEPRECATE THE USE OF
 
+    pnDBGetConn();
+    // FIXME in pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
+    createdDateRaw modifiedDateRaw
+    check any is_null on mainMediaItem, it will not work because it's 0 now
     Order the images in the styles dir, etc
-    list ($dbconn) = pnDBGetConn();
     global $vars
     Rework the random block
     FIXME notes

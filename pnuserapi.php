@@ -136,81 +136,28 @@ function mediashare_userapi_getAlbumData($args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Argument check
-    if (!isset($args['albumId'])) {
+    if (!isset($args['albumId']) || !is_integer($args['albumId'])) {
         return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumData'), $dom));
     }
 
-    $enableEscape = (isset($args['enableEscape']) ? $args['enableEscape'] : true);
-
-    $albumId        = (int)$args['albumId'];
+    // FIXME unused params
+    $enableEscape   = isset($args['enableEscape']) ? $args['enableEscape'] : true;
     $countSubAlbums = isset($args['countSubAlbums']) ? $args['countSubAlbums'] : false;
-    $ownerId        = (int)pnUserGetVar('uid');
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $album = DBUtil::selectObjectByID('mediashare_albums', $args['albumId'], 'id');
 
-    $albumsTable  = $pntable['mediashare_albums'];
-    $albumsColumn = $pntable['mediashare_albums_column'];
-
-    $sql = "SELECT $albumsColumn[id],
-                   $albumsColumn[ownerId],
-                   UNIX_TIMESTAMP($albumsColumn[createdDate]),
-                   UNIX_TIMESTAMP($albumsColumn[modifiedDate]),
-                   $albumsColumn[title],
-                   $albumsColumn[summary],
-                   $albumsColumn[description],
-                   $albumsColumn[keywords],
-                   $albumsColumn[template],
-                   $albumsColumn[parentAlbumId],
-                   $albumsColumn[viewKey],
-                   $albumsColumn[mainMediaId],
-                   $albumsColumn[thumbnailSize],
-                   $albumsColumn[nestedSetLeft],
-                   $albumsColumn[nestedSetRight],
-                   $albumsColumn[nestedSetLevel],
-                   $albumsColumn[extappURL],
-                   $albumsColumn[extappData]
-              FROM $albumsTable
-             WHERE $albumsColumn[id] = $albumId";
-
-    $result = $dbconn->execute($sql);
-
-    $result = DBUtil::executeSQL($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($album === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getAlbumData', 'Could not retrieve the album information.'), $dom));
     }
-    if ($result->EOF) {
-        return LogUtil::registerError(__('Unknown album ID (%s).', $albumId, $dom));
+    if (!$album) {
+        return LogUtil::registerError(__('Unknown album ID (%s).', $args['albumId'], $dom));
     }
 
-    $album = array(
-        'id'              => $result->fields[0],
-        'ownerId'         => $result->fields[1],
-        'createdDate'     => $result->fields[2],
-        'modifiedDate'    => $result->fields[3],
-        'createdDateRaw'  => $result->fields[2],
-        'modifiedDateRaw' => $result->fields[3],
-        'title'           => $result->fields[4],
-        'summary'         => $result->fields[5],
-        'description'     => $result->fields[6],
-        'keywords'        => $result->fields[7],
-        'template'        => $result->fields[8],
-        'parentAlbumId'   => $result->fields[9],
-        'viewKey'         => $result->fields[10],
-        'mainMediaId'     => ($result->fields[11] == null ? 0 : $result->fields[11]),
-        'thumbnailSize'   => $result->fields[12],
-        'nestedSetLeft'   => (int)$result->fields[13],
-        'nestedSetRight'  => (int)$result->fields[14],
-        'nestedSetLevel'  => (int)$result->fields[15],
-        'extappURL'       => $result->fields[16],
-        'extappData'      => unserialize($result->fields[17]),
-        'imageCount'      => 0 /* FIXME */
-    );
+     // select post process
+    $album['extappData'] = unserialize($album['extappData']);
+    $album['imageCount'] = 0; // FIXME
 
-    $result->Close();
-
-    if ($album['mainMediaId'] > 0) {
+    if ((int)$album['mainMediaId'] > 0) {
         $album['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
     } else {
         $album['mainMediaItem'] = null;
@@ -220,7 +167,7 @@ function mediashare_userapi_getAlbumData($args)
     $album['allowMediaEdit'] = true;
 
     if ($enableEscape) {
-        mediashareEscapeAlbum($album, $albumId);
+        mediashareEscapeAlbum($album, $args['albumId']);
     }
 
     return $album;
@@ -251,17 +198,16 @@ function mediashare_userapi_getSubAlbumsData($args)
         return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getSubAlbumsData'), $dom));
     }
 
-    $albumId        = (int)$args['albumId'];
-    $ownerId        = (int)pnUserGetVar('uid');
-    $recursively    = isset($args['recursively']) ? (bool)$args['recursively'] : false;
-    $access         = isset($args['access']) ? (int)$args['access'] : 0xFF;
-    $excludeAlbumId = isset($args['excludeAlbumId']) ? (int)$args['excludeAlbumId'] : null;
-    $onlyMine       = isset($args['onlyMine']) ? $args['onlyMine'] : false;
+    $albumId         = (int)$args['albumId'];
+    $startnum        = isset($args['startnum']) ? (int)$args['startnum'] : -1;
+    $numitems        = isset($args['numitems']) ? (int)$args['numitems'] : -1;
+    $recursively     = isset($args['recursively']) ? (bool)$args['recursively'] : false;
+    $access          = isset($args['access']) ? (int)$args['access'] : 0xFF;
+    $excludeAlbumId  = isset($args['excludeAlbumId']) ? (int)$args['excludeAlbumId'] : null;
+    $onlyMine        = isset($args['onlyMine']) ? $args['onlyMine'] : false;
+    $includeMainItem = isset($args['includeMainItem']) ? (bool)$args['includeMainItem'] : true; // FIXME rework this to default false
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
-    $albumsTable  = $pntable['mediashare_albums'];
+    $pntable      = &pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
 
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
@@ -285,82 +231,36 @@ function mediashare_userapi_getSubAlbumsData($args)
 
     $mineSql = '';
     if ($onlyMine) {
-        $mineSql = " AND album.$albumsColumn[ownerId] = $ownerId";
+        $uid     = (int)pnUserGetVar('uid');
+        $mineSql = " AND album.$albumsColumn[ownerId] = '$uid'";
     }
 
-    $sql = "SELECT album.$albumsColumn[id],
-                   album.$albumsColumn[ownerId],
-                   UNIX_TIMESTAMP(album.$albumsColumn[createdDate]),
-                   UNIX_TIMESTAMP(album.$albumsColumn[modifiedDate]),
-                   album.$albumsColumn[title],
-                   album.$albumsColumn[summary],
-                   album.$albumsColumn[description],
-                   album.$albumsColumn[keywords],
-                   album.$albumsColumn[template],
-                   album.$albumsColumn[parentAlbumId],
-                   album.$albumsColumn[viewKey],
-                   album.$albumsColumn[mainMediaId],
-                   album.$albumsColumn[thumbnailSize],
-                   album.$albumsColumn[nestedSetLeft],
-                   album.$albumsColumn[nestedSetRight],
-                   album.$albumsColumn[nestedSetLevel],
-                   album.$albumsColumn[extappURL],
-                   album.$albumsColumn[extappData]
-          FROM $albumsTable album
-          WHERE ($accessibleAlbumSql) $excludeRestriction $mineSql";
-
+    $where = "($accessibleAlbumSql) $excludeRestriction $mineSql";
     if ($recursively) {
-        $sql .= "     AND 1=1
-                 ORDER BY album.$albumsColumn[nestedSetLeft], album.$albumsColumn[title]";
+        $orderby = "$albumsColumn[nestedSetLeft], $albumsColumn[title]";
     } else {
-        $sql .= "     AND album.$albumsColumn[parentAlbumId] = $albumId
-                 ORDER BY album.$albumsColumn[title]";
+        $where  .= " AND $albumsColumn[parentAlbumId] = '$albumId'";
+        $orderby = $albumsColumn['title'];
     }
 
-    $result = $dbconn->execute($sql);
+    $subalbums = DBUtil::selectObjectArray('mediashare_albums', $where, $orderby, $startnum, $numitems, 'id');
 
-    if ($dbconn->errorNo() != 0) {
+    if ($subalbums === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getSubAlbumsData', 'Could not retrieve the sub albums information.'), $dom));
     }
 
-    $albums = array();
-    for (; !$result->EOF; $result->MoveNext()) {
-        $album = array(
-            'id' => $result->fields[0],
-            'ownerId' => $result->fields[1],
-            'createdDate' => $result->fields[2],
-            'modifiedDate' => $result->fields[3],
-            'title' => $result->fields[4],
-            'summary' => $result->fields[5],
-            'description' => $result->fields[6],
-            'keywords' => $result->fields[7],
-            'template' => $result->fields[8],
-            'parentAlbumId' => $result->fields[9],
-            'viewKey' => $result->fields[10],
-            'mainMediaId' => ($result->fields[11] == null ? -1 : $result->fields[11]),
-            'thumbnailSize' => $result->fields[12],
-            'nestedSetLeft' => (int)$result->fields[13],
-            'nestedSetRight' => (int)$result->fields[14],
-            'nestedSetLevel' => (int)$result->fields[15],
-            'extappURL' => $result->fields[16],
-            'extappData' => unserialize($result->fields[17]));
-
-        // FIXME: always fetch all main items?
-        if ($album['mainMediaId'] > 0) {
-            $album['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
-        } else {
-            $album['mainMediaItem'] = null;
+    foreach (array_keys($subalbums) as $k)
+    {
+        if ($includeMainItem && (int)$subalbums[$k]['mainMediaId'] > 0) {
+            $subalbums[$k]['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $subalbums[$k]['mainMediaId']));
         }
-        mediashareAddKeywords($album);
 
-        mediashareEscapeAlbum($album, $albumId);
+        mediashareAddKeywords($subalbums[$k]);
 
-        $albums[] = $album;
+        mediashareEscapeAlbum($subalbums[$k], $albumId);
     }
 
-    $result->Close();
-
-    return $albums;
+    return $subalbums;
 }
 
 function mediashare_userapi_getAlbumBreadcrumb($args)

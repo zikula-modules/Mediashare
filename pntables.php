@@ -50,7 +50,7 @@ function mediashare_pntables()
         'parentAlbumId'  => 'I',
         'access'         => 'I1 NOTNULL DEFAULT 0',
         'viewKey'        => 'C(32) NOTNULL',
-        'mainMediaId'    => 'T',
+        'mainMediaId'    => 'I NOTNULL DEFAULT 0',
         'thumbnailSize'  => 'I NOTNULL',
         'nestedSetLeft'  => 'I NOTNULL DEFAULT 0',
         'nestedSetRight' => 'I NOTNULL DEFAULT 0',
