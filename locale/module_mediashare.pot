@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zikula component\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-08 12:36-0500\n"
+"POT-Creation-Date: 2009-12-08 05:33-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,139 +16,459 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: pnadmin.php:22 pnadmin.php:104 pnadmin.php:154 pnadmin.php:176
-#: pnuserapi.php:146 pnuserapi.php:253 pnuserapi.php:413 pnuserapi.php:503
-#: pnuserapi.php:552 pnuserapi.php:688 pnsource_zip.php:145
-#: pnsource_zip.php:252 pnuser.php:42 pnuser.php:140 pnuser.php:262
-#: pnuser.php:322 pnuser.php:386 pnuser.php:423 pnuser.php:457
-#: pnsourcesapi.php:44 pneditapi.php:20 pneditapi.php:181 pneditapi.php:243
-#: pneditapi.php:367 pneditapi.php:394 pneditapi.php:799 pneditapi.php:838
-#: pnmediahandlerapi.php:140 pnsource_browser.php:61 pnsource_browser.php:163
-#: pntemplates/pnform/function.mediashareitemselector.php:203
-#: pntemplates/pnform/function.mediashareitemselector.php:231 pnimport.php:16
-#: pnimport.php:34 pnedit.php:27 pnedit.php:107 pnedit.php:181 pnedit.php:213
-#: pnedit.php:248 pnedit.php:278 pnedit.php:316 pnedit.php:381 pnedit.php:466
-#: pnedit.php:496 pnedit.php:537 pnedit.php:600 pnedit.php:658 pnedit.php:677
-#: pnedit.php:727 pnedit.php:744 pnedit.php:796 pnedit.php:821 pnedit.php:847
-#: pnedit.php:928 pninvitation.php:31 pninvitation.php:114
-#: pninvitation.php:160 pninvitation.php:189
-msgid "You do not have access to this feature"
+#: pnsource_browserapi.php:12
+msgid "Browser upload"
 msgstr ""
 
-#: pnuserapi.php:192 pnuserapi.php:193 pnuserapi.php:330 pnuserapi.php:331
-#: pnuserapi.php:458 pnuserapi.php:459 pnuserapi.php:616 pnuserapi.php:617
-#: pnuserapi.php:801 pnuserapi.php:802 pnuserapi.php:1478 pnuserapi.php:1479
-msgid "%B %Y"
+#: pnsource_browserapi.php:20 pneditapi.php:446 pneditapi.php:529
+#: pneditapi.php:750 pneditapi.php:753 pneditapi.php:947
+#: pnsource_zipapi.php:20
+#: pntemplates/plugins/function.mediashare_breadcrumb.php:9
+#: pntemplates/plugins/function.elfisk_button.php:9
+#: pntemplates/plugins/function.mediashare_username.php:9
+#: pntemplates/plugins/function.elfisk_setInitialFocus.php:9
+#: pntemplates/plugins/function.mediashare_uservar.php:9
+#: pntemplates/plugins/function.mediashare_uservar.php:13
+#: pntemplates/plugins/function.mediashare_itemSelector.php:9
+#: pntemplates/plugins/function.mediashare_rss.php:9
+#: pntemplates/plugins/function.mediashare_rss.php:14
+#: pntemplates/plugins/function.mediashare_albumSelector.php:9
+#: pnuserapi.php:140 pnuserapi.php:249 pnuserapi.php:368 pnuserapi.php:508
+#: pnuserapi.php:556 pnuserapi.php:672 pnuserapi.php:698
+#, php-format
+msgid "Missing [%1$s] in '%2$s'"
 msgstr ""
 
-#: pnsource_zip.php:139 pnsource_zip.php:240 pnsource_browser.php:55
-#: pnsource_browser.php:151 pnedit.php:142 pnedit.php:206 pnedit.php:271
-#: pnedit.php:488 pnedit.php:576 pnedit.php:639 pnedit.php:714 pnedit.php:783
-#: pnedit.php:895 pnedit.php:973
-msgid "Unknown authentication key: you cannot submit the same form twice."
+#: pnsource_browserapi.php:35 pneditapi.php:884 pneditapi.php:1039
+#, php-format
+msgid "Unable to create a temporary file in '%s'"
 msgstr ""
 
-#: pnsource_zip.php:221 pnsource_browser.php:131
-msgid "No media items"
+#: pnsource_browserapi.php:35 pnsource_browserapi.php:41 pneditapi.php:884
+#: pneditapi.php:890
+msgid "(uploading image)"
 msgstr ""
 
-#: pnuser.php:576
-msgid "Items from %user%'s album '%album%'"
+#: pnsource_browserapi.php:41 pneditapi.php:890
+#, php-format
+msgid "Unable to move uploaded file from '%1$s' to '%2$s'"
 msgstr ""
 
-#: pnuser.php:582
-msgid "All items"
+#: pnsource_browserapi.php:46 pneditapi.php:895 pneditapi.php:1087
+#: pnvfs_fsdirectapi.php:26 pnvfs_fsdirectapi.php:46
+#, php-format
+msgid "Unable to copy the file from '%1$s' to '%2$s'"
 msgstr ""
 
-#: pnversion.php:8 pntemplates/mediashare_import_photoshare.html:7
-#: pntemplates/mediashare_edit_arrange.html:3
-#: pntemplates/mediashare_admin_header.html:6
-#: pntemplates/mediashare_admin_header.html:11
-#: pntemplates/mediashare_user_latest.html:4
-#: pntemplates/mediashare_search_result.html:2
-#: pntemplates/mediashare_edit_view.html:7
-#: pntemplates/mediashare_import_main.html:7
-msgid "Mediashare"
+#: pnsource_browserapi.php:46 pneditapi.php:895
+msgid "(adding image)"
 msgstr ""
 
-#. ! module url should be lowercase without spaces and different to displayname
-#: pnversion.php:10
-msgid "mediashare"
+#: pnedit.php:27 pnedit.php:716
+msgid "You must be logged in to use this feature"
 msgstr ""
 
-#: pnversion.php:11
-msgid "Media sharing and gallery"
+#: pnedit.php:50 pnedit.php:724 pnuser.php:148 pnuser.php:261 pnuser.php:313
+msgid "Unknown album."
 msgstr ""
 
-#: pneditapi.php:500 pneditapi.php:906
+#: pnedit.php:261
+msgid "Cannot move top album."
+msgstr ""
+
+#: pnedit.php:325
+msgid ""
+"No media sources found. You need to go to the admin panel and perform a scan "
+"for media sources."
+msgstr ""
+
+#: pncontenttypesapi/mediaitem.php:26
+msgid "Mediashare item"
+msgstr ""
+
+#: pncontenttypesapi/mediaitem.php:32
+msgid "Display a single Mediashare item with link to album."
+msgstr ""
+
+#: pncontenttypesapi/mediaitem.php:66
+msgid "No media item selected"
+msgstr ""
+
+#: pncontenttypesapi/album.php:26
+msgid "Mediashare album thumbnails"
+msgstr ""
+
+#: pncontenttypesapi/album.php:32
+msgid "Insert a list of thumbnails from any Mediashare album."
+msgstr ""
+
+#: pncontenttypesapi/album.php:59
+#, php-format
+msgid "Mediashare album: %s"
+msgstr ""
+
+#: pncontenttypesapi/album.php:74
+msgid "Default"
+msgstr ""
+
+#: pncontenttypesapi/album.php:76
+msgid "Filmstrip"
+msgstr ""
+
+#: pneditapi.php:73 pneditapi.php:111 pneditapi.php:139 pneditapi.php:161
+#: pneditapi.php:212 pneditapi.php:283 pneditapi.php:306 pneditapi.php:328
+#: pneditapi.php:398 pneditapi.php:671 pneditapi.php:707 pneditapi.php:730
+#: pneditapi.php:777 pneditapi.php:812 pneditapi.php:1023 pneditapi.php:1147
+#: pneditapi.php:1161 pneditapi.php:1179 pneditapi.php:1217 pneditapi.php:1233
+#: pneditapi.php:1263 pneditapi.php:1298 pneditapi.php:1331 pneditapi.php:1372
+#: pneditapi.php:1392 pneditapi.php:1454 pneditapi.php:1511 pneditapi.php:1532
+#: pneditapi.php:1556 accessapi.php:67 accessapi.php:119 accessapi.php:193
+#: pnadminapi.php:57 common.php:164 pninvitationapi.php:91
+#: pninvitationapi.php:191 pninvitationapi.php:245 pninvitationapi.php:274
+#: pninvitationapi.php:311 pninvitationapi.php:364 pninvitationapi.php:398
+#: pninvitationapi.php:460 pnmediahandlerapi.php:16 pnmediahandlerapi.php:45
+#: pnmediahandlerapi.php:97 pnmediahandlerapi.php:140
+#: pnmediahandlerapi.php:207 pnsourcesapi.php:25 pnsourcesapi.php:52
+#: pnsourcesapi.php:102 pnvfs_dbapi.php:42 pnvfs_dbapi.php:66
+#: pnvfs_dbapi.php:94 pnvfs_dbapi.php:156 pnuserapi.php:179 pnuserapi.php:321
+#: pnuserapi.php:390 pnuserapi.php:455 pnuserapi.php:528 pnuserapi.php:613
+#: pnuserapi.php:806 pnuserapi.php:904 pnuserapi.php:926 pnuserapi.php:941
+#: pnuserapi.php:1046 pnuserapi.php:1084 pnuserapi.php:1153 pnuserapi.php:1173
+#: pnuserapi.php:1262 pnuserapi.php:1484 pnuserapi.php:1620 pnuserapi.php:1630
+#: pnuserapi.php:1701
+#, php-format
+msgid "Error in %1$s: %2$s."
+msgstr ""
+
+#: pneditapi.php:238
+msgid "You cannot delete the top album"
+msgstr ""
+
+#: pneditapi.php:352
+msgid "Cannot move top album"
+msgstr ""
+
+#: pneditapi.php:356
+msgid "Cannot move album to self"
+msgstr ""
+
+#: pneditapi.php:360
+msgid "Cannot move album outsite root album"
+msgstr ""
+
+#: pneditapi.php:382
+msgid "Cannot move album below self"
+msgstr ""
+
+#: pneditapi.php:471 pneditapi.php:855
 msgid "Media file too big"
 msgstr ""
 
-#: pneditapi.php:504 pneditapi.php:909
+#: pneditapi.php:475 pneditapi.php:858
 msgid "Media file too big - total quota would be exceeded"
 msgstr ""
 
-#: pneditapi.php:646
+#: pneditapi.php:497 pneditapi.php:909
+#, php-format
+msgid "Failed to create the thumbnail file in '%s'."
+msgstr ""
+
+#: pneditapi.php:502 pneditapi.php:915
+#, php-format
+msgid "Failed to create the preview file in '%s'."
+msgstr ""
+
+#: pneditapi.php:607
 msgid "Media item was added"
 msgstr ""
 
-#: pneditapi.php:1546 pneditapi.php:1619
+#: pneditapi.php:671 pneditapi.php:707
+msgid "Could not insert the media item."
+msgstr ""
+
+#: pneditapi.php:903
+msgid "New media type does not match the existing."
+msgstr ""
+
+#: pneditapi.php:992 pneditapi.php:995 pneditapi.php:998
+msgid "There was a problem updating the media storage."
+msgstr ""
+
+#: pneditapi.php:1039
+msgid "(regenerating image)"
+msgstr ""
+
+#: pneditapi.php:1079
+#, php-format
+msgid "Failed to open '%s' for write."
+msgstr ""
+
+#: pneditapi.php:1123 pneditapi.php:1127 pneditapi.php:1131
+msgid "Failed to delete media item."
+msgstr ""
+
+#: pneditapi.php:1123
+#, php-format
+msgid "%1$s's thumbnail (%2$s)."
+msgstr ""
+
+#: pneditapi.php:1127
+#, php-format
+msgid "%1$s's preview (%2$s)."
+msgstr ""
+
+#: pneditapi.php:1131
+#, php-format
+msgid "%1$s's original (%2$s)."
+msgstr ""
+
+#: pneditapi.php:1445 pneditapi.php:1477 pneditapi.php:1567
 msgid "Everybody"
 msgstr ""
 
-#: pneditapi.php:1689
+#: pneditapi.php:1641
 #, php-format
 msgid "Unrecognized URL %s"
 msgstr ""
 
-#: pnextapp_picasaapi.php:74 pnextapp_picasaapi.php:78
-#: pnextapp_picasaapi.php:79 pnextapp_picasaapi.php:80
-#: pnextapp_smugmugapi.php:63 pnextapp_smugmugapi.php:68
-#: pnextapp_smugmugapi.php:69 pnextapp_flickrapi.php:83
-#: pnextapp_flickrapi.php:88 pnextapp_flickrapi.php:89
-msgid "ISO-8859-1"
+#: pnversion.php:8 pntemplates/mediashare_user_latest.html:4
+#: pntemplates/mediashare_admin_header.html:7
+#: pntemplates/mediashare_admin_header.html:12
+#: pntemplates/mediashare_edit_arrange.html:4
+#: pntemplates/mediashare_search_result.html:3
+msgid "Mediashare"
 msgstr ""
 
-#: pnsearchapi.php:51
-msgid "Multimedia file in album: "
+#: pnversion.php:9
+msgid "Media sharing and gallery module"
 msgstr ""
 
-#: pnsearchapi.php:76
-msgid "Error! Could not load items."
+#. ! module url should be lowercase without spaces and different to displayname
+#: pnversion.php:11
+msgid "mediashare"
 msgstr ""
 
-#: pninvitationapi.php:41 pninvitationapi.php:135
+#: pnblocks/random.php:24
+msgid "Mediashare random item"
+msgstr ""
+
+#: pnblocks/random.php:25
+msgid "Display a Mediashare random item"
+msgstr ""
+
+#: pnblocks/random.php:92
+msgid "Unknown"
+msgstr ""
+
+#: pnadminapi.php:21 pntemplates/mediashare_browseicons.html:14
+#: pntemplates/mediashare_editmenu.html:5
+msgid "Browse"
+msgstr ""
+
+#: pnadminapi.php:22 pntemplates/mediashare_admin_plugins.html:4
+msgid "Plugins"
+msgstr ""
+
+#: pnadminapi.php:23
+msgid "Import"
+msgstr ""
+
+#: pnadminapi.php:24 pntemplates/mediashare_admin_recalc.html:9
+msgid "Regenerate"
+msgstr ""
+
+#: pnadminapi.php:25
+msgid "Settings"
+msgstr ""
+
+#: pnmedia_flashapi.php:12
+msgid "Mediashare Flash Handler"
+msgstr ""
+
+#: pnmedia_quicktimeapi.php:12
+msgid "Mediashare Quicktime Handler"
+msgstr ""
+
+#: pninvitation.php:18 pninvitation.php:145
+msgid "Unknown invitation."
+msgstr ""
+
+#: pninvitation.php:24 pninvitation.php:100 pninvitation.php:140
+#, php-format
+msgid "Missing URL parameter (%s)."
+msgstr ""
+
+#: pninvitation.php:26
+msgid "Hi! See my new pictures"
+msgstr ""
+
+#: pnuser.php:517
+#, php-format
+msgid "Items tagged with \"%s\""
+msgstr ""
+
+#: pnuser.php:520
+#, php-format
+msgid "Items by %s"
+msgstr ""
+
+#: pnuser.php:527
+#, php-format
+msgid "Items from %1$s's album '%2$s'"
+msgstr ""
+
+#: pnuser.php:533
+msgid "All items"
+msgstr ""
+
+#: pnmedia_realapi.php:12
+msgid "Mediashare Real Player Handler"
+msgstr ""
+
+#: pnmedia_realapi.php:98
+msgid "Loading Real Player components..."
+msgstr ""
+
+#: pnsource_zip.php:57
+#, php-format
+msgid "Could not open the ZIP: %s"
+msgstr ""
+
+#: pnsource_zip.php:181
+msgid "Could not open the ZIP."
+msgstr ""
+
+#: pnsource_zip.php:218 pnsource_browser.php:124
+msgid "No media items"
+msgstr ""
+
+#: pnmedia_pdfapi.php:12
+msgid "Mediashare PDF Handler"
+msgstr ""
+
+#: pnmedia_pdfapi.php:89
+msgid "PDF Link"
+msgstr ""
+
+#: pnsource_zipapi.php:12
+msgid "Zip upload"
+msgstr ""
+
+#: pninvitationapi.php:38 pninvitationapi.php:141
 msgid ""
 "<p>Just follow the link below (click on it or copy it to your webbrowser)</"
 "p> <p><a href=\"%url%\">%url%</a></p>"
 msgstr ""
 
-#: pncontenttypesapi/album.php:11
-msgid "Mediashare album thumbnails"
+#: pninvitationapi.php:49
+msgid "Some error occured while trying to send invitation."
 msgstr ""
 
-#: pncontenttypesapi/album.php:12
-msgid "Insert a list of thumbnails from any Mediashare album."
+#: pninvitationapi.php:152
+msgid "Some error occured sending the invitation."
 msgstr ""
 
-#: pncontenttypesapi/album.php:51
-msgid "Default"
+#: pninvitationapi.php:414
+msgid "Unknown or expired invitation ID."
 msgstr ""
 
-#: pncontenttypesapi/album.php:52
-msgid "Filmstrip"
+#: pnextapp_picasaapi.php:57
+msgid "The supplied URL resulted in an error."
 msgstr ""
 
-#: pncontenttypesapi/mediaitem.php:20
-msgid "Mediashare item"
+#: pninit.php:54
+msgid "Top Album"
 msgstr ""
 
-#: pncontenttypesapi/mediaitem.php:25
-msgid "Display a single Mediashare item with link to album."
+#: pninit.php:55
+msgid ""
+"This is the top album (of which there can be only one). You can edit this "
+"album to change the title and other attributes of it."
 msgstr ""
 
-#: pncontenttypesapi/mediaitem.php:48
-msgid "No media item selected"
+#: pnsearchapi.php:17
+msgid "Media files"
+msgstr ""
+
+#: pnsearchapi.php:57
+msgid "Multimedia file in album: "
+msgstr ""
+
+#: pnsearchapi.php:82
+msgid "Error! Could not load items."
+msgstr ""
+
+#: pnmediahandlerapi.php:95
+#, php-format
+msgid "Unable to locate media handler for '%1$s' (%2$s)"
+msgstr ""
+
+#: pnmediahandlerapi.php:140 pnsourcesapi.php:52
+#, php-format
+msgid "Could not clear the '%s' table."
+msgstr ""
+
+#: pnmedia_extappapi.php:12
+msgid "Mediashare External Application Handler"
+msgstr ""
+
+#: pnmedia_wmpapi.php:12
+msgid "Mediashare Windows Media Player Handler"
+msgstr ""
+
+#: pnmedia_wmpapi.php:94
+msgid "Loading Microsoft Windows Media Player components..."
+msgstr ""
+
+#: pnvfs_dbapi.php:160
+msgid "Unknown media item."
+msgstr ""
+
+#: pntemplates/plugins/function.mediashare_userinfo.php:22
+msgid "Of"
+msgstr ""
+
+#: pntemplates/plugins/function.mediashare_mediaItem.php:25
+#: pntemplates/Frontend/Standard/slideshow.html:32
+msgid "No media item found in this album"
+msgstr ""
+
+#: pntemplates/pnform/function.mediashareitemselector.php:118
+#: pntemplates/pnform/function.mediashareitemselector.php:157
+#: pntemplates/mediashare_edit_movealbum.html:11
+#: pntemplates/mediashare_user_list.html:29
+#: pntemplates/mediashare_external_finditem.html:42
+msgid "Album"
+msgstr ""
+
+#: pntemplates/pnform/function.mediashareitemselector.php:136
+#: pntemplates/mediashare_external_finditem.html:50
+msgid "Media item"
+msgstr ""
+
+#: pntemplates/pnform/function.mediashareitemselector.php:148
+#: pntemplates/pnform/function.mediashareitemselector.php:151
+#: pntemplates/mediashare_source_browser_view.html:10
+#: pntemplates/mediashare_source_zip_view.html:10
+#: pntemplates/mediashare_external_finditem.html:74
+msgid "Upload"
+msgstr ""
+
+#: pntemplates/pnform/function.mediashareitemselector.php:150
+msgid "Select an item or upload a file directly"
+msgstr ""
+
+#: pntemplates/pnform/function.mediashareitemselector.php:156
+msgid "Optional name of a new album to place the upload in"
+msgstr ""
+
+#: pntemplates/pnform/function.mediashareitemselector.php:196
+#: pntemplates/pnform/function.mediashareitemselector.php:221
+msgid "You do not have access to this feature"
+msgstr ""
+
+#: pntemplates/pnform/function.mediashareitemselector.php:233
+msgid "A selection here is mandatory."
 msgstr ""
 
 #: common-edit.php:16
@@ -171,347 +491,76 @@ msgstr ""
 msgid "Unknown upload error"
 msgstr ""
 
-#: pnadminapi.php:22 pntemplates/mediashare_editmenu.html:2
-#: pntemplates/mediashare_browseicons.html:11
-msgid "Browse"
+#: pnuserapi.php:182
+#, php-format
+msgid "Unknown album ID (%s)."
 msgstr ""
 
-#: pnadminapi.php:23
-msgid "General"
+#: pnuserapi.php:188 pnuserapi.php:189 pnuserapi.php:329 pnuserapi.php:330
+#: pnuserapi.php:463 pnuserapi.php:464 pnuserapi.php:622 pnuserapi.php:623
+#: pnuserapi.php:815 pnuserapi.php:816 pnuserapi.php:1497 pnuserapi.php:1498
+msgid "%B %Y"
 msgstr ""
 
-#: pnadminapi.php:24 pntemplates/mediashare_admin_plugins.html:7
-msgid "Plugins"
-msgstr ""
-
-#: pnadminapi.php:25 pntemplates/mediashare_import_photoshare.html:2
-#: pntemplates/mediashare_import_main.html:2
-msgid "Import"
-msgstr ""
-
-#: pnadminapi.php:26
-msgid "Regenerate"
-msgstr ""
-
-#: pntemplates/pnform/function.mediashareitemselector.php:154
-#: pntemplates/mediashare_external_finditem.html:73
-#: pntemplates/mediashare_source_browser_view.html:15
-#: pntemplates/mediashare_source_zip_view.html:15
-msgid "Upload"
-msgstr ""
-
-#: pntemplates/pnform/function.mediashareitemselector.php:242
-msgid "A selection here is mandatory."
-msgstr ""
-
-#: pntemplates/plugins/function.mediashare_mediaItem.php:24
-#: pntemplates/Frontend/Standard/slideshow.html:32
-msgid "No media item found in this album"
-msgstr ""
-
-#: pntemplates/plugins/function.mediashare_userinfo.php:20
-msgid "Of"
-msgstr ""
-
-#: pninit.php:323
-msgid "Top"
-msgstr ""
-
-#: pninit.php:323
+#: pnvfs_fsdirectapi.php:26
 msgid ""
-"This is the top album (of which there can be only one). You can edit this "
-"album to change the title and other attributes of it."
+"while creating new file in virtual storage system. Please check media upload "
+"directory in admin settings and it's permissions."
 msgstr ""
 
-#: pnedit.php:31 pnedit.php:858
-msgid "You must be logged in to use this feature"
+#: pnmedia_imagegdapi.php:12
+msgid "Mediashare GD Image Handler"
 msgstr ""
 
-#: pnedit.php:394
-msgid ""
-"No media sources found. You need to go to the admin part and make a scan for "
-"media sources."
+#: pnmedia_imagegdapi.php:123
+#, php-format
+msgid "Unknown image format %1$s/%2$s."
 msgstr ""
 
-#: pninvitation.php:26
-msgid "Hi! See my new pictures"
+#: pnadmin.php:76
+msgid "Done! Module configuration updated."
 msgstr ""
 
-#: pntemplates/mediashare_media_real_paste.html:3
-#: pntemplates/mediashare_media_extapp_paste.html:3
-#: pntemplates/mediashare_media_quicktime_paste.html:3
-#: pntemplates/mediashare_media_imagegd_paste.html:3
-#: pntemplates/mediashare_media_flash_paste.html:3
-#: pntemplates/mediashare_media_wmp_paste.html:3
-msgid "Preview"
+#: pnadmin.php:116
+msgid "Done! Plugins list regenerated."
 msgstr ""
 
-#: pntemplates/mediashare_media_real_paste.html:4
-#: pntemplates/mediashare_media_extapp_paste.html:4
-#: pntemplates/mediashare_media_quicktime_paste.html:4
-#: pntemplates/mediashare_media_imagegd_paste.html:4
-#: pntemplates/mediashare_media_pdf_paste.html:11
-#: pntemplates/mediashare_media_flash_paste.html:4
-#: pntemplates/mediashare_media_wmp_paste.html:4
-msgid "Original"
+#: pntemplates/mediashare_user_albumrsslist.html:7
+msgid "Mediashare albums"
 msgstr ""
 
-#: pntemplates/mediashare_media_real_paste.html:5
-#: pntemplates/mediashare_media_extapp_paste.html:5
-#: pntemplates/mediashare_media_quicktime_paste.html:5
-#: pntemplates/mediashare_media_imagegd_paste.html:5
-#: pntemplates/mediashare_media_pdf_paste.html:13
-#: pntemplates/mediashare_media_flash_paste.html:5
-#: pntemplates/mediashare_media_wmp_paste.html:5
-msgid "Thumbnail"
+#: pntemplates/mediashare_user_albumrsslist.html:9
+msgid "RSS feed for albums"
 msgstr ""
 
-#: pntemplates/mediashare_media_real_paste.html:6
-#: pntemplates/mediashare_media_extapp_paste.html:7
-#: pntemplates/mediashare_media_quicktime_paste.html:6
-#: pntemplates/mediashare_media_imagegd_paste.html:7
-#: pntemplates/mediashare_media_pdf_paste.html:5
-#: pntemplates/mediashare_media_flash_paste.html:7
-#: pntemplates/mediashare_media_wmp_paste.html:6
-msgid "Thumbnail (popup)"
+#: pntemplates/mediashare_source_browser_view.html:12
+#: pntemplates/mediashare_source_zip_view.html:12
+msgid "Filename"
 msgstr ""
 
-#: pntemplates/mediashare_media_real_paste.html:7
-#: pntemplates/mediashare_media_extapp_paste.html:9
-#: pntemplates/mediashare_media_quicktime_paste.html:7
-#: pntemplates/mediashare_media_imagegd_paste.html:9
-#: pntemplates/mediashare_media_flash_paste.html:8
-#: pntemplates/mediashare_media_wmp_paste.html:7
-msgid "Link to original"
+#: pntemplates/mediashare_source_browser_view.html:16
+#: pntemplates/mediashare_source_zip_view.html:16
+#: pntemplates/mediashare_edit_edititem.html:30
+msgid "Width"
 msgstr ""
 
-#: pntemplates/mediashare_media_real_paste.html:8
-#: pntemplates/mediashare_media_extapp_paste.html:10
-#: pntemplates/mediashare_media_quicktime_paste.html:8
-#: pntemplates/mediashare_media_imagegd_paste.html:10
-#: pntemplates/mediashare_media_pdf_paste.html:4
-#: pntemplates/mediashare_media_flash_paste.html:9
-#: pntemplates/mediashare_media_wmp_paste.html:8
-msgid "Link to original (popup)"
+#: pntemplates/mediashare_source_browser_view.html:18
+#: pntemplates/mediashare_source_browser_view.html:23
+#: pntemplates/mediashare_source_zip_view.html:18
+#: pntemplates/mediashare_source_zip_view.html:23
+#: pntemplates/mediashare_edit_edititem.html:36
+msgid "Only required for video formats"
 msgstr ""
 
-#: pntemplates/mediashare_media_real_paste.html:9
-#: pntemplates/mediashare_media_extapp_paste.html:11
-#: pntemplates/mediashare_media_quicktime_paste.html:9
-#: pntemplates/mediashare_media_imagegd_paste.html:11
-#: pntemplates/mediashare_media_pdf_paste.html:6
-#: pntemplates/mediashare_media_flash_paste.html:10
-#: pntemplates/mediashare_media_wmp_paste.html:9
-msgid "Album link"
+#: pntemplates/mediashare_source_browser_view.html:21
+#: pntemplates/mediashare_source_zip_view.html:21
+#: pntemplates/mediashare_edit_edititem.html:34
+msgid "Height"
 msgstr ""
 
-#: pntemplates/mediashare_media_real_paste.html:10
-#: pntemplates/mediashare_media_extapp_paste.html:12
-#: pntemplates/mediashare_media_quicktime_paste.html:10
-#: pntemplates/mediashare_media_imagegd_paste.html:12
-#: pntemplates/mediashare_media_pdf_paste.html:7
-#: pntemplates/mediashare_media_flash_paste.html:11
-#: pntemplates/mediashare_media_wmp_paste.html:10
-msgid "Album link as thumbnail"
-msgstr ""
-
-#: pntemplates/mediashare_media_real_paste.html:11
-#: pntemplates/mediashare_media_extapp_paste.html:13
-#: pntemplates/mediashare_media_quicktime_paste.html:11
-#: pntemplates/mediashare_media_imagegd_paste.html:13
-#: pntemplates/mediashare_media_pdf_paste.html:8
-#: pntemplates/mediashare_media_flash_paste.html:12
-#: pntemplates/mediashare_media_wmp_paste.html:11
-msgid "Album link (popup)"
-msgstr ""
-
-#: pntemplates/mediashare_media_real_paste.html:12
-#: pntemplates/mediashare_media_extapp_paste.html:14
-#: pntemplates/mediashare_media_quicktime_paste.html:12
-#: pntemplates/mediashare_media_imagegd_paste.html:14
-#: pntemplates/mediashare_media_pdf_paste.html:9
-#: pntemplates/mediashare_media_flash_paste.html:13
-#: pntemplates/mediashare_media_wmp_paste.html:12
-msgid "Album link as thumbnail (popup)"
-msgstr ""
-
-#: pntemplates/mediashare_edit_multideletemedia.html:10
-msgid "Delete multiple items"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:4
-msgid ""
-"Select one of the following kinds of block content and specify optional "
-"album criteria."
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:12
-msgid "Show random image from any album"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:20
-msgid "Show random image from latest album"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:28
-#: pntemplates/mediashare_block_random.html:33
-msgid "Show random image from specific album"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:41
-msgid "Update time for block (sec.) (empty = always)"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:49
-msgid "HTML to wrap image in"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:53
-msgid "The following variables can be used in the HTML code:"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:61
-msgid "URL to full size image (to be used in SRC element of IMG tag)"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:62
-msgid "URL to preview image (to be used in SRC element of IMG tag)"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:63
-msgid "URL to thumbnail image (to be used in SRC element of IMG tag)"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:64
-msgid "URL to album viewer"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:65
-msgid "Image title"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:66
-msgid "Album title"
-msgstr ""
-
-#: pntemplates/mediashare_block_random.html:67
-msgid "Name of image owner"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:6
-#: pntemplates/mediashare_user_list.html:29
-msgid "Show items from this album"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:7
-msgid "Remove filter (show all items)"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:9
-msgid "Sort by"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:11
-#: pntemplates/mediashare_edit_multieditmedia.html:26
-#: pntemplates/mediashare_edit_addalbum.html:14
-#: pntemplates/mediashare_edit_editalbum.html:14
-#: pntemplates/mediashare_edit_edititem.html:19
-#: pntemplates/mediashare_source_zip_uploadet.html:27
-#: pntemplates/mediashare_source_browser_uploadet.html:27
-msgid "Title"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:12
-msgid "Owner"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:13
-msgid "Created date"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:14
-msgid "Last modified date"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:29
 #: pntemplates/mediashare_user_contentfilmstrip.html:4
-#: pntemplates/mediashare_external_finditem.html:41
-#: pntemplates/mediashare_edit_movealbum.html:14
-msgid "Album"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:33
-#: pntemplates/mediashare_edit_multieditmedia.html:34
-#: pntemplates/mediashare_edit_addalbum.html:22
-#: pntemplates/mediashare_edit_editalbum.html:22
-#: pntemplates/mediashare_edit_edititem.html:27
-#: pntemplates/Frontend/Standard/album.html:28
-#: pntemplates/Frontend/Standard/album.html:73
-#: pntemplates/Frontend/Standard/thumbnails.html:41
-#: pntemplates/Frontend/Lightbox/album.html:29
-#: pntemplates/Frontend/Lightbox/album.html:73
-#: pntemplates/Frontend/Lightbox/thumbnails.html:41
-#: pntemplates/mediashare_user_latest.html:52
-#: pntemplates/mediashare_source_zip_uploadet.html:35
-#: pntemplates/mediashare_source_browser_uploadet.html:35
-msgid "Keywords"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:34
-msgid "Show items with this keyword"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:35
-msgid "Subscribe to RSS feed for this keyword assign=keywordrss"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:40
-msgid "Added"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:41
-#: pntemplates/mediashare_footer.html:3
-#: pntemplates/Frontend/Standard/album.html:57
-#: pntemplates/Frontend/Standard/slideshow_center.html:51
-#: pntemplates/Frontend/Standard/thumbnails.html:38
-#: pntemplates/Frontend/Lightbox/album.html:57
-#: pntemplates/Frontend/Lightbox/thumbnails.html:38
-#: pntemplates/mediashare_albumInfo.html:5
-#: pntemplates/mediashare_itemInfo.html:5
-msgid "By"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:42
-#: pntemplates/Frontend/Standard/album.html:57
-#: pntemplates/Frontend/Standard/slideshow_center.html:52
-#: pntemplates/Frontend/Standard/thumbnails.html:38
-#: pntemplates/Frontend/Lightbox/album.html:57
-#: pntemplates/Frontend/Lightbox/thumbnails.html:38
-msgid "Show items from this person"
-msgstr ""
-
-#: pntemplates/mediashare_user_list.html:45
-msgid "Subscribe to RSS feed for this person assign=personrss"
-msgstr ""
-
-#: pntemplates/mediashare_media_extapp_paste.html:8
-#: pntemplates/mediashare_media_imagegd_paste.html:8
-msgid "Preview (popup)"
-msgstr ""
-
-#: pntemplates/mediashare_import_photoshare.html:13
-#: pntemplates/mediashare_import_photoshare.html:17
-#: pntemplates/mediashare_import_main.html:15
-msgid "Import albums and images from Photoshare"
-msgstr ""
-
-#: pntemplates/mediashare_import_photoshare.html:19
-msgid ""
-"<strong>Importing from Photoshare takes a long time</strong> since all "
-"images has to be loaded and converted. Your web server probably kills PHP "
-"before importing is finished. Please just re-submit this page until you "
-"return to Mediashare (keep clicking refresh as long as you get a white "
-"screen or an error message). html=1"
+#, php-format
+msgid "Album: %s"
 msgstr ""
 
 #: pntemplates/mediashare_user_contentfilmstrip.html:14
@@ -519,42 +568,605 @@ msgstr ""
 msgid "Click on image for slideshow (%s photos)"
 msgstr ""
 
-#: pntemplates/mediashare_edit_arrange.html:7
-msgid ""
-"Arrange items by draging them on top of each other. When satisfied with the "
-"result click save."
+#: pntemplates/mediashare_browseicons_menu.html:11
+#: pntemplates/Frontend/Standard/slideshow_center.html:54
+#: pntemplates/Frontend/Standard/album.html:35
+#: pntemplates/Frontend/Lightbox/album.html:34
+#: pntemplates/mediashare_editmenu.html:11
+msgid "Edit"
 msgstr ""
 
-#: pntemplates/mediashare_edit_arrange.html:12
-msgid "Arrange items"
+#: pntemplates/mediashare_browseicons_menu.html:15
+#: pntemplates/mediashare_popupmenu_albumedit.html:5
+#: pntemplates/mediashare_edit_editalbum.html:3
+#: pntemplates/mediashare_edit_editalbum.html:8
+#: pntemplates/mediashare_edit_access.html:25
+msgid "Edit album"
 msgstr ""
 
-#: pntemplates/mediashare_edit_multieditmedia.html:8
-msgid "Edit multiple items"
+#: pntemplates/mediashare_browseicons_menu.html:17
+#: pntemplates/mediashare_edit_access.html:24
+#: pntemplates/mediashare_editmenu.html:14
+msgid "Add media"
 msgstr ""
 
-#: pntemplates/mediashare_edit_multieditmedia.html:42
-#: pntemplates/mediashare_edit_addalbum.html:38
-#: pntemplates/mediashare_edit_editalbum.html:38
-#: pntemplates/mediashare_edit_edititem.html:35
-#: pntemplates/mediashare_source_zip_uploadet.html:43
-#: pntemplates/mediashare_source_browser_uploadet.html:43
-msgid "Description"
+#: pntemplates/mediashare_browseicons_menu.html:18
+#: pntemplates/mediashare_edit_addalbum.html:4
+#: pntemplates/mediashare_edit_addalbum.html:8
+#: pntemplates/mediashare_edit_access.html:23
+#: pntemplates/mediashare_editmenu.html:8
+msgid "Add album"
 msgstr ""
 
-#: pntemplates/mediashare_edit_access.html:3
-#: pntemplates/mediashare_edit_access.html:7
-msgid "Edit access"
-msgstr ""
-
-#: pntemplates/mediashare_edit_access.html:12
+#: pntemplates/mediashare_browseicons_menu.html:19
 #: pntemplates/mediashare_editmenu.html:17
-#: pntemplates/mediashare_browseicons_menu.html:20
-#: pntemplates/mediashare_invitationtabs.html:4
+msgid "Arrange"
+msgstr ""
+
+#: pntemplates/mediashare_browseicons_menu.html:21
+#: pntemplates/mediashare_edit_access.html:14
+#: pntemplates/mediashare_invitationtabs.html:6
+#: pntemplates/mediashare_editmenu.html:20
 msgid "Access"
 msgstr ""
 
-#: pntemplates/mediashare_edit_access.html:15
+#: pntemplates/mediashare_browseicons_menu.html:22
+#: pntemplates/mediashare_invitationtabs.html:9
+msgid "Invite"
+msgstr ""
+
+#: pntemplates/mediashare_browseicons_menu.html:23
+#: pntemplates/mediashare_edit_multimovemedia.html:36
+#: pntemplates/mediashare_editmenu.html:23
+msgid "Move"
+msgstr ""
+
+#: pntemplates/mediashare_browseicons_menu.html:24
+#: pntemplates/mediashare_popupmenu_albumedit.html:6
+#: pntemplates/mediashare_edit_deletealbum.html:2
+#: pntemplates/mediashare_edit_deletealbum.html:7
+#: pntemplates/mediashare_edit_deletealbum.html:12
+msgid "Delete album"
+msgstr ""
+
+#: pntemplates/mediashare_popupmenu_albumedit.html:4
+msgid "Browse album"
+msgstr ""
+
+#: pntemplates/mediashare_popupmenu_albumedit.html:7
+#: pntemplates/mediashare_edit_movealbum.html:3
+#: pntemplates/mediashare_edit_movealbum.html:8
+msgid "Move album"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:4
+#: pntemplates/mediashare_media_wmp_paste.html:4
+#: pntemplates/mediashare_media_extapp_paste.html:4
+#: pntemplates/mediashare_media_real_paste.html:4
+#: pntemplates/mediashare_media_quicktime_paste.html:4
+#: pntemplates/mediashare_media_flash_paste.html:4
+msgid "Preview"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:5
+#: pntemplates/mediashare_media_wmp_paste.html:5
+#: pntemplates/mediashare_media_extapp_paste.html:5
+#: pntemplates/mediashare_media_real_paste.html:5
+#: pntemplates/mediashare_media_pdf_paste.html:12
+#: pntemplates/mediashare_media_quicktime_paste.html:5
+#: pntemplates/mediashare_media_flash_paste.html:5
+msgid "Original"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:6
+#: pntemplates/mediashare_media_wmp_paste.html:6
+#: pntemplates/mediashare_source_zip_uploadet.html:20
+#: pntemplates/mediashare_media_extapp_paste.html:6
+#: pntemplates/mediashare_media_real_paste.html:6
+#: pntemplates/mediashare_media_pdf_paste.html:14
+#: pntemplates/mediashare_media_quicktime_paste.html:6
+#: pntemplates/mediashare_media_flash_paste.html:6
+#: pntemplates/mediashare_source_browser_uploadet.html:20
+msgid "Thumbnail"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:8
+#: pntemplates/mediashare_media_wmp_paste.html:7
+#: pntemplates/mediashare_media_extapp_paste.html:8
+#: pntemplates/mediashare_media_real_paste.html:7
+#: pntemplates/mediashare_media_pdf_paste.html:6
+#: pntemplates/mediashare_media_quicktime_paste.html:7
+#: pntemplates/mediashare_media_flash_paste.html:8
+msgid "Thumbnail (popup)"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:9
+#: pntemplates/mediashare_media_extapp_paste.html:9
+msgid "Preview (popup)"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:10
+#: pntemplates/mediashare_media_wmp_paste.html:8
+#: pntemplates/mediashare_media_extapp_paste.html:10
+#: pntemplates/mediashare_media_real_paste.html:8
+#: pntemplates/mediashare_media_quicktime_paste.html:8
+#: pntemplates/mediashare_media_flash_paste.html:9
+msgid "Link to original"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:11
+#: pntemplates/mediashare_media_wmp_paste.html:9
+#: pntemplates/mediashare_media_extapp_paste.html:11
+#: pntemplates/mediashare_media_real_paste.html:9
+#: pntemplates/mediashare_media_pdf_paste.html:5
+#: pntemplates/mediashare_media_quicktime_paste.html:9
+#: pntemplates/mediashare_media_flash_paste.html:10
+msgid "Link to original (popup)"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:12
+#: pntemplates/mediashare_media_wmp_paste.html:10
+#: pntemplates/mediashare_media_extapp_paste.html:12
+#: pntemplates/mediashare_media_real_paste.html:10
+#: pntemplates/mediashare_media_pdf_paste.html:7
+#: pntemplates/mediashare_media_quicktime_paste.html:10
+#: pntemplates/mediashare_media_flash_paste.html:11
+msgid "Album link"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:13
+#: pntemplates/mediashare_media_wmp_paste.html:11
+#: pntemplates/mediashare_media_extapp_paste.html:13
+#: pntemplates/mediashare_media_real_paste.html:11
+#: pntemplates/mediashare_media_pdf_paste.html:8
+#: pntemplates/mediashare_media_quicktime_paste.html:11
+#: pntemplates/mediashare_media_flash_paste.html:12
+msgid "Album link as thumbnail"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:14
+#: pntemplates/mediashare_media_wmp_paste.html:12
+#: pntemplates/mediashare_media_extapp_paste.html:14
+#: pntemplates/mediashare_media_real_paste.html:12
+#: pntemplates/mediashare_media_pdf_paste.html:9
+#: pntemplates/mediashare_media_quicktime_paste.html:12
+#: pntemplates/mediashare_media_flash_paste.html:13
+msgid "Album link (popup)"
+msgstr ""
+
+#: pntemplates/mediashare_media_imagegd_paste.html:15
+#: pntemplates/mediashare_media_wmp_paste.html:13
+#: pntemplates/mediashare_media_extapp_paste.html:15
+#: pntemplates/mediashare_media_real_paste.html:13
+#: pntemplates/mediashare_media_pdf_paste.html:10
+#: pntemplates/mediashare_media_quicktime_paste.html:13
+#: pntemplates/mediashare_media_flash_paste.html:14
+msgid "Album link as thumbnail (popup)"
+msgstr ""
+
+#: pntemplates/mediashare_user_latest.html:7
+#, php-format
+msgid "There are %1$s albums available in all and %2$s media items."
+msgstr ""
+
+#: pntemplates/mediashare_user_latest.html:10
+#: pntemplates/mediashare_user_latest.html:61
+msgid "Latest media files"
+msgstr ""
+
+#: pntemplates/mediashare_user_latest.html:31
+#: pntemplates/mediashare_user_latest.html:62
+msgid "Latest albums"
+msgstr ""
+
+#: pntemplates/mediashare_user_latest.html:41
+msgid "Most active users"
+msgstr ""
+
+#: pntemplates/mediashare_user_latest.html:52
+#: pntemplates/mediashare_source_zip_uploadet.html:28
+#: pntemplates/mediashare_edit_addalbum.html:16
+#: pntemplates/mediashare_edit_editalbum.html:15
+#: pntemplates/mediashare_edit_multieditmedia.html:34
+#: pntemplates/mediashare_edit_edititem.html:17
+#: pntemplates/mediashare_source_browser_uploadet.html:28
+msgid "Keywords"
+msgstr ""
+
+#: pntemplates/mediashare_edit_multideletemedia.html:11
+msgid "Delete multiple items"
+msgstr ""
+
+#: pntemplates/mediashare_edit_multideletemedia.html:33
+#: pntemplates/mediashare_invitation_list.html:40
+msgid "Delete"
+msgstr ""
+
+#: pntemplates/mediashare_edit_multideletemedia.html:34
+#: pntemplates/mediashare_edit_addalbum.html:43
+#: pntemplates/mediashare_admin_main.html:99
+#: pntemplates/mediashare_edit_editalbum.html:42
+#: pntemplates/mediashare_edit_multieditmedia.html:57
+#: pntemplates/mediashare_edit_multimovemedia.html:37
+#: pntemplates/mediashare_edit_access.html:57
+#: pntemplates/mediashare_edit_movealbum.html:22
+#: pntemplates/mediashare_edit_arrange.html:33
+#: pntemplates/mediashare_edit_edititem.html:42
+#: pntemplates/mediashare_edit_deleteitem.html:13
+#: pntemplates/mediashare_admin_plugins.html:37
+#: pntemplates/mediashare_edit_deletealbum.html:13
+msgid "Cancel"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:6
+msgid ""
+"Select one of the following kinds of block content and specify optional "
+"album criteria."
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:14
+msgid "Show random image from any album"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:22
+msgid "Show random image from latest album"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:30
+#: pntemplates/mediashare_block_random.html:35
+msgid "Show random image from specific album"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:43
+msgid "Update time for block (sec.) (empty = always)"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:51
+msgid "HTML to wrap image in"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:55
+msgid "The following variables can be used in the HTML code:"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:63
+msgid "URL to full size image (to be used in SRC attribute of IMG tag)"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:64
+msgid "URL to preview image (to be used in SRC attribute of IMG tag)"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:65
+msgid "URL to thumbnail image (to be used in SRC attribute of IMG tag)"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:66
+msgid "URL to album viewer"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:67
+msgid "Image title"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:68
+msgid "Album title"
+msgstr ""
+
+#: pntemplates/mediashare_block_random.html:69
+msgid "Name of image owner"
+msgstr ""
+
+#: pntemplates/mediashare_edit_addmedia.html:2
+msgid "Add media items to album"
+msgstr ""
+
+#: pntemplates/mediashare_source_zip_uploadet.html:7
+#: pntemplates/mediashare_edit_movealbum.html:21
+#: pntemplates/mediashare_source_browser_uploadet.html:7
+msgid "Ok"
+msgstr ""
+
+#: pntemplates/mediashare_source_zip_uploadet.html:24
+#: pntemplates/mediashare_edit_addalbum.html:11
+#: pntemplates/mediashare_edit_editalbum.html:11
+#: pntemplates/mediashare_edit_multieditmedia.html:26
+#: pntemplates/mediashare_edit_edititem.html:13
+#: pntemplates/mediashare_user_list.html:12
+#: pntemplates/mediashare_source_browser_uploadet.html:24
+msgid "Title"
+msgstr ""
+
+#: pntemplates/mediashare_source_zip_uploadet.html:32
+#: pntemplates/mediashare_edit_addalbum.html:26
+#: pntemplates/mediashare_edit_editalbum.html:23
+#: pntemplates/mediashare_edit_multieditmedia.html:42
+#: pntemplates/mediashare_edit_edititem.html:21
+#: pntemplates/mediashare_source_browser_uploadet.html:32
+msgid "Description"
+msgstr ""
+
+#: pntemplates/mediashare_source_zip_uploadet.html:39
+#: pntemplates/mediashare_source_browser_uploadet.html:39
+msgid "Continue"
+msgstr ""
+
+#: pntemplates/mediashare_source_zip_uploadet.html:40
+#: pntemplates/mediashare_source_browser_uploadet.html:40
+msgid "Add more"
+msgstr ""
+
+#: pntemplates/mediashare_external_pasteitem.html:5
+#: pntemplates/mediashare_external_finditem.html:5
+msgid "Mediashare - Find item"
+msgstr ""
+
+#: pntemplates/mediashare_external_pasteitem.html:33
+msgid "Select format"
+msgstr ""
+
+#: pntemplates/mediashare_edit_addalbum.html:21
+#: pntemplates/mediashare_edit_editalbum.html:19
+msgid "Summary"
+msgstr ""
+
+#: pntemplates/mediashare_edit_addalbum.html:31
+#: pntemplates/mediashare_edit_editalbum.html:27
+msgid "Template"
+msgstr ""
+
+#: pntemplates/mediashare_edit_addalbum.html:36
+#: pntemplates/mediashare_edit_editalbum.html:35
+msgid "External album URL"
+msgstr ""
+
+#: pntemplates/mediashare_edit_addalbum.html:42
+#: pntemplates/mediashare_admin_main.html:98
+#: pntemplates/mediashare_edit_editalbum.html:41
+#: pntemplates/mediashare_edit_multieditmedia.html:56
+#: pntemplates/mediashare_edit_access.html:56
+#: pntemplates/mediashare_edit_arrange.html:32
+#: pntemplates/mediashare_edit_edititem.html:41
+msgid "Save"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:3
+msgid "General setup"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:8
+msgid "General settings"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:11
+msgid "Open-base dir (PHP restriction)"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:16
+msgid "Current module directory"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:20
+msgid "Media upload directory"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:23
+#: pntemplates/mediashare_admin_main.html:31
+msgid "Cannot write to this directory."
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:25
+msgid ""
+"This is where your media files are stored. Make sure it corresponds to a "
+"directory named 'mediashare' in Zikula's top directory, and make sure it is "
+"writable by the webserver."
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:28
+msgid "Temporary directory"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:33
+msgid ""
+"This is a directory that Mediashare uses for temporary storage when "
+"uploading files. Make sure it is writable by the webserver."
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:36
+msgid "Default album template"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:39
+msgid "Apply globally"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:43
+msgid "Allow template override in albums?"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:47
+msgid "Thumbnail size"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:48
+#: pntemplates/mediashare_admin_main.html:52
+msgid "pixels"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:51
+msgid "Preview size"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:55
+msgid "Max. size of a single image"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:56
+#: pntemplates/mediashare_admin_main.html:60
+msgid "KBytes"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:59
+msgid "Max. size of all images for a single user"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:63
+msgid "Files on local file system"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:65
+msgid ""
+"Storing files in the local file system improves performance at the cost of "
+"some security and the ability to use multiple web servers."
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:68
+msgid "Files in database"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:70
+msgid ""
+"Storing files in the database increases security and makes it possible to "
+"use multiple web servers at the cost of performance."
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:73
+msgid "Enable thumbnail sharpening"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:75
+msgid ""
+"Sharpening of thumbnails and previews improves image quality but uses a lot "
+"of CPU resources"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:78
+msgid "Show thumbnails"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:80
+msgid ""
+"The default album display can either be a thumbnail overview or a one-"
+"picture display"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:85
+msgid "API Keys"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:86
+msgid ""
+"Mediashare can display photos from external photo applications. To do so you "
+"must get an API key from the applications you want to use."
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:86
+#: pntemplates/mediashare_edit_editalbum.html:32
+msgid "Click here to read more."
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:88
+msgid "Flickr API key"
+msgstr ""
+
+#: pntemplates/mediashare_admin_main.html:92
+msgid "SmugMug API key"
+msgstr ""
+
+#: pntemplates/mediashare_edit_editalbum.html:31
+msgid ""
+"Here you can insert a link to external photo albums from Flickr, Picasa and "
+"SmugMug."
+msgstr ""
+
+#: pntemplates/mediashare_edit_multieditmedia.html:9
+msgid "Edit multiple items"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:3
+#: pntemplates/mediashare_invitation_link.html:3
+#: pntemplates/mediashare_invitationtabs.html:12
+#: pntemplates/mediashare_invitation_list.html:2
+msgid "Invitations"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:9
+msgid "Send invitation"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:11
+msgid ""
+"Please enter the e-mail address of the people you want to invite to this "
+"album. When you press "
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:13
+msgid "If you want to send the link yourself then click here to generate it"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:20
+msgid "Invitation"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:25
+msgid "E-mails"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:25
+msgid "(separate with comma, semicolon, newline or whitespace)"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:30
+msgid "Subject"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:35
+msgid "Invitation text"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:35
+msgid "(this will be included in the e-mail invitation)"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:39
+msgid "The text below will be appended to your invitation"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:42
+#, php-format
+msgid ""
+"<p>Just follow the link below (click on it or copy it to your webbrowser)</"
+"p> <p><a href=\"%1$s\">%1$s</a></p>"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:46
+msgid "Sender"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:51
+msgid "Expire date"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_send.html:51
+#: pntemplates/mediashare_invitation_list.html:36
+msgid "(yyyy-mm-dd)"
+msgstr ""
+
+#: pntemplates/mediashare_edit_multimovemedia.html:11
+#: pntemplates/mediashare_editmenu.html:32
+msgid "Move selected items"
+msgstr ""
+
+#: pntemplates/mediashare_edit_multimovemedia.html:31
+msgid "Select new album for the above items"
+msgstr ""
+
+#: pntemplates/mediashare_edit_access.html:3
+#: pntemplates/mediashare_edit_access.html:9
+msgid "Edit access"
+msgstr ""
+
+#: pntemplates/mediashare_edit_access.html:16
 msgid ""
 "Here you can assign different access levels to different user groups. "
 "<ul><li>Add album means users in the selected group may add new sub-albums "
@@ -576,106 +1188,148 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: pntemplates/mediashare_edit_access.html:23
-#: pntemplates/mediashare_editmenu.html:5
-#: pntemplates/mediashare_edit_addalbum.html:3
-#: pntemplates/mediashare_edit_addalbum.html:8
-#: pntemplates/mediashare_browseicons_menu.html:17
-msgid "Add album"
-msgstr ""
-
-#: pntemplates/mediashare_edit_access.html:24
-#: pntemplates/mediashare_editmenu.html:11
-#: pntemplates/mediashare_browseicons_menu.html:16
-msgid "Add media"
-msgstr ""
-
-#: pntemplates/mediashare_edit_access.html:25
-#: pntemplates/mediashare_edit_editalbum.html:3
-#: pntemplates/mediashare_edit_editalbum.html:8
-#: pntemplates/mediashare_browseicons_menu.html:14
-#: pntemplates/mediashare_popupmenu_albumedit.html:4
-msgid "Edit album"
-msgstr ""
-
 #: pntemplates/mediashare_edit_access.html:26
 msgid "Edit media"
 msgstr ""
 
-#: pntemplates/mediashare_editmenu.html:3
-#: pntemplates/mediashare_browseicons.html:8
-#: pntemplates/mediashare_popupmenu_edit.html:3
-msgid "Slideshow"
+#: pntemplates/mediashare_edit_movealbum.html:15
+msgid "Move to album"
 msgstr ""
 
-#: pntemplates/mediashare_editmenu.html:8
-#: pntemplates/Frontend/Standard/album.html:33
-#: pntemplates/Frontend/Standard/slideshow_center.html:54
-#: pntemplates/Frontend/Lightbox/album.html:34
-#: pntemplates/mediashare_browseicons_menu.html:10
-msgid "Edit"
+#: pntemplates/mediashare_invitation_link.html:9
+msgid "Get invitation link"
 msgstr ""
 
-#: pntemplates/mediashare_editmenu.html:14
-#: pntemplates/mediashare_browseicons_menu.html:18
-msgid "Arrange"
+#: pntemplates/mediashare_invitation_link.html:12
+msgid "Click on "
 msgstr ""
 
-#: pntemplates/mediashare_editmenu.html:20
-#: pntemplates/mediashare_browseicons_menu.html:22
-msgid "Move"
+#: pntemplates/mediashare_invitation_link.html:13
+msgid "Optional link name"
 msgstr ""
 
-#: pntemplates/mediashare_editmenu.html:25
-msgid "Edit selected items"
+#: pntemplates/mediashare_invitation_link.html:15
+msgid "Get the link"
 msgstr ""
 
-#: pntemplates/mediashare_editmenu.html:26
-#: pntemplates/mediashare_edit_multimovemedia.html:10
-msgid "Move selected items"
+#: pntemplates/mediashare_invitation_link.html:17
+msgid "Here is your link:"
 msgstr ""
 
-#: pntemplates/mediashare_editmenu.html:27
-msgid "Delete selected items"
+#: pntemplates/mediashare_invitation_link.html:20
+msgid "Now back to the album view"
 msgstr ""
 
-#: pntemplates/mediashare_user_keys.html:2
-msgid "You have choosen to look for media items tagged with"
+#: pntemplates/mediashare_invitation_link.html:20
+msgid "or"
 msgstr ""
 
-#: pntemplates/mediashare_browseicons.html:9
-msgid "Thumbnails"
+#: pntemplates/mediashare_invitation_link.html:20
+msgid "the invitation list"
 msgstr ""
 
-#: pntemplates/mediashare_browseicons.html:12
-msgid "Latest"
+#: pntemplates/Frontend/Standard/slideshow_center.html:20
+#: pntemplates/Frontend/Standard/album.html:45
+#: pntemplates/Frontend/Lightbox/album.html:44
+#: pntemplates/Frontend/Lightbox/slideshow.html:32
+msgid "Previous"
 msgstr ""
 
-#: pntemplates/mediashare_popupmenu_edit.html:5
-#: pntemplates/mediashare_edit_edititem.html:3
-#: pntemplates/mediashare_edit_edititem.html:8
-msgid "Edit item"
+#: pntemplates/Frontend/Standard/slideshow_center.html:21
+#: pntemplates/Frontend/Standard/album.html:46
+#: pntemplates/Frontend/Lightbox/album.html:45
+#: pntemplates/Frontend/Lightbox/slideshow.html:34
+msgid "Next"
 msgstr ""
 
-#: pntemplates/mediashare_popupmenu_edit.html:6
-#: pntemplates/mediashare_edit_deleteitem.html:1
-#: pntemplates/mediashare_edit_deleteitem.html:6
-msgid "Delete item"
+#: pntemplates/Frontend/Standard/slideshow_center.html:27
+#: pntemplates/Frontend/Lightbox/slideshow.html:15
+#: pntemplates/Frontend/Lightbox/slideshow.html:33
+msgid "Stop"
 msgstr ""
 
-#: pntemplates/mediashare_popupmenu_edit.html:7
-msgid "Set main item"
+#: pntemplates/Frontend/Standard/slideshow_center.html:28
+#: pntemplates/Frontend/Lightbox/slideshow.html:14
+#: pntemplates/mediashare_admin_recalc.html:11
+msgid "Start"
 msgstr ""
 
-#: pntemplates/mediashare_search_options.html:3
-msgid "Multimedia files"
+#: pntemplates/Frontend/Standard/slideshow_center.html:29
+msgid "Delay"
 msgstr ""
 
-#: pntemplates/mediashare_admin_recalc.html:4
+#: pntemplates/Frontend/Standard/slideshow_center.html:38
+msgid "Sec"
+msgstr ""
+
+#: pntemplates/Frontend/Standard/slideshow_center.html:41
+#: pntemplates/Frontend/Lightbox/slideshow.html:27
+msgid "Quit"
+msgstr ""
+
+#: pntemplates/Frontend/Standard/slideshow_center.html:51
+#: pntemplates/Frontend/Standard/album.html:58
+#: pntemplates/Frontend/Standard/thumbnails.html:41
+#: pntemplates/Frontend/Lightbox/album.html:57
+#: pntemplates/Frontend/Lightbox/thumbnails.html:41
+#: pntemplates/mediashare_footer.html:4
+#: pntemplates/mediashare_albumInfo.html:6
+#: pntemplates/mediashare_user_list.html:41
+#: pntemplates/mediashare_itemInfo.html:6
+msgid "By"
+msgstr ""
+
+#: pntemplates/Frontend/Standard/slideshow_center.html:52
+#: pntemplates/Frontend/Standard/album.html:58
+#: pntemplates/Frontend/Standard/thumbnails.html:41
+#: pntemplates/Frontend/Lightbox/album.html:57
+#: pntemplates/Frontend/Lightbox/thumbnails.html:41
+#: pntemplates/mediashare_user_list.html:42
+msgid "Show items from this person"
+msgstr ""
+
+#: pntemplates/Frontend/Standard/album.html:24
+#: pntemplates/Frontend/Lightbox/album.html:23
+msgid "View fullscreen"
+msgstr ""
+
+#: pntemplates/Frontend/Standard/album.html:30
+#: pntemplates/Frontend/Standard/album.html:74
+#: pntemplates/Frontend/Standard/thumbnails.html:44
+#: pntemplates/Frontend/Lightbox/album.html:29
+#: pntemplates/Frontend/Lightbox/album.html:73
+#: pntemplates/Frontend/Lightbox/thumbnails.html:44
+#: pntemplates/mediashare_user_list.html:33
+msgid "Keywords:"
+msgstr ""
+
+#: pntemplates/Frontend/Standard/slideshow.html:33
+#: pntemplates/mediashare_invitationtabs.html:22
+msgid "Back"
+msgstr ""
+
+#: pntemplates/Frontend/Lightbox/slideshow.html:16
+#: pntemplates/Frontend/Lightbox/slideshow.html:29
+msgid "Show smaller image"
+msgstr ""
+
+#: pntemplates/Frontend/Lightbox/slideshow.html:17
+msgid "Show original image"
+msgstr ""
+
+#: pntemplates/Frontend/Lightbox/slideshow.html:30
+msgid "Show title"
+msgstr ""
+
+#: pntemplates/Frontend/Lightbox/slideshow.html:54
+msgid "There are no media files in this album. Click here to return."
+msgstr ""
+
+#: pntemplates/mediashare_admin_recalc.html:2
 msgid "Regenerate thumbnails and previews"
 msgstr ""
 
-#: pntemplates/mediashare_admin_recalc.html:10
+#: pntemplates/mediashare_admin_recalc.html:7
 msgid ""
 "Regenerating all thumbnails and previews takes a good deal of time. This "
 "feature uses JavaScript to regenerate one file at a time without running "
@@ -684,311 +1338,197 @@ msgid ""
 "iframe and in the checkbox list below."
 msgstr ""
 
-#: pntemplates/mediashare_admin_recalc.html:13
-#: pntemplates/Frontend/Standard/slideshow_center.html:28
-#: pntemplates/Frontend/Lightbox/slideshow.html:14
-msgid "Start"
-msgstr ""
-
-#: pntemplates/mediashare_admin_recalc.html:14
+#: pntemplates/mediashare_admin_recalc.html:12
 msgid "Pause"
 msgstr ""
 
-#: pntemplates/mediashare_edit_multimovemedia.html:32
-msgid "Select new album for the above items"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:5
-#: pntemplates/mediashare_admin_main.html:8
-msgid "General setup"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:11
-msgid "Open-base dir (PHP restriction)"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:16
-msgid "Current module dir."
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:20
-msgid "Media upload dir."
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:23
-#: pntemplates/mediashare_admin_main.html:31
-msgid "Cannot write to this directory."
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:25
-msgid ""
-"This is where your media files are stored. Make sure it corresponds to a "
-"directory named 'mediashare' in Zikula's top directory, and make sure it is "
-"writable by the webserver."
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:28
-msgid "Temporary dir."
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:33
-msgid ""
-"This is a directory that Mediashare uses for temporary storage when "
-"uploading files. Make sure it is writable by the webserver."
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:36
-msgid "Default album template"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:44
-msgid "Allow template override in albums?"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:49
-msgid "Thumbnail size (pixels)"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:53
-msgid "Preview size (pixels)"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:57
-msgid "Max. size of a single image (kb)"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:61
-msgid "Max. size of all images for a single user (kb)"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:65
-msgid "Files on local file system"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:67
-msgid ""
-"Storing files in the local file system improves performance at the cost of "
-"some security and the ability to use multiple web servers."
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:70
-msgid "Files in database"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:72
-msgid ""
-"Storing files in the database increases security and makes it possible to "
-"use multiple web servers at the cost of performance."
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:75
-msgid "Enable thumbnail sharpening"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:77
-msgid ""
-"Sharpening of thumbnails and previews improves image quality but uses a lot "
-"of CPU resources"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:80
-msgid "Show thumbnails"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:82
-msgid ""
-"The default album display can either be a thumbnail overview or a one-"
-"picture display"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:88
-#: pntemplates/mediashare_edit_editalbum.html:57
-msgid "Click here to read more."
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:90
-msgid "Flickr API key"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:94
-msgid "SmugMug API key"
-msgstr ""
-
-#: pntemplates/mediashare_admin_main.html:100
-msgid "Save"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:1
-#: pntemplates/mediashare_invitation_send.html:3
-#: pntemplates/mediashare_invitation_link.html:3
-#: pntemplates/mediashare_invitationtabs.html:10
-msgid "Invitations"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:6
-msgid "Invitation list"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:8
-msgid "Here is a list of all the invitations you have sent."
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:15
-msgid "Created"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:16
-msgid "Name"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:17
-msgid "Expires"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:18
-msgid "Views"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:24
-msgid "send again"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:24
-msgid "Link only"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:24
-msgid "show link"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:30
-msgid "Possible actions:"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:33
-msgid "Set expire date on selected invitations to"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:34
-#: pntemplates/mediashare_invitation_send.html:50
-msgid "(yyyy-mm-dd)"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:35
-msgid "OK"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:38
-msgid "Delete"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_list.html:38
-msgid "selected invitations"
-msgstr ""
-
-#: pntemplates/mediashare_footer.html:5
+#: pntemplates/mediashare_footer.html:6
 msgid "Last modified"
 msgstr ""
 
-#: pntemplates/mediashare_edit_addalbum.html:30
-#: pntemplates/mediashare_edit_editalbum.html:30
-msgid "Summary"
+#: pntemplates/mediashare_browseicons.html:11
+#: pntemplates/mediashare_editmenu.html:6
+#: pntemplates/mediashare_popupmenu_edit.html:4
+msgid "Slideshow"
 msgstr ""
 
-#: pntemplates/mediashare_edit_addalbum.html:46
-#: pntemplates/mediashare_edit_editalbum.html:46
-msgid "Template"
+#: pntemplates/mediashare_browseicons.html:12
+msgid "Thumbnails"
 msgstr ""
 
-#: pntemplates/mediashare_edit_addalbum.html:54
-#: pntemplates/mediashare_edit_editalbum.html:62
-msgid "External album URL"
+#: pntemplates/mediashare_browseicons.html:15
+msgid "Latest"
 msgstr ""
 
-#: pntemplates/mediashare_invitation_send.html:8
-msgid "Send invitation"
+#: pntemplates/mediashare_user_simpledisplay.html:4
+msgid "View album"
 msgstr ""
 
-#: pntemplates/mediashare_invitation_send.html:10
+#: pntemplates/mediashare_user_keys.html:2
+#, php-format
 msgid ""
-"Please enter the e-mail address of the people you want to invite to this "
-"album. When you press "
+"You have choosen to look for media items tagged with <strong>%s</strong>."
 msgstr ""
 
-#: pntemplates/mediashare_invitation_send.html:12
-msgid "If you want to send the link yourself then click here to generate it"
+#: pntemplates/mediashare_editmenu.html:31
+msgid "Edit selected items"
 msgstr ""
 
-#: pntemplates/mediashare_invitation_send.html:19
-msgid "Invitation"
+#: pntemplates/mediashare_editmenu.html:33
+msgid "Delete selected items"
 msgstr ""
 
-#: pntemplates/mediashare_invitation_send.html:24
-msgid "E-mails"
+#: pntemplates/mediashare_search_options.html:5
+msgid "Multimedia files"
 msgstr ""
 
-#: pntemplates/mediashare_invitation_send.html:24
-msgid "(separate with comma, semicolon, newline or whitespace)"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_send.html:29
-msgid "Subject"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_send.html:34
-msgid "Invitation text"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_send.html:34
-msgid "(this will be included in the e-mail invitation)"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_send.html:38
-msgid "The text below will be appended to your invitation"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_send.html:41
+#: pntemplates/mediashare_edit_arrange.html:8
 msgid ""
-"<p>Just follow the link below (click on it or copy it to your webbrowser)</"
-"p> <p><a href="
+"Arrange items by draging them on top of each other. When satisfied with the "
+"result click save."
 msgstr ""
 
-#: pntemplates/mediashare_invitation_send.html:45
-msgid "Sender"
+#: pntemplates/mediashare_edit_arrange.html:13
+msgid "Arrange items"
 msgstr ""
 
-#: pntemplates/mediashare_invitation_send.html:50
-msgid "Expire date"
+#: pntemplates/mediashare_edit_edititem.html:3
+#: pntemplates/mediashare_edit_edititem.html:8
+#: pntemplates/mediashare_popupmenu_edit.html:6
+msgid "Edit item"
 msgstr ""
 
-#: pntemplates/mediashare_external_finditem.html:4
-#: pntemplates/mediashare_external_pasteitem.html:4
-msgid "Mediashare - Find item"
+#: pntemplates/mediashare_edit_edititem.html:25
+msgid "Optional new media file"
 msgstr ""
 
-#: pntemplates/mediashare_external_finditem.html:34
-msgid "Select item"
-msgstr ""
-
-#: pntemplates/mediashare_external_finditem.html:49
-msgid "Media item"
-msgstr ""
-
-#: pntemplates/mediashare_edit_editalbum.html:56
+#: pntemplates/mediashare_edit_edititem.html:27
 msgid ""
-"Here you can insert a link to external photo albums from Flickr, Picasa and "
-"SmugMug."
+"You may have to force a reload of the next page when replacing media item!"
 msgstr ""
 
-#: pntemplates/mediashare_edit_addmedia.html:1
-msgid "Add media items to album"
+#: pntemplates/mediashare_invitation_list.html:8
+msgid "Invitation list"
 msgstr ""
 
-#: pntemplates/mediashare_edit_deletealbum.html:1
-#: pntemplates/mediashare_edit_deletealbum.html:6
-#: pntemplates/mediashare_browseicons_menu.html:23
-#: pntemplates/mediashare_popupmenu_albumedit.html:5
-msgid "Delete album"
+#: pntemplates/mediashare_invitation_list.html:10
+msgid "Here is a list of all the invitations you have sent."
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:17
+msgid "Created"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:18
+msgid "Name"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:19
+msgid "Expires"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:20
+msgid "Views"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:26
+msgid "send again"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:26
+msgid "Link only"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:26
+msgid "show link"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:32
+msgid "Possible actions:"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:35
+msgid "Set expire date on selected invitations to"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:37
+msgid "OK"
+msgstr ""
+
+#: pntemplates/mediashare_invitation_list.html:40
+msgid "selected invitations"
+msgstr ""
+
+#: pntemplates/mediashare_edit_deleteitem.html:2
+#: pntemplates/mediashare_edit_deleteitem.html:7
+#: pntemplates/mediashare_edit_deleteitem.html:12
+#: pntemplates/mediashare_popupmenu_edit.html:7
+msgid "Delete item"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:6
+#: pntemplates/mediashare_user_list.html:29
+msgid "Show items from this album"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:7
+msgid "Remove filter (show all items)"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:10
+msgid "Sort by"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:13
+msgid "Owner"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:14
+msgid "Created date"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:15
+msgid "Last modified date"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:34
+msgid "Show items with this keyword"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:35
+msgid "Subscribe to RSS feed for this keyword"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:40
+msgid "Added"
+msgstr ""
+
+#: pntemplates/mediashare_user_list.html:45
+msgid "Subscribe to RSS feed for this person"
+msgstr ""
+
+#: pntemplates/mediashare_edit_view.html:8
+msgid "Gallery"
+msgstr ""
+
+#: pntemplates/mediashare_edit_view.html:19
+msgid "One level up"
+msgstr ""
+
+#: pntemplates/mediashare_edit_view.html:41
+msgid "Main item in album"
+msgstr ""
+
+#: pntemplates/mediashare_popupmenu_edit.html:8
+msgid "Set main item"
+msgstr ""
+
+#: pntemplates/mediashare_user_rsslist.html:7
+msgid "Mediashare items"
+msgstr ""
+
+#: pntemplates/mediashare_user_rsslist.html:9
+msgid "RSS feed for media items"
 msgstr ""
 
 #: pntemplates/mediashare_admin_plugins.html:9
@@ -1011,188 +1551,18 @@ msgid ""
 "the various ways you can add media to your albums."
 msgstr ""
 
-#: pntemplates/mediashare_edit_edititem.html:42
-msgid "Optional new media file"
+#: pntemplates/mediashare_admin_plugins.html:36
+msgid "Scan for plugins"
 msgstr ""
 
-#: pntemplates/mediashare_edit_edititem.html:45
-msgid ""
-"You may have to force a reload of the next page when replacing media item!"
-msgstr ""
-
-#: pntemplates/mediashare_edit_edititem.html:51
-#: pntemplates/mediashare_source_browser_view.html:21
-#: pntemplates/mediashare_source_zip_view.html:21
-msgid "Width"
-msgstr ""
-
-#: pntemplates/mediashare_edit_edititem.html:53
-#: pntemplates/mediashare_source_browser_view.html:23
-#: pntemplates/mediashare_source_zip_view.html:23
-msgid "Height"
-msgstr ""
-
-#: pntemplates/mediashare_edit_edititem.html:55
-#: pntemplates/mediashare_source_browser_view.html:25
-#: pntemplates/mediashare_source_zip_view.html:25
-msgid "Only required for video formats"
-msgstr ""
-
-#: pntemplates/Frontend/Standard/album.html:22
-#: pntemplates/Frontend/Lightbox/album.html:23
-msgid "View fullscreen"
-msgstr ""
-
-#: pntemplates/Frontend/Standard/album.html:44
-#: pntemplates/Frontend/Standard/slideshow_center.html:20
-#: pntemplates/Frontend/Lightbox/album.html:44
-#: pntemplates/Frontend/Lightbox/slideshow.html:32
-msgid "Previous"
-msgstr ""
-
-#: pntemplates/Frontend/Standard/album.html:45
-#: pntemplates/Frontend/Standard/slideshow_center.html:21
-#: pntemplates/Frontend/Lightbox/album.html:45
-#: pntemplates/Frontend/Lightbox/slideshow.html:34
-msgid "Next"
-msgstr ""
-
-#: pntemplates/Frontend/Standard/slideshow_center.html:27
-#: pntemplates/Frontend/Lightbox/slideshow.html:15
-#: pntemplates/Frontend/Lightbox/slideshow.html:33
-msgid "Stop"
-msgstr ""
-
-#: pntemplates/Frontend/Standard/slideshow_center.html:29
-msgid "Delay"
-msgstr ""
-
-#: pntemplates/Frontend/Standard/slideshow_center.html:38
-msgid "Sec"
-msgstr ""
-
-#: pntemplates/Frontend/Standard/slideshow_center.html:41
-#: pntemplates/Frontend/Lightbox/slideshow.html:27
-msgid "Quit"
-msgstr ""
-
-#: pntemplates/Frontend/Standard/slideshow.html:33
-#: pntemplates/mediashare_invitationtabs.html:19
-msgid "Back"
-msgstr ""
-
-#: pntemplates/Frontend/Lightbox/slideshow.html:16
-#: pntemplates/Frontend/Lightbox/slideshow.html:29
-msgid "Show smaller image"
-msgstr ""
-
-#: pntemplates/Frontend/Lightbox/slideshow.html:17
-msgid "Show original image"
-msgstr ""
-
-#: pntemplates/Frontend/Lightbox/slideshow.html:30
-msgid "Show title"
-msgstr ""
-
-#: pntemplates/Frontend/Lightbox/slideshow.html:54
-msgid "There are no media files in this album. Click here to return."
-msgstr ""
-
-#: pntemplates/mediashare_external_pasteitem.html:32
-msgid "Select format"
-msgstr ""
-
-#: pntemplates/mediashare_user_latest.html:7
-#, php-format
-msgid "There are %1$s albums available in all and %2$s media items."
-msgstr ""
-
-#: pntemplates/mediashare_user_latest.html:10
-#: pntemplates/mediashare_user_latest.html:61
-msgid "Latest media files"
-msgstr ""
-
-#: pntemplates/mediashare_user_latest.html:31
-#: pntemplates/mediashare_user_latest.html:62
-msgid "Latest albums"
-msgstr ""
-
-#: pntemplates/mediashare_user_latest.html:41
-msgid "Most active users"
-msgstr ""
-
-#: pntemplates/mediashare_browseicons_menu.html:21
-#: pntemplates/mediashare_invitationtabs.html:7
-msgid "Invite"
-msgstr ""
-
-#: pntemplates/mediashare_source_zip_uploadet.html:7
-#: pntemplates/mediashare_source_browser_uploadet.html:7
-msgid "Ok"
-msgstr ""
-
-#: pntemplates/mediashare_popupmenu_albumedit.html:3
-msgid "Browse album"
-msgstr ""
-
-#: pntemplates/mediashare_popupmenu_albumedit.html:6
-#: pntemplates/mediashare_edit_movealbum.html:3
-#: pntemplates/mediashare_edit_movealbum.html:8
-msgid "Move album"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_link.html:8
-msgid "Get invitation link"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_link.html:11
-msgid "Click on "
-msgstr ""
-
-#: pntemplates/mediashare_invitation_link.html:12
-msgid "Optional link name"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_link.html:14
-msgid "Get the link"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_link.html:16
-msgid "Here is your link:"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_link.html:19
-msgid "Now back to the album view"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_link.html:19
-msgid "or"
-msgstr ""
-
-#: pntemplates/mediashare_invitation_link.html:19
-msgid "the invitation list"
-msgstr ""
-
-#: pntemplates/mediashare_user_simpledisplay.html:4
-msgid "View album"
-msgstr ""
-
-#: pntemplates/mediashare_search_result.html:2
+#: pntemplates/mediashare_search_result.html:3
 msgid "item(s) found"
 msgstr ""
 
-#: pntemplates/mediashare_search_result.html:11
+#: pntemplates/mediashare_search_result.html:12
 msgid "Mediashare: Nothing matched your search"
 msgstr ""
 
-#: pntemplates/mediashare_edit_movealbum.html:22
-msgid "Move to album"
-msgstr ""
-
-#: pntemplates/mediashare_edit_view.html:18
-msgid "One level up"
-msgstr ""
-
-#: pntemplates/mediashare_edit_view.html:40
-msgid "Main item in album"
+#: pntemplates/mediashare_external_finditem.html:35
+msgid "Select item"
 msgstr ""
