@@ -4,13 +4,13 @@
 <rss version="0.91">
 
 <channel>
-<title>Mediashare albums</title>
-<link><!--[pngetbaseurl|escape:"html"]--></link>
-<description>RSS feed for albums</description>
-<webMaster><!--[pnconfiggetvar name="adminmail"|escape:"html"]--></webMaster>
+<title><!--[gt text='Mediashare albums']--></title>
+<link><!--[pngetbaseurl|escape:'html']--></link>
+<description><!--[gt text='RSS feed for albums']--></description>
+<webMaster><!--[pnconfiggetvar name="adminmail"|escape:'html']--></webMaster>
 
-<!--[foreach from=$albums item=album]-->
-<!--[pnmodurl modname=mediashare func=view aid=$album.id assign=albumUrl]-->
+<!--[foreach from=$albums item='album']-->
+<!--[pnmodurl modname='mediashare' func='view' aid=$album.id assign='albumUrl']-->
 <item>
 <title><!--[$album.title]--></title>
 <link><!--[$albumUrl|escape]--></link>

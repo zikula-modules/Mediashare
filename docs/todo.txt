@@ -22,8 +22,11 @@
 
   FIX OR DEPRECATE THE USE OF
 
+    Order the images in the styles dir, etc
     list ($dbconn) = pnDBGetConn();
     global $vars
     Rework the random block
     FIXME notes
     Javascript with fixed 'mediaattach/'
+    Move the extapp help to localized template?
+    missing param in: <p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%1$s">%1$s</a></p>

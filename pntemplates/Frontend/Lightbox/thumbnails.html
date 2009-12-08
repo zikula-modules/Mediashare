@@ -1,10 +1,13 @@
 <!--[* $Id$ *]-->
 <!--[mediashare_lightbox]-->
-<!--[include file=mediashare_include_greybox.html]-->
 <!--[pnpagesetvar name=title value=$album.title]-->
-<!--[include file="mediashare_viewheader.html" albumId=$album.id title=$album.title]-->
-<!--[include file="mediashare_browseicons.html"]-->
 <!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id assign=editAlbumUrl]-->
+
+<!--[include file=mediashare_include_greybox.html]-->
+
+<!--[include file="mediashare_viewheader.html" albumId=$album.id title=$album.title]-->
+
+<!--[include file="mediashare_browseicons.html"]-->
 
 <div class="mediashare-thumbnails">
 
@@ -35,10 +38,10 @@
         </div>
 
         <div class="author">
-            <!--[gt text="By"]--> <a href="<!--[pnmodurl modname=mediashare func=list uname=$ownerName]-->" title="<!--[gt text="Show items from this person"]-->"><!--[$ownerName]--></a>.
+            <!--[gt text='By']--> <a href="<!--[pnmodurl modname=mediashare func=list uname=$ownerName]-->" title="<!--[gt text='Show items from this person']-->"><!--[$ownerName]--></a>.
 
             <!--[if $album.hasKeywords > 0]-->
-            <!--[gt text="Keywords"]-->:
+            <!--[gt text='Keywords:']-->
             <!--[foreach from=$album.keywordsArray item=keyword]-->
             <a href="<!--[pnmodurl modname=mediashare func=list key=$keyword]-->"><!--[$keyword]--></a>
             <!--[/foreach]-->

@@ -16,7 +16,7 @@
     <!--[if $album.id != 1  &&  $access.hasParentAccess]-->
     <div class="mediashare-float" style="width: <!--[$album.thumbnailSize+40]-->px; height: <!--[$album.thumbnailSize+40]-->px">
         <!--[pnmodurl modname=mediashare type=edit func=view aid=$album.parentAlbumId assign=parentUrl]-->
-        <a href="<!--[$parentUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/album_up.gif" alt="<!--[gt text="One level up"]-->" /></a>
+        <a href="<!--[$parentUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/album_up.gif" alt="<!--[gt text='One level up']-->" /></a>
     </div>
     <!--[/if]-->
 
@@ -38,7 +38,7 @@
                         onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'"/>
                         <br /><input type="checkbox" name="selectedMediaId[]" value="<!--[$item.id]-->"/>
                         <!--[if $item.id == $album.mainMediaId]-->
-                        <br /><img src="modules/mediashare/pnimages/greendot.gif" title="<!--[gt text="Main item in album"]-->" />
+                        <br /><img src="modules/mediashare/pnimages/greendot.gif" title="<!--[gt text='Main item in album']-->" />
                         <!--[/if]-->
                     </div>
                 </td>

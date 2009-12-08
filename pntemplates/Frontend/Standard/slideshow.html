@@ -6,7 +6,7 @@
 
     <!--[if $mediaItem != null]-->
 
-    <iframe name="mediadisplay" id="mediadisplay" frameborder="0" marginwidth="0px" marginheight="0px" src="<!--[$centerUrl|escape:"html"]-->" height="75%"></iframe>
+    <iframe name="mediadisplay" id="mediadisplay" frameborder="0" marginwidth="0px" marginheight="0px" src="<!--[$centerUrl|escape:'html']-->" height="75%"></iframe>
 
     <br class="z-clearer" />
 
@@ -29,8 +29,8 @@
     </div>
 
     <!--[else]-->
-    <h1><!--[gt text="No media item found in this album"]--><br/>
-        <a href="<!--[$quitUrl]-->" target="_top"><!--[gt text="Back"]--></a>
+    <h1><!--[gt text='No media item found in this album']--><br/>
+        <a href="<!--[$quitUrl]-->" target="_top"><!--[gt text='Back']--></a>
     </h1>
     <!--[/if]-->
 

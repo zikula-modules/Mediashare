@@ -11,10 +11,10 @@
     Slideshow.AddItem(<!--[$item.id]-->, "<!--[mediashare_mediaUrl src=originalRef mediaItem=$item]-->", "<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->", "<!--[$item.originalMimeType]-->", "<!--[$item.html|escape:javascript]-->", "<!--[$item.title|escape:"javascript"]-->. <!--[$item.description|escape:"javascript"]-->");
     <!--[/foreach]-->
 
-    var pnmlStart   = "<!--[gt text="Start"]-->";
-    var pnmlStop    = "<!--[gt text="Stop"]-->";
-    var pnmlSmaller = "<!--[gt text="Show smaller image"]-->";
-    var pnmlLarger  = "<!--[gt text="Show original image"]-->";
+    var pnmlStart   = "<!--[gt text='Start']-->";
+    var pnmlStop    = "<!--[gt text='Stop']-->";
+    var pnmlSmaller = "<!--[gt text='Show smaller image']-->";
+    var pnmlLarger  = "<!--[gt text='Show original image']-->";
     var baseURL     = "<!--[pngetbaseurl]-->";
 //]]>
 </script>
@@ -24,14 +24,14 @@
 <div class="mediashare-slideshow">
   <div class="mediashare-menu">
     <div style="float: left" id="mediaCount"></div>
-    <div style="float: right"><a href="<!--[$quitUrl|escape:html]-->"><!--[gt text="Quit"]--></a></div>
+    <div style="float: right"><a href="<!--[$quitUrl|escape:html]-->"><!--[gt text='Quit']--></a></div>
     <div style="float: left">
-      <a href="#" onclick="Slideshow.HandleSize()" id="slideshowSizeAnchor"><!--[gt text="Show smaller image"]--></a>
-      | <label for="slideshowToggleTitle"><!--[gt text="Show title"]--></label> <input type="checkbox" checked="checked" id="slideshowToggleTitle" onclick="Slideshow.HandleToggleTitle()"/>
+      <a href="#" onclick="Slideshow.HandleSize()" id="slideshowSizeAnchor"><!--[gt text='Show smaller image']--></a>
+      | <label for="slideshowToggleTitle"><!--[gt text='Show title']--></label> <input type="checkbox" checked="checked" id="slideshowToggleTitle" onclick="Slideshow.HandleToggleTitle()"/>
     </div>
-    <a href="#" onclick="Slideshow.HandlePrevious()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/back.gif" alt="<!--[gt text="Previous"]-->"/></a>
-    <a href="#" onclick="Slideshow.HandleToggleStart()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/pause.gif" alt="<!--[gt text="Stop"]-->" id="slideshowStateImg"/></a>
-    <a href="#" onclick="Slideshow.HandleNext()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/forward.gif" alt="<!--[gt text="Next"]-->"/></a>
+    <a href="#" onclick="Slideshow.HandlePrevious()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/back.gif" alt="<!--[gt text='Previous']-->"/></a>
+    <a href="#" onclick="Slideshow.HandleToggleStart()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/pause.gif" alt="<!--[gt text='Stop']-->" id="slideshowStateImg"/></a>
+    <a href="#" onclick="Slideshow.HandleNext()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/forward.gif" alt="<!--[gt text='Next']-->"/></a>
     <a href="#" onclick="Slideshow.HandleAdjustSpeed(-1)">-</a>
     <span id="mediaTimeSpan">5</span>
     <a href="#" onclick="Slideshow.HandleAdjustSpeed(+1)">+</a>
@@ -51,6 +51,6 @@
 </script>
 <!--[else]-->
 <div class="mediashare-slideshow">
-  <a href="javascript:history.back()"><!--[gt text="There are no media files in this album. Click here to return."]--></a>
+  <a href="javascript:history.back()"><!--[gt text='There are no media files in this album. Click here to return.']--></a>
 </div>
 <!--[/if]-->

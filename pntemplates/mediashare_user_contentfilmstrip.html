@@ -1,12 +1,12 @@
 <!--[* $Id$ *]-->
 <!--[pnpageaddvar name="stylesheet" value="modules/mediashare/pnstyle/style.css"]-->
 
-<strong><!--[gt text="Album"]-->: <!--[$album.title]--></strong>
+<strong><!--[gt text="Album: %s" tag1=$album.title]--></strong>
 <div class="mediashare-filmstrip">
     <table>
         <tr>
-            <!--[foreach from=$mediaItems item=item]-->
-            <td><a href="<!--[pnmodurl modname=mediashare func=slideshow aid=$item.parentAlbumId mid=$item.id back=1]-->"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></a></td>
+            <!--[foreach from=$mediaItems item='item']-->
+            <td><a href="<!--[pnmodurl modname='mediashare' func='slideshow' aid=$item.parentAlbumId mid=$item.id back=1]-->"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></a></td>
             <!--[/foreach]-->
         </tr>
     </table>

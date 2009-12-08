@@ -2,9 +2,10 @@
 <h2><!--[$filterText]--></h2>
 
 <div class="mediashare mediashare-medialist pn-clearfix">
-
-    <p><a href="<!--[pnmodurl modname=mediashare func=list order=$order]-->" title="<!--[gt text="Show items from this album"]-->">
-    <!--[gt text="Remove filter (show all items)"]--></a></p>
+    <p>
+        <a href="<!--[pnmodurl modname=mediashare func=list order=$order]-->" title="<!--[gt text='Show items from this album']-->">
+        <!--[gt text="Remove filter (show all items)"]--></a>
+    </p>
 
     <!--[gt text="Sort by"]-->:
     <ul class="sortkeys">
@@ -15,7 +16,6 @@
     </ul>
 
     <!--[foreach from=$items item=item]-->
-
     <h3><!--[$item.media.title]--></h3>
 
     <a href="<!--[pnmodurl modname=mediashare func=browse aid=$item.album.id mid=$item.media.id]-->">
@@ -26,28 +26,26 @@
         <p><!--[$item.media.description]--></p>
         <!--[/if]-->
 
-        <!--[gt text="Album"]-->: <a href="<!--[pnmodurl modname=mediashare func=list aid=$item.album.id order=$order]-->" title="<!--[gt text="Show items from this album"]-->">
+        <!--[gt text="Album"]-->: <a href="<!--[pnmodurl modname=mediashare func=list aid=$item.album.id order=$order]-->" title="<!--[gt text='Show items from this album']-->">
         <!--[$item.album.title]--></a>.<br/>
 
         <!--[if $item.media.hasKeywords != 0]-->
-        <!--[gt text="Keywords"]-->:
-        <!--[foreach from=$item.media.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=$order]-->" title="<!--[gt text="Show items with this keyword"]-->"><!--[$keyword]--></a>
-        <!--[gt text="Subscribe to RSS feed for this keyword assign=keywordrss"]-->
+        <!--[gt text="Keywords:"]-->
+        <!--[foreach from=$item.media.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword order=$order]-->" title="<!--[gt text='Show items with this keyword']-->"><!--[$keyword]--></a>
+        <!--[gt text='Subscribe to RSS feed for this keyword' assign='keywordrss']-->
         <!--[mediashare_rss title="`$keyword`: $keywordrss" urlParam="key" urlValue=$keyword mode=text]-->
         <!--[/foreach]--><br/>
         <!--[/if]-->
 
         <!--[gt text="Added"]--> <!--[$item.media.createdDateRaw|pndate_format]-->
         <!--[gt text="By"]-->
-        <a href="<!--[pnmodurl modname=mediashare func=list uname=$item.media.ownerName order=$order]-->" title="<!--[gt text="Show items from this person"]-->">
+        <a href="<!--[pnmodurl modname=mediashare func=list uname=$item.media.ownerName order=$order]-->" title="<!--[gt text='Show items from this person']-->">
         <!--[mediashare_username userId=$item.media.ownerId]--></a>
         <!--[if isset($mediaItem)]-->
-        <!--[gt text="Subscribe to RSS feed for this person assign=personrss"]--><!--[mediashare_rss title="`$item.media.ownerName`: $personrss" urlParam="uname" urlValue=$mediaItem.ownerName mode=text]-->.
+        <!--[gt text='Subscribe to RSS feed for this person' assign='personrss']--><!--[mediashare_rss title="`$item.media.ownerName`: $personrss" urlParam="uname" urlValue=$mediaItem.ownerName mode=text]-->.
         <!--[/if]-->
     </div>
-
     <!--[/foreach]-->
-
 </div>
 
 <!--[pager show=page firstpos=$pos rowcount=$itemCount limit=5 posvar=pos shift=1]-->

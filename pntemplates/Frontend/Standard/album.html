@@ -1,13 +1,15 @@
 <!--[* $Id$ *]-->
 <script type="text/javascript" src="modules/mediashare/pnjavascript/view.js"></script>
 <!--[pnpagesetvar name=title value="`$album.title` :: `$mediaItem.title`"]-->
-<!--[include file="mediashare_viewheader.html" albumId=$album.id title=$album.title]-->
 <!--[pnmodurl modname=mediashare func=slideshow aid=$album.id back=1 assign=slideshowUrl]-->
 <!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id assign=editAlbumUrl]-->
 <!--[pnmodurl modname=mediashare type=edit func=edititem mid=$mediaItem.id back=browse assign=editItemUrl]-->
 <!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id assign=popupUrl]-->
 <!--[pnmodurl modname=mediashare func=browse aid=$album.id mid=$prevMediaId assign=prevUrl]-->
 <!--[pnmodurl modname=mediashare func=browse aid=$album.id mid=$nextMediaId assign=nextUrl]-->
+
+<!--[include file="mediashare_viewheader.html" albumId=$album.id title=$album.title]-->
+
 <!--[include file="mediashare_browseicons.html"]-->
 
 <div class="mediashare-album pn-clearfix">
@@ -19,13 +21,13 @@
         <br class="z-clearer" />
             <!--[if !$mediaItem.originalIsImage]-->
             <div class="mediashare-zoom">
-                <a href="<!--[$url|escape:'html']-->" ><!--[gt text="View fullscreen"]--></a>
+                <a href="<!--[$url|escape:'html']-->" ><!--[gt text='View fullscreen']--></a>
             </div>
             <!--[/if]-->
             <div style="width: <!--[$mediaItem.previewWidth]-->px;"><!--[$mediaItem.title]-->
                 <!--[if !empty($mediaItem.description)]--><span class="description"><!--[$mediaItem.description]--></span><!--[/if]-->
                 <!--[if $mediaItem.hasKeywords > 0]-->
-                <!--[gt text="Keywords"]-->:
+                <!--[gt text='Keywords:']-->
                 <!--[foreach from=$mediaItem.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname=mediashare func=list key=$keyword]-->"><!--[$keyword]--></a>
                 <!--[/foreach]-->
                 <!--[/if]-->
@@ -37,12 +39,11 @@
         <!--[/if]-->
 
         <div class="mediashare-data pn-clearfix">
-
             <!--[if $itemCount > 1]-->
             <div class="navigation">
                 [<!--[$mediaItemPos]-->/<!--[$itemCount]-->]
-                <a href="<!--[$prevUrl|escape]-->"><img src="modules/mediashare/pnimages/agt_back.gif" alt="<!--[gt text="Previous"]-->" /></a>
-                <a href="<!--[$nextUrl|escape]-->"><img src="modules/mediashare/pnimages/agt_forward.gif" alt="<!--[gt text="Next"]-->" /></a>
+                <a href="<!--[$prevUrl|escape]-->"><img src="modules/mediashare/pnimages/agt_back.gif" alt="<!--[gt text='Previous']-->" /></a>
+                <a href="<!--[$nextUrl|escape]-->"><img src="modules/mediashare/pnimages/agt_forward.gif" alt="<!--[gt text='Next']-->" /></a>
             </div>
             <!--[/if]-->
 
@@ -54,7 +55,7 @@
 
             <!--[mediashare_username userId=$album.ownerId assign=ownerName]-->
             <div class="author">
-                <!--[gt text="By"]--> <a href="<!--[pnmodurl modname=mediashare func=list uname=$ownerName]-->" title="<!--[gt text="Show items from this person"]-->"><!--[$ownerName]--></a>
+                <!--[gt text='By']--> <a href="<!--[pnmodurl modname=mediashare func=list uname=$ownerName]-->" title="<!--[gt text='Show items from this person']-->"><!--[$ownerName]--></a>
             </div>
 
             <div class="summary">
@@ -70,12 +71,11 @@
             <!--[/if]-->
 
             <!--[if $album.hasKeywords > 0]-->
-            <!--[gt text="Keywords"]-->:
+            <!--[gt text='Keywords:']-->
             <!--[foreach from=$album.keywordsArray item=keyword]-->
             <a href="<!--[pnmodurl modname=mediashare func=list key=$keyword]-->"><!--[$keyword]--></a>
             <!--[/foreach]-->
             <!--[/if]-->
-
         </div>
 
         <div class="mediashare-hooks">
@@ -83,7 +83,6 @@
         </div>
 
         <!--[include file="mediashare_subalbumlist.html" mode="view"]-->
-
     </div>
 
     <!--[include file="mediashare_viewfooter.html"]-->
