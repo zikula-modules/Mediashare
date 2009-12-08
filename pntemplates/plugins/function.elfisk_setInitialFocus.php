@@ -2,8 +2,10 @@
 
 function smarty_function_elfisk_setInitialFocus($params, &$smarty)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     if (!isset($params['inputId'])) {
-        $smarty->trigger_error('initialFocus: inputId parameter required');
+        $smarty->trigger_error(__('Missing [%1$s] in \'%2$s\'', array('inputId', 'elfisk_setInitialFocus'), $dom));
         return false;
     }
 

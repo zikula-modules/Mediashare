@@ -2,8 +2,11 @@
 
 function smarty_function_mediashare_breadcrumb($params, &$smarty)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     if (!isset($params['albumId'])) {
-        return $smarty->trigger_error('mediashare_breadcrumb: albumId parameter required');
+        $smarty->trigger_error(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'mediashare_breadcrumb'), $dom));
+        return false;
     }
 
     $albumId = (int)$params['albumId'];

@@ -2,12 +2,16 @@
 
 function smarty_function_mediashare_rss($params, $smarty)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     if (!isset($params['title'])) { 
-        return $smarty->trigger_error('mediashare_rss: title parameter required');
+        $smarty->trigger_error(__('Missing [%1$s] in \'%2$s\'', array('title', 'mediashare_rss'), $dom));
+        return false;
     }
 
-    if (!isset($params['urlParam'])  &&  !isset($params['urlValue'])) { 
-        return $smarty->trigger_error('mediashare_rss: urlParam and urlValue parameter required');
+    if (!isset($params['urlParam']) && !isset($params['urlValue'])) { 
+        $smarty->trigger_error(__('Missing [%1$s] in \'%2$s\'', array('urlParam & urlValue', 'mediashare_rss'), $dom));
+        return false;
     }
 
     $url = DataUtil::formatForDisplay(pnModUrl('mediashare', 'user', 'xmllist',

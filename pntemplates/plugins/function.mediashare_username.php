@@ -2,8 +2,11 @@
 
 function smarty_function_mediashare_username($params, &$smarty)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     if (!isset($params['userId'])) {
-        return $smarty->trigger_error('mediashare_username: userId parameter required');
+        $smarty->trigger_error(__('Missing [%1$s] in \'%2$s\'', array('userId', 'mediashare_username'), $dom));
+        return false;
     }
 
     if (mediashareAccessUserRealName()) {

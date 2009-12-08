@@ -22,8 +22,6 @@
 
   FIX OR DEPRECATE THE USE OF
 
-    (int)_$something remove blank (bool)
-    $smarty->trigger_error texts
     list ($dbconn) = pnDBGetConn();
     global $vars
     Docblocks format

@@ -2,8 +2,10 @@
 
 function smarty_function_elfisk_button($params, &$smarty)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     if (!isset($params['name'])) {
-        $smarty->trigger_error('button: name parameter required');
+        $smarty->trigger_error(__('Missing [%1$s] in \'%2$s\'', array('name', 'elfisk_button'), $dom));
         return false;
     }
 

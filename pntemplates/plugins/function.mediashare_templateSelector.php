@@ -13,13 +13,13 @@ function smarty_function_mediashare_templateSelector($params, &$smarty)
     }
 
     if (isset($params['onchange']) && $params['onchange']) {
-        $onChangeHtml = " onchange=\"$params[onchange]\"";
+        $onChangeHtml = ' onchange="'.$params['onchange'].'"';
     } else {
         $onChangeHtml = '';
     }
 
     if (isset($params['readonly']) && $params['readonly']) {
-        $readonlyHtml = " disabled=\"disabled\"";
+        $readonlyHtml = ' disabled="disabled"';
     } else {
         $readonlyHtml = '';
     }
@@ -37,7 +37,7 @@ function smarty_function_mediashare_templateSelector($params, &$smarty)
         $title = DataUtil::formatForDisplay($template['title']);
         $value = $template['title'];
 
-        $selectedHtml = (strcasecmp($value, $selectedTemplate)==0 ? ' selected="selected"' : '');
+        $selectedHtml = strcasecmp($value, $selectedTemplate) == 0 ? ' selected="selected"' : '';
 
         $html .= "<option value=\"$value\"$selectedHtml>$title</option>\n";
     }
