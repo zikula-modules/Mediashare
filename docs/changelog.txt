@@ -2,10 +2,14 @@
   CHANGELOG
 
 
+  Version 4.0.2
+  * Database queries executed by DBUtil
+  * Removed support for Photoshare import
+
+
   Version 4.0.1
   * Converted to Zikula 1.2 and Gettext
   * Code update to the Zikula API
-  * Database queries executed by DBUtil
 
 
   Version 4.0

@@ -21,7 +21,7 @@ function mediashare_vfs_db_dump()
         return LogUtil::registerPermissionError();
     }
 
-    // Some Photoshare users have reported this to make their setup work. The buffer may contain something
+    // Some Mediashare users have reported this to make their setup work. The buffer may contain something
     // due to a buggy template or block
     while (@ob_end_clean());
 

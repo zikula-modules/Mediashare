@@ -22,7 +22,6 @@ function mediashare_init()
                     'sources',
                     'access',
                     'setup',
-                    'photoshare',
                     'invitation');
 
     // Create the mediashare tables
@@ -212,6 +211,12 @@ function mediashare_upgrade($oldVersion)
         case '3.4.2':
         case '4.0.0':
         case '4.0.1':
+            $tables = DBUtil::metaTables();
+            $ptable = DBUtil::getLimitedTablename('mediashare_photoshare');
+            if (in_array($ptable, $tables) && !DBUtil::dropTable('mediashare_photoshare')) {
+                return '4.0.1';
+            }
+        case '4.0.2':
             // future
     }
 
@@ -318,7 +323,6 @@ function mediashare_delete()
                     'sources',
                     'access',
                     'setup',
-                    'photoshare',
                     'invitation');
 
     // Delete the mediashare tables

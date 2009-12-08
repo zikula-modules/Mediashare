@@ -26,4 +26,4 @@
     global $vars
     Rework the random block
     FIXME notes
-    Javascript with fixed 'mediaattach/' and photoshare stuff
+    Javascript with fixed 'mediaattach/'

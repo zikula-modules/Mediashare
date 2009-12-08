@@ -230,29 +230,10 @@ function mediashare_pntables()
         'storageLimit'  => 'I NOTNULL',
         'unitId'        => 'I NOTNULL'
     );
- 
-
-    // Photoshare conversion table
-    $pntable['mediashare_photoshare'] = DBUtil::getLimitedTablename('mediashare_photoshare');
-
-    $pntable['mediashare_photoshare_column'] = array(
-        'id'                     => 'ms_id',
-        'photoshareImageId'      => 'msph_photoshareimageid',
-        'mediashareThumbnailRef' => 'msph_mediasharethumbnailref',
-        'mediasharePreviewRef'   => 'msph_mediasharepreviewref',
-        'mediashareOriginalRef'  => 'msph_mediashareoriginalref'
-    );
-    $pntable['mediashare_photoshare_column'] = array(
-        'id'                     => 'I NOTNULL AUTOINCREMENT KEY',
-        'photoshareImageId'      => 'I NOTNULL',
-        'mediashareThumbnailRef' => 'C(50) NOTNULL',
-        'mediasharePreviewRef'   => 'C(50) NOTNULL',
-        'mediashareOriginalRef'  => 'C(50) NOTNULL'
-    );
 
 
     // Invitations table
-    $pntable['mediashare_invitation'] = DBUtil::getLimitedTablename('mediashare_photoshare');
+    $pntable['mediashare_invitation'] = DBUtil::getLimitedTablename('mediashare_invitation');
 
     $pntable['mediashare_invitation_column'] = array(
         'id'         => 'msinv_id',
@@ -266,7 +247,7 @@ function mediashare_pntables()
         'sender'     => 'msinv_sender',
         'expires'    => 'msinv_expires'
     );
-    $pntable['mediashare_invitation_column_ref'] = array(
+    $pntable['mediashare_invitation_column_def'] = array(
         'id'         => 'I NOTNULL AUTOINCREMENT KEY',
         'created'    => 'T NOTNULL',
         'albumId'    => 'I NOTNULL',
@@ -279,6 +260,10 @@ function mediashare_pntables()
         'expires'    => 'T'
     );
  
+
+    // Photoshare upgrade table (deprecated)
+    $pntable['mediashare_photoshare'] = DBUtil::getLimitedTablename('mediashare_photoshare');
+
 
     return $pntable;
 }

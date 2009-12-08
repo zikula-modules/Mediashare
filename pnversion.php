@@ -4,7 +4,7 @@
 $dom = ZLanguage::getModuleDomain('mediashare');
 
 $modversion['name']           = 'mediashare';
-$modversion['version']        = '4.0.1';
+$modversion['version']        = '4.0.2';
 $modversion['displayname']    = __('Mediashare', $dom);
 $modversion['description']    = __('Media sharing and gallery module', $dom);
 //! module url should be lowercase without spaces and different to displayname
