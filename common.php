@@ -192,7 +192,9 @@ function mediashareLoadLightbox()
     if (file_exists('javascript/ajax/prototype.js')) {
         // Use Zikula scripts if available
         $scripts = array('javascript/ajax/prototype.js',
-                         'javascript/ajax/scriptaculous.js?load=effects,dragdrop,builder',
+                         'javascript/ajax/scriptaculous.js?load=effects',
+                         'javascript/ajax/scriptaculous.js?load=dragdrop',
+                         'javascript/ajax/scriptaculous.js?load=builder',
                          'javascript/ajax/lightbox.js');
         PageUtil::addVar('stylesheet', 'javascript/ajax/lightbox/lightbox.css');
         PageUtil::addVar('javascript', $scripts);

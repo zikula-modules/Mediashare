@@ -224,7 +224,7 @@ function mediashare_user_slideshow($args)
         return false;
     }
 
-    $render->load_filter('output', 'pagevars');
+    $render->load_filter('output', 'pagevars_notcombined');
     if (pnConfigGetVar('shorturls')) {
         $render->load_filter('output', 'shorturls');
     }
