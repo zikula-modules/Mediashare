@@ -51,7 +51,7 @@ function mediashare_edit_view($args)
     }
 
     // Fetch subalbums
-    if (!($subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementEditSomething)))) {
+    if (($subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementEditSomething))) === false) {
         return false;
     }
 

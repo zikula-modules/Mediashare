@@ -42,7 +42,7 @@ function mediashare_user_browse($args)
     }
 
     // Fetch subalbums
-    if (!($subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething)))) {
+    if (($subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething))) === false) {
         return false;
     }
 
@@ -267,7 +267,7 @@ function mediashare_user_thumbnails($args)
     }
 
     // Fetch subalbums
-    if (!($subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething)))) {
+    if (($subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething))) === false) {
         return false;
     }
 
