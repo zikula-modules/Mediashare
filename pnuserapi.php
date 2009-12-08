@@ -710,6 +710,8 @@ function mediashare_userapi_getMediaItems($args)
 
 function mediashareGetMediaItemsData($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $albumId      = isset($args['albumId']) ? (int)$args['albumId'] : null;
     $mediaIdList  = isset($args['mediaIdList']) ? $args['mediaIdList'] : null;
     $enableEscape = isset($args['enableEscape']) ? $args['enableEscape'] : true;

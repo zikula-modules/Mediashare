@@ -9,7 +9,7 @@ function smarty_function_mediashare_mediaItem($params, &$smarty)
     $mediaBase = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
 
     // Check for absolute URLs returned by external apps.
-    $src = (substr($params['src'], 0, 4) == 'http') ? $params['src'] : pnGetBaseURL() . $mediaBase . htmlspecialchars($params['src']);
+    $src = (substr($params['src'], 0, 4) == 'http') ? $params['src'] : $mediaBase . htmlspecialchars($params['src']);
 
     $title       = isset($params['title']) ? $params['title'] : '';
     $id          = isset($params['id']) ? $params['id'] : null;
