@@ -8,7 +8,7 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
 
     $albumId = (int)$params['albumId'];
 
-    $mode = array_key_exists('mode',$params) ? $params['mode'] : 'view';
+    $mode = isset($params['mode']) ? $params['mode'] : 'view';
 
     $breadcrumb = pnModAPIFunc('mediashare', 'user', 'getAlbumBreadcrumb',
                                array('albumId' => $params['albumId']));
@@ -32,7 +32,7 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
 
     $result .= "</span>";
 
-    if (array_key_exists('assign', $params)) {
+    if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $result);
     }
 

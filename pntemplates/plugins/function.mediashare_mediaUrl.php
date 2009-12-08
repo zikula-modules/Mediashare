@@ -4,7 +4,7 @@ function smarty_function_mediashare_mediaUrl($params, &$smarty)
 {
     $result = pnModAPIFunc('mediashare', 'user', 'getMediaUrl', $params);
 
-    if (array_key_exists('assign', $params)) {
+    if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $result);
     }
 

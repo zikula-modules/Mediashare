@@ -4,28 +4,28 @@ function smarty_function_elfisk_upload($params, &$smarty)
 {
     $id = null;
     $idHtml = '';
-    if (array_key_exists('id', $params)) {
+    if (isset($params['id'])) {
         $id = $params['id'];
         $idHtml = " id=\"$id\"";
     }
 
     $nameHtml = '';
-    if (array_key_exists('name', $params)) {
+    if (isset($params['name'])) {
         $nameHtml = " name=\"$params[name]\"";
-    } else if (array_key_exists('id', $params)) {
+    } else if (isset($params['id'])) {
         $nameHtml = " name=\"$params[id]\"";
     }
 
     $styleHtml = elfisk_getStyleHtml($params);
 
     $text = '';
-    if (array_key_exists('text', $params)) {
+    if (isset($params['text'])) {
         $text = htmlspecialchars($params['text']);
     }
 
     $result = "<input type=\"file\"{$idHtml}{$nameHtml}{$styleHtml} value=\"$text\"/>";
 
-    if (array_key_exists('assign', $params)) {
+    if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $result);
     }
 

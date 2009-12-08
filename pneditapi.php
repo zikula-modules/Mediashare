@@ -464,7 +464,7 @@ function mediashare_editapi_addMediaItem(&$args)
         return false;
     }
 
-    if (!array_key_exists('ignoreSizeLimits', $args) || !$args['ignoreSizeLimits']) {
+    if (!isset($args['ignoreSizeLimits']) || !$args['ignoreSizeLimits']) {
         $fileSize = $args['fileSize'];
 
         if ($fileSize > $userInfo['mediaSizeLimitSingle']) {
@@ -562,7 +562,7 @@ function mediashare_editapi_addMediaItem(&$args)
 
     $previewResult[2]['fileRef'] = $result['originalFileRef'] = $originalFileRef;
 
-    if (!array_key_exists('useOriginal', $previewResult[1]) || !(bool) $previewResult[1]['useOriginal']) {
+    if (!isset($previewResult[1]['useOriginal']) || !(bool) $previewResult[1]['useOriginal']) {
         if (($previewFileRef = $vfsHandler->createFile($previewFilename, $previewResult[1])) === false) {
             $vfsHandler->deleteFile($thumbnailFileRef);
             @unlink($thumbnailFilename);
@@ -620,7 +620,7 @@ function mediashare_editapi_storeMediaItem(&$args)
     $mediaTable = $pntable['mediashare_media'];
     $mediaColumn = &$pntable['mediashare_media_column'];
 
-    if (!array_key_exists('ownerId', $args)) {
+    if (!isset($args['ownerId'])) {
         $args['ownerId'] = pnUserGetVar('uid');
     }
 

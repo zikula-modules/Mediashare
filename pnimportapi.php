@@ -37,7 +37,7 @@ function mediashareImportPhotoshareRec($photoshareFolderId, $mediashareAlbumId)
             $importedAlbums = unserialize($importedAlbums);
         }
 
-        if (!array_key_exists($folder['id'], $importedAlbums)) {
+        if (!isset($importedAlbums[$folder['id']])) {
             if (!($folderData = pnModAPIFunc('photoshare', 'user', 'get_folder_info', array('folderID' => $folder['id'])))) {
                 return LogUtil::registerError(photoshareErrorAPIGet());
             }
@@ -91,7 +91,7 @@ function mediashareImportPhotoshareImages($photoshareFolderId, $mediashareAlbumI
             $importedImages = unserialize($importedImages);
         }
 
-        if (!array_key_exists($image['id'], $importedImages)) {
+        if (!isset($importedImages[$image['id']])) {
             if (!($imageData = pnModAPIFunc('photoshare', 'show', 'get_image_info', array('imageID' => $image['id'])))) {
                 return LogUtil::registerError(photoshareErrorAPIGet());
             }

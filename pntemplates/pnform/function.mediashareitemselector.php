@@ -253,7 +253,7 @@ class mediashareItemSelector extends pnFormPlugin
             if ($this->group == null) {
                 $data[$this->dataField] = $this->selectedItemId;
             } else {
-                if (!array_key_exists($this->group, $data)) {
+                if (!isset($data[$this->group])) {
                     $data[$this->group] = array();
                 }
                 $data[$this->group][$this->dataField] = $this->selectedItemId;

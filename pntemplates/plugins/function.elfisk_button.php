@@ -11,10 +11,10 @@ function smarty_function_elfisk_button($params, &$smarty)
     $text = $params['text'];
 
     $onclickHtml = '';
-    if (array_key_exists('confirmMessage', $params)) {
+    if (isset($params['confirmMessage'])) {
         $msg = eval("return $params[confirmMessage];") . '?';
         $onclickHtml = " onclick=\"return confirm('$msg')\"";
-    } else if (array_key_exists('onclick', $params)) {
+    } else if (isset($params['onclick'])) {
         $onclickHtml = " onclick=\"return $params[onclick]\"";
     }
 

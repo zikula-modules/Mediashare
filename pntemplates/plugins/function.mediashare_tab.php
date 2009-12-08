@@ -7,7 +7,7 @@ function smarty_function_mediashare_tab($params, &$smarty)
 
     $result = "<li class=\"{$class}\">{$content}</li><li>&nbsp;</li>";
 
-    if (array_key_exists('assign', $params)) {
+    if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $result);
     }
 

@@ -708,10 +708,10 @@ function mediashare_userapi_getMediaItems($args)
 
 function mediashareGetMediaItemsData($args)
 {
-    $albumId      = (isset($args['albumId']) ? (int) $args['albumId'] : null);
-    $mediaIdList  = (isset($args['mediaIdList']) ? $args['mediaIdList'] : null);
-    $enableEscape = (isset($args['enableEscape']) ? $args['enableEscape'] : true);
-    $access       = (isset($args['access']) ? $args['access'] : mediashareAccessRequirementView);
+    $albumId      = isset($args['albumId']) ? (int) $args['albumId'] : null;
+    $mediaIdList  = isset($args['mediaIdList']) ? $args['mediaIdList'] : null;
+    $enableEscape = isset($args['enableEscape']) ? $args['enableEscape'] : true;
+    $access       = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
     $ownerId      = (int) pnUserGetVar('uid');
 
     list ($dbconn) = pnDBGetConn();
@@ -726,7 +726,7 @@ function mediashareGetMediaItemsData($args)
     $usersTable    = $pntable['users'];
     $usersColumn   = $pntable['users_column'];
 
-    if (array_key_exists('mediaId', $args)) {
+    if (isset($args['mediaId'])) {
         $mediaItemRestriction = "$mediaColumn[id] = " . (int) $mediaColumn['id'];
     } else {
         $mediaItemRestriction = '';

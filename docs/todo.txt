@@ -22,8 +22,7 @@
 
   FIX OR DEPRECATE THE USE OF
 
-    array_key_exists
-    (int)_$something remove blank
+    (int)_$something remove blank (bool)
     $smarty->trigger_error texts
     list ($dbconn) = pnDBGetConn();
     global $vars
