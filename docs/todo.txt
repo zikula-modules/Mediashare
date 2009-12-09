@@ -26,6 +26,7 @@
     // FIXME in pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
     createdDateRaw modifiedDateRaw
     check any is_null on mainMediaItem, it will not work because it's 0 now
+    recordPos & pageSize rename to startnum & numitems
     Order the images in the styles dir, etc
     global $vars
     Rework the random block

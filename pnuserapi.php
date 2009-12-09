@@ -255,6 +255,8 @@ function mediashare_userapi_getSubAlbumsData($args)
             $subalbums[$k]['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $subalbums[$k]['mainMediaId']));
         }
 
+        $subalbums[$k]['extappData'] = unserialize($subalbums[$k]['extappData']);
+
         mediashareAddKeywords($subalbums[$k]);
 
         mediashareEscapeAlbum($subalbums[$k], $albumId);
@@ -271,7 +273,6 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
     }
     $albumId = (int)$args['albumId'];
 
-    list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
     $albumsTable = $pntable['mediashare_albums'];
@@ -286,21 +287,13 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
                  WHERE album.$albumsColumn[id] = $albumId
               ORDER BY parentAlbum.$albumsColumn[nestedSetLeft]";
 
-    $result = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if (!$result) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getAlbumBreadcrumb', 'Could not retrieve the breadcrumb information.'), $dom));
     }
 
-    $breadcrumb = array();
-    for (; !$result->EOF; $result->MoveNext()) {
-        $breadcrumb[] = array('id'    => $result->fields[0],
-                              'title' => DataUtil::formatForDisplay($result->fields[1]));
-    }
-
-    $result->Close();
-
-    return $breadcrumb;
+    return DBUtil::marshallObjects($result, array('id', 'title'));
 }
 
 function mediashare_userapi_getAlbumList($args)
@@ -315,83 +308,37 @@ function mediashare_userapi_getAlbumList($args)
     $recordPos = isset($args['recordPos']) ? (int)$args['recordPos'] : 0;
     $pageSize  = isset($args['pageSize']) ? (int)$args['pageSize'] : 5;
     $access    = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
+    $includeMainItem = isset($args['includeMainItem']) ? (bool)$args['includeMainItem'] : true; // FIXME rework this to default false
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
-    $albumsTable  = $pntable['mediashare_albums'];
+    $pntable      = &pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
 
-    $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
-                                       array('access' => $access,
-                                             'field'  => $albumsColumn['id']));
-    if (!$accessibleAlbumSql) {
+    $where = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
+                          array('access' => $access,
+                                'field'  => $albumsColumn['id']));
+    if (!$where) {
         return false;
     }
 
-    $sql = "SELECT album.$albumsColumn[id],
-                   album.$albumsColumn[ownerId],
-                   UNIX_TIMESTAMP(album.$albumsColumn[createdDate]),
-                   UNIX_TIMESTAMP(album.$albumsColumn[modifiedDate]),
-                   album.$albumsColumn[title],
-                   album.$albumsColumn[summary],
-                   album.$albumsColumn[description],
-                   album.$albumsColumn[keywords],
-                   album.$albumsColumn[template],
-                   album.$albumsColumn[parentAlbumId],
-                   album.$albumsColumn[viewKey],
-                   album.$albumsColumn[mainMediaId],
-                   album.$albumsColumn[thumbnailSize],
-                   album.$albumsColumn[nestedSetLeft],
-                   album.$albumsColumn[nestedSetRight],
-                   album.$albumsColumn[nestedSetLevel],
-                   album.$albumsColumn[extappURL],
-                   album.$albumsColumn[extappData]
-              FROM $albumsTable album
-             WHERE ($accessibleAlbumSql)
-          ORDER BY album.$albumsColumn[createdDate] DESC";
+    $orderby = "$albumsColumn[createdDate] DESC";
+    $albums  = DBUtil::selectObjectArray('mediashare_albums', $where, $orderby, $recordPos, $pageSize, 'id');
 
-    $result = $dbconn->selectLimit($sql, $pageSize, $recordPos);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($albums === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getAlbumList', 'Could not retrieve the albums list.'), $dom));
     }
 
-    $albums = array();
-    for (; !$result->EOF; $result->MoveNext()) {
-        $album = array(
-            'id' => $result->fields[0],
-            'ownerId' => $result->fields[1],
-            'createdDate' => $result->fields[2],
-            'modifiedDate' => $result->fields[3],
-            'title' => $result->fields[4],
-            'summary' => $result->fields[5],
-            'description' => $result->fields[6],
-            'keywords' => $result->fields[7],
-            'template' => $result->fields[8],
-            'parentAlbumId' => $result->fields[9],
-            'viewKey' => $result->fields[10],
-            'mainMediaId' => ($result->fields[11] == null ? -1 : $result->fields[11]),
-            'thumbnailSize' => (int)$result->fields[12],
-            'nestedSetLeft' => (int)$result->fields[13],
-            'nestedSetRight' => (int)$result->fields[14],
-            'nestedSetLevel' => (int)$result->fields[15],
-            'extappURL' => $result->fields[16],
-            'extappData' => unserialize($result->fields[17]));
-
-        if ($album['mainMediaId'] > 0) {
-            $album['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
-        } else {
-            $album['mainMediaItem'] = null;
+    foreach (array_keys($albums) as $aid)
+    {
+        if ($includeMainItem && (int)$albums[$aid]['mainMediaId'] > 0) {
+            $subalbums[$aid]['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $albums[$aid]['mainMediaId']));
         }
-        mediashareAddKeywords($album);
 
-        mediashareEscapeAlbum($album, $album['id']);
+        $albums[$aid]['extappData'] = unserialize($albums[$aid]['extappData']);
 
-        $albums[] = $album;
+        mediashareAddKeywords($albums[$aid]);
+
+        mediashareEscapeAlbum($albums[$aid], $aid);
     }
-
-    $result->Close();
 
     return $albums;
 }
