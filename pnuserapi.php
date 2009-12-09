@@ -251,6 +251,7 @@ function mediashare_userapi_getSubAlbumsData($args)
 
     foreach (array_keys($subalbums) as $k)
     {
+        $subalbums[$k]['mainMediaItem'] = null;
         if ($includeMainItem && (int)$subalbums[$k]['mainMediaId'] > 0) {
             $subalbums[$k]['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $subalbums[$k]['mainMediaId']));
         }
@@ -332,6 +333,7 @@ function mediashare_userapi_getAlbumList($args)
 
     foreach (array_keys($albums) as $aid)
     {
+        $subalbums[$aid]['mainMediaItem'] = null;
         if ($includeMainItem && (int)$albums[$aid]['mainMediaId'] > 0) {
             $subalbums[$aid]['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $albums[$aid]['mainMediaId']));
         }

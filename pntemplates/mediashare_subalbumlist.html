@@ -10,13 +10,13 @@
     <table>
         <tr>
             <td>
-                <!--[if $subAlbum.mainMediaItem == null]-->
+                <!--[if !$subAlbum.mainMediaItem]-->
                 <a href="<!--[$viewUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/album.gif" alt="" id="album-<!--[$subAlbum.id]-->"/></a>
                 <!--[else]-->
                 <a href="<!--[$viewUrl|pnvarprepfordisplay]-->" class="album"><!--[mediashare_mediaItem src=$subAlbum.mainMediaItem.thumbnailRef title=$subAlbum.title mediaHandler=$subAlbum.mainMediaItem.mediaHandler isThumbnail="1" id="album-`$subAlbum.id`" class="thumbnail" width=$thumbnailSize]--></a>
                 <!--[/if]-->
             </td>
-            <!--[if $mode=="edit"]-->
+            <!--[if $mode eq 'edit']-->
             <td>
                 <div style="position: relative">
                     <img src="modules/mediashare/pnimages/imagemenuicon.gif"
