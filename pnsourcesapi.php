@@ -8,7 +8,6 @@ function mediashare_sourcesapi_getSources(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
     $sourcesTable  = $pntable['mediashare_sources'];
@@ -19,23 +18,13 @@ function mediashare_sourcesapi_getSources(&$args)
                    $sourcesColumn[formEncType]
               FROM $sourcesTable";
 
-    $result = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('sourcesapi.getSources', 'Could not retrieve the sources.'), $dom));
     }
 
-    $sources = array();
-
-    for (; !$result->EOF; $result->moveNext()) {
-        $sources[] = array('name' => $result->fields[0],
-                           'title' => $result->fields[1],
-                           'formEncType' => $result->fields[2]);
-    }
-
-    $result->close();
-
-    return $sources;
+    return DBUtil::marshallObjects($result, array('name', 'title', 'formEncType'));
 }
 
 function mediashare_sourcesapi_scanSources($args)
@@ -81,24 +70,18 @@ function mediashare_sourcesapi_addSource($args)
     $title = $args['title'];
     $name  = $args['name'];
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
-    $sourcesTable  = $pntable['mediashare_sources'];
+    $pntable       = &pnDBGetTables();
     $sourcesColumn = $pntable['mediashare_sources_column'];
 
-    $sql = "INSERT INTO $sourcesTable (
-            $sourcesColumn[name],
-            $sourcesColumn[title],
-			$sourcesColumn[formEncType])
-          VALUES (
-            '" . DataUtil::formatForStore($name) . "',
-            '" . DataUtil::formatForStore($title) . "',
-			'')";
+    $source = array(
+        'name'        => $name,
+        'title'       => $title,
+        'formEncType' => ''
+    );
 
-    $dbconn->execute($sql);
+    $result = DBUtil::insertObject($source, 'mediashare_sources', 'id');
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('sourcesapi.addSource', 'Could not add a source.'), $dom));
     }
 
