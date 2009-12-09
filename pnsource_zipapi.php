@@ -17,7 +17,7 @@ function mediashare_source_zipapi_addMediaItem($args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!isset($args['albumId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'source_zipapi.addMediaItem'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'source_zipapi.addMediaItem'), $dom));
     }
 
     $uploadFilename = $args['uploadFilename'];

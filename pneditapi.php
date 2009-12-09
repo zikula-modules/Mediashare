@@ -443,7 +443,7 @@ function mediashare_editapi_addMediaItem(&$args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!isset($args['albumId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'editapi.addMediaItem'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'editapi.addMediaItem'), $dom));
     }
 
     $albumId = (int)$args['albumId'];
@@ -526,7 +526,7 @@ function mediashare_editapi_addMediaItem(&$args)
     if (!pnModAPILoad('mediashare', $vfsHandlerApi)) {
         @unlink($thumbnailFilename);
         @unlink($previewFilename);
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array($vfsHandlerApi, 'editapi.addMediaItem'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array($vfsHandlerApi, 'editapi.addMediaItem'), $dom));
     }
 
     if (!($vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler'))) {
@@ -747,10 +747,10 @@ function mediashare_editapi_ensureMainAlbumId($args)
 
     // Argument check
     if (!isset($args['albumId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'editapi.ensureMainAlbumId'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'editapi.ensureMainAlbumId'), $dom));
     }
     if (!isset($args['mediaId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('mediaId', 'editapi.ensureMainAlbumId'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('mediaId', 'editapi.ensureMainAlbumId'), $dom));
     }
 
     $forceUpdate = isset($args['forceUpdate']) && $args['forceUpdate'];
@@ -944,7 +944,7 @@ function mediashare_editapi_updateItemFileUpload(&$args)
         @unlink($tmpFilename);
         @unlink($thumbnailFilename);
         @unlink($previewFilename);
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array($vfsHandlerApi, 'editapi.updateItemFileUpload'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array($vfsHandlerApi, 'editapi.updateItemFileUpload'), $dom));
     }
 
     $vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler');
@@ -1120,15 +1120,15 @@ function mediashare_editapi_deleteMediaItem(&$args)
     }
 
     if ($vfsHandler->deleteFile($item['thumbnailRef']) === false) {
-        return LogUtil::registerError(__("Failed to delete media item.", $dom).' '.__('%1$s\'s thumbnail (%2$s).', array($mediaId, $item['thumbnailId']), $dom));
+        return LogUtil::registerError(__f("Failed to delete media item.", $dom).' '.__('%1$s\'s thumbnail (%2$s).', array($mediaId, $item['thumbnailId']), $dom));
     }
 
     if ($vfsHandler->deleteFile($item['previewRef']) === false) {
-        return LogUtil::registerError(__("Failed to delete media item.", $dom).' '.__('%1$s\'s preview (%2$s).', array($mediaId, $item['previewId']), $dom));
+        return LogUtil::registerError(__f("Failed to delete media item.", $dom).' '.__('%1$s\'s preview (%2$s).', array($mediaId, $item['previewId']), $dom));
     }
 
     if ($vfsHandler->deleteFile($item['originalRef']) === false) {
-        return LogUtil::registerError(__("Failed to delete media item.", $dom).' '.__('%1$s\'s original (%2$s).', array($mediaId, $item['originalId']), $dom));
+        return LogUtil::registerError(__f("Failed to delete media item.", $dom).' '.__('%1$s\'s original (%2$s).', array($mediaId, $item['originalId']), $dom));
     }
 
     list ($dbconn) = pnDBGetConn();

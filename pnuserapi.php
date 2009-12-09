@@ -137,7 +137,7 @@ function mediashare_userapi_getAlbumData($args)
 
     // Argument check
     if (!isset($args['albumId']) || !is_integer($args['albumId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumData'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumData'), $dom));
     }
 
     $enableEscape   = isset($args['enableEscape']) ? $args['enableEscape'] : true;
@@ -194,7 +194,7 @@ function mediashare_userapi_getSubAlbumsData($args)
 
     // Argument check
     if (!isset($args['albumId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getSubAlbumsData'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getSubAlbumsData'), $dom));
     }
 
     $albumId         = (int)$args['albumId'];
@@ -271,7 +271,7 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
 {
     // Argument check
     if (!isset($args['albumId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumBreadcrumb'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumBreadcrumb'), $dom));
     }
     $albumId = (int)$args['albumId'];
 
@@ -359,7 +359,7 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
 
     // Argument check
     if (!isset($args['albumId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getFirstItemIdInAlbum'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getFirstItemIdInAlbum'), $dom));
     }
 
     $albumId = (int)$args['albumId'];
@@ -392,7 +392,7 @@ function mediashare_userapi_getMediaItem($args)
 
     // Argument check
     if (!isset($args['mediaId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('mediaId', 'userapi.getMediaItem'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('mediaId', 'userapi.getMediaItem'), $dom));
     }
 
     $enableEscape = isset($args['enableEscape']) ? $args['enableEscape'] : true;
@@ -486,7 +486,7 @@ function mediashare_userapi_getMediaUrl(&$args)
     } else if (isset($args['mediaItem'])) {
         $mediaItem = $args['mediaItem'];
     } else {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('mediaId / mediaItem', 'userapi.getMediaUrl'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('mediaId / mediaItem', 'userapi.getMediaUrl'), $dom));
     }
 
     $url = $mediaItem[$src];
@@ -512,7 +512,7 @@ function mediashare_userapi_getMediaItems($args)
 
     // Argument check
     if (!isset($args['albumId']) && !isset($args['mediaIdList'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId / mediaIdList', 'userapi.getMediaItems'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId / mediaIdList', 'userapi.getMediaItems'), $dom));
     }
 /*
     if (isset($args['albumId'])) {
@@ -563,7 +563,7 @@ function mediashareGetMediaItemsData($args)
         $albumRestriction .= " AND $accessibleAlbumSql";
 
     } else {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId / mediaIdList', 'userapi.mediashareGetMediaItemsData'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId / mediaIdList', 'userapi.mediashareGetMediaItemsData'), $dom));
     }
 
     $sql = "SELECT $mediaColumn[id],

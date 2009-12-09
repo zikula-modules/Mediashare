@@ -520,7 +520,7 @@ function mediashare_user_list($args)
             return false;
         }
         $albumOwner = pnUserGetVar('uname', $album['ownerId']);
-        $filterTexts[] = __('Items from %1$s\'s album \'%2$s\'', array(DataUtil::formatForDisplay($albumOwner), $album['title']), $dom);
+        $filterTexts[] = __f('Items from %1$s\'s album \'%2$s\'', array(DataUtil::formatForDisplay($albumOwner), $album['title']), $dom);
     }
 
     if (count($filterTexts)) {

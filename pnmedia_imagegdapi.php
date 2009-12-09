@@ -120,7 +120,7 @@ class mediashare_imageHandlerGD
         }
 
         if (!$im) {
-            return LogUtil::registerError(__('Unknown image format %1$s/%2$s.', array($mimeType, $filename), $dom));
+            return LogUtil::registerError(__f('Unknown image format %1$s/%2$s.', array($mimeType, $filename), $dom));
         }
 
         return $im;

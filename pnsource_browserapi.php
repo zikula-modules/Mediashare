@@ -17,7 +17,7 @@ function mediashare_source_browserapi_addMediaItem($args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!isset($args['albumId'])) {
-        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'source_browserapi.addMediaItem'), $dom));
+        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'source_browserapi.addMediaItem'), $dom));
     }
 
     $uploadFilename = $args['uploadFilename'];

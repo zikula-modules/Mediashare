@@ -92,7 +92,7 @@ function mediashare_mediahandlerapi_getHandlerInfo($args)
 
     $result = $dbconn->execute($sql);
 
-    $errormsg = __('Unable to locate media handler for \'%1$s\' (%2$s)', array($filename, $mimeType), $dom);
+    $errormsg = __f('Unable to locate media handler for \'%1$s\' (%2$s)', array($filename, $mimeType), $dom);
     if ($dbconn->errorNo() != 0) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('mediahandlerapi.getHandlerInfo', $errormsg), $dom));
     }

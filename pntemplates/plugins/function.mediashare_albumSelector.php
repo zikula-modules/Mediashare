@@ -6,7 +6,7 @@ function smarty_function_mediashare_albumSelector($params, &$smarty)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     if (!isset($params['albumId'])) { 
-        $smarty->trigger_error(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'mediashare_albumSelector'), $dom));
+        $smarty->trigger_error(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'mediashare_albumSelector'), $dom));
         return false;
     }
 
