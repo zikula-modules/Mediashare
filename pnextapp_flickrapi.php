@@ -77,8 +77,6 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
             'ownerId' => null,
             'createdDate' => null,
             'modifiedDate' => null,
-            'createdDateRaw' => null,
-            'modifiedDateRaw' => null,
             'title' => $image['title'],
             'keywordsArray' => array(),
             'hasKeywords' => false,

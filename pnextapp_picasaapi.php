@@ -70,8 +70,6 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
             'ownerId' => null,
             'createdDate' => null,
             'modifiedDate' => null,
-            'createdDateRaw' => null,
-            'modifiedDateRaw' => null,
             'title' => $image->getTitle(),
             'keywordsArray' => $image->getTags(),
             'hasKeywords' => count($image->getTags()) > 0,

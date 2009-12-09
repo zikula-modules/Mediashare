@@ -56,8 +56,6 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
             'ownerId' => null,
             'createdDate' => $image['LastUpdated'],
             'modifiedDate' => $image['LastUpdated'],
-            'createdDateRaw' => $image['LastUpdated'],
-            'modifiedDateRaw' => $image['LastUpdated'],
             'title' => empty($image['Caption']) ? $image['Key'] : $image['Caption'],
             'keywordsArray' => array(),
             'hasKeywords' => false,

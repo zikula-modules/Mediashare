@@ -37,7 +37,7 @@
         <!--[/foreach]--><br/>
         <!--[/if]-->
 
-        <!--[gt text="Added"]--> <!--[$item.media.createdDateRaw|pndate_format]-->
+        <!--[gt text="Added"]--> <!--[$item.media.createdDate|pndate_format]-->
         <!--[gt text="By"]-->
         <a href="<!--[pnmodurl modname=mediashare func=list uname=$item.media.ownerName order=$order]-->" title="<!--[gt text='Show items from this person']-->">
         <!--[mediashare_username userId=$item.media.ownerId]--></a>
