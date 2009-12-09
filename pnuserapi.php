@@ -140,9 +140,8 @@ function mediashare_userapi_getAlbumData($args)
         return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumData'), $dom));
     }
 
-    // FIXME unused params
     $enableEscape   = isset($args['enableEscape']) ? $args['enableEscape'] : true;
-    $countSubAlbums = isset($args['countSubAlbums']) ? $args['countSubAlbums'] : false;
+    $countSubAlbums = isset($args['countSubAlbums']) ? $args['countSubAlbums'] : false; // FIXME unused param
 
     $album = DBUtil::selectObjectByID('mediashare_albums', $args['albumId'], 'id');
 
@@ -206,6 +205,7 @@ function mediashare_userapi_getSubAlbumsData($args)
     $excludeAlbumId  = isset($args['excludeAlbumId']) ? (int)$args['excludeAlbumId'] : null;
     $onlyMine        = isset($args['onlyMine']) ? $args['onlyMine'] : false;
     $includeMainItem = isset($args['includeMainItem']) ? (bool)$args['includeMainItem'] : true; // FIXME rework this to default false
+    $enableEscape    = isset($args['enableEscape']) ? $args['enableEscape'] : true;
 
     $pntable      = &pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
@@ -259,7 +259,9 @@ function mediashare_userapi_getSubAlbumsData($args)
 
         mediashareAddKeywords($subalbums[$k]);
 
-        mediashareEscapeAlbum($subalbums[$k], $albumId);
+        if ($enableEscape) {
+            mediashareEscapeAlbum($subalbums[$k], $albumId);
+        }
     }
 
     return $subalbums;
@@ -275,7 +277,7 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
 
     $pntable = pnDBGetTables();
 
-    $albumsTable = $pntable['mediashare_albums'];
+    $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = $pntable['mediashare_albums_column'];
 
     $sql = "    SELECT parentAlbum.$albumsColumn[id],
@@ -305,10 +307,11 @@ function mediashare_userapi_getAlbumList($args)
 
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $recordPos = isset($args['recordPos']) ? (int)$args['recordPos'] : 0;
-    $pageSize  = isset($args['pageSize']) ? (int)$args['pageSize'] : 5;
-    $access    = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
+    $recordPos       = isset($args['recordPos']) ? (int)$args['recordPos'] : 0;
+    $pageSize        = isset($args['pageSize']) ? (int)$args['pageSize'] : 5;
+    $access          = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
     $includeMainItem = isset($args['includeMainItem']) ? (bool)$args['includeMainItem'] : true; // FIXME rework this to default false
+    $enableEscape    = isset($args['enableEscape']) ? $args['enableEscape'] : true;
 
     $pntable      = &pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
@@ -337,7 +340,9 @@ function mediashare_userapi_getAlbumList($args)
 
         mediashareAddKeywords($albums[$aid]);
 
-        mediashareEscapeAlbum($albums[$aid], $aid);
+        if ($enableEscape) {
+            mediashareEscapeAlbum($albums[$aid], $aid);
+        }
     }
 
     return $albums;
@@ -358,34 +363,19 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
     }
 
     $albumId = (int)$args['albumId'];
+    
+    $where   = "$mediaColumn[parentAlbumId] = '$albumId'";
+    $orderby = "$mediaColumn[createdDate] DESC";
+    $media   = DBUtil::selectFieldArray('mediashare_media', 'id', $where, $orderby);
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
-    $albumsTable  = $pntable['mediashare_albums'];
-    $albumsColumn = $pntable['mediashare_albums_column'];
-    $mediaTable   = $pntable['mediashare_media'];
-    $mediaColumn  = $pntable['mediashare_media_column'];
-
-    $sql = "SELECT $mediaColumn[id]
-              FROM $mediaTable
-             WHERE $mediaColumn[parentAlbumId] = $albumId
-          ORDER BY $mediaColumn[createdDate] DESC";
-
-    $result = $dbconn->selectLimit($sql, 1, 0);
-    if ($dbconn->errorNo() != 0) {
+    if ($media === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getFirstItemInAlbum', 'Could not retrieve the album information.'), $dom));
     }
-
-    if ($result->EOF) {
+    if (!$media) {
         return true;
     }
 
-    $id = $result->fields[0];
-
-    $result->close();
-
-    return $id;
+    return $media[0];
 }
 
 /**
@@ -405,12 +395,10 @@ function mediashare_userapi_getMediaItem($args)
         return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('mediaId', 'userapi.getMediaItem'), $dom));
     }
 
-    $enableEscape = (isset($args['enableEscape']) ? $args['enableEscape'] : true);
+    $enableEscape = isset($args['enableEscape']) ? $args['enableEscape'] : true;
 
     $mediaId = (int)$args['mediaId'];
-    $ownerId = (int)pnUserGetVar('uid');
 
-    list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
     $mediaTable    = $pntable['mediashare_media'];
@@ -453,57 +441,37 @@ function mediashare_userapi_getMediaItem($args)
                    ON preview.$storageColumn[id] = $mediaColumn[previewId]
          LEFT JOIN $storageTable original
                    ON original.$storageColumn[id] = $mediaColumn[originalId]
-             WHERE $mediaColumn[id] = $mediaId";
+             WHERE $mediaColumn[id] = '$mediaId'";
 
-    //echo "<pre>$sql</pre>\n"; exit(0);
-    $result = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getMediaItem', 'Could not retrieve the media information.'), $dom));
     }
     if ($result->EOF) {
         return null;
     }
 
-    $item = array(
-        'id' => $result->fields[0],
-        'ownerId' => $result->fields[1],
-        'createdDate' => $result->fields[2],
-        'modifiedDate' => $result->fields[3],
-        'title' => $result->fields[4],
-        'keywords' => $result->fields[5],
-        'description' => $result->fields[6],
-        'caption' => empty($result->fields[4]) ? $result->fields[6] : $result->fields[4],
-        'captionLong' => empty($result->fields[6]) ? $result->fields[4] : $result->fields[6],
-        'parentAlbumId' => $result->fields[7],
-        'position' => $result->fields[8],
-        'mediaHandler' => $result->fields[9],
-        'thumbnailId' => $result->fields[10],
-        'previewId' => $result->fields[11],
-        'originalId' => $result->fields[12],
-        'thumbnailRef' => $result->fields[13],
-        'thumbnailMimeType' => $result->fields[14],
-        'thumbnailWidth' => $result->fields[15],
-        'thumbnailHeight' => $result->fields[16],
-        'thumbnailBytes' => $result->fields[17],
-        'previewRef' => $result->fields[18],
-        'previewMimeType' => $result->fields[19],
-        'previewWidth' => $result->fields[20],
-        'previewHeight' => $result->fields[21],
-        'previewBytes' => $result->fields[22],
-        'originalRef' => $result->fields[23],
-        'originalMimeType' => $result->fields[24],
-        'originalWidth' => $result->fields[25],
-        'originalHeight' => $result->fields[26],
-        'originalBytes' => $result->fields[27],
-        'originalIsImage' => substr($result->fields[24], 0, 6) == 'image/');
+    $colArray = array('id', 'ownerId', 'createdDate', 'modifiedDate',
+                      'title', 'keywords', 'description',
+                      'parentAlbumId', 'position', 'mediaHandler',
+                      'thumbnailId', 'previewId', 'originalId',
+                      'thumbnailRef', 'thumbnailMimeType', 'thumbnailWidth', 'thumbnailHeight', 'thumbnailBytes',
+                      'previewRef', 'previewMimeType', 'previewWidth', 'previewHeight', 'previewBytes',
+                      'originalRef', 'originalMimeType', 'originalWidth', 'originalHeight', 'originalBytes');
+
+    list($item) = DBUtil::marshallObjects($result, $colArray);
+
+    // select post process
+    $item['caption'] = empty($item['title']) ? $item['description'] : $item['title'];
+    $item['captionLong'] = empty($item['description']) ? $item['title'] : $item['description'];
+    $item['originalIsImage'] = substr($item['originalMimeType'], 0, 6) == 'image/';
 
     if ($enableEscape) {
         mediashareEscapeItem($item, $item['id']);
     }
-    mediashareAddKeywords($item);
 
-    $result->Close();
+    mediashareAddKeywords($item);
 
     return $item;
 }
@@ -565,37 +533,27 @@ function mediashareGetMediaItemsData($args)
     $mediaIdList  = isset($args['mediaIdList']) ? $args['mediaIdList'] : null;
     $enableEscape = isset($args['enableEscape']) ? $args['enableEscape'] : true;
     $access       = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
-    $ownerId      = (int)pnUserGetVar('uid');
-
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $startnum     = isset($args['startnum']) ? (int)$args['startnum'] : -1;
+    $numitems     = isset($args['numitems']) ? (int)$args['numitems'] : -1;
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
+
+    $pntable = pnDBGetTables();
 
     $mediaTable    = $pntable['mediashare_media'];
     $mediaColumn   = $pntable['mediashare_media_column'];
     $storageTable  = $pntable['mediashare_mediastore'];
     $storageColumn = $pntable['mediashare_mediastore_column'];
-    $usersTable    = $pntable['users'];
-    $usersColumn   = $pntable['users_column'];
 
-    if (isset($args['mediaId'])) {
-        $mediaItemRestriction = "$mediaColumn[id] = " . (int)$mediaColumn['id'];
-    } else {
-        $mediaItemRestriction = '';
-    }
-
-    if ($albumId != null) {
+    if (!empty($albumId)) {
         $albumRestriction = "$mediaColumn[parentAlbumId] = $albumId";
-    } else {
-        for ($i = 0, $cou = count($mediaIdList); $i < $cou; ++$i) {
+
+    } elseif (!empty($mediaIdList) && is_array($mediaIdList)) {
+        foreach (array_keys($mediaIdList) as $i) {
             $mediaIdList[$i] = (int)$mediaIdList[$i];
         }
-        if ($cou > 0) {
-            $albumRestriction = "$mediaColumn[id] IN (" . implode(',', $mediaIdList) . ')';
-        } else {
-            $albumRestriction = '1=0';
-        }
+        $albumRestriction = "$mediaColumn[id] IN ('" . implode("','", $mediaIdList) . "')";
+
         $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                            array('access' => $access,
                                                  'field'  => "$mediaColumn[parentAlbumId]"));
@@ -603,6 +561,9 @@ function mediashareGetMediaItemsData($args)
             return false;
         }
         $albumRestriction .= " AND $accessibleAlbumSql";
+
+    } else {
+        return LogUtil::registerError(__('Missing [%1$s] in \'%2$s\'', array('albumId / mediaIdList', 'userapi.mediashareGetMediaItemsData'), $dom));
     }
 
     $sql = "SELECT $mediaColumn[id],
@@ -631,8 +592,7 @@ function mediashareGetMediaItemsData($args)
                    original.$storageColumn[mimeType],
                    original.$storageColumn[width],
                    original.$storageColumn[height],
-                   original.$storageColumn[bytes],
-                   $usersColumn[uname]
+                   original.$storageColumn[bytes]
               FROM $mediaTable
          LEFT JOIN $storageTable thumbnail
                 ON thumbnail.$storageColumn[id] = $mediaColumn[thumbnailId]
@@ -640,68 +600,40 @@ function mediashareGetMediaItemsData($args)
                 ON preview.$storageColumn[id] = $mediaColumn[previewId]
          LEFT JOIN $storageTable original
                 ON original.$storageColumn[id] = $mediaColumn[originalId]
-        INNER JOIN $usersTable
-                ON $usersColumn[uid] = $mediaColumn[ownerId]
              WHERE $albumRestriction
           ORDER BY $mediaColumn[position]";
 
-    if ($mediaItemRestriction != null) {
-        $sql .= " AND $mediaItemRestriction";
-    }
+    $result = DBUtil::executeSQL($sql, $startnum, $numitems);
 
-    $result = $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getMediaItems', 'Could not retrieve the media items.'), $dom));
     }
 
-    $items = array();
-    for (; !$result->EOF; $result->MoveNext()) {
-        $item = array(
-            'id' => $result->fields[0],
-            'isExternal' => false,
-            'ownerId' => $result->fields[1],
-            'createdDate' => $result->fields[2],
-            'modifiedDate' => $result->fields[3],
-            'createdDateRaw' => $result->fields[2],
-            'modifiedDateRaw' => $result->fields[3],
-            'title' => $result->fields[4],
-            'keywords' => $result->fields[5],
-            'description' => $result->fields[6],
-            'caption' => empty($result->fields[4]) ? $result->fields[6] : $result->fields[4],
-            'captionLong' => empty($result->fields[6]) ? $result->fields[4] : $result->fields[6],
-            'parentAlbumId' => $result->fields[7],
-            'mediaHandler' => $result->fields[8],
-            'thumbnailId' => $result->fields[9],
-            'previewId' => $result->fields[10],
-            'originalId' => $result->fields[11],
-            'thumbnailRef' => $result->fields[12],
-            'thumbnailMimeType' => $result->fields[13],
-            'thumbnailWidth' => $result->fields[14],
-            'thumbnailHeight' => $result->fields[15],
-            'thumbnailBytes' => $result->fields[16],
-            'previewRef' => $result->fields[17],
-            'previewMimeType' => $result->fields[18],
-            'previewWidth' => $result->fields[19],
-            'previewHeight' => $result->fields[20],
-            'previewBytes' => $result->fields[21],
-            'originalRef' => $result->fields[22],
-            'originalMimeType' => $result->fields[23],
-            'originalWidth' => $result->fields[24],
-            'originalHeight' => $result->fields[25],
-            'originalBytes' => $result->fields[26],
-            'originalIsImage' => substr($result->fields[23], 0, 6) == 'image/',
-            'ownerName' => $result->fields[27]);
+    $colArray = array('id', 'ownerId', 'createdDate', 'modifiedDate',
+                      'title', 'keywords', 'description',
+                      'parentAlbumId', 'mediaHandler',
+                      'thumbnailId', 'previewId', 'originalId',
+                      'thumbnailRef', 'thumbnailMimeType', 'thumbnailWidth', 'thumbnailHeight', 'thumbnailBytes',
+                      'previewRef', 'previewMimeType', 'previewWidth', 'previewHeight', 'previewBytes',
+                      'originalRef', 'originalMimeType', 'originalWidth', 'originalHeight', 'originalBytes',
+                      'ownerName');
 
-        mediashareAddKeywords($item);
+    $items = DBUtil::marshallObjects($result, $colArray);
+
+    // select post process
+    foreach (array_keys($items) as $id)
+    {
+        $items[$id]['isExternal'] = false;
+        $items[$id]['originalIsImage'] = substr($items[$id]['originalMimeType'], 0, 6) == 'image/';
+        $items[$id]['caption'] = empty($items[$id]['title']) ? $items[$id]['description'] : $items[$id]['title'];
+        $items[$id]['captionLong'] = empty($items[$id]['description']) ? $items[$id]['title'] : $items[$id]['description'];
+
+        mediashareAddKeywords($items[$id]);
 
         if ($enableEscape) {
-            mediashareEscapeItem($item, $item['id']);
+            mediashareEscapeItem($items[$id], $id);
         }
-        $items[] = $item;
     }
-
-    $result->Close();
 
     return $items;
 }
@@ -723,11 +655,10 @@ function mediashare_userapi_getRandomMediaItem($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $mode    = (isset($args['mode']) ? $args['mode'] : 'all');
     $albumId = (isset($args['albumId']) ? (int)$args['albumId'] : null);
+    $mode    = (isset($args['mode']) ? $args['mode'] : 'all');
     $latest  = (isset($args['latest']) ? $args['latest'] : false);
 
-    list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
     $albumsTable  = $pntable['mediashare_albums'];
@@ -748,53 +679,51 @@ function mediashare_userapi_getRandomMediaItem($args)
                  WHERE $accessibleAlbumSql
               ORDER BY $albumsColumn[createdDate] DESC";
 
-        $dbresult = $dbconn->selectLimit($sql, 1, 0);
-        if ($dbconn->errorNo() != 0) {
+        $result = DBUtil::executeSQL($sql, 0, 1);
+        if ($result === false) {
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
         }
-        $albumId = (int)$dbresult->fields[0];
-        $dbresult->Close();
 
-        $accessibleAlbumSql = "album.$albumsColumn[id] = $albumId";
+        $albumId = DBUtil::marshallObjects($result, array('id'));
+        $albumId = (int)$albumId[0]['id'];
+
+        $accessibleAlbumSql = "album.$albumsColumn[id] = '$albumId'";
     }
 
-    $restriction = $accessibleAlbumSql;
-
-    if ($mode == 'album' && $albumId != null) {
-        $restriction .= " AND album.$albumsColumn[id] = $albumId";
+    if ($mode == 'album' && !empty($albumId)) {
+        $accessibleAlbumSql .= " AND album.$albumsColumn[id] = '$albumId'";
     }
 
     $sql = "SELECT COUNT(*)
               FROM $mediaTable media
               JOIN $albumsTable album
                 ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
-             WHERE $restriction";
+             WHERE $accessibleAlbumSql";
 
-    $dbresult = $dbconn->execute($sql);
-    if ($dbconn->errorNo() != 0) {
+    $result = DBUtil::executeSQL($sql);
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
     }
 
-    $count = (int)$dbresult->fields[0];
-    $dbresult->Close();
+    $count = DBUtil::marshallObjects($result, array('count'));
+    $count = (int)$count[0]['count'];
 
     $sql = "SELECT media.$mediaColumn[id],
                    media.$mediaColumn[parentAlbumId]
               FROM $mediaTable media
               JOIN $albumsTable album
                 ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
-             WHERE $restriction";
+             WHERE $accessibleAlbumSql";
 
-    $dbresult = $dbconn->selectLimit($sql, 1, rand(0, $count - 1));
-    if ($dbconn->errorNo() != 0) {
+    $result = DBUtil::executeSQL($sql, rand(0, $count - 1), 1);
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
     }
 
-    $result = array('mediaId' => (int)$dbresult->fields[0], 'albumId' => (int)$dbresult->fields[1]);
+    $media = DBUtil::marshallObjects($result, array('mediaId', 'albumId'));
+    $media = $media[0];
 
-    $dbresult->Close();
-
-    return $result;
+    return $media;
 }
 
 /**
@@ -803,7 +732,12 @@ function mediashare_userapi_getRandomMediaItem($args)
 function mediashareEscapeAlbum(&$album, $albumId)
 {
     $album['title'] = DataUtil::formatForDisplay($album['title']);
-    list ($album['summary'], $album['description']) = pnModCallHooks('item', 'transform', "album-$albumId", array(pnVarPrepHTMLDisplay(isset($album['summary']) ? $album['summary'] : ''), pnVarPrepHTMLDisplay(isset($album['description']) ? $album['description'] : '')));
+    // summary and item and description transform hooks
+    $album['summary'] = isset($album['summary']) ? $album['summary'] : '';
+    $album['description'] = isset($album['description']) ? $album['description'] : '';
+    list ($album['summary'], $album['description']) = pnModCallHooks('item', 'transform', "album-$albumId",
+                                                                     array(DataUtil::formatForDisplayHTML($album['summary']),
+                                                                           DataUtil::formatForDisplayHTML($album['description'])));
 }
 
 function mediashareEscapeItem(&$item, $itemId)
@@ -811,7 +745,8 @@ function mediashareEscapeItem(&$item, $itemId)
     $item['title'] = DataUtil::formatForDisplay($item['title']);
     $item['caption'] = DataUtil::formatForDisplay($item['caption']);
     $item['captionLong'] = DataUtil::formatForDisplay($item['captionLong']);
-    list ($item['description']) = pnModCallHooks('item', 'transform', "item-$itemId", array(pnVarPrepHTMLDisplay($item['description'])));
+    list ($item['description']) = pnModCallHooks('item', 'transform', "item-$itemId",
+                                                 array(DataUtil::formatForDisplayHTML($item['description'])));
 }
 
 /**
@@ -819,42 +754,26 @@ function mediashareEscapeItem(&$item, $itemId)
  */
 function mediashare_userapi_getSettings($args)
 {
-    // TODO Improve
-	return array(
-        'tmpDirName' => pnModGetVar('mediashare', 'tmpDirName'),
-        'mediaDirName' => pnModGetVar('mediashare', 'mediaDirName'),
-        'thumbnailSize' => pnModGetVar('mediashare', 'thumbnailSize'),
-        'previewSize' => pnModGetVar('mediashare', 'previewSize'),
-        'mediaSizeLimitSingle' => (int)pnModGetVar('mediashare', 'mediaSizeLimitSingle') / 1000,
-        'mediaSizeLimitTotal' => (int)pnModGetVar('mediashare', 'mediaSizeLimitTotal') / 1000,
-        'allowTemplateOverride' => pnModGetVar('mediashare', 'allowTemplateOverride'),
-        'defaultAlbumTemplate' => pnModGetVar('mediashare', 'defaultAlbumTemplate'),
-        'enableSharpen' => pnModGetVar('mediashare', 'enableSharpen'),
-        'enableThumbnailStart' => pnModGetVar('mediashare', 'enableThumbnailStart'),
-        'flickrAPIKey' => pnModGetVar('mediashare', 'flickrAPIKey'),
-        'smugmugAPIKey' => pnModGetVar('mediashare', 'smugmugAPIKey'),
-        'photobucketAPIKey' => pnModGetVar('mediashare', 'photobucketAPIKey'),
-        'picasaAPIKey' => pnModGetVar('mediashare', 'picasaAPIKey'),
-        'vfs' => pnModGetVar('mediashare', 'vfs'));
+    $modvars = pnModGetVar('mediashare');
+    $modvars['mediaSizeLimitSingle'] = (int)$modvars['mediaSizeLimitSingle']/1000;
+    $modvars['mediaSizeLimitTotal'] = (int)$modvars['mediaSizeLimitTotal']/1000;
+    
+	return $modvars;
 }
 
+/**
+ * Set the module vars
+ * expect :tmpDirName, mediaDirName, thumbnailSize, previewSize
+ *         mediaSizeLimitSingle, mediaSizeLimitTotal
+ *         defaultAlbumTemplate, allowTemplateOverride
+ *         enableSharpen, enableThumbnailStart, vfs
+ *         flickrAPIKey, smugmugAPIKey, photobucketAPIKey, picasaAPIKey
+ */
 function mediashare_userapi_setSettings($args)
 {
-    pnModSetVar('mediashare', 'tmpDirName', $args['tmpDirName']);
-    pnModSetVar('mediashare', 'mediaDirName', $args['mediaDirName']);
-    pnModSetVar('mediashare', 'thumbnailSize', $args['thumbnailSize']);
-    pnModSetVar('mediashare', 'previewSize', $args['previewSize']);
-    pnModSetVar('mediashare', 'mediaSizeLimitSingle', (int)$args['mediaSizeLimitSingle'] * 1000);
-    pnModSetVar('mediashare', 'mediaSizeLimitTotal', (int)$args['mediaSizeLimitTotal'] * 1000);
-    pnModSetVar('mediashare', 'defaultAlbumTemplate', $args['defaultAlbumTemplate']);
-    pnModSetVar('mediashare', 'allowTemplateOverride', $args['allowTemplateOverride']);
-    pnModSetVar('mediashare', 'enableSharpen', $args['enableSharpen']);
-    pnModSetVar('mediashare', 'enableThumbnailStart', $args['enableThumbnailStart']);
-    pnModSetVar('mediashare', 'flickrAPIKey', $args['flickrAPIKey']);
-    pnModSetVar('mediashare', 'smugmugAPIKey', $args['smugmugAPIKey']);
-    pnModSetVar('mediashare', 'photobucketAPIKey', $args['photobucketAPIKey']);
-    pnModSetVar('mediashare', 'picasaAPIKey', $args['picasaAPIKey']);
-    pnModSetVar('mediashare', 'vfs', $args['vfs']);
+    $args['mediaSizeLimitSingle'] = (int)$args['mediaSizeLimitSingle'] * 1000;
+    $args['mediaSizeLimitTotal'] = (int)$args['mediaSizeLimitTotal'] * 1000;
+    pnModSetVars('mediashare', $args);
 }
 
 function mediashare_userapi_getRelativeMediadir()

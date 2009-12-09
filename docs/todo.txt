@@ -26,7 +26,10 @@
     // FIXME in pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
     createdDateRaw modifiedDateRaw
     check any is_null on mainMediaItem, it will not work because it's 0 now
+    deprecate $enableEscape and list the vars to formatForDisplay in the presentation layer
     recordPos & pageSize rename to startnum & numitems
+    mediashareGetMediaItemsData cannot pass a mediaId now. It uses another method.
+    mediashareGetMediaItemsData no longer obtains the UNAME, already have the UID in ownerId.
     Order the images in the styles dir, etc
     global $vars
     Rework the random block
@@ -34,3 +37,7 @@
     Javascript with fixed 'mediaattach/'
     Move the extapp help to localized template?
     missing param in: <p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%1$s">%1$s</a></p>
+
+    $startnum     = isset($args['startnum']) ? (int)$args['startnum'] : -1;
+    $numitems     = isset($args['numitems']) ? (int)$args['numitems'] : -1;
+    $sql, $startnum, $numitems
