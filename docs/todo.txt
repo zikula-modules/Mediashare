@@ -31,6 +31,7 @@
     recordPos & pageSize rename to startnum & numitems
     mediashareGetMediaItemsData cannot pass a mediaId now. It uses another method.
     mediashareGetMediaItemsData no longer obtains the UNAME, already have the UID in ownerId.
+    Review UNIX_TIMESTAMP fixed in the queries
     Order the images in the styles dir, etc
     global $vars
     Rework the random block
