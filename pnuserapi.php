@@ -790,14 +790,13 @@ function mediashare_userapi_getRelativeMediadir()
  */
 function mediashare_userapi_getMostActiveUsers($args)
 {
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
-    $mediaTable = $pntable['mediashare_media'];
+    $pntable = pnDBGetTables();
+
+    $mediaTable  = $pntable['mediashare_media'];
     $mediaColumn = $pntable['mediashare_media_column'];
-    $usersTable = $pntable['users'];
+    $usersTable  = $pntable['users'];
     $usersColumn = $pntable['users_column'];
 
     $sql = "SELECT $usersColumn[uname],
@@ -808,33 +807,24 @@ function mediashare_userapi_getMostActiveUsers($args)
           GROUP BY $usersColumn[uname]
           ORDER BY cou DESC";
 
-    $dbresult = $dbconn->selectLimit($sql, 10, 0);
+    $result = DBUtil::executeSQL($sql, 0, 10);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.mostActiveUsers', 'Could not retrieve the most active users.'), $dom));
     }
 
-    $result = array();
-    for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        $result[] = array('uname' => $dbresult->fields[0], 'count' => $dbresult->fields[1]);
-    }
-
-    $dbresult->close();
-
-    return $result;
+    // FIXME uname as index, count as values?
+    return DBUtil::marshallObjects($result, array('uname', 'count'));
 }
 
 function mediashare_userapi_getMostActiveKeywords($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
-    $mediaTable     = $pntable['mediashare_media'];
-    $mediaColumn    = $pntable['mediashare_media_column'];
+    $pntable = pnDBGetTables();
+
     $usersTable     = $pntable['users'];
     $usersColumn    = $pntable['users_column'];
     $keywordsTable  = $pntable['mediashare_keywords'];
@@ -846,20 +836,21 @@ function mediashare_userapi_getMostActiveKeywords($args)
           GROUP BY $keywordsColumn[keyword]
           ORDER BY $keywordsColumn[keyword]";
 
-    $dbresult = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.mostActiveKeywords', 'Could not retrieve the most active keywords.'), $dom));
     }
 
-    $result = array();
+    // FIXME keyword as index, count as values?
+    $keywords = DBUtil::marshallObjects($result, array('keyword', 'count'));
+
+    // counters calculation
     $max = -1;
     $min = -1;
     $total = 0;
-    for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        $keyword = array('keyword' => $dbresult->fields[0],
-                         'count'   => (int)$dbresult->fields[1]);
-
+    foreach ($keywords as $keyword)
+    {
         if ($keyword['count'] > $max) {
             $max = $keyword['count'];
         }
@@ -869,11 +860,7 @@ function mediashare_userapi_getMostActiveKeywords($args)
         }
 
         $total += (int)$keyword['count'];
-
-        $result[] = $keyword;
     }
-
-    $dbresult->close();
 
     $max -= $min;
 
@@ -883,17 +870,17 @@ function mediashare_userapi_getMostActiveKeywords($args)
         $min = 1 - 1/$total;
     }
 
-    foreach (array_keys($result) as $i) {
-        $result[$i]['percentage'] = (int)(($result[$i]['count'] - $min) * 100 / $max);
-        $result[$i]['fontsize']   = $result[$i]['percentage'] + 100;
+    foreach (array_keys($keywords) as $i)
+    {
+        $keywords[$i]['percentage'] = (int)(($keywords[$i]['count'] - $min) * 100 / $max);
+        $keywords[$i]['fontsize']   = $keywords[$i]['percentage'] + 100;
     }
 
-    return $result;
+    return $keywords;
 }
 
 function mediashare_userapi_getSummary($args)
 {
-    list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
     $mediaTable   = $pntable['mediashare_media'];
@@ -915,13 +902,14 @@ function mediashare_userapi_getSummary($args)
               FROM $mediaTable
              WHERE $accessibleAlbumSql";
 
-    $dbresult = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getSummary', 'Could not count the media table.'), $dom));
     }
 
-    $summary['mediaCount'] = (int)$dbresult->fields[0];
+    $count = DBUtil::marshallObjects($result, array('count'));
+    $summary['mediaCount'] = (int)$count[0]['count'];
 
     // Find accessible albums (album count)
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
@@ -935,13 +923,14 @@ function mediashare_userapi_getSummary($args)
               FROM $albumsTable
              WHERE $accessibleAlbumSql";
 
-    $dbresult = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getSummary', 'Could not count the albums table.'), $dom));
     }
 
-    $summary['albumCount'] = (int)$dbresult->fields[0];
+    $count = DBUtil::marshallObjects($result, array('count'));
+    $summary['albumCount'] = (int)$count[0]['count'];
 
     return $summary;
 }
@@ -954,10 +943,10 @@ function mediashareAddKeywords(&$item)
     $k = trim(mediashareStripKeywords($item['keywords']));
     if (strlen($k) > 0) {
         $item['keywordsArray'] = preg_split("/[\s,]+/", $k);
-        $item['hasKeywords'] = true;
+        $item['hasKeywords']   = true;
     } else {
         $item['keywordsArray'] = array();
-        $item['hasKeywords'] = false;
+        $item['hasKeywords']   = false;
     }
 }
 
@@ -965,7 +954,6 @@ function mediashare_userapi_getByKeyword($args)
 {
     $keyword = $args['keyword'];
 
-    list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
     $mediaTable     = $pntable['mediashare_media'];
@@ -1024,28 +1012,23 @@ function mediashare_userapi_getByKeyword($args)
                   AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'";
            //ORDER BY album.$albumsColumn[title], media.$mediaColumn[title]";
 
-    $dbresult = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result == false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getByKeyword', 'Could not retrieve the search results.'), $dom));
     }
 
-    $result = array();
-    for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        $result[] = array(
-            'albumId'      => $dbresult->fields[0],
-            'albumTitle'   => $dbresult->fields[1],
-            'mediaId'      => $dbresult->fields[2],
-            'mediaTitle'   => $dbresult->fields[3],
-            'caption'      => empty($dbresult->fields[3]) ? $dbresult->fields[4] : $dbresult->fields[3],
-            'captionLong'  => empty($dbresult->fields[4]) ? $dbresult->fields[3] : $dbresult->fields[4],
-            'mediaHandler' => $dbresult->fields[5],
-            'thumbnailRef' => $dbresult->fields[6]);
+    $colArray = array('albumId', 'albumTitle', 'mediaId', 'mediaTitle', 'captionLong', 'mediaHandler', 'thumbnailRef');
+
+    $media = DBUtil::marshallObjects($result, $colArray);
+
+    foreach (array_keys($media) as $k)
+    {
+        $media[$k]['caption'] = empty($media[$k]['mediaTitle']) ? $media[$k]['captionLong'] : $media[$k]['mediaTitle'];
+        $media[$k]['captionLong'] = empty($media[$k]['captionLong']) ? $media[$k]['mediaTitle'] : $media[$k]['captionLong'];
     }
 
-    $dbresult->close();
-
-    return $result;
+    return $media;
 }
 
 /**
@@ -1062,22 +1045,22 @@ function mediashare_userapi_getList($args)
     $orderDir  = isset($args['orderDir']) ? $args['orderDir'] : 'asc';
     $recordPos = isset($args['recordPos']) ? (int)$args['recordPos'] : 0;
     $pageSize  = isset($args['pageSize']) ? (int)$args['pageSize'] : 5;
-
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $enableEscape = isset($args['enableEscape']) ? $args['enableEscape'] : true; // FIXME to default false
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
+    $pntable = pnDBGetTables();
+
     $mediaTable     = $pntable['mediashare_media'];
     $mediaColumn    = $pntable['mediashare_media_column'];
-    $usersTable     = $pntable['users'];
-    $usersColumn    = $pntable['users_column'];
     $keywordsTable  = $pntable['mediashare_keywords'];
     $keywordsColumn = $pntable['mediashare_keywords_column'];
     $albumsTable    = $pntable['mediashare_albums'];
     $albumsColumn   = $pntable['mediashare_albums_column'];
     $storageTable   = $pntable['mediashare_mediastore'];
     $storageColumn  = $pntable['mediashare_mediastore_column'];
+    $usersTable     = $pntable['users'];
+    $usersColumn    = $pntable['users_column'];
 
     // Find accessible albums
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
@@ -1091,13 +1074,14 @@ function mediashare_userapi_getList($args)
     $restriction = array();
     $join = array();
 
-    if ($uname != null) {
+    if (!empty($uname)) {
         $restriction[] = "$usersColumn[uname] = '" . DataUtil::formatForStore($uname) . "'";
-        //$join[]      = "INNER JOIN $usersTable ON $usersColumn[uid] = media.$mediaColumn[ownerId]";
+        $join[] = "INNER JOIN $usersTable
+                           ON $usersColumn[uid] = media.$mediaColumn[ownerId]";
     }
 
-    if ($albumId != null) {
-        $restriction[] = "album.$albumsColumn[id] = " . (int)$albumId;
+    if (!empty($albumId)) {
+        $restriction[] = "album.$albumsColumn[id] = '". (int)$albumId ."'";
     }
 
     $orderKey = 'title';
@@ -1105,19 +1089,18 @@ function mediashare_userapi_getList($args)
         $orderKey = $order;
     }
 
-    $orderDir = ($orderDir == 'desc' ? 'desc' : 'asc');
+    $orderDir = strtolower($orderDir) == 'desc' ? 'DESC' : 'ASC';
 
-    $restrictionSql = (count($restriction) > 0 ? ' AND ' . implode(' AND ', $restriction) : '');
-    $joinSql        = (count($join) > 0 ? implode(' ', $join) : '');
+    $restrictionSql = count($restriction) > 0 ? ' AND ' . implode(' AND ', $restriction) : '';
+    $joinSql        = count($join) > 0 ? implode(' ', $join) : '';
 
-    if ($keyword != null) {
+    if (!empty($keyword)) {
         $sql = "(
                    SELECT album.$albumsColumn[id],
                           album.$albumsColumn[title],
                           album.$albumsColumn[keywords],
                           media.$mediaColumn[id],
                           media.$mediaColumn[ownerId],
-                          $usersColumn[uname] AS uname,
                           UNIX_TIMESTAMP(media.$mediaColumn[createdDate]) AS created,
                           UNIX_TIMESTAMP(media.$mediaColumn[modifiedDate]) AS modified,
                           media.$mediaColumn[title] AS title,
@@ -1148,8 +1131,6 @@ function mediashare_userapi_getList($args)
                        ON preview.$storageColumn[id] = $mediaColumn[previewId]
                 LEFT JOIN $storageTable original
                        ON original.$storageColumn[id] = $mediaColumn[originalId]
-               INNER JOIN $usersTable
-                       ON $usersColumn[uid] = media.$mediaColumn[ownerId]
                           $joinSql
                     WHERE ($accessibleAlbumSql)
                       AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
@@ -1164,7 +1145,6 @@ function mediashare_userapi_getList($args)
                           album.$albumsColumn[keywords],
                           media.$mediaColumn[id],
                           media.$mediaColumn[ownerId],
-                          $usersColumn[uname],
                           UNIX_TIMESTAMP(media.$mediaColumn[createdDate]),
                           UNIX_TIMESTAMP(media.$mediaColumn[modifiedDate]),
                           media.$mediaColumn[title],
@@ -1195,8 +1175,6 @@ function mediashare_userapi_getList($args)
                        ON preview.$storageColumn[id] = $mediaColumn[previewId]
                 LEFT JOIN $storageTable original
                        ON original.$storageColumn[id] = $mediaColumn[originalId]
-               INNER JOIN $usersTable
-                       ON $usersColumn[uid] = media.$mediaColumn[ownerId]
                           $joinSql
                     WHERE ($accessibleAlbumSql)
                       AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
@@ -1210,7 +1188,6 @@ function mediashare_userapi_getList($args)
                           album.$albumsColumn[keywords],
                           media.$mediaColumn[id],
                           media.$mediaColumn[ownerId],
-                          $usersColumn[uname] AS uname,
                           UNIX_TIMESTAMP(media.$mediaColumn[createdDate]) AS created,
                           UNIX_TIMESTAMP(media.$mediaColumn[modifiedDate]) AS modified,
                           media.$mediaColumn[title] AS title,
@@ -1238,62 +1215,58 @@ function mediashare_userapi_getList($args)
                        ON preview.$storageColumn[id] = $mediaColumn[previewId]
                 LEFT JOIN $storageTable original
                        ON original.$storageColumn[id] = $mediaColumn[originalId]
-               INNER JOIN $usersTable
-                       ON $usersColumn[uid] = media.$mediaColumn[ownerId]
                           $joinSql
                     WHERE ($accessibleAlbumSql)
                           $restrictionSql
                  ORDER BY $orderKey $orderDir";
     }
 
-    $dbresult = $dbconn->selectLimit($sql, $pageSize, $recordPos);
+    $result = DBUtil::executeSQL($sql, $recordPos, $pageSize);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getList', 'Could not retrieve the media list.'), $dom));
     }
 
+    $colArray = array('albumId', 'albumTitle', 'albumKeywords',
+                      'id', 'ownerId', 'createdDate', 'modifiedDate',
+                      'title', 'keywords', 'description', 'mediaHandler',
+                      'position', 'thumbnailRef',
+                      'previewRef', 'previewMimeType', 'previewWidth', 'previewHeight', 'previewBytes',
+                      'originalRef', 'originalMimeType', 'originalWidth', 'originalHeight', 'originalBytes');
+
+    $media = DBUtil::marshallObjects($result, $colArray);
+
     $result = array();
-    for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        $album = array('id' => $dbresult->fields[0], 'title' => $dbresult->fields[1], 'keywords' => $dbresult->fields[2]);
+    foreach (array_keys($media) as $k)
+    {
+        // build the album
+        $album = array('id' => $media[$k]['albumId'],
+                       'title' => $media[$k]['albumTitle'],
+                       'keywords' => $media[$k]['albumKeywords']);
 
         mediashareAddKeywords($album);
 
-        $media = array(
-            'id' => $dbresult->fields[3],
-            'ownerId' => $dbresult->fields[4],
-            'ownerName' => $dbresult->fields[5],
-            'createdDate' => $dbresult->fields[6],
-            'modifiedDate' => $dbresult->fields[7],
-            'createdDateRaw' => $dbresult->fields[6],
-            'modifiedDateRaw' => $dbresult->fields[7],
-            'title' => $dbresult->fields[8],
-            'keywords' => $dbresult->fields[9],
-            'description' => $dbresult->fields[10],
-            'caption' => empty($dbresult->fields[8]) ? $dbresult->fields[10] : $dbresult->fields[8],
-            'captionLong' => empty($dbresult->fields[10]) ? $dbresult->fields[8] : $dbresult->fields[10],
-            'mediaHandler' => $dbresult->fields[11],
-            'thumbnailRef' => $dbresult->fields[13],
-            'previewRef' => $dbresult->fields[14],
-            'previewMimeType' => $dbresult->fields[15],
-            'previewWidth' => $dbresult->fields[16],
-            'previewHeight' => $dbresult->fields[17],
-            'previewBytes' => $dbresult->fields[18],
-            'originalRef' => $dbresult->fields[19],
-            'originalMimeType' => $dbresult->fields[20],
-            'originalWidth' => $dbresult->fields[21],
-            'originalHeight' => $dbresult->fields[22],
-            'originalBytes' => $dbresult->fields[23],
-            'originalIsImage' => substr($dbresult->fields[20], 0, 6) == 'image/');
+        // remove the album data
+        unset($media[$k]['albumId']);
+        unset($media[$k]['albumTitle']);
+        unset($media[$k]['albumKeywords']);
 
-        mediashareAddKeywords($media);
+        // media data post process
+        unset($media[$k]['position']);
+        $media[$k]['caption'] = empty($media[$k]['title']) ? $media[$k]['description'] : $media[$k]['title'];
+        $media[$k]['captionLong'] = empty($media[$k]['description']) ? $media[$k]['title'] : $media[$k]['description'];
+        $media[$k]['originalIsImage'] = substr($media[$k]['originalMimeType'], 0, 6) == 'image/';
 
-        mediashareEscapeAlbum($album, $album['id']);
-        mediashareEscapeItem($media, $media['id']);
+        mediashareAddKeywords($media[$k]);
 
-        $result[] = array('album' => $album, 'media' => $media);
+        if ($enableEscape) {
+            mediashareEscapeAlbum($album, $album['id']);
+            mediashareEscapeItem($media[$k], $media[$k]['id']);
+        }
+        
+        $result[] = array('album' => $album,
+                          'media' => $media[$k]);
     }
-
-    $dbresult->close();
 
     return $result;
 }
@@ -1304,10 +1277,9 @@ function mediashare_userapi_getListCount($args)
     $uname = isset($args['uname']) ? $args['uname'] : null;
     $albumId = $args['albumId'];
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
-
     pnModDBInfoLoad('User'); // Ensure DB table info is available
+
+    $pntable = pnDBGetTables();
 
     $mediaTable     = $pntable['mediashare_media'];
     $mediaColumn    = $pntable['mediashare_media_column'];
@@ -1332,7 +1304,8 @@ function mediashare_userapi_getListCount($args)
 
     if ($uname != null) {
         $restriction[] = "$usersColumn[uname] = '" . DataUtil::formatForStore($uname) . "'";
-        //$join[] = "INNER JOIN $usersTable ON $usersColumn[uid] = media.$mediaColumn[ownerId]";
+        $join[] = "INNER JOIN $usersTable
+                           ON $usersColumn[uid] = media.$mediaColumn[ownerId]";
     }
 
     if ($albumId != null) {
@@ -1344,63 +1317,62 @@ function mediashare_userapi_getListCount($args)
 
     if ($keyword != null) {
         $sql = "SELECT COUNT(*)
-            FROM $keywordsTable keyword
+                  FROM $keywordsTable keyword
             INNER JOIN $mediaTable media
-                  ON     media.$mediaColumn[id] = keyword.$keywordsColumn[itemId]
-                     AND keyword.$keywordsColumn[type] = 'media'
+                    ON media.$mediaColumn[id] = keyword.$keywordsColumn[itemId]
+                   AND keyword.$keywordsColumn[type] = 'media'
             INNER JOIN $usersTable
-                  ON $usersColumn[uid] = media.$mediaColumn[ownerId]
+                    ON $usersColumn[uid] = media.$mediaColumn[ownerId]
             INNER JOIN $albumsTable album
-                  ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
-            $joinSql
-            WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
-                  $restrictionSql";
+                    ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
+                       $joinSql
+                 WHERE ($accessibleAlbumSql)
+                   AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
+                       $restrictionSql";
 
         $sql2 = "SELECT COUNT(*)
-             FROM $keywordsTable keyword
+                   FROM $keywordsTable keyword
              INNER JOIN $albumsTable album
-                   ON     album.$albumsColumn[id] = keyword.$keywordsColumn[itemId]
-                      AND keyword.$keywordsColumn[type] = 'album'
+                     ON album.$albumsColumn[id] = keyword.$keywordsColumn[itemId]
+                    AND keyword.$keywordsColumn[type] = 'album'
              INNER JOIN $mediaTable media
-                  ON media.$mediaColumn[id] = album.$albumsColumn[mainMediaId]
+                     ON media.$mediaColumn[id] = album.$albumsColumn[mainMediaId]
              INNER JOIN $usersTable
-                   ON $usersColumn[uid] = media.$mediaColumn[ownerId]
-             $joinSql
-             WHERE ($accessibleAlbumSql) AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
-                   $restrictionSql";
+                     ON $usersColumn[uid] = media.$mediaColumn[ownerId]
+                        $joinSql
+                  WHERE ($accessibleAlbumSql)
+                    AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
+                        $restrictionSql";
     } else {
         $sql = "SELECT COUNT(*)
-            FROM $mediaTable media
+                  FROM $mediaTable media
             INNER JOIN $usersTable
-                  ON $usersColumn[uid] = media.$mediaColumn[ownerId]
+                    ON $usersColumn[uid] = media.$mediaColumn[ownerId]
             INNER JOIN $albumsTable album
-                  ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
-            $joinSql
-            WHERE ($accessibleAlbumSql)
-                  $restrictionSql";
+                    ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
+                       $joinSql
+                 WHERE ($accessibleAlbumSql)
+                       $restrictionSql";
 
         $sql2 = null;
     }
 
-    //echo "<pre>$sql</pre>\n"; exit(0);
-    $dbresult = $dbconn->execute($sql);
-    if ($dbconn->errorNo() != 0) {
+    $result = DBUtil::executeSQL($sql);
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
     }
 
-    $count = (int)$dbresult->fields[0];
-
-    $dbresult->close();
+    $result = DBUtil::marshallObjects($result, array('count'));
+    $count  = (int)$result[0]['count'];
 
     if ($sql2 != null) {
-        $dbresult = $dbconn->execute($sql2);
-        if ($dbconn->errorNo() != 0) {
-            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
+        $result = DBUtil::executeSQL($sql2);
+        if ($result === false) {
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getListCount', 'Could not retrieve the second list count.'), $dom));
         }
 
-        $count += (int)$dbresult->fields[0];
-
-        $dbresult->close();
+        $result = DBUtil::marshallObjects($result, array('count'));
+        $count += (int)$result[0]['count'];
     }
 
     return $count;
@@ -1416,7 +1388,6 @@ function mediashare_userapi_search($args)
     $itemIndex = (int)$args['itemIndex'];
     $pageSize = (int)$args['pageSize'];
 
-    list ($dbconn) = pnDBGetConn();
     $pntable = pnDBGetTables();
 
     $mediaTable   = $pntable['mediashare_media'];
@@ -1436,13 +1407,15 @@ function mediashare_userapi_search($args)
     }
 
     // Combine keywords to SQL restriction
-    $restriction = '';
-    foreach ($words as $word) {
-        if ($restriction != '') {
-            $restriction .= ($match == 'AND' ? ' AND ' : ' OR ');
-        }
-        $restriction .= "(media.$mediaColumn[title] LIKE '%" . DataUtil::formatForStore($word) . "%' OR " . "media.$mediaColumn[description] LIKE '%" . DataUtil::formatForStore($word) . "%' OR " . "media.$mediaColumn[keywords] LIKE '%" . DataUtil::formatForStore($word) . "%')";
+    $restriction = array();
+    foreach ($words as $word)
+    {
+        $word = DataUtil::formatForStore($word);
+        $restriction[] = "  (media.$mediaColumn[title] LIKE '%$word%'
+                          OR media.$mediaColumn[description] LIKE '%$word%'
+                          OR media.$mediaColumn[keywords] LIKE '%$word%')";
     }
+    $restriction = implode(($match == 'AND' ? ' AND ' : ' OR '), $restriction);
 
     // Find accessible albums
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
@@ -1463,33 +1436,24 @@ function mediashare_userapi_search($args)
              WHERE ($accessibleAlbumSql) AND $restriction
           ORDER BY album.$albumsColumn[title], media.$mediaColumn[title]";
 
-    $dbresult = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql, $itemIndex, $pageSize);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.search', 'Could not retrieve the search results.'), $dom));
     }
 
-    $result = array();
-    $i = 0;
-    $rowStart = $itemIndex;
-    $rowEnd = $itemIndex + $pageSize;
-    for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        if ($i >= $rowStart && $i < $rowEnd) {
-            $result[] = array(
-                'albumId' => $dbresult->fields[0],
-                'albumTitle' => $dbresult->fields[1],
-                'mediaId' => $dbresult->fields[2],
-                'mediaTitle' => $dbresult->fields[3],
-                'mediaCaption' => empty($result->fields[3]) ? $result->fields[4] : $result->fields[3],
-                'mediaCaptionLong' => empty($result->fields[4]) ? $result->fields[3] : $result->fields[4]
-            );
-        }
-        ++$i;
+    $colArray = array('albumId', 'albumTitle', 'mediaId', 'mediaTitle', 'mediaCaptionLong');
+
+    $items = DBUtil::marshallObjects($result, $colArray);
+
+    // select post process
+    foreach (array_keys($items) as $k)
+    {
+        $items[$k]['mediaCaption'] = empty($items[$k]['mediaTitle']) ? $items[$k]['mediaCaptionLong'] : $items[$k]['mediaTitle'];
+        $items[$k]['mediaCaptionLong'] = empty($items[$k]['mediaCaptionLong']) ? $items[$k]['mediaTitle'] : $items[$k]['mediaCaptionLong'];
     }
 
-    $dbresult->close();
-
-    return array('result' => $result, 'hitCount' => $i);
+    return array('result' => $result, 'hitCount' => -1); // FIXME implement or deprecate the count
 }
 
 /**
