@@ -147,30 +147,30 @@ function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset)
     $folderTitle = $folders[$folderOffset];
 
     // Get ID of existing folder
-    list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $foldersTable  = $pntable['mediashare_albums'];
-    $foldersColumn = & $pntable['mediashare_albums_column'];
+    $foldersColumn = $pntable['mediashare_albums_column'];
 
     $sql = "SELECT $foldersColumn[id]
               FROM $foldersTable
              WHERE $foldersColumn[parentAlbumId] = '" . DataUtil::formatForStore($parentFolderID) . "'
                AND $foldersColumn[title] = '" . DataUtil::formatForStore($folderTitle) . "'";
 
-    $result = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('common.EnsureFolderExists', 'Could not retrieve the folder information.'), $dom), 404);
     }
 
     // No ID => folder does not exist. Create it.
-    if ($result->EOF) {
+    if (!$result) {
         if (!($folderID = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array('parentAlbumId' => $parentFolderID, 'title' => $folderTitle, 'description' => '', 'keywords' => '', 'summary' => '')))) {
             return false;
         }
     } else {
-        $folderID = $result->fields[0];
+        $folderID = DBUtil::marshallObjects($result, array('id'));
+        $folderID = (int)$folderID[0]['id'];
     }
 
     // Recursive to ensure sub-folders exists
