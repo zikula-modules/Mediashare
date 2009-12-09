@@ -128,7 +128,7 @@ function mediashare_vfs_dbapi_getMedia($args)
                    media.$mediaColumn[id],
                    media.$mediaColumn[parentAlbumId],
                    media.$mediaColumn[title],
-                   UNIX_TIMESTAMP(media.$mediaColumn[modifiedDate])
+                   media.$mediaColumn[modifiedDate]
               FROM $mediadbTable db
          LEFT JOIN $storageTable store
                 ON store.$storageColumn[fileRef] = db.$mediadbColumn[fileref]
