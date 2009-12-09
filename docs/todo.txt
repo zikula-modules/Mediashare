@@ -23,7 +23,6 @@
   FIX OR DEPRECATE THE USE OF
 
     pnDBGetConn();
-    pnDBGetTables() by reference
     // FIXME in pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
     createdDateRaw modifiedDateRaw
     check any is_null on mainMediaItem, it will not work because it's 0 now

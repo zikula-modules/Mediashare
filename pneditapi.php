@@ -31,7 +31,7 @@ function mediashare_editapi_addAlbum(&$args)
     }
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = &$pntable['mediashare_albums_column'];
@@ -99,7 +99,7 @@ function mediashare_editapi_addAlbum(&$args)
 function mediashare_editapi_updateNestedSetValues(&$args)
 {
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     // MySQL switch
     // MySQL 5 (true) - Use stored procedure mediashareUpdateNestedSetValues
@@ -181,7 +181,7 @@ function mediashare_editapi_updateAlbum(&$args)
     }
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = &$pntable['mediashare_albums_column'];
@@ -239,7 +239,7 @@ function mediashare_editapi_deleteAlbum(&$args)
     }
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = &$pntable['mediashare_albums_column'];
@@ -383,7 +383,7 @@ function mediashare_editapi_moveAlbum(&$args)
     }
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $albumsTable = $pntable['mediashare_albums'];
     $albumsColumn = &$pntable['mediashare_albums_column'];
@@ -615,7 +615,7 @@ function mediashare_editapi_storeMediaItem(&$args)
     $albumId = (int)$args['albumId'];
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $mediaTable = $pntable['mediashare_media'];
     $mediaColumn = &$pntable['mediashare_media_column'];
@@ -683,7 +683,7 @@ function mediashare_editapi_storeMediaItem(&$args)
 function mediashare_editapi_registerMediaItem(&$args)
 {
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $mediaTable = $pntable['mediashare_mediastore'];
     $mediaColumn = &$pntable['mediashare_mediastore_column'];
@@ -715,7 +715,7 @@ function mediashare_editapi_registerMediaItem(&$args)
 function mediashareGetNewPosition($albumId)
 {
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $mediaTable = $pntable['mediashare_media'];
     $mediaColumn = &$pntable['mediashare_media_column'];
@@ -759,7 +759,7 @@ function mediashare_editapi_ensureMainAlbumId($args)
     $mediaId = (int)$args['mediaId'];
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $albumsTable = $pntable['mediashare_albums'];
     $albumsColumn = $pntable['mediashare_albums_column'];
@@ -795,7 +795,7 @@ function mediashare_editapi_updateItem(&$args)
     $mediaId = (int)$args['mediaId'];
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $mediaTable  = $pntable['mediashare_media'];
     $mediaColumn = &$pntable['mediashare_media_column'];
@@ -1006,7 +1006,7 @@ function mediashare_editapi_updateMediaStorage($args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $storageTable = $pntable['mediashare_mediastore'];
     $storageColumn = $pntable['mediashare_mediastore_column'];
@@ -1132,7 +1132,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
     }
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $mediaTable  = $pntable['mediashare_media'];
     $mediaColumn = &$pntable['mediashare_media_column'];
@@ -1200,7 +1200,7 @@ function mediashare_editapi_moveMediaItem(&$args)
     $albumId = (int)$args['albumId'];
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $mediaTable   = $pntable['mediashare_media'];
     $mediaColumn  = &$pntable['mediashare_media_column'];
@@ -1248,7 +1248,7 @@ function mediashare_editapi_setMainItem(&$args)
     $mediaId = $args['mediaId'];
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = &$pntable['mediashare_albums_column'];
@@ -1277,7 +1277,7 @@ function mediashare_editapi_arrangeAlbum(&$args)
     $seq = $args['seq'];
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $mediaTable   = $pntable['mediashare_media'];
     $mediaColumn  = &$pntable['mediashare_media_column'];
@@ -1312,7 +1312,7 @@ function mediashare_editapi_getUserInfo(&$args)
     $user = (int)pnUserGetVar('uid');
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $mediaTable    = $pntable['mediashare_media'];
     $mediaColumn   = $pntable['mediashare_media_column'];
@@ -1356,7 +1356,7 @@ function mediashare_editapi_updateKeywords(&$args)
     $keywords = mediashareStripKeywords($args['keywords']);
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $keywordsTable  = $pntable['mediashare_keywords'];
     $keywordsColumn = $pntable['mediashare_keywords_column'];
@@ -1407,7 +1407,7 @@ function mediashare_editapi_getAccessSettings(&$args)
     $albumId = (int)$args['albumId'];
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $accessTable      = $pntable['mediashare_access'];
     $accessColumn     = $pntable['mediashare_access_column'];
@@ -1496,7 +1496,7 @@ function mediashare_editapi_updateAccessSettings(&$args)
     $access = $args['access'];
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $accessTable  = $pntable['mediashare_access'];
     $accessColumn = $pntable['mediashare_access_column'];
@@ -1541,7 +1541,7 @@ function mediashare_editapi_getAccessGroups(&$args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     list ($dbconn) = pnDBGetConn();
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $groupsTable = $pntable['groups'];
     $groupsColumn = &$pntable['groups_column'];

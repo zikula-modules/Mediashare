@@ -8,7 +8,7 @@ function mediashare_sourcesapi_getSources(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $pntable = pnDBGetTables();
+    $pntable = &pnDBGetTables();
 
     $sourcesTable  = $pntable['mediashare_sources'];
     $sourcesColumn = $pntable['mediashare_sources_column'];
