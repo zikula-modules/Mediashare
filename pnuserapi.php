@@ -291,7 +291,7 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
 
     $result = DBUtil::executeSQL($sql);
 
-    if (!$result) {
+    if ($result == false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getAlbumBreadcrumb', 'Could not retrieve the breadcrumb information.'), $dom));
     }
 
@@ -448,7 +448,7 @@ function mediashare_userapi_getMediaItem($args)
     if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getMediaItem', 'Could not retrieve the media information.'), $dom));
     }
-    if ($result->EOF) {
+    if (!$result) {
         return null;
     }
 
@@ -680,6 +680,7 @@ function mediashare_userapi_getRandomMediaItem($args)
               ORDER BY $albumsColumn[createdDate] DESC";
 
         $result = DBUtil::executeSQL($sql, 0, 1);
+
         if ($result === false) {
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
         }
@@ -701,6 +702,7 @@ function mediashare_userapi_getRandomMediaItem($args)
              WHERE $accessibleAlbumSql";
 
     $result = DBUtil::executeSQL($sql);
+
     if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
     }
@@ -716,6 +718,7 @@ function mediashare_userapi_getRandomMediaItem($args)
              WHERE $accessibleAlbumSql";
 
     $result = DBUtil::executeSQL($sql, rand(0, $count - 1), 1);
+
     if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
     }
@@ -1358,6 +1361,7 @@ function mediashare_userapi_getListCount($args)
     }
 
     $result = DBUtil::executeSQL($sql);
+
     if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
     }
