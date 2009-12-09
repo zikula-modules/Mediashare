@@ -40,13 +40,12 @@ class mediashareAccessApi
 
         pnModDBInfoLoad('Groups'); // Make sure groups database info is available
 
-        list ($dbconn) = pnDBGetConn();
         $pntable = pnDBGetTables();
 
-        $accessTable = $pntable['mediashare_access'];
-        $accessColumn = $pntable['mediashare_access_column'];
-        $membershipTable = $pntable['group_membership'];
-        $membershipColumn = &$pntable['group_membership_column'];
+        $accessTable      = $pntable['mediashare_access'];
+        $accessColumn     = $pntable['mediashare_access_column'];
+        $membershipTable  = $pntable['group_membership'];
+        $membershipColumn = $pntable['group_membership_column'];
 
         $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums', array());
         if (is_array($invitedAlbums) && $invitedAlbums[$albumId] && ($access & mediashareAccessRequirementView) == mediashareAccessRequirementView) {
@@ -62,16 +61,15 @@ class mediashareAccessApi
                    AND ($accessColumn[access] & $access) != 0
                    AND ($membershipColumn[gid] IS NOT NULL OR $accessColumn[groupId] = -1)";
 
-        $dbresult = $dbconn->execute($sql);
-        if ($dbconn->errorNo() != 0) {
+        $result = DBUtil::executeSQL($sql);
+
+        if ($result === false) {
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('accessapi.hasAlbumAccess', 'Could not retrieve the user privilegies.'), $dom));
         }
 
-        $hasAccess = $dbresult->fields[0];
+        $hasAccess = DBUtil::marshallObjects($result, array('count'));
 
-        $dbresult->close();
-
-        return $hasAccess > 0;
+        return $hasAccess[0]['count'] > 0;
     }
 
     function getAlbumAccess($albumId)
@@ -79,6 +77,10 @@ class mediashareAccessApi
         // Admin can do everything
         if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
             return 0xFF;
+        }
+
+        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
+            return 0x00;
         }
 
         $userId = (int)pnUserGetVar('uid');
@@ -94,17 +96,12 @@ class mediashareAccessApi
         // Make sure groups database info is available
         pnModDBInfoLoad('Groups');
 
-        list ($dbconn) = pnDBGetConn();
         $pntable = pnDBGetTables();
 
         $accessTable      = $pntable['mediashare_access'];
         $accessColumn     = $pntable['mediashare_access_column'];
         $membershipTable  = $pntable['group_membership'];
         $membershipColumn = $pntable['group_membership_column'];
-
-        if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
-            return 0x00;
-        }
 
         $sql = "SELECT $accessColumn[access]
                   FROM $accessTable
@@ -114,17 +111,18 @@ class mediashareAccessApi
                  WHERE $accessColumn[albumId] = $albumId
                    AND ($membershipColumn[gid] IS NOT NULL OR $accessColumn[groupId] = -1)";
 
-        $dbresult = $dbconn->execute($sql);
-        if ($dbconn->errorNo() != 0) {
+        $result = DBUtil::executeSQL($sql);
+
+        if ($result === false) {
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('accessapi.getAlbumAccess', 'Could not retrieve the access level.'), $dom));
         }
 
-        $access = 0x00;
-        for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-            $access |= (int)$dbresult->fields[0];
-        }
+        $result = DBUtil::marshallObjects($result, array('access'));
 
-        $dbresult->close();
+        $access = 0x00;
+        foreach (array_keys($result) as $k) {
+            $access |= (int)$result[$k]['access'];
+        }
 
         $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums', array());
         if (is_array($invitedAlbums) && $invitedAlbums[$albumId]) {
@@ -140,35 +138,24 @@ class mediashareAccessApi
         if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
             return '1=1';
         }
+        // Forbidden read can do nothing
         if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_READ)) {
             return '1=0';
         }
+
         $userId = (int)pnUserGetVar('uid');
 
         // Make sure groups database info is available
         pnModDBInfoLoad('Groups');
 
-        list ($dbconn) = pnDBGetConn();
-        $pntable = pnDBGetTables();
+        $pntable = &pnDBGetTables();
 
         $albumsTable      = $pntable['mediashare_albums'];
         $albumsColumn     = $pntable['mediashare_albums_column'];
         $accessTable      = $pntable['mediashare_access'];
         $accessColumn     = $pntable['mediashare_access_column'];
         $membershipTable  = $pntable['group_membership'];
-        $membershipColumn = &$pntable['group_membership_column'];
-
-        $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums', array());
-
-        $invitedSql = array();
-        if (is_array($invitedAlbums) && ($access & mediashareAccessRequirementView)) {
-            foreach ($invitedAlbums as $invAlbumId => $ok) {
-                if ($ok) {
-                    $invitedSql[] = (int)$invAlbumId;
-                }
-            }
-        }
-        $invitedSql = implode(', ', $invitedSql);
+        $membershipColumn = $pntable['group_membership_column'];
 
         $parentAlbumSql = '';
         if ($albumId != null) {
@@ -188,22 +175,37 @@ class mediashareAccessApi
                                   OR  $albumsColumn[ownerId] = $userId
                                 )";
 
-        $dbresult = $dbconn->execute($sql);
-        if ($dbconn->errorNo() != 0) {
+        $result = DBUtil::executeSQL($sql);
+
+        if ($result === false) {
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('accessapi.getAccessibleAlbumsSql', 'Could not retrieve the accessible albums.'), $dom));
         }
 
-        $albumIds = $invitedSql;
-        for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-            if ($albumIds != '') {
-                $albumIds .= ',';
-            }
-            $albumIds .= $dbresult->fields[0];
-        }
-        $dbresult->close();
+        $ids = DBUtil::marshallObjects($result, array('id'));
 
-        //echo "Access bits = $access. Albums = ($albumIds). ";
-        return $albumIds == '' ? '1=0' : "$field IN ($albumIds)";
+        $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums');
+
+        // collect all the accessible album IDs
+        $albumids = array();
+        foreach ($ids as $id) {
+            $albumids[] = (int)$id['id'];
+        }
+        if (is_array($invitedAlbums) && ($access & mediashareAccessRequirementView)) {
+            foreach ($invitedAlbums as $invAlbumId => $ok) {
+                if ($ok) {
+                    $albumids[] = (int)$invAlbumId;
+                }
+            }
+        }
+
+        // sintetize the query
+        if (!empty($albumids)) {
+            $albumids = "'".implode("', '", $albumids)."'";
+        } else {
+            $albumids = '';
+        }
+
+        return $albumids == '' ? '1=0' : "$field IN ($albumids)";
     }
 
     function hasItemAccess($mediaId, $access, $viewKey)
