@@ -136,7 +136,7 @@ function mediashare_userapi_getAlbumData($args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     // Argument check
-    if (!isset($args['albumId']) || !is_integer($args['albumId'])) {
+    if (!isset($args['albumId']) || !is_numeric($args['albumId'])) {
         return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumData'), $dom));
     }
 
