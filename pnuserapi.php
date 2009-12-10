@@ -778,7 +778,7 @@ function mediashare_userapi_setSettings($args)
 {
     $args['mediaSizeLimitSingle'] = (int)$args['mediaSizeLimitSingle'] * 1000;
     $args['mediaSizeLimitTotal'] = (int)$args['mediaSizeLimitTotal'] * 1000;
-    pnModSetVars('mediashare', $args);
+    return pnModSetVars('mediashare', $args);
 }
 
 function mediashare_userapi_getRelativeMediadir()
