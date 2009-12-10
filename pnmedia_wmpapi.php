@@ -36,7 +36,7 @@ class mediashare_wmpHandler
         foreach ($previews as $preview)
         {
             if ($preview['isThumbnail']) {
-                copy('modules/mediashare/pnimages/logo_wmp_player.png', $preview['outputFilename']);
+                copy('modules/mediashare/pnimages/logo/logo_wmp_player.png', $preview['outputFilename']);
                 $imPreview = @imagecreatefrompng($preview['outputFilename']);
                 $result[] = array('fileType' => 'png',
                                   'mimeType' => 'image/png',

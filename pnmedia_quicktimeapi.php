@@ -72,7 +72,7 @@ class mediashare_quicktimeHandler
         foreach ($previews as $preview)
         {
             if ($preview['isThumbnail']) {
-                copy('modules/mediashare/pnimages/logo_quicktime_player.png', $preview['outputFilename']);
+                copy('modules/mediashare/pnimages/logo/logo_quicktime_player.png', $preview['outputFilename']);
                 $imPreview = @imagecreatefrompng($preview['outputFilename']);
                 $result[] = array('fileType' => 'png',
                                   'mimeType' => 'image/png',

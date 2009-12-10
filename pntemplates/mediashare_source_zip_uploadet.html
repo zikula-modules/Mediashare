@@ -4,9 +4,9 @@
     <li>
         <!--[$status.message]-->
         <!--[if $status.ok]-->
-        <img src="modules/mediashare/pnimages/button_ok.gif" alt="<!--[gt text='Ok']-->" />
+        <!--[pnimg modname='core' src='button_ok.gif' set='icons/small' __alt='Ok' __title='Ok']-->
         <!--[else]-->
-        <img src="modules/mediashare/pnimages/button_cancel.gif" alt="<!--[$status.message]-->" />
+        <!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' alt=$status.message title=$status.message]-->
         <!--[/if]-->
     </li>
     <!--[/foreach]-->

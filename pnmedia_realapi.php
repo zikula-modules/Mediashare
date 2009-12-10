@@ -40,7 +40,7 @@ class mediashare_realHandler
         foreach ($previews as $preview)
         {
             if ($preview['isThumbnail']) {
-                copy('modules/mediashare/pnimages/logo_real_player.png', $preview['outputFilename']);
+                copy('modules/mediashare/pnimages/logo/logo_real_player.png', $preview['outputFilename']);
                 $imPreview = @imagecreatefrompng($preview['outputFilename']);
                 $result[] = array('fileType' => 'png',
                                   'mimeType' => 'image/png',

@@ -31,7 +31,7 @@ class mediashare_pdfHandler
         foreach ($previews as $preview)
         {
             if ($preview['isThumbnail']) {
-                copy('modules/mediashare/pnimages/logo_pdf_appl.gif', $preview['outputFilename']);
+                copy('modules/mediashare/pnimages/logo/logo_pdf_appl.gif', $preview['outputFilename']);
                 $imPreview = @imagecreatefrompng($preview['outputFilename']);
                 $result[] = array('fileType' => 'png',
                                   'mimeType' => 'image/png',

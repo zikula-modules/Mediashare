@@ -27,6 +27,8 @@
 
   FIX OR DEPRECATE THE USE OF
 
+    Move the bottom bar to a CSS-based solution. Plugin: mediashare_userinfo Images: bar_left.gif, bar_right.gif 
+
     FIX apimethod(&args)  (rework mediashare_editapi_extappLocateApp)
     // FIXME in pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
     check any is_null on mainMediaItem, it will not work because it's 0 now

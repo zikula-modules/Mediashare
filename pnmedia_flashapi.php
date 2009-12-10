@@ -31,7 +31,7 @@ class mediashare_flashHandler
         foreach ($previews as $preview)
         {
             if ($preview['isThumbnail']) {
-                copy('modules/mediashare/pnimages/logo_flash_player.png', $preview['outputFilename']);
+                copy('modules/mediashare/pnimages/logo/logo_flash_player.png', $preview['outputFilename']);
                 $imPreview = @imagecreatefrompng($preview['outputFilename']);
                 $result[]  = array('fileType' => 'png', 'mimeType' => 'image/png', 'width' => imagesx($imPreview), 'height' => imagesy($imPreview), 'bytes' => filesize($preview['outputFilename']));
                 imagedestroy($imPreview);
