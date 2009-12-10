@@ -12,11 +12,13 @@ require_once ("modules/mediashare/common-edit.php");
 function mediashare_editapi_addAlbum(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
+
     // Check basic access (but don't do fine grained Mediashare access check)
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
         return LogUtil::registerPermissionError();
     }
     // Set defaults
+    // FIXME: what if not logged in - how about 'owner' ???
     if (!isset($args['ownerId'])) {
         $args['ownerId'] = pnUserGetVar('uid');
     }
@@ -30,134 +32,101 @@ function mediashare_editapi_addAlbum(&$args)
         return false;
     }
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
+    Loader::loadClass('RandomUtil');
 
-    $albumsTable  = $pntable['mediashare_albums'];
-    $albumsColumn = &$pntable['mediashare_albums_column'];
+    $album = array(
+        'ownerId'       => (int)$args['ownerId'],
+        'createdDate'   => DateUtil::getDatetime(),
+        'title'         => $args['title'],
+        'keywords'      => $args['keywords'],
+        'summary'       => $args['summary'],
+        'description'   => $args['description'],
+        'template'      => $args['template'],
+        'parentAlbumId' => (int)$args['parentAlbumId'],
+        'thumbnailSize' => (int)pnModGetVar('mediashare', 'thumbnailSize'),
+        'viewKey'       => RandomUtil::getInteger(100000000, 999999999, true)*10000 + RandomUtil::getInteger(1, 9999),
+        'extappURL'     => $args['extappURL'],
+        'extappData'    => $args['extappData']
+    );
+    $album = DBUtil::insertObject($album, 'mediashare_albums', 'id');
 
-    // FIXME: what if not logged in - how about 'owner' ???
-
-    $thumbnailSize = (int)pnModGetVar('mediashare', 'thumbnailSize');
-
-    $sql = "INSERT INTO $albumsTable (
-            $albumsColumn[ownerId],
-            $albumsColumn[createdDate],
-            $albumsColumn[title],
-            $albumsColumn[keywords],
-            $albumsColumn[summary],
-            $albumsColumn[description],
-            $albumsColumn[template],
-            $albumsColumn[parentAlbumId],
-            $albumsColumn[thumbnailSize],
-            $albumsColumn[viewKey],
-            $albumsColumn[extappURL],
-            $albumsColumn[extappData])
-          VALUES (
-            " . (int)$args['ownerId'] . ",
-            NOW(),
-            '" . DataUtil::formatForStore($args['title']) . "',
-            '" . DataUtil::formatForStore($args['keywords']) . "',
-            '" . DataUtil::formatForStore($args['summary']) . "',
-            '" . DataUtil::formatForStore($args['description']) . "',
-            '" . DataUtil::formatForStore($args['template']) . "',
-            " . (int)$args['parentAlbumId'] . ",
-            '" . $thumbnailSize . "',
-            round(rand()*9000000000000 + 1000000000000),
-            '" . DataUtil::formatForStore($args['extappURL']) . "',
-            '" . DataUtil::formatForStore($args['extappData']) . "')";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($album === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.addAlbum', 'Could not add the new album.'), $dom));
     }
-
-    $newAlbumId = $dbconn->insert_ID();
 
     if (!pnModAPIFunc('mediashare', 'edit', 'updateNestedSetValues')) {
         return false;
     }
 
-    if (!pnModAPIFunc('mediashare', 'edit', 'setDefaultAccess', array('albumId' => $newAlbumId))) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'setDefaultAccess', array('albumId' => $album['id']))) {
         return false;
     }
 
-    pnModCallHooks('item', 'create', "album-$newAlbumId", array('module' => 'mediashare', 'albumId' => $newAlbumId));
+    pnModCallHooks('item', 'create', "album-{$album['id']}", array('module' => 'mediashare', 'albumId' => $album['id']));
 
-    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $newAlbumId, 'type' => 'album', 'keywords' => $args['keywords']))) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $album['id'], 'type' => 'album', 'keywords' => $args['keywords']))) {
         return false;
     }
 
-    if (!pnModAPIFunc('mediashare', 'edit', 'fetchExternalImages', array('albumId' => $newAlbumId))) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'fetchExternalImages', array('albumId' => $album['id']))) {
         return false;
     }
 
-    return $newAlbumId;
+    return $album['id'];
 }
 
+// FIXME any parameter?
 function mediashare_editapi_updateNestedSetValues(&$args)
 {
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
     // MySQL switch
     // MySQL 5 (true) - Use stored procedure mediashareUpdateNestedSetValues
     // MySQL 4 (false) - use PHP
     if (false) {
-        $sql = "call mediashareUpdateNestedSetValues()";
-        $dbconn->execute($sql);
-        if ($dbconn->errorNo() != 0) {
+        $result = DBUtil::executeSQL("CALL mediashareUpdateNestedSetValues()");
+
+        if ($result === false) {
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateNestedSetValues', 'Calling mediashareUpdateNestedSetValues() failed.'), $dom));
         }
+
         return true;
     } else {
-        $albumId = 0;
+        $albumId = 1;
         $count = 0;
         $level = 0;
 
-        return mediashareUpdateNestedSetValues_Rec($albumId, $level, $count, $dbconn, $pntable);
+        return mediashareUpdateNestedSetValues_Rec($albumId, $level, $count);
     }
 }
 
-function mediashareUpdateNestedSetValues_Rec($albumId, $level, &$count, &$dbconn, &$pntable)
+function mediashareUpdateNestedSetValues_Rec($albumId, $level, &$count)
 {
-    $albumId = (int)$albumId;
-
-    $albumsTable  = $pntable['mediashare_albums'];
-    $albumsColumn = &$pntable['mediashare_albums_column'];
+    $pntable      = &pnDBGetTables();
+    $albumsColumn = $pntable['mediashare_albums_column'];
 
     $left = $count++;
 
-    $sql = "SELECT $albumsColumn[id]
-              FROM $albumsTable
-             WHERE $albumsColumn[parentAlbumId] = $albumId";
+    $where     = "$albumsColumn[parentAlbumId] = '".(int)$albumId."'";
+    $subalbums = DBUtil::selectFieldArray('mediashare_albums', 'id', $where);
 
-    $result = $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($subalbums === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareUpdateNestedSetValues_Rec', 'Could not retrieve the subalbums.'), $dom));
     }
 
-    for (; !$result->EOF; $result->MoveNext()) {
-        $subAlbumId = $result->fields[0];
-
-        mediashareUpdateNestedSetValues_Rec($subAlbumId, $level + 1, $count, $dbconn, $pntable);
+    foreach ($subalbums as $subAlbumId) {
+        mediashareUpdateNestedSetValues_Rec($subAlbumId, $level + 1, $count);
     }
-
-    $result->Close();
 
     $right = $count++;
 
-    $sql = "UPDATE $albumsTable
-               SET $albumsColumn[nestedSetLeft] = $left,
-                   $albumsColumn[nestedSetRight] = $right,
-                   $albumsColumn[nestedSetLevel] = $level
-             WHERE $albumsColumn[id] = $albumId";
+    $album = array(
+        'id'             => $albumId,
+        'nestedSetLeft'  => $left,
+        'nestedSetRight' => $right,
+        'nestedSetLevel' => $level
+    );
+    $album = DBUtil::updateObject($album, 'mediashare_albums', '', 'id');
 
-    $result = $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($album === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareUpdateNestedSetValues_Rec', 'Could not update the album.'), $dom));
     }
 
@@ -173,42 +142,30 @@ function mediashare_editapi_updateAlbum(&$args)
 
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $albumId = (int)$args['albumId'];
-
     // Parse extapp URL and add extapp data
     if (!mediashare_editapi_extappLocateApp($args)) {
         return false;
     }
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $albumsTable  = $pntable['mediashare_albums'];
-    $albumsColumn = &$pntable['mediashare_albums_column'];
-
-    if (isset($args['template'])) {
-        $templateSql = "$albumsColumn[template] = '" . DataUtil::formatForStore($args['template']) . "',";
-    } else {
-        $templateSql = '';
-    }
+    $albumId = (int)$args['albumId'];
 
     // FIXME: what if not logged in - how about 'owner' ???
+    $album = array(
+        'id'          => $albumId,
+        'title'       => $args['title'],
+        'keywords'    => $args['keywords'],
+        'summary'     => $args['summary'],
+        'description' => $args['description'],
+        'extappURL'   => isset($args['extappURL'])  ? $args['extappURL']  : '',
+        'extappData'  => isset($args['extappData']) ? $args['extappData'] : ''
+    );
+    if (isset($args['template'])) {
+        $album['template'] = $args['template'];
+    }
 
-    $thumbnailSize = (int)pnModGetVar('mediashare', 'thumbnailSize');
+    $album = DBUtil::updateObject($album, 'mediashare_albums', '', 'id');
 
-    $sql = "UPDATE $albumsTable
-               SET $albumsColumn[title] = '" . DataUtil::formatForStore($args['title']) . "',
-                   $albumsColumn[keywords] = '" . DataUtil::formatForStore($args['keywords']) . "',
-                   $albumsColumn[summary] = '" . DataUtil::formatForStore($args['summary']) . "',
-                   $albumsColumn[description] = '" . DataUtil::formatForStore($args['description']) . "',
-                   $templateSql
-                   $albumsColumn[extappURL] = '" . (isset($args['extappURL']) ? DataUtil::formatForStore($args['extappURL']) : '') . "',
-                   $albumsColumn[extappData] = '" . (isset($args['extappData']) ? DataUtil::formatForStore($args['extappData']) : '') . "'
-             WHERE $albumsColumn[id] = $albumId";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($album === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateAlbum', 'Could not update the album.'), $dom));
     }
 
@@ -238,19 +195,11 @@ function mediashare_editapi_deleteAlbum(&$args)
         return LogUtil::registerError(__('You cannot delete the top album', $dom));
     }
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $albumsTable  = $pntable['mediashare_albums'];
-    $albumsColumn = &$pntable['mediashare_albums_column'];
-    $mediaTable   = $pntable['mediashare_media'];
-    $mediaColumn  = &$pntable['mediashare_media_column'];
-
     if (!pnModAPIFunc('mediashare', 'edit', 'updateAccessSettings', array('albumId' => $albumId, 'access' => array()))) {
         return false;
     }
 
-    if (!mediashareDeleteAlbumRec($dbconn, $albumsTable, $albumsColumn, $mediaTable, $mediaColumn, $albumId)) {
+    if (!mediashareDeleteAlbumRec($albumId)) {
         return false;
     }
 
@@ -265,52 +214,37 @@ function mediashare_editapi_deleteAlbum(&$args)
     return true;
 }
 
-function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $mediaTable, &$mediaColumn, $albumId)
+function mediashareDeleteAlbumRec($albumId)
 {
     // Get album info
     if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
-    // Fetch and delete sub-abums
-    $sql = "SELECT $albumsColumn[id]
-              FROM $albumsTable
-             WHERE $albumsColumn[parentAlbumId] = $albumId";
+    $pntable = &pnDBGetTables();
 
-    $result = $dbconn->execute($sql);
+    $albumsColumn = $pntable['mediashare_albums_column'];
+    $mediaColumn  = $pntable['mediashare_media_column'];
 
-    if ($dbconn->errorNo() != 0) {
+    $where     = "$albumsColumn[parentAlbumId] = '".(int)$albumId."'";
+    $subalbums = DBUtil::selectFieldArray('mediashare_albums', 'id', $where);
+
+    if ($subalbums === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareDeleteAlbumRec', 'Could not delete the album.'), $dom));
     }
 
-    $albumIds = array();
-    for (; !$result->EOF; $result->MoveNext()) {
-        $albumIds[] = $result->fields[0];
-    }
-    $result->Close();
-
-    foreach ($albumIds as $subAlbumId) {
-        if (mediashareDeleteAlbumRec($dbconn, $albumsTable, $albumsColumn, $mediaTable, $mediaColumn, $subAlbumId) === false) {
+    foreach ($subalbums as $subAlbumId) {
+        if (mediashareDeleteAlbumRec($subAlbumId) === false) {
             return false;
         }
     }
 
-    // Fetch and delete media items
-    $sql = "SELECT $mediaColumn[id]
-              FROM $mediaTable
-             WHERE $mediaColumn[parentAlbumId] = $albumId";
+    $where  = "$mediaColumn[parentAlbumId] = '".(int)$albumId."'";
+    $medias = DBUtil::selectFieldArray('mediashare_media', 'id', $where);
 
-    $result = $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($medias === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareDeleteAlbumRec', 'Could not select the album.'), $dom));
     }
-
-    $mediaIds = array();
-    for (; !$result->EOF; $result->MoveNext()) {
-        $mediaIds[] = $result->fields[0];
-    }
-    $result->Close();
 
     foreach ($mediaIds as $mediaId) {
         if (!pnModAPIFunc('mediashare', 'edit', 'deleteMediaItem', array('mediaId' => $mediaId))) {
@@ -318,13 +252,10 @@ function mediashareDeleteAlbumRec(&$dbconn, $albumsTable, &$albumsColumn, $media
         }
     }
 
-    // Delete album
-    $sql = "DELETE FROM $albumsTable
-                  WHERE $albumsColumn[id] = $albumId";
+    $where  = "$albumsColumn[id] = '".(int)$albumId."'";
+    $result = DBUtil::deleteWhere('mediashare_albums', $where);
 
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareDeleteAlbumRec', 'Could not delete the album.'), $dom));
     }
 
@@ -345,7 +276,7 @@ function mediashare_editapi_moveAlbum(&$args)
 
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $albumId = (int)$args['albumId'];
+    $albumId    = (int)$args['albumId'];
     $dstAlbumId = (int)$args['dstAlbumId'];
 
     if ($albumId == 1) {
@@ -382,19 +313,13 @@ function mediashare_editapi_moveAlbum(&$args)
         return LogUtil::registerError(__('Cannot move album below self', $dom));
     }
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
+    $album = array(
+        'id' => $albumId,
+        'parentAlbumId' => $dstAlbumId
+    );
+    $album = DBUtil::updateObject($album, 'mediashare_albums', '', 'id');
 
-    $albumsTable = $pntable['mediashare_albums'];
-    $albumsColumn = &$pntable['mediashare_albums_column'];
-
-    $sql = "UPDATE $albumsTable
-               SET $albumsColumn[parentAlbumId] = $dstAlbumId
-             WHERE $albumsColumn[id] = $albumId";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($album === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.moveAlbum', 'Could not move the album.'), $dom));
     }
 
@@ -614,12 +539,6 @@ function mediashare_editapi_storeMediaItem(&$args)
 {
     $albumId = (int)$args['albumId'];
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $mediaTable = $pntable['mediashare_media'];
-    $mediaColumn = &$pntable['mediashare_media_column'];
-
     if (!isset($args['ownerId'])) {
         $args['ownerId'] = pnUserGetVar('uid');
     }
@@ -640,100 +559,63 @@ function mediashare_editapi_storeMediaItem(&$args)
         return false;
     }
 
-    $sql = "INSERT INTO $mediaTable (
-            $mediaColumn[ownerId],
-            $mediaColumn[createdDate],
-            $mediaColumn[title],
-            $mediaColumn[keywords],
-            $mediaColumn[description],
-            $mediaColumn[parentAlbumId],
-            $mediaColumn[position],
-            $mediaColumn[mediaHandler],
-            $mediaColumn[thumbnailId],
-            $mediaColumn[previewId],
-            $mediaColumn[originalId])
-          VALUES (
-            " . (int)$args['ownerId'] . ",
-            NOW(),
-            '" . DataUtil::formatForStore($args['title']) . "',
-            '" . DataUtil::formatForStore(mediashareStripKeywords($args['keywords'])) . "',
-            '" . DataUtil::formatForStore($args['description']) . "',
-            " . $albumId . ",
-            " . $position . ",
-            '" . DataUtil::formatForStore($args['mediaHandler']) . "',
-            '" . DataUtil::formatForStore($thumbnailId) . "',
-            '" . DataUtil::formatForStore($previewId) . "',
-            '" . DataUtil::formatForStore($originalId) . "')";
+    $media = array(
+        'ownerId'       => (int)$args['ownerId'],
+        'createdDate'   => DateUtil::getDatetime(),
+        'title'         => $args['title'],
+        'keywords'      => mediashareStripKeywords($args['keywords']),
+        'description'   => $args['description'],
+        'parentAlbumId' => $albumId,
+        'position'      => $position,
+        'mediaHandler'  => $args['mediaHandler'],
+        'thumbnailId'   => $thumbnailId,
+        'previewId'     => $previewId,
+        'originalId'    => $originalId
+    );
+    $media = DBUtil::insertObject($media, 'mediashare_media', 'id');
 
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($media === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.storeMediaItem', __('Could not insert the media item.', $dom)), $dom));
     }
 
-    $newMediaId = $dbconn->insert_ID();
-
-    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $newMediaId, 'type' => 'media', 'keywords' => $args['keywords']))) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $media['id'], 'type' => 'media', 'keywords' => $args['keywords']))) {
         return false;
     }
 
-    return $newMediaId;
+    return $media['id'];
 }
 
 function mediashare_editapi_registerMediaItem(&$args)
 {
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $mediaTable = $pntable['mediashare_mediastore'];
-    $mediaColumn = &$pntable['mediashare_mediastore_column'];
-
-    $sql = "INSERT INTO $mediaTable (
-            $mediaColumn[fileRef],
-            $mediaColumn[mimeType],
-            $mediaColumn[width],
-            $mediaColumn[height],
-            $mediaColumn[bytes])
-          VALUES (
-            '" . DataUtil::formatForStore($args['fileRef']) . "',
-            '" . DataUtil::formatForStore($args['mimeType']) . "',
-            '" . DataUtil::formatForStore($args['width']) . "',
-            '" . DataUtil::formatForStore($args['height']) . "',
-            '" . DataUtil::formatForStore($args['bytes']) . "')";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    $media = array(
+        'fileRef'  => $args['fileRef'],
+        'mimeType' => $args['mimeType'],
+        'width'    => $args['width'],
+        'height'   => $args['height'],
+        'bytes'    => $args['bytes']
+    );
+    $media = DBUtil::insertObject($media, 'mediashare_mediastore', 'id');
+    
+    if ($media === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.registerMediaItem', __('Could not insert the media item.', $dom)), $dom));
     }
 
-    $id = $dbconn->insert_ID();
-
-    return $id;
+    return $media['id'];
 }
 
 function mediashareGetNewPosition($albumId)
 {
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
+    $pntable     = &pnDBGetTables();
+    $mediaColumn = $pntable['mediashare_media_column'];
 
-    $mediaTable = $pntable['mediashare_media'];
-    $mediaColumn = &$pntable['mediashare_media_column'];
-
-    $sql = "SELECT MAX($mediaColumn[position])
-              FROM $mediaTable
-             WHERE $mediaColumn[parentAlbumId] = $albumId";
-
-    $result = $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    $where = "$mediaColumn[parentAlbumId] = $albumId";
+    $max   = DBUtil::selectFieldMax('mediashare_media', 'position', 'MAX', $where);
+    
+    if ($max === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareGetNewPosition', 'Could not get the max position.'), $dom));
     }
 
-    $position = $result->fields[0];
-    $result->Close();
-
-    return $position == null ? 0 : $position + 1;
+    return empty($max) ? 0 : $max + 1;
 }
 
 function mediashare_editapi_ensureMainAlbumId($args)
@@ -753,27 +635,24 @@ function mediashare_editapi_ensureMainAlbumId($args)
         return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('mediaId', 'editapi.ensureMainAlbumId'), $dom));
     }
 
-    $forceUpdate = isset($args['forceUpdate']) && $args['forceUpdate'];
+    $forceUpdate = isset($args['forceUpdate']) && $args['forceUpdate'] ? true : false;
 
-    $albumId = (int)$args['albumId'];
-    $mediaId = (int)$args['mediaId'];
-
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $albumsTable = $pntable['mediashare_albums'];
+    $pntable      = &pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
 
-    $sql = "UPDATE $albumsTable
-               SET $albumsColumn[mainMediaId] = $mediaId
-             WHERE $albumsColumn[id] = $albumId";
-
+    $where = '';
     if (!$forceUpdate) {
-        $sql .= " AND $albumsColumn[mainMediaId] IS NULL";
+        $where = "$albumsColumn[mainMediaId] IS NULL";
     }
 
-    $dbconn->execute($sql);
-    if ($dbconn->errorNo() != 0) {
+    $album = array(
+        'id' => (int)$args['albumId'],
+        'mainMediaId' => (int)$args['mediaId']
+    );
+
+    $album = DBUtil::updateObject($album, 'mediashare_albums', $where, 'id');
+
+    if ($album === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.ensureMainAlbumId', 'Could not ensure the main media for the album.'), $dom));
     }
 
@@ -792,27 +671,19 @@ function mediashare_editapi_updateItem(&$args)
 
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $mediaId = (int)$args['mediaId'];
+    $media = array(
+        'id'          => (int)$args['mediaId'],
+        'title'       => $args['title'],
+        'keywords'    => $args['keywords'],
+        'description' => $args['description']
+    );
+    $media = DBUtil::updateObject($media, 'mediashare_media', '', 'id');
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $mediaTable  = $pntable['mediashare_media'];
-    $mediaColumn = &$pntable['mediashare_media_column'];
-
-    $sql = "UPDATE $mediaTable
-               SET $mediaColumn[title] = '" . DataUtil::formatForStore($args['title']) . "',
-                   $mediaColumn[keywords] = '" . DataUtil::formatForStore($args['keywords']) . "',
-                   $mediaColumn[description] = '" . DataUtil::formatForStore($args['description']) . "'
-             WHERE $mediaColumn[id] = $mediaId";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($media === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateItem', 'Could not update the media item.'), $dom));
     }
 
-    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => $mediaId, 'type' => 'media', 'keywords' => $args['keywords']))) {
+    if (!pnModAPIFunc('mediashare', 'edit', 'updateKeywords', array('itemId' => (int)$args['mediaId'], 'type' => 'media', 'keywords' => $args['keywords']))) {
         return false;
     }
 
@@ -1005,21 +876,15 @@ function mediashare_editapi_updateMediaStorage($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
+    $storage = array(
+        'id'     => (int)$args['storageId'],
+        'width'  => (int)$args['width'],
+        'height' => (int)$args['height'],
+        'bytes'  => (int)$args['bytes']
+    );
+    $storage = DBUtil::updateObject($storage, 'mediashare_mediastore', '', 'id');
 
-    $storageTable = $pntable['mediashare_mediastore'];
-    $storageColumn = $pntable['mediashare_mediastore_column'];
-
-    $sql = "UPDATE $storageTable
-               SET $storageColumn[width] = " . (int)$args['width'] . ",
-                   $storageColumn[height] = " . (int)$args['height'] . ",
-                   $storageColumn[bytes] = " . (int)$args['bytes'] . "
-             WHERE $storageColumn[id] = " . (int)$args['storageId'];
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($storage === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateMediaStorage', 'Could not update the storage.'), $dom));
     }
 
@@ -1113,9 +978,8 @@ function mediashare_editapi_deleteMediaItem(&$args)
 
     // Get virtual file system handler
     $vfsHandlerName = mediashareGetVFSHandlerName($item['thumbnailRef']);
-    $vfsHandlerApi = "vfs_$vfsHandlerName";
 
-    if (!($vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler'))) {
+    if (!($vfsHandler = pnModAPIFunc('mediashare', "vfs_$vfsHandlerName", 'buildHandler'))) {
         return false;
     }
 
@@ -1131,33 +995,26 @@ function mediashare_editapi_deleteMediaItem(&$args)
         return LogUtil::registerError(__f("Failed to delete media item.", $dom).' '.__('%1$s\'s original (%2$s).', array($mediaId, $item['originalId']), $dom));
     }
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
+    $result = DBUtil::deleteObjectByID('mediashare_media', $mediaId, 'id');
 
-    $mediaTable  = $pntable['mediashare_media'];
-    $mediaColumn = &$pntable['mediashare_media_column'];
-
-    // Remove media info
-    $sql = "DELETE FROM $mediaTable
-          WHERE $mediaColumn[id] = $mediaId";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.deleteMediaItem', 'Could not delete the media item.'), $dom));
     }
 
     pnModCallHooks('item', 'delete', "media-$mediaId", array('module' => 'mediashare', 'mediaId' => $mediaId));
 
     // Ensure correct position of the remaining items
+    $pntable     = &pnDBGetTables();
+    $mediaColumn = $pntable['mediashare_media_column'];
+
     $sql = "UPDATE $mediaTable
                SET $mediaColumn[position] = $mediaColumn[position] - 1
-             WHERE $mediaColumn[parentAlbumId] = $albumId
-               AND $mediaColumn[position] > $position";
+             WHERE $mediaColumn[parentAlbumId] = '$albumId'
+               AND $mediaColumn[position] > '$position'";
 
-    $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.deleteMediaItem', 'Could not delete the media item.'), $dom));
     }
 
@@ -1173,9 +1030,9 @@ function mediashare_editapi_deleteMediaItem(&$args)
     $sql = "DELETE FROM $storageTable
                   WHERE $storageColumn[id] IN ($item[thumbnailId],$item[previewId],$item[originalId])";
 
-    $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.deleteMediaItem', 'Could not delete the storage.'), $dom));
     }
 
@@ -1196,40 +1053,29 @@ function mediashare_editapi_moveMediaItem(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $mediaId = (int)$args['mediaId'];
-    $albumId = (int)$args['albumId'];
+    $media = array(
+        'id'            => (int)$args['mediaId'],
+        'parentAlbumId' => (int)$args['albumId']
+    );
+    $media = DBUtil::updateObject($media, 'mediashare_media', '', 'id');
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $mediaTable   = $pntable['mediashare_media'];
-    $mediaColumn  = &$pntable['mediashare_media_column'];
-    $albumsTable  = $pntable['mediashare_albums'];
-    $albumsColumn = &$pntable['mediashare_albums_column'];
-
-    $sql = "UPDATE $mediaTable
-               SET $mediaColumn[parentAlbumId] = $albumId
-             WHERE $mediaColumn[id] = $mediaId";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($media === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.moveMediaItem', 'Could not move the media item.'), $dom));
     }
 
     // Check main media item
-    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => (int)$args['albumId'])))) {
         return false;
     }
 
-    if ($album['mainMediaId'] == $mediaId) {
-        $sql = "UPDATE $albumsTable
-                   SET $albumsColumn[mainMediaId] = null
-                 WHERE $albumsColumn[id] = $albumId";
+    if ($album['mainMediaId'] == (int)$args['mediaId']) {
+        $album = array(
+            'id'          => (int)$args['albumId'],
+            'mainMediaId' => null
+        );
+        $album = DBUtil::updateObject($album, 'mediashare_albums', '', 'id');
 
-        $dbconn->execute($sql);
-
-        if ($dbconn->errorNo() != 0) {
+        if ($album === false) {
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.moveMediaItem', 'Could not move the media item.'), $dom));
         }
     }
@@ -1244,22 +1090,13 @@ function mediashare_editapi_setMainItem(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $albumId = (int)$args['albumId'];
-    $mediaId = $args['mediaId'];
+    $album = array(
+        'id'          => (int)$args['albumId'],
+        'mainMediaId' => $args['mediaId']
+    );
+    $album = DBUtil::updateObject($album, 'mediashare_albums', '', 'id');
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $albumsTable  = $pntable['mediashare_albums'];
-    $albumsColumn = &$pntable['mediashare_albums_column'];
-
-    $sql = "UPDATE $albumsTable
-               SET $albumsColumn[mainMediaId] = " . ($mediaId === null ? 'null' : (int)$mediaId) . "
-             WHERE $albumsColumn[id] = $albumId";
-
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($album === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.setMainItem', 'Could not set the main media item.'), $dom));
     }
 
@@ -1274,27 +1111,17 @@ function mediashare_editapi_arrangeAlbum(&$args)
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     $albumId = (int)$args['albumId'];
-    $seq = $args['seq'];
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
+    foreach ((array)$args['seq'] as $k => $mediaId)
+    {
+        $media = array(
+            'id'            => $mediaId,
+            'parentAlbumId' => (int)$args['albumId'],
+            'position'      => $k
+        );
+        $media = DBUtil::updateObject($media, 'mediashare_media', '', 'id');
 
-    $mediaTable   = $pntable['mediashare_media'];
-    $mediaColumn  = &$pntable['mediashare_media_column'];
-    $albumsTable  = $pntable['mediashare_albums'];
-    $albumsColumn = &$pntable['mediashare_albums_column'];
-
-    for ($i = 0, $cou = count($seq); $i < $cou; ++$i) {
-        $mediaId = (int)$seq[$i];
-
-        $sql = "UPDATE $mediaTable
-                   SET $mediaColumn[position] = $i
-                 WHERE $mediaColumn[id] = $mediaId
-                   AND $mediaColumn[parentAlbumId] = $albumId"; // Include parent as permission check
-
-        $dbconn->execute($sql);
-
-        if ($dbconn->errorNo() != 0) {
+        if ($media === false) {
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.arrangeAlbum', 'Could not arrange the album.'), $dom));
         }
     }
@@ -1305,13 +1132,12 @@ function mediashare_editapi_arrangeAlbum(&$args)
 /**
  * User info
  */
-function mediashare_editapi_getUserInfo(&$args)
+function mediashare_editapi_getUserInfo($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
     $user = (int)pnUserGetVar('uid');
 
-    list ($dbconn) = pnDBGetConn();
     $pntable = &pnDBGetTables();
 
     $mediaTable    = $pntable['mediashare_media'];
@@ -1323,22 +1149,22 @@ function mediashare_editapi_getUserInfo(&$args)
               FROM $mediaTable
          LEFT JOIN $storageTable original
                 ON original.$storageColumn[id] = $mediaColumn[originalId]
-             WHERE $mediaColumn[ownerId] = $user";
+             WHERE $mediaColumn[ownerId] = '$user'";
 
-    $result = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.getUserInfo', 'Could not retrieve the user information.'), $dom));
     }
 
-    $limitTotal = (int)pnModGetVar('mediashare', 'mediaSizeLimitTotal');
+    $limitTotal = pnModGetVar('mediashare', 'mediaSizeLimitTotal');
 
-    $totalCapacityUsed = (int)$result->fields[0];
-    $result->Close();
+    $totalCapacityUsed = DBUtil::marshallObjects($result, array('used'));
+    $totalCapacityUsed = $totalCapacityUsed[0]['used'];
 
     $user = array('totalCapacityUsed'    => $totalCapacityUsed,
                   'totalCapacityLeft'    => ($totalCapacityUsed > $limitTotal ? 0 : $limitTotal - $totalCapacityUsed),
-                  'mediaSizeLimitSingle' => (int)pnModGetVar('mediashare', 'mediaSizeLimitSingle'),
+                  'mediaSizeLimitSingle' => pnModGetVar('mediashare', 'mediaSizeLimitSingle'),
                   'mediaSizeLimitTotal'  => $limitTotal);
 
     return $user;
@@ -1355,20 +1181,14 @@ function mediashare_editapi_updateKeywords(&$args)
     $type     = DataUtil::formatForStore($args['type']);
     $keywords = mediashareStripKeywords($args['keywords']);
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $keywordsTable  = $pntable['mediashare_keywords'];
+    $pntable        = &pnDBGetTables();
     $keywordsColumn = $pntable['mediashare_keywords_column'];
 
     // First remove existing keywords
-    $sql = "DELETE FROM $keywordsTable
-                  WHERE $keywordsColumn[itemId] = $itemId
-                    AND $keywordsColumn[type] = '$type'";
+    $where  = "$keywordsColumn[itemId] = '$itemId' AND $keywordsColumn[type] = '$type'";
+    $result = DBUtil::deleteWhere('mediashare_keywords', $where);
 
-    $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateKeywords', 'Could not update the keywords.'), $dom));
     }
 
@@ -1376,21 +1196,19 @@ function mediashare_editapi_updateKeywords(&$args)
     $keywordsArray = preg_split('/[\s,]+/', $keywords);
 
     // Insert new keywords
+    $keywordsArray = array_filter($keywordsArray); // strip empty keywords
+
     foreach ($keywordsArray as $keyword)
     {
-        if (!empty($keyword)) {
-            $sql = "INSERT INTO $keywordsTable
-                           ($keywordsColumn[itemId],
-                            $keywordsColumn[type],
-                            $keywordsColumn[keyword])
-                    VALUES ($itemId,
-                            '$type',
-                            '" . DataUtil::formatForStore($keyword) . "')";
+        $keyword = array(
+            'itemId'  => $itemId,
+            'type'    => $type,
+            'keyword' => $keyword
+        );
+        $keyword = DBUtil::insertObject($keyword, 'mediashare_keywords', 'itemId');
 
-            $dbconn->execute($sql);
-            if ($dbconn->errorNo() != 0) {
-                return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateKeywords', 'Could not insert the keywords.'), $dom));
-            }
+        if ($keyword === false) {
+            return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateKeywords', 'Could not insert the keywords.'), $dom));
         }
     }
 
@@ -1406,15 +1224,14 @@ function mediashare_editapi_getAccessSettings(&$args)
 
     $albumId = (int)$args['albumId'];
 
-    list ($dbconn) = pnDBGetConn();
     $pntable = &pnDBGetTables();
 
     $accessTable      = $pntable['mediashare_access'];
     $accessColumn     = $pntable['mediashare_access_column'];
     $membershipTable  = $pntable['group_membership'];
-    $membershipColumn = &$pntable['group_membership_column'];
+    $membershipColumn = $pntable['group_membership_column'];
     $groupsTable      = $pntable['groups'];
-    $groupsColumn     = &$pntable['groups_column'];
+    $groupsColumn     = $pntable['groups_column'];
 
     if (strpos($membershipColumn['gid'], 'group_membership') === false) {
         $sql = "   SELECT mbr.$membershipColumn[gid],
@@ -1425,7 +1242,7 @@ function mediashare_editapi_getAccessSettings(&$args)
                        ON grp.$groupsColumn[gid] = mbr.$membershipColumn[gid]
                 LEFT JOIN $accessTable
                        ON $accessColumn[groupId] = mbr.$membershipColumn[gid]
-                      AND $accessColumn[albumId] = $albumId";
+                      AND $accessColumn[albumId] = '$albumId'";
     } else {
         $sql = "   SELECT $membershipColumn[gid],
                           $groupsColumn[name],
@@ -1435,7 +1252,7 @@ function mediashare_editapi_getAccessSettings(&$args)
                        ON $groupsColumn[gid] = $membershipColumn[gid]
                 LEFT JOIN $accessTable
                        ON $accessColumn[groupId] = $membershipColumn[gid]
-                      AND $accessColumn[albumId] = $albumId";
+                      AND $accessColumn[albumId] = '$albumId'";
     }
 
     $sql .= "
@@ -1446,89 +1263,63 @@ function mediashare_editapi_getAccessSettings(&$args)
                 CASE WHEN ISNULL($accessColumn[access]) THEN 0 ELSE $accessColumn[access] END
                      FROM $accessTable
                     WHERE $accessColumn[groupId] = -1
-                      AND $accessColumn[albumId] = $albumId";
+                      AND $accessColumn[albumId] = '$albumId'";
 
-    $dbresult = $dbconn->execute($sql);
+    $result = DBUtil::executeSQL($sql);
 
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.getAccessSettings', 'Could not retrieve the access settings.'), $dom));
     }
 
-    $result = array();
-    $foundGroups = array();
-    for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        $access = (int)$dbresult->fields[2];
+    $colArray = array('groupId', 'groupName', 'access');
+    $groups   = DBUtil::marshallObjects($result, $colArray, true, 'groupId');
 
-        $result[] = array(
-            'groupId' => (int)$dbresult->fields[0],
-            'groupName' => $dbresult->fields[1],
-            'access' => $access,
-            'accessView' => ($access & mediashareAccessRequirementView) != 0,
-            'accessEditAlbum' => ($access & mediashareAccessRequirementEditAlbum) != 0,
-            'accessEditMedia' => ($access & mediashareAccessRequirementEditMedia) != 0,
-            'accessAddAlbum' => ($access & mediashareAccessRequirementAddAlbum) != 0,
-            'accessAddMedia' => ($access & mediashareAccessRequirementAddMedia) != 0);
-
-        $foundGroups[(int)$dbresult->fields[0]] = true;
-    }
-
-    if (!isset($foundGroups[-1])) {
-        $result[] = array('groupId'         => -1,
+    if (!isset($groups[-1])) {
+        $groups[] = array('groupId'         => -1,
                           'groupName'       => __('Everybody', $dom),
-                          'access'          => 0,
-                          'accessView'      => false,
-                          'accessEditAlbum' => false,
-                          'accessEditMedia' => false,
-                          'accessAddAlbum'  => false,
-                          'accessAddMedia'  => false);
+                          'access'          => 0);
     }
 
-    $dbresult->close();
+    // select post process
+    foreach (array_keys($groups) as $k)
+    {
+        $groups[$k]['accessView']      = ($groups[$k]['access'] & mediashareAccessRequirementView) != 0;
+        $groups[$k]['accessEditAlbum'] = ($groups[$k]['access'] & mediashareAccessRequirementEditAlbum) != 0;
+        $groups[$k]['accessEditMedia'] = ($groups[$k]['access'] & mediashareAccessRequirementEditMedia) != 0;
+        $groups[$k]['accessAddAlbum']  = ($groups[$k]['access'] & mediashareAccessRequirementAddAlbum) != 0;
+        $groups[$k]['accessAddMedia']  = ($groups[$k]['access'] & mediashareAccessRequirementAddMedia) != 0;
+    }
 
-    return $result;
+    return $groups;
 }
 
 function mediashare_editapi_updateAccessSettings(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $albumId = (int)$args['albumId'];
-    $access = $args['access'];
-
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
-
-    $accessTable  = $pntable['mediashare_access'];
-    $accessColumn = $pntable['mediashare_access_column'];
-
     // First remove existing access entries
-    $sql = "DELETE FROM $accessTable
-                  WHERE $accessColumn[albumId] = $albumId";
+    $result = DBUtil::deleteObjectByID('mediashare_access', (int)$args['albumId'], 'albumId');
 
-    $dbresult = $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateAccessSettings', 'Could not delete the access registries.'), $dom));
     }
 
-    foreach ($access as $accessRow)
+    foreach ((array)$args['access'] as $accessRow)
     {
-        $a = ($accessRow['accessView'] ? mediashareAccessRequirementView : 0) | ($accessRow['accessEditAlbum'] ? mediashareAccessRequirementEditAlbum : 0) | ($accessRow['accessEditMedia'] ? mediashareAccessRequirementEditMedia : 0) | ($accessRow['accessAddAlbum'] ? mediashareAccessRequirementAddAlbum : 0) | ($accessRow['accessAddMedia'] ? mediashareAccessRequirementAddMedia : 0);
+        $access = ($accessRow['accessView'] ? mediashareAccessRequirementView : 0)
+                | ($accessRow['accessEditAlbum'] ? mediashareAccessRequirementEditAlbum : 0)
+                | ($accessRow['accessEditMedia'] ? mediashareAccessRequirementEditMedia : 0)
+                | ($accessRow['accessAddAlbum'] ? mediashareAccessRequirementAddAlbum : 0)
+                | ($accessRow['accessAddMedia'] ? mediashareAccessRequirementAddMedia : 0);
 
-        $groupId = (int)$accessRow['groupId'];
+        $record = array(
+            'groupId' => (int)$accessRow['groupId'],
+            'albumId' => (int)$args['albumId'],
+            'access' => $access
+        );
+        $result = DBUtil::insertObject($record, 'mediashare_access', 'id');
 
-        // Then insert access row
-        $sql = "INSERT INTO $accessTable
-                       ($accessColumn[groupId],
-                        $accessColumn[albumId],
-                        $accessColumn[access])
-                VALUES ($groupId,
-                        $albumId,
-                        $a)";
-
-        $dbresult = $dbconn->execute($sql);
-
-        if ($dbconn->errorNo() != 0) {
+        if ($result === false) {
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.updateAccessSettings', 'Could not insert the access registry.'), $dom));
         }
     }
@@ -1540,31 +1331,20 @@ function mediashare_editapi_getAccessGroups(&$args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    list ($dbconn) = pnDBGetConn();
-    $pntable = &pnDBGetTables();
+    $groups = DBUtil::selectFieldArray('groups', 'name', '', 'name ASC', false, 'gid');
 
-    $groupsTable = $pntable['groups'];
-    $groupsColumn = &$pntable['groups_column'];
-
-    $sql = "SELECT $groupsColumn[gid],
-                   $groupsColumn[name]
-              FROM $groupsTable";
-
-    $dbresult = $dbconn->execute($sql);
-
-    if ($dbconn->errorNo() != 0) {
+    if ($groups === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.getAccessGroups', 'Could not retrieve the groups information.'), $dom));
     }
 
     $result = array();
-    for (; !$dbresult->EOF; $dbresult->MoveNext()) {
-        $result[] = array('groupId' => (int)$dbresult->fields[0], 'groupName' => $dbresult->fields[1]);
-    }
-
-    $dbresult->close();
-
     $result[] = array('groupId'   => -1,
                       'groupName' => __('Everybody', $dom));
+
+    foreach ($groups as $gid => $gname) {
+        $result[] = array('groupId'   => $gid,
+                          'groupName' => $gname);
+    }
 
     return $result;
 }
@@ -1623,9 +1403,10 @@ function mediashare_editapi_extappLocateApp(&$args)
     }
 
     $args['extappData'] = null;
-    $ok = false;
 
     $appNames = mediashare_editapi_extappGetApps($args);
+
+    $ok = false;
     foreach ($appNames as $appName) {
         $data = pnModAPIFunc('mediashare', "extapp_$appName", 'parseURL', array('url' => $url));
         if ($data != null) {
@@ -1635,7 +1416,7 @@ function mediashare_editapi_extappLocateApp(&$args)
         }
     }
 
-    $args['extappData'] = serialize($args['extappData']);
+    $args['extappData'] = !empty($args['extappData']) ? serialize($args['extappData']) : '';
 
     if (!$ok) {
         return LogUtil::registerError(__f('Unrecognized URL %s', array('url' => DataUtil::formatForDisplay($url)), $dom));
