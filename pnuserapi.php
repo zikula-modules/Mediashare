@@ -1100,7 +1100,7 @@ function mediashare_userapi_getList($args)
     $joinSql        = count($join) > 0 ? implode(' ', $join) : '';
 
     if (!empty($keyword)) {
-        $sql = "(
+        $sql = "
                    SELECT album.$albumsColumn[id],
                           album.$albumsColumn[title],
                           album.$albumsColumn[keywords],
@@ -1140,7 +1140,6 @@ function mediashare_userapi_getList($args)
                     WHERE ($accessibleAlbumSql)
                       AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
                           $restrictionSql
-              )
 
               UNION
 

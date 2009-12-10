@@ -37,15 +37,14 @@ function mediashare_searchapi_search($args)
 
     pnModDBInfoLoad('mediashare');
     pnModDBInfoLoad('Search');
-    $dbconn = pnDBGetConn(true);
     $pntable = &pnDBGetTables();
 
     $mediaTable   = $pntable['mediashare_media'];
     $mediaColumn  = $pntable['mediashare_media_column'];
     $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = $pntable['mediashare_albums_column'];
-    $searchTable  = &$pntable['search_result'];
-    $searchColumn = &$pntable['search_result_column'];
+    $searchTable  = $pntable['search_result'];
+    $searchColumn = $pntable['search_result_column'];
 
     $sessionId = session_id();
 
