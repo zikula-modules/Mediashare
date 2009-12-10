@@ -157,7 +157,7 @@ function mediashare_edit_editalbum($args)
     }
 
     // Get album info
-    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId, 'enableEscape' => false)))) {
+    if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
     }
 
@@ -370,7 +370,7 @@ function mediashare_edit_edititem($args)
 
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
 
-    if (!($item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId, 'enableEscape' => false)))) {
+    if (!($item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
         return false;
     }
 
@@ -512,7 +512,7 @@ function mediashare_edit_multieditmedia($args)
         return mediashareMultiUpdateItems();
     }
 
-    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia, 'enableEscape' => false))) === false) {
+    if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('mediaIdList' => $mediaIdList, 'access' => mediashareAccessRequirementEditMedia))) === false) {
         return false;
     }
 

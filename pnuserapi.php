@@ -139,7 +139,6 @@ function mediashare_userapi_getAlbumData($args)
         return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumData'), $dom));
     }
 
-    $enableEscape   = isset($args['enableEscape']) ? $args['enableEscape'] : true;
     $countSubAlbums = isset($args['countSubAlbums']) ? $args['countSubAlbums'] : false; // FIXME unused param
 
     $album = DBUtil::selectObjectByID('mediashare_albums', $args['albumId'], 'id');
@@ -163,10 +162,6 @@ function mediashare_userapi_getAlbumData($args)
 
     mediashareAddKeywords($album);
     $album['allowMediaEdit'] = true;
-
-    if ($enableEscape) {
-        mediashareEscapeAlbum($album, $args['albumId']);
-    }
 
     return $album;
 }
@@ -204,7 +199,6 @@ function mediashare_userapi_getSubAlbumsData($args)
     $excludeAlbumId  = isset($args['excludeAlbumId']) ? (int)$args['excludeAlbumId'] : null;
     $onlyMine        = isset($args['onlyMine']) ? $args['onlyMine'] : false;
     $includeMainItem = isset($args['includeMainItem']) ? (bool)$args['includeMainItem'] : true; // FIXME rework this to default false
-    $enableEscape    = isset($args['enableEscape']) ? $args['enableEscape'] : true;
 
     $pntable      = &pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
@@ -258,10 +252,6 @@ function mediashare_userapi_getSubAlbumsData($args)
         $subalbums[$k]['extappData'] = unserialize($subalbums[$k]['extappData']);
 
         mediashareAddKeywords($subalbums[$k]);
-
-        if ($enableEscape) {
-            mediashareEscapeAlbum($subalbums[$k], $albumId);
-        }
     }
 
     return $subalbums;
@@ -311,7 +301,6 @@ function mediashare_userapi_getAlbumList($args)
     $pageSize        = isset($args['pageSize']) ? (int)$args['pageSize'] : 5;
     $access          = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
     $includeMainItem = isset($args['includeMainItem']) ? (bool)$args['includeMainItem'] : true; // FIXME rework this to default false
-    $enableEscape    = isset($args['enableEscape']) ? $args['enableEscape'] : true;
 
     $pntable      = &pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
@@ -340,10 +329,6 @@ function mediashare_userapi_getAlbumList($args)
         $albums[$aid]['extappData'] = unserialize($albums[$aid]['extappData']);
 
         mediashareAddKeywords($albums[$aid]);
-
-        if ($enableEscape) {
-            mediashareEscapeAlbum($albums[$aid], $aid);
-        }
     }
 
     return $albums;
@@ -395,8 +380,6 @@ function mediashare_userapi_getMediaItem($args)
     if (!isset($args['mediaId'])) {
         return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('mediaId', 'userapi.getMediaItem'), $dom));
     }
-
-    $enableEscape = isset($args['enableEscape']) ? $args['enableEscape'] : true;
 
     $mediaId = (int)$args['mediaId'];
 
@@ -468,10 +451,6 @@ function mediashare_userapi_getMediaItem($args)
     $item['captionLong'] = empty($item['description']) ? $item['title'] : $item['description'];
     $item['originalIsImage'] = substr($item['originalMimeType'], 0, 6) == 'image/';
 
-    if ($enableEscape) {
-        mediashareEscapeItem($item, $item['id']);
-    }
-
     mediashareAddKeywords($item);
 
     return $item;
@@ -532,7 +511,6 @@ function mediashareGetMediaItemsData($args)
 
     $albumId      = isset($args['albumId']) ? (int)$args['albumId'] : null;
     $mediaIdList  = isset($args['mediaIdList']) ? $args['mediaIdList'] : null;
-    $enableEscape = isset($args['enableEscape']) ? $args['enableEscape'] : true;
     $access       = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
     $startnum     = isset($args['startnum']) ? (int)$args['startnum'] : -1;
     $numitems     = isset($args['numitems']) ? (int)$args['numitems'] : -1;
@@ -632,10 +610,6 @@ function mediashareGetMediaItemsData($args)
         $items[$id]['captionLong'] = empty($items[$id]['description']) ? $items[$id]['title'] : $items[$id]['description'];
 
         mediashareAddKeywords($items[$id]);
-
-        if ($enableEscape) {
-            mediashareEscapeItem($items[$id], $id);
-        }
     }
 
     return $items;
@@ -730,29 +704,6 @@ function mediashare_userapi_getRandomMediaItem($args)
     $media = $media[0];
 
     return $media;
-}
-
-/**
- * Escaping
- */
-function mediashareEscapeAlbum(&$album, $albumId)
-{
-    $album['title'] = DataUtil::formatForDisplay($album['title']);
-    // summary and item and description transform hooks
-    $album['summary'] = isset($album['summary']) ? $album['summary'] : '';
-    $album['description'] = isset($album['description']) ? $album['description'] : '';
-    list ($album['summary'], $album['description']) = pnModCallHooks('item', 'transform', "album-$albumId",
-                                                                     array(DataUtil::formatForDisplayHTML($album['summary']),
-                                                                           DataUtil::formatForDisplayHTML($album['description'])));
-}
-
-function mediashareEscapeItem(&$item, $itemId)
-{
-    $item['title'] = DataUtil::formatForDisplay($item['title']);
-    $item['caption'] = DataUtil::formatForDisplay($item['caption']);
-    $item['captionLong'] = DataUtil::formatForDisplay($item['captionLong']);
-    list ($item['description']) = pnModCallHooks('item', 'transform', "item-$itemId",
-                                                 array(DataUtil::formatForDisplayHTML($item['description'])));
 }
 
 /**
@@ -1053,7 +1004,6 @@ function mediashare_userapi_getList($args)
     $orderDir  = isset($args['orderDir']) ? $args['orderDir'] : 'asc';
     $recordPos = isset($args['recordPos']) ? (int)$args['recordPos'] : 0;
     $pageSize  = isset($args['pageSize']) ? (int)$args['pageSize'] : 5;
-    $enableEscape = isset($args['enableEscape']) ? $args['enableEscape'] : true; // FIXME to default false
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
@@ -1266,11 +1216,6 @@ function mediashare_userapi_getList($args)
 
         mediashareAddKeywords($media[$k]);
 
-        if ($enableEscape) {
-            mediashareEscapeAlbum($album, $album['id']);
-            mediashareEscapeItem($media[$k], $media[$k]['id']);
-        }
-        
         $result[] = array('album' => $album,
                           'media' => $media[$k]);
     }

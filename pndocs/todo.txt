@@ -5,6 +5,11 @@
     MySQL version check 5.0+ to set a modvar and use the stored procedures?
 
 
+  POSTCHECK
+
+    formatForDisplay the album title, summary and description. And invoke the transform hooks with "album-$albumId"
+    
+
   CHECKS
 
     'mediaattach/' hardcoded mediaDir to pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir')
@@ -25,7 +30,6 @@
     FIX apimethod(&args)  (rework mediashare_editapi_extappLocateApp)
     // FIXME in pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $album['mainMediaId']));
     check any is_null on mainMediaItem, it will not work because it's 0 now
-    deprecate $enableEscape and list the vars to formatForDisplay in the presentation layer
     recordPos & pageSize rename to startnum & numitems
     mediashareGetMediaItemsData cannot pass a mediaId now. It uses another method.
     mediashareGetMediaItemsData no longer obtains the UNAME, already have the UID in ownerId.
