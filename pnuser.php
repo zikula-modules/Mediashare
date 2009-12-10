@@ -510,10 +510,10 @@ function mediashare_user_list($args)
 
     $filterTexts = array();
     if ($keyword != '') {
-        $filterTexts[] = __('Items tagged with "%s"', DataUtil::formatForDisplay($keyword), $dom);
+        $filterTexts[] = __f('Items tagged with "%s"', DataUtil::formatForDisplay($keyword), $dom);
     }
     if ($uname != '') {
-        $filterTexts[] = __('Items by %s', DataUtil::formatForDisplay($uname), $dom);
+        $filterTexts[] = __f('Items by %s', DataUtil::formatForDisplay($uname), $dom);
     }
     if ($albumId != null) {
         if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
