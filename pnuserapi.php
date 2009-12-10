@@ -333,9 +333,9 @@ function mediashare_userapi_getAlbumList($args)
 
     foreach (array_keys($albums) as $aid)
     {
-        $subalbums[$aid]['mainMediaItem'] = null;
+        $albums[$aid]['mainMediaItem'] = null;
         if ($includeMainItem && (int)$albums[$aid]['mainMediaId'] > 0) {
-            $subalbums[$aid]['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $albums[$aid]['mainMediaId']));
+            $albums[$aid]['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $albums[$aid]['mainMediaId']));
         }
 
         $albums[$aid]['extappData'] = unserialize($albums[$aid]['extappData']);
