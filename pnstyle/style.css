@@ -497,17 +497,6 @@ div.mediashare-thumbnails a.zoom img
 }
 
 /* Latest items */
-
-div.mediashare-latestrss
-{
-    float: right;
-}
-
-div.mediashare-latestrss a
-{
-    text-decoration: none;
-}
-
 table.mediashare-mostactive td
 {
     vertical-align: top;

@@ -5,14 +5,12 @@
 <div class="mediashare-slideshow" style="position: absolute; width: 100%; height: 100%; left: 0; top:0">
 
     <!--[if $mediaItem != null]-->
-
     <iframe name="mediadisplay" id="mediadisplay" frameborder="0" marginwidth="0px" marginheight="0px" src="<!--[$centerUrl|escape:'html']-->" height="75%"></iframe>
 
     <br class="z-clearer" />
 
     <div class="stripframe" style="position: absolute; bottom: 0; left: 0">
         <div class="strip" style="height: <!--[$thumbnailSize+30]-->px;">
-
             <!--[foreach from=$mediaItems item=item]-->
             <!--[pnmodurl modname="mediashare" func=slideshowcenter aid=$album.id mid=$item.id assign=thumbnailUrl]-->
             <!--[if $item.id==$mediaItem.id]-->
@@ -24,7 +22,6 @@
                 <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail $class"]-->
             </a>
             <!--[/foreach]-->
-
         </div>
     </div>
 
@@ -33,7 +30,6 @@
         <a href="<!--[$quitUrl]-->" target="_top"><!--[gt text='Back']--></a>
     </h1>
     <!--[/if]-->
-
 </div>
 
 <!--[pnmodcallhooks hookobject=item hookaction=display hookid=$mediaId module=mediashare returnurl=$viewUrl]-->

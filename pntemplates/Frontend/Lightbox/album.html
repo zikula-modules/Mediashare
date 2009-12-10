@@ -12,7 +12,6 @@
 <!--[include file="mediashare_browseicons.html"]-->
 
 <div class="mediashare-album z-clearfix">
-
     <!--[if $mediaItem.id > 0]-->
     <!--[pnmodurl modname=mediashare type=user func=displaygb mid=$mediaItem.id popup=1 assign=displayUrl]-->
     <div class="mediashare-item">
@@ -75,7 +74,6 @@
         <a href="<!--[pnmodurl modname=mediashare func=list key=$keyword]-->"><!--[$keyword]--></a>
         <!--[/foreach]-->
         <!--[/if]-->
-
     </div>
 
     <!--[include file="mediashare_subalbumlist.html" mode="view"]-->
@@ -83,7 +81,6 @@
     <div class="mediashare-hooks">
         <!--[pnmodcallhooks hookobject=item hookaction=display hookid="mediashare-a`$album.id`-m`$mediaItem.id`" module=mediashare]-->
     </div>
-
 </div>
 
 <!--[include file="mediashare_viewfooter.html"]-->
