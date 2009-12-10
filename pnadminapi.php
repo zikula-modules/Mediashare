@@ -20,7 +20,6 @@ function mediashare_adminapi_getlinks()
     if (SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         $links[] = array('url' => pnModURL('mediashare', 'user', 'view'),     'text' => __('Browse', $dom));
         $links[] = array('url' => pnModURL('mediashare', 'admin', 'plugins'), 'text' => __('Plugins', $dom));
-        $links[] = array('url' => pnModURL('mediashare', 'import', 'main'),   'text' => __('Import', $dom));
         $links[] = array('url' => pnModURL('mediashare', 'admin', 'recalc'),  'text' => __('Regenerate', $dom));
         $links[] = array('url' => pnModURL('mediashare', 'admin', 'main'),    'text' => __('Settings', $dom));
     }
