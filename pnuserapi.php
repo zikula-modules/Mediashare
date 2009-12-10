@@ -619,8 +619,7 @@ function mediashareGetMediaItemsData($args)
                       'thumbnailId', 'previewId', 'originalId',
                       'thumbnailRef', 'thumbnailMimeType', 'thumbnailWidth', 'thumbnailHeight', 'thumbnailBytes',
                       'previewRef', 'previewMimeType', 'previewWidth', 'previewHeight', 'previewBytes',
-                      'originalRef', 'originalMimeType', 'originalWidth', 'originalHeight', 'originalBytes',
-                      'ownerName');
+                      'originalRef', 'originalMimeType', 'originalWidth', 'originalHeight', 'originalBytes');
 
     $items = DBUtil::marshallObjects($result, $colArray);
 
