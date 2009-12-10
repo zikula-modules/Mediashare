@@ -11,7 +11,7 @@
 <!--[pnmodurl modname=mediashare func=browse aid=$album.id mid=$nextMediaId assign=nextUrl]-->
 <!--[include file="mediashare_browseicons.html"]-->
 
-<div class="mediashare-album pn-clearfix">
+<div class="mediashare-album z-clearfix">
 
     <!--[if $mediaItem.id > 0]-->
     <!--[pnmodurl modname=mediashare type=user func=displaygb mid=$mediaItem.id popup=1 assign=displayUrl]-->
@@ -37,7 +37,7 @@
     </div>
     <!--[/if]-->
 
-    <div class="mediashare-data pn-clearfix">
+    <div class="mediashare-data z-clearfix">
         <!--[if $itemCount > 1]-->
         <div class="navigation">
             [<!--[$mediaItemPos]-->/<!--[$itemCount]-->]
