@@ -90,7 +90,7 @@ div.mediashare-albumlist {
 div.mediashare-tabs {
     float: left;
     width: 100%;
-    background: url("tabs-background.gif") repeat-x bottom;
+    background: url("../pnimages/tabs_background.gif") repeat-x bottom;
     margin-bottom:1em;
 }
 
@@ -236,7 +236,7 @@ div.mediashare-float img.thumbnail
 {
     border: 1px solid black;
     /*
-    background-image: url(../pnimages/album_top.gif);
+    background-image: url("../pnimages/album_top.gif");
     background-repeat: no-repeat;
     background-position: top left;
     */
@@ -249,7 +249,7 @@ div.mediashare-float a.album
     padding-top: 9px;
     display: block;
     float: left;
-    background-image: url(../pnimages/album_top.gif);
+    background-image: url("../pnimages/album_top.gif");
     background-repeat: no-repeat;
     background-position: top left;
 }
@@ -470,7 +470,7 @@ div.mediashare-thumbnails div.dropshadow
 {
     margin: 0px;
     padding: 0px;
-    background-image: url(dropshadow.gif);
+    background-image: url("../pnimages/dropshadow.gif");
     background-repeat: no-repeat;
     background-position: right bottom;
 }
