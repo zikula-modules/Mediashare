@@ -17,11 +17,11 @@ class MediashareBaseAlbum
     function fixMainMedia($images)
     {
         $mainMediaId = $this->albumData['mainMediaId'];
-        $mainMedia = null;
-        for ($i = 0, $cou = count($images); $i < $cou; ++$i) {
-            $image = & $images[$i];
-            if ($image['id'] == $mainMediaId) {
-                $mainMedia = $image;
+        $mainMedia   = null;
+        foreach (array_keys($images) as $i)
+        {
+            if ($images[$i]['id'] == $mainMediaId) {
+                $mainMedia = $images[$i];
             }
         }
         $this->albumData['mainMediaItem'] = $mainMedia;
@@ -118,8 +118,7 @@ function mediashare_userapi_getAlbum($args)
 
 function &mediashare_userapi_getAlbumObject($args)
 {
-    $albumData = mediashare_userapi_getAlbumData($args);
-    if ($albumData == false) {
+    if (!$albumData = mediashare_userapi_getAlbumData($args)) {
         return false;
     }
 
@@ -548,13 +547,17 @@ function mediashareGetMediaItemsData($args)
     $storageColumn = $pntable['mediashare_mediastore_column'];
 
     if (!empty($albumId)) {
-        $albumRestriction = "$mediaColumn[parentAlbumId] = $albumId";
+        $albumRestriction = "$mediaColumn[parentAlbumId] = '$albumId'";
 
-    } elseif (!empty($mediaIdList) && is_array($mediaIdList)) {
-        foreach (array_keys($mediaIdList) as $i) {
-            $mediaIdList[$i] = (int)$mediaIdList[$i];
+    } else {
+        $albumRestriction = array();
+
+        if (!empty($mediaIdList)) {
+            foreach (array_keys($mediaIdList) as $i) {
+                $mediaIdList[$i] = (int)$mediaIdList[$i];
+            }
+            $albumRestriction[] = "$mediaColumn[id] IN ('" . implode("','", $mediaIdList) . "')";
         }
-        $albumRestriction = "$mediaColumn[id] IN ('" . implode("','", $mediaIdList) . "')";
 
         $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
                                            array('access' => $access,
@@ -562,10 +565,9 @@ function mediashareGetMediaItemsData($args)
         if (!$accessibleAlbumSql) {
             return false;
         }
-        $albumRestriction .= " AND $accessibleAlbumSql";
+        $albumRestriction[] = $accessibleAlbumSql;
 
-    } else {
-        return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId / mediaIdList', 'userapi.mediashareGetMediaItemsData'), $dom));
+        $albumRestriction = implode(' AND ', $albumRestriction);
     }
 
     $sql = "SELECT $mediaColumn[id],
@@ -761,7 +763,7 @@ function mediashare_userapi_getSettings($args)
 {
     $modvars = pnModGetVar('mediashare');
     $modvars['mediaSizeLimitSingle'] = (int)$modvars['mediaSizeLimitSingle']/1000;
-    $modvars['mediaSizeLimitTotal'] = (int)$modvars['mediaSizeLimitTotal']/1000;
+    $modvars['mediaSizeLimitTotal']  = (int)$modvars['mediaSizeLimitTotal']/1000;
     
 	return $modvars;
 }
@@ -777,7 +779,8 @@ function mediashare_userapi_getSettings($args)
 function mediashare_userapi_setSettings($args)
 {
     $args['mediaSizeLimitSingle'] = (int)$args['mediaSizeLimitSingle'] * 1000;
-    $args['mediaSizeLimitTotal'] = (int)$args['mediaSizeLimitTotal'] * 1000;
+    $args['mediaSizeLimitTotal']  = (int)$args['mediaSizeLimitTotal'] * 1000;
+
     return pnModSetVars('mediashare', $args);
 }
 
@@ -946,6 +949,7 @@ function mediashare_userapi_getSummary($args)
 function mediashareAddKeywords(&$item)
 {
     $k = trim(mediashareStripKeywords($item['keywords']));
+
     if (strlen($k) > 0) {
         $item['keywordsArray'] = preg_split("/[\s,]+/", $k);
         $item['hasKeywords']   = true;
