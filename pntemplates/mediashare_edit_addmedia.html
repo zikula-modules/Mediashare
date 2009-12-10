@@ -10,7 +10,7 @@
         <!--[capture name=link]-->
         <a href="<!--[pnmodurl modname=mediashare type=edit func=addmedia source=$source.name aid=$album.id]-->"><!--[$source.title]--></a>
         <!--[/capture]-->
-        <!--[if $source.name==$selectedSource.name]-->
+        <!--[if $source.name eq $selectedSource.name]-->
         <!--[mediashare_tab selected=1 content=$smarty.capture.link]-->
         <!--[else]-->
         <!--[mediashare_tab selected=0 content=$smarty.capture.link]-->

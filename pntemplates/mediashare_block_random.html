@@ -10,7 +10,7 @@
     <td>
     </td>
     <td>
-        <input type="radio" id="radioAll" name="mstype" value="all"<!--[if $type==all]--> checked="checked"<!--[/if]-->"/>
+        <input type="radio" id="radioAll" name="mstype" value="all"<!--[if $type eq all]--> checked="checked"<!--[/if]-->"/>
         <label for="radioAll"><!--[gt text="Show random image from any album" domain="module_mediashare"]--></label>
     </td>
 </tr>
@@ -18,7 +18,7 @@
     <td>
     </td>
     <td>
-        <input type="radio" id="radioLatest" name="mstype" value="latest"<!--[if $type==latest]--> checked="checked"<!--[/if]-->/>
+        <input type="radio" id="radioLatest" name="mstype" value="latest"<!--[if $type eq latest]--> checked="checked"<!--[/if]-->/>
         <label for="radioLatest"><!--[gt text="Show random image from latest album" domain="module_mediashare"]--></label>
     </td>
 </tr>
@@ -26,7 +26,7 @@
     <td>
     </td>
     <td>
-        <input type="radio" id="radioAlbum" name="mstype" value="album"<!--[if $type==album]--> checked="checked"<!--[/if]-->/>
+        <input type="radio" id="radioAlbum" name="mstype" value="album"<!--[if $type eq album]--> checked="checked"<!--[/if]-->/>
         <label for="radioAlbum"><!--[gt text="Show random image from specific album" domain="module_mediashare"]--></label>
     </td>
 </tr>

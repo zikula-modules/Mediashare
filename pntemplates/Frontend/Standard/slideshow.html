@@ -13,7 +13,7 @@
         <div class="strip" style="height: <!--[$thumbnailSize+30]-->px;">
             <!--[foreach from=$mediaItems item=item]-->
             <!--[pnmodurl modname="mediashare" func=slideshowcenter aid=$album.id mid=$item.id assign=thumbnailUrl]-->
-            <!--[if $item.id==$mediaItem.id]-->
+            <!--[if $item.id eq $mediaItem.id]-->
             <!--[assign var=class value=selected]-->
             <!--[else]-->
             <!--[assign var=class value=""]-->
