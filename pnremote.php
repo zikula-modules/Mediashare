@@ -19,7 +19,7 @@
 //
 
 
-require_once ("modules/mediashare/common.php");
+require_once 'modules/mediashare/common.php';
 
 /* DEBUG
   $f = fopen('c:/tmp/gallery.txt', 'a');

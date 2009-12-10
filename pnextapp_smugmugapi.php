@@ -4,8 +4,8 @@
 // Mediashare by Jorn Lind-Nielsen (C)
 //
 
-require_once ("modules/mediashare/common.php");
-require_once ("modules/mediashare/pnincludes/phpSmug/phpSmug.php");
+require_once 'modules/mediashare/common.php';
+require_once 'modules/mediashare/pnincludes/phpSmug/phpSmug.php';
 
 class MediashareSmugMugAlbum extends MediashareBaseAlbum
 {

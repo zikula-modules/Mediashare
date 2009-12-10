@@ -4,8 +4,8 @@
 // Mediashare by Jorn Lind-Nielsen (C)
 //
 
-require_once ("modules/mediashare/common.php");
-require_once ("modules/mediashare/pnincludes/phpFlickr/phpFlickr.php");
+require_once 'modules/mediashare/common.php';
+require_once 'modules/mediashare/pnincludes/phpFlickr/phpFlickr.php';
 
 class MediashareFlickrAlbum extends MediashareBaseAlbum
 {

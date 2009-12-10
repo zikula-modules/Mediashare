@@ -4,8 +4,8 @@
 // Mediashare by Jorn Lind-Nielsen (C)
 //
 
-require_once ("modules/mediashare/common.php");
-require_once ("modules/mediashare/pnincludes/phpPicasa/Picasa.php");
+require_once 'modules/mediashare/common.php';
+require_once 'modules/mediashare/pnincludes/phpPicasa/Picasa.php';
 
 class MediasharePicasaAlbum extends MediashareBaseAlbum
 {

@@ -4,7 +4,7 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2002.
 //
 
-require_once ("modules/mediashare/common-edit.php");
+require_once 'modules/mediashare/common-edit.php';
 
 /**
  * Module initialization

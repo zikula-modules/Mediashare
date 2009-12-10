@@ -62,9 +62,9 @@ function mediashareGetStringUrl($param, &$args, $default = null)
 function mediashareGetAccessAPI()
 {
     if (file_exists('modules/mediashare/localaccessapi.php')) {
-        require_once ('modules/mediashare/localaccessapi.php');
+        require_once 'modules/mediashare/localaccessapi.php';
     } else {
-        require_once ('modules/mediashare/accessapi.php');
+        require_once 'modules/mediashare/accessapi.php';
     }
 
     return mediashareCreateAccessAPI();

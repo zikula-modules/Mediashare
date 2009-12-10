@@ -4,7 +4,7 @@
 // Mediashare by Jorn Lind-Nielsen (C) 2003.
 //
 
-require_once ("modules/mediashare/common.php");
+require_once 'modules/mediashare/common.php';
 
 function mediashareUploadErrorMsg($error)
 {

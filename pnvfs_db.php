@@ -4,7 +4,6 @@
 // Mediashare by Jorn Lind-Nielsen (C)
 //
 
-
 require_once 'modules/mediashare/common.php';
 
 function mediashare_vfs_db_dump()

@@ -5,7 +5,7 @@
 //
 
 require_once 'modules/mediashare/common-edit.php';
-require_once 'modules/mediashare/elfisk/elfisk_common.php';
+require_once 'modules/mediashare/pnincludes/elfisk_common.php';
 
 /**
  * View album in edit-mode

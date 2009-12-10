@@ -4,7 +4,7 @@
 // Mediashare by Jorn Lind-Nielsen (C)
 //
 
-require_once ("modules/mediashare/common-edit.php");
+require_once 'modules/mediashare/common-edit.php';
 
 /**
  * get available admin panel links
