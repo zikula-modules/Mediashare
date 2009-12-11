@@ -3,13 +3,13 @@
 <div class="mediashare-tabs">
 <ul>
   <!--[capture name=access]-->
-    <a href="<!--[pnmodurl modname=mediashare type=edit func=access aid=$album.id]-->"><!--[gt text="Access"]--></a>
+    <a href="<!--[pnmodurl modname='mediashare' type='edit' func=access aid=$album.id]-->"><!--[gt text="Access"]--></a>
   <!--[/capture]-->
   <!--[capture name=send]-->
-    <a href="<!--[pnmodurl modname=mediashare type=invitation func=send aid=$album.id]-->"><!--[gt text="Invite"]--></a>
+    <a href="<!--[pnmodurl modname='mediashare' type='invitation' func='send' aid=$album.id]-->"><!--[gt text="Invite"]--></a>
   <!--[/capture]-->
   <!--[capture name=list]-->
-    <a href="<!--[pnmodurl modname=mediashare type=invitation func=list aid=$album.id]-->"><!--[gt text="Invitations"]--></a>
+    <a href="<!--[pnmodurl modname='mediashare' type='invitation' func='list' aid=$album.id]-->"><!--[gt text="Invitations"]--></a>
   <!--[/capture]-->
 
   <!--[mediashare_tab selected=$accessSelected content=$smarty.capture.access]-->
@@ -19,5 +19,5 @@
 </div>
 
 <div class="mediashare-tabback">
-  <a href="<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id]-->"><!--[gt text="Back"]--></a>
+  <a href="<!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$album.id]-->"><!--[gt text="Back"]--></a>
 </div>

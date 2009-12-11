@@ -1,6 +1,6 @@
 <!--[* $Id$ *]-->
 <!--[pnajaxheader lightbox=true]-->
-<!--[pnpagesetvar name=title value="`$album.title` :: `$mediaItem.title`"]-->
+<!--[pnpagesetvar name='title' value="`$album.title` :: `$mediaItem.title`"]-->
 
 <script type="text/javascript" src="modules/mediashare/pntemplates/Frontend/Lightbox/slideshow.js"></script>
 
@@ -9,7 +9,7 @@
     var Slideshow = new MediashareSlideshow();
 
     <!--[foreach from=$mediaItems item=item]-->
-    Slideshow.AddItem(<!--[$item.id]-->, "<!--[mediashare_mediaUrl src=originalRef mediaItem=$item]-->", "<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->", "<!--[$item.originalMimeType]-->", "<!--[$item.html|escape:javascript]-->", "<!--[$item.title|escape:"javascript"]-->. <!--[$item.description|escape:"javascript"]-->");
+    Slideshow.AddItem(<!--[$item.id]-->, "<!--[mediashare_mediaUrl src='originalRef' mediaItem=$item]-->", "<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->", "<!--[$item.originalMimeType]-->", "<!--[$item.html|escape:javascript]-->", "<!--[$item.title|escape:"javascript"]-->. <!--[$item.description|escape:"javascript"]-->");
     <!--[/foreach]-->
 
     var pnmlStart   = "<!--[gt text='Start']-->";
@@ -30,9 +30,9 @@
       <a href="#" onclick="Slideshow.HandleSize()" id="slideshowSizeAnchor"><!--[gt text='Show smaller image']--></a>
       | <label for="slideshowToggleTitle"><!--[gt text='Show title']--></label> <input type="checkbox" checked="checked" id="slideshowToggleTitle" onclick="Slideshow.HandleToggleTitle()"/>
     </div>
-    <a href="#" onclick="Slideshow.HandlePrevious()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/back.gif" alt="<!--[gt text='Previous']-->"/></a>
-    <a href="#" onclick="Slideshow.HandleToggleStart()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/pause.gif" alt="<!--[gt text='Stop']-->" id="slideshowStateImg"/></a>
-    <a href="#" onclick="Slideshow.HandleNext()"><img src="modules/mediashare/pntemplates/Frontend/Lightbox/forward.gif" alt="<!--[gt text='Next']-->"/></a>
+    <a href="#" onclick="Slideshow.HandlePrevious()"><img src="<!--[$baseurl]-->modules/mediashare/pntemplates/Frontend/Lightbox/images/back.gif" alt="<!--[gt text='Previous']-->"/></a>
+    <a href="#" onclick="Slideshow.HandleToggleStart()"><img src="<!--[$baseurl]-->modules/mediashare/pntemplates/Frontend/Lightbox/images/pause.gif" alt="<!--[gt text='Stop']-->" id="slideshowStateImg"/></a>
+    <a href="#" onclick="Slideshow.HandleNext()"><img src="<!--[$baseurl]-->modules/mediashare/pntemplates/Frontend/Lightbox/images/forward.gif" alt="<!--[gt text='Next']-->"/></a>
     <a href="#" onclick="Slideshow.HandleAdjustSpeed(-1)">-</a>
     <span id="mediaTimeSpan">5</span>
     <a href="#" onclick="Slideshow.HandleAdjustSpeed(+1)">+</a>

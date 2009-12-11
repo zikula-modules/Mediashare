@@ -2,9 +2,9 @@
 <div class="mediashare-albumlist">
 <!--[foreach from=$subAlbums item='subAlbum']-->
   <!--[if $mode eq 'edit']-->
-  <!--[pnmodurl modname=mediashare type=edit func=view aid=$subAlbum.id assign=viewUrl]-->
+  <!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$subAlbum.id assign=viewUrl]-->
   <!--[else]-->
-  <!--[pnmodurl modname=mediashare func=view aid=$subAlbum.id assign=viewUrl]-->
+  <!--[pnmodurl modname='mediashare' func='view' aid=$subAlbum.id assign=viewUrl]-->
   <!--[/if]-->
   <div class="mediashare-float" style="width: <!--[$thumbnailSize+40]-->px; height: <!--[$thumbnailSize+60]-->px">
     <table>

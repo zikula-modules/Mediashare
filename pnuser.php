@@ -29,7 +29,6 @@ function mediashare_user_browse($args)
 
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaId = mediashareGetStringUrl('mid', $args, 0); // Ext apps. uses very long IDs, so int is not good
-    $invitation = FormUtil::getPassedValue('invitation');
 
     // Check access to album (media ID won't do a difference if not from this album)
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementViewSomething)) {

@@ -1,6 +1,6 @@
 <!--[* $Id$ *]-->
-<!--[pnpagesetvar name=title value="`$album.title` :: `$mediaItem.title`"]-->
-<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$mediaItem.id delay=$delay mode=$mode assign=centerUrl]-->
+<!--[pnpagesetvar name='title' value="`$album.title` :: `$mediaItem.title`"]-->
+<!--[pnmodurl modname='mediashare' func='slideshow'center aid=$album.id mid=$mediaItem.id delay=$delay mode=$mode assign=centerUrl]-->
 
 <div class="mediashare-slideshow" style="position: absolute; width: 100%; height: 100%; left: 0; top:0">
 
@@ -14,9 +14,9 @@
             <!--[foreach from=$mediaItems item=item]-->
             <!--[pnmodurl modname="mediashare" func=slideshowcenter aid=$album.id mid=$item.id assign=thumbnailUrl]-->
             <!--[if $item.id eq $mediaItem.id]-->
-            <!--[assign var=class value=selected]-->
+            <!--[assign var='class' value='selected']-->
             <!--[else]-->
-            <!--[assign var=class value=""]-->
+            <!--[assign var='class' value='']-->
             <!--[/if]-->
             <a href="<!--[$thumbnailUrl|escape]-->" target="mediadisplay">
                 <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail $class"]-->
@@ -32,4 +32,4 @@
     <!--[/if]-->
 </div>
 
-<!--[pnmodcallhooks hookobject=item hookaction=display hookid=$mediaId module=mediashare returnurl=$viewUrl]-->
+<!--[pnmodcallhooks hookobject='item' hookaction='display' hookid=$mediaId module='mediashare' returnurl=$viewUrl]-->

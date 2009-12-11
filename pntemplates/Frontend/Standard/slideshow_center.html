@@ -1,9 +1,9 @@
 <!--[* $Id$ *]-->
-<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$prevMediaId assign=prevUrl delay=$delay]-->
-<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$nextMediaId assign=nextUrl delay=$delay]-->
-<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=$nextMediaId assign=nextRunningUrl delay=$delay mode=running fqurl=1]-->
-<!--[pnmodurl modname=mediashare func=slideshowcenter aid=$album.id mid=MEDIAID assign=selectUrl delay=DELAY mode=MODE fqurl=1]-->
-<!--[mediashare_username userId=$album.ownerId assign=ownerName]-->
+<!--[pnmodurl modname='mediashare' func='slideshow'center aid=$album.id mid=$prevMediaId assign='prevUrl' delay=$delay]-->
+<!--[pnmodurl modname='mediashare' func='slideshow'center aid=$album.id mid=$nextMediaId assign='nextUrl' delay=$delay]-->
+<!--[pnmodurl modname='mediashare' func='slideshow'center aid=$album.id mid=$nextMediaId assign=nextRunningUrl delay=$delay mode=running fqurl=1]-->
+<!--[pnmodurl modname='mediashare' func='slideshow'center aid=$album.id mid=MEDIAID assign=selectUrl delay=DELAY mode=MODE fqurl=1]-->
+<!--[mediashare_username userId=$album.ownerId assign='ownerName']-->
 
 <!--[if $mode eq 'running']-->
 <script type="text/javascript">
@@ -49,15 +49,15 @@
         <div class="author">
             <!--[mediashare_username userId=$mediaItem.ownerId assign=ownerUName]-->
             <!--[gt text='By']-->
-            <a href="<!--[pnmodurl modname=mediashare func=list uname=$ownerUName]-->" title="<!--[gt text='Show items from this person']-->" target="_top"><!--[mediashare_username userId=$mediaItem.ownerId]--></a>.
+            <a href="<!--[pnmodurl modname='mediashare' func='list' uname=$ownerUName]-->" title="<!--[gt text='Show items from this person']-->" target="_top"><!--[mediashare_username userId=$mediaItem.ownerId]--></a>.
             <!--[if $hasEditAccess]-->
-            [ <a href="<!--[pnmodurl modname=mediashare type=edit func=edititem aid=$album.id mid=$mediaItem.id]-->" target="_top"><!--[gt text='Edit']--></a> ]
+            [ <a href="<!--[pnmodurl modname='mediashare' type='edit' func='edititem' aid=$album.id mid=$mediaItem.id]-->" target="_top"><!--[gt text='Edit']--></a> ]
             <!--[/if]-->
         </div>
         <div class="description" style="height: <!--[$mediaItem.previewHeight]-->px; overflow: auto"><!--[$mediaItem.description|nl2br]--></div>
     </div>
 
-    <div class="mediashare-item"><!--[pnmodurl modname=mediashare func=display mid=$mediaItem.id assign=popupUrl fqurl=1]-->
+    <div class="mediashare-item"><!--[pnmodurl modname='mediashare' func='display' mid=$mediaItem.id assign='popupUrl' fqurl=1]-->
     <!--[mediashare_mediaItem src=$mediaItem.previewRef title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler onclick="popupMediaViewer('$popupUrl')"|pnvarprepfordisplay class="media" width=$mediaItem.previewWidth height=$mediaItem.previewHeight]--></div>
 
 </div>

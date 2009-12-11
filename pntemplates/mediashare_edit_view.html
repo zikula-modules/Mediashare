@@ -5,7 +5,7 @@
 <!--[pnpageaddvar name="javascript" value="modules/mediashare/pnjavascript/psmenu.js"]-->
 
 <!--[gt text="Gallery" assign=mltitle]-->
-<!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle mode="edit" includeMenu=1 formEncType='']-->
+<!--[include file='mediashare_editheader.html' albumId=$album.id title=$mltitle mode="edit" includeMenu=1 formEncType='']-->
 
 <!--[include file="mediashare_popupmenu_edit.html"]-->
 <!--[include file="mediashare_popupmenu_albumedit.html"]-->
@@ -14,12 +14,12 @@
 
     <!--[if $album.id != 1  &&  $access.hasParentAccess]-->
     <div class="mediashare-float" style="width: <!--[$album.thumbnailSize+40]-->px; height: <!--[$album.thumbnailSize+40]-->px">
-        <!--[pnmodurl modname=mediashare type=edit func=view aid=$album.parentAlbumId assign=parentUrl]-->
+        <!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$album.parentAlbumId assign=parentUrl]-->
         <a href="<!--[$parentUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/album_up.gif" alt="<!--[gt text='One level up']-->" /></a>
     </div>
     <!--[/if]-->
 
-    <!--[include file="mediashare_subalbumlist.html" mode="edit"]-->
+    <!--[include file='mediashare_subalbumlist.html' mode='edit']-->
 
     <!--[foreach from=$mediaItems item=item]-->
     <div class="mediashare-float" style="width: <!--[$album.thumbnailSize+40]-->px; height: <!--[$album.thumbnailSize+60]-->px">
@@ -48,4 +48,4 @@
     <!--[/foreach]-->
 </div>
 
-<!--[include file="mediashare_footer.html"]-->
+<!--[include file='mediashare_footer.html']-->

@@ -3,7 +3,7 @@
   <!--[gt text='Mediashare']-->: <!--[$hitCount]--> <!--[gt text='item(s) found']-->
   <ul>
   <!--[foreach from=$result item=item]-->
-    <li><a href="<!--[pnmodurl modname=mediashare aid=$item.albumId mid=$item.mediaId]-->"> <strong><!--[$item.albumTitle|pnvarprepfordisplay]--></strong>:&nbsp;<!--[$item.mediaTitle|pnvarprepfordisplay]--></a>
+    <li><a href="<!--[pnmodurl modname='mediashare' aid=$item.albumId mid=$item.mediaId]-->"> <strong><!--[$item.albumTitle|pnvarprepfordisplay]--></strong>:&nbsp;<!--[$item.mediaTitle|pnvarprepfordisplay]--></a>
     </li>
   <!--[/foreach]-->
   </ul>

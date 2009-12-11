@@ -1,10 +1,8 @@
-<!--[* $Id$ *]-->
+<!--[* $Id: album.html 149 2009-12-10 06:36:01Z mateo $ *]-->
 <!--[pnajaxheader lightbox=true]-->
 <!--[ms_greyboxheader]-->
-<!--[pnpagesetvar name='title' value=$album.title]-->
-
+<!--[pnpagesetvar name='title' value="`$album.title` :: `$mediaItem.title`"]-->
 <!--[include file='mediashare_viewheader.html' albumId=$album.id title=$album.title]-->
-
 <!--[pnmodurl modname='mediashare' func='slideshow' aid=$album.id back=1 assign='slideshowUrl']-->
 <!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$album.id assign='editAlbumUrl']-->
 <!--[pnmodurl modname='mediashare' type='edit' func='edititem' mid=$mediaItem.id back=browse assign='editItemUrl']-->
@@ -18,7 +16,7 @@
     <!--[if $mediaItem.id > 0]-->
     <!--[pnmodurl modname='mediashare' type='user' func='displaygb' mid=$mediaItem.id popup=1 assign='displayUrl']-->
     <div class="mediashare-item">
-        <a href="<!--[mediashare_mediaUrl src='originalRef' mediaItem=$mediaItem]-->" rel="lightbox" title="<!--[$mediaItem.captionLong]-->"><!--[mediashare_mediaItem src=$mediaItem.previewRef title=$mediaItem.captionLong mediaHandler=$mediaItem.mediaHandler class='media' width=$mediaItem.previewWidth height=$mediaItem.previewHeight]--></a>
+        <a href="<!--[mediashare_mediaUrl src='originalRef' mediaItem=$mediaItem]-->" rel="lightbox" title="<!--[$mediaItem.captionLong]-->"><!--[mediashare_mediaItem src=$mediaItem.previewRef title=$mediaItem.captionLong mediaHandler=$mediaItem.mediaHandler class="media" width=$mediaItem.previewWidth height=$mediaItem.previewHeight]--></a>
         <br class="z-clearer" />
         <!--[if !$mediaItem.originalIsImage]-->
         <div class="mediashare-zoom">

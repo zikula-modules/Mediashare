@@ -1,10 +1,10 @@
 <!--[* $Id$ *]-->
-<!--[elfisk_setInitialFocus inputId="subject"]-->
-<!--[gt text="Invitations" assign=title]-->
+<!--[elfisk_setInitialFocus inputId='subject']-->
+<!--[gt text='Invitations' assign='title']-->
 
-<!--[include file="mediashare_editheader.html" albumId=$album.id title=$title mode="edit"]-->
+<!--[include file='mediashare_editheader.html' albumId=$album.id title=$title mode='edit']-->
 
-<!--[include file="mediashare_invitationtabs.html"]-->
+<!--[include file='mediashare_invitationtabs.html']-->
 
 <h2><!--[gt text="Get invitation link"]--></h2>
 
@@ -16,9 +16,7 @@
 <!--[else]-->
 <p><!--[gt text="Here is your link:"]--></p>
 <div class="mediashare-invlink"><!--[$link]--></div>
-
-<p><a href="<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id]-->"><!--[gt text="Now back to the album view"]--></a> <!--[gt text="or"]--> <a href="<!--[pnmodurl modname=mediashare type=invitation func=list aid=$album.id]-->"><!--[gt text="the invitation list"]--></a>.</p>
-
+<p><a href="<!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$album.id]-->"><!--[gt text="Now back to the album view"]--></a> <!--[gt text="or"]--> <a href="<!--[pnmodurl modname='mediashare' type='invitation' func='list' aid=$album.id]-->"><!--[gt text="the invitation list"]--></a>.</p>
 <!--[/if]-->
 
-<!--[include file="mediashare_footer.html"]-->
+<!--[include file='mediashare_footer.html']-->

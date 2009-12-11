@@ -204,7 +204,7 @@ MediashareSlideshow.prototype =
   {
     var t = this;
     this.currentTimer = setTimeout(function() { t.HandleNextTimeStep() }, this.currentSpeed*1000);
-    $('slideshowStateImg').src = baseURL + "modules/mediashare/pntemplates/Frontend/Lightbox/pause.gif";
+    $('slideshowStateImg').src = baseURL + "modules/mediashare/pntemplates/Frontend/Lightbox/images/pause.gif";
     $('slideshowStateImg').alt = pnmlStop;
     this.currentRunning = true;
   },
@@ -213,7 +213,7 @@ MediashareSlideshow.prototype =
   StopSlideshow: function()
   {
     clearTimeout(this.currentTimer);
-    $('slideshowStateImg').src = baseURL + "modules/mediashare/pntemplates/Frontend/Lightbox/play.gif";
+    $('slideshowStateImg').src = baseURL + "modules/mediashare/pntemplates/Frontend/Lightbox/images/play.gif";
     $('slideshowStateImg').alt = pnmlStart;
     this.currentRunning = false;
   },

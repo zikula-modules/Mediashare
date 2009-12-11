@@ -8,20 +8,20 @@
     onclick="contextmenu.album.onClick(this, '<!--[$album.id]-->', event, 'psmenu-album')"
     onmouseover="this.src=document.location.pnbaseURL+'modules/mediashare/pnimages/imagemenuicon_hover.gif'"
     onmouseout="this.src=document.location.pnbaseURL+'modules/mediashare/pnimages/imagemenuicon.gif'" alt=""/>
-    <a href="<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id]-->"><!--[gt text='Edit']--></a>
+    <a href="<!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$album.id]-->"><!--[gt text='Edit']--></a>
 
     <div class="psmenu" id="psmenu-album">
         <ul>
-            <li><img src="modules/mediashare/pnimages/setting.gif" alt="" /><a href="<!--[pnmodurl modname=mediashare type=edit func=editalbum aid=$album.id]-->"><!--[gt text="Edit album"]--></a></li>
+            <li><img src="modules/mediashare/pnimages/setting.gif" alt="" /><a href="<!--[pnmodurl modname='mediashare' type='edit' func='editalbum' aid=$album.id]-->"><!--[gt text="Edit album"]--></a></li>
             <!--[if $access.hasAddMediaAccess]-->
-            <li><img src="modules/mediashare/pnimages/add.gif" alt="" /><a href="<!--[pnmodurl modname=mediashare type=edit func=addmedia aid=$album.id]-->"><!--[gt text="Add media"]--></a></li>
-            <li><img src="modules/mediashare/pnimages/add.gif" alt="" /><a href="<!--[pnmodurl modname=mediashare type=edit func=addalbum aid=$album.id]-->"><!--[gt text="Add album"]--></a></li>
-            <li><img src="modules/mediashare/pnimages/arrange.gif" alt="" /><a href="<!--[pnmodurl modname=mediashare type=edit func=arrange aid=$album.id]-->"><!--[gt text="Arrange"]--></a></li>
+            <li><img src="modules/mediashare/pnimages/add.gif" alt="" /><a href="<!--[pnmodurl modname='mediashare' type='edit' func=addmedia aid=$album.id]-->"><!--[gt text="Add media"]--></a></li>
+            <li><img src="modules/mediashare/pnimages/add.gif" alt="" /><a href="<!--[pnmodurl modname='mediashare' type='edit' func=addalbum aid=$album.id]-->"><!--[gt text="Add album"]--></a></li>
+            <li><img src="modules/mediashare/pnimages/arrange.gif" alt="" /><a href="<!--[pnmodurl modname='mediashare' type='edit' func=arrange aid=$album.id]-->"><!--[gt text="Arrange"]--></a></li>
             <!--[/if]-->
-            <li><img src="modules/mediashare/pnimages/access.gif" alt="" /><a href="<!--[pnmodurl modname=mediashare type=edit func=access aid=$album.id]-->"><!--[gt text="Access"]--></a></li>
-            <li><img src="modules/mediashare/pnimages/invite.gif" alt="" /><a href="<!--[pnmodurl modname=mediashare type=invitation func=send aid=$album.id]-->"><!--[gt text="Invite"]--></a></li>
-            <li><img src="modules/mediashare/pnimages/move.gif" alt="" /><a href="<!--[pnmodurl modname=mediashare type=edit func=movealbum aid=$album.id]-->"><!--[gt text="Move"]--></a></li>
-            <li><img src="modules/mediashare/pnimages/delete.gif" alt="" /><a href="<!--[pnmodurl modname=mediashare type=edit func=deletealbum aid=$album.id]-->"><!--[gt text="Delete album"]--></a></li>
+            <li><img src="modules/mediashare/pnimages/access.gif" alt="" /><a href="<!--[pnmodurl modname='mediashare' type='edit' func=access aid=$album.id]-->"><!--[gt text="Access"]--></a></li>
+            <li><img src="modules/mediashare/pnimages/invite.gif" alt="" /><a href="<!--[pnmodurl modname='mediashare' type='invitation' func='send' aid=$album.id]-->"><!--[gt text="Invite"]--></a></li>
+            <li><img src="modules/mediashare/pnimages/move.gif" alt="" /><a href="<!--[pnmodurl modname='mediashare' type='edit' func='movealbum' aid=$album.id]-->"><!--[gt text="Move"]--></a></li>
+            <li><img src="modules/mediashare/pnimages/delete.gif" alt="" /><a href="<!--[pnmodurl modname='mediashare' type='edit' func='deletealbum' aid=$album.id]-->"><!--[gt text="Delete album"]--></a></li>
         </ul>
     </div>
 </div>

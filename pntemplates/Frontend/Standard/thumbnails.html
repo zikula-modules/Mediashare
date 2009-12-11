@@ -1,33 +1,35 @@
 <!--[* $Id$ *]-->
 <!--[pnajaxheader lightbox=true]-->
 <!--[ms_greyboxheader]-->
-<!--[pnpagesetvar name=title value=$album.title]-->
-<!--[pnmodurl modname=mediashare type=edit func=view aid=$album.id assign=editAlbumUrl]-->
+<!--[pnpagesetvar name='title' value=$album.title]-->
+<!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$album.id assign='editAlbumUrl']-->
 
-<!--[include file="mediashare_viewheader.html" albumId=$album.id title=$album.title]-->
+<!--[include file='mediashare_viewheader.html' albumId=$album.id title=$album.title]-->
 
-<!--[include file="mediashare_browseicons.html"]-->
+<!--[include file='mediashare_browseicons.html']-->
 
 <div class="mediashare-thumbnails">
 
     <!--[foreach from=$mediaItems item=item]-->
-    <!--[pnmodurl modname=mediashare type=user func=displaygb mid=$item.id popup=1 assign=displayUrl]-->
+    <!--[pnmodurl modname='mediashare' type='user' func='displaygb' mid=$item.id popup=1 assign='displayUrl']-->
     <div class="mediashare-float"><div class="dropshadow">
         <div class="content" style="width: <!--[$album.thumbnailSize+20]-->px; height: <!--[$album.thumbnailSize+60]-->px">
             <div class="thumbnail">
-                <a href="<!--[pnmodurl modname=mediashare func=browse aid=$album.id mid=$item.id]-->"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.captionLong mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></a>
+                <a href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id mid=$item.id]-->"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.captionLong mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class='thumbnail']--></a>
             </div>
-            <!--[if $item.originalIsImage]--><a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->" rel="lightbox1" title="<!--[$item.captionLong|escape]-->" class="zoom"><img src="modules/mediashare/pnimages/magnify.gif" alt=""/></a><!--[else]--><a href="<!--[$displayUrl]-->" rel="gb_page_center[<!--[$item.originalWidth]-->,<!--[$item.originalHeight]-->]" title="<!--[$item.captionLong]-->"><img src="modules/mediashare/pnimages/magnify.gif" alt=""/></a><!--[/if]--> <!--[$item.caption]-->
+            <!--[if $item.originalIsImage]--><a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->" rel="lightbox1" title="<!--[$item.captionLong|escape]-->" class="zoom"><img src="modules/mediashare/pnimages/magnify.gif" alt=""/></a>
+			<!--[else]--><a href="<!--[$displayUrl]-->" rel="gb_page_center[<!--[$item.originalWidth]-->,<!--[$item.originalHeight]-->]" title="<!--[$item.captionLong]-->"><img src="modules/mediashare/pnimages/magnify.gif" alt=""/></a>
+			<!--[/if]--> <!--[$item.caption]-->
         </div>
     </div></div>
     <!--[/foreach]-->
 
-    <!--[include file="mediashare_subalbumlist.html" mode="view"]-->
+    <!--[include file='mediashare_subalbumlist.html' mode='view']-->
 
     <br class="z-clearer" />
 
     <div class="mediashare-data">
-        <!--[mediashare_username userId=$album.ownerId assign=ownerName]-->
+        <!--[mediashare_username userId=$album.ownerId assign='ownerName']-->
         <div class="summary">
             <!--[if $album.summary != '']-->
             <!--[$album.summary]-->
@@ -37,16 +39,16 @@
         </div>
 
         <div class="author">
-            <!--[gt text='By']--> <a href="<!--[pnmodurl modname=mediashare func=list uname=$ownerName]-->" title="<!--[gt text='Show items from this person']-->"><!--[$ownerName]--></a>.
+            <!--[gt text='By']--> <a href="<!--[pnmodurl modname='mediashare' func='list' uname=$ownerName]-->" title="<!--[gt text='Show items from this person']-->"><!--[$ownerName]--></a>.
 
             <!--[if $album.hasKeywords > 0]-->
             <!--[gt text='Keywords:']-->
             <!--[foreach from=$album.keywordsArray item=keyword]-->
-            <a href="<!--[pnmodurl modname=mediashare func=list key=$keyword]-->"><!--[$keyword]--></a>
+            <a href="<!--[pnmodurl modname='mediashare' func='list' key=$keyword]-->"><!--[$keyword]--></a>
             <!--[/foreach]-->
             <!--[/if]-->
         </div>
     </div>
 </div>
 
-<!--[include file="mediashare_viewfooter.html"]-->
+<!--[include file='mediashare_viewfooter.html']-->

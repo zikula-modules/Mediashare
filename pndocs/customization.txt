@@ -16,9 +16,9 @@
 
     Add your own "TemplateSet" directory and place any of the following files in it:
       album.html      - album viewer template
+      item.html       - media item template
       thumbnails.html - thumbnail viewer template
       slideshow.html  - slideshow template
-      head.html       - header template included in the slideshow viewer (for CSS and scripting)
 
 
   SCRIPTACULOUS AND LIGHTBOX SCRIPTS

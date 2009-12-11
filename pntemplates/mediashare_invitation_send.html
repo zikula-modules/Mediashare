@@ -2,15 +2,15 @@
 <!--[elfisk_setInitialFocus inputId="emails"]-->
 <!--[gt text="Invitations" assign=title]-->
 
-<!--[include file="mediashare_editheader.html" albumId=$album.id title=$title mode="edit"]-->
+<!--[include file='mediashare_editheader.html' albumId=$album.id title=$title mode='edit']-->
 
-<!--[include file="mediashare_invitationtabs.html"]-->
+<!--[include file='mediashare_invitationtabs.html']-->
 
 <h2><!--[gt text="Send invitation"]--></h2>
 
 <p><!--[gt text="Please enter the e-mail address of the people you want to invite to this album. When you press "Send" they will receive an e-mail with a link that grants them access to view this album without logging in to the website. You can optionally set an expires date for this invitation. After this date the link won't be valid any more."]--></p>
 
-<p><a href="<!--[pnmodurl modname=mediashare type=invitation func=link aid=$album.id]-->"><!--[gt text="If you want to send the link yourself then click here to generate it"]--></a>.</p>
+<p><a href="<!--[pnmodurl modname='mediashare' type='invitation' func=link aid=$album.id]-->"><!--[gt text="If you want to send the link yourself then click here to generate it"]--></a>.</p>
 
 <input type="hidden" name="albumid" value="<!--[$album.id]-->"/>
 
@@ -60,4 +60,4 @@
 <!--[/mediashare_block]-->
 </div>
 
-<!--[include file="mediashare_footer.html"]-->
+<!--[include file='mediashare_footer.html']-->

@@ -1,14 +1,14 @@
 <!--[* $Id$ *]-->
 <!--[gt text="Add media items to album" assign=mltitle]-->
 
-<!--[include file="mediashare_editheader.html" albumId=$album.id title=$mltitle includeMenu=0 formEncType="multipart/form-data" mode="edit"]-->
+<!--[include file='mediashare_editheader.html' albumId=$album.id title=$mltitle includeMenu=0 formEncType="multipart/form-data" mode='edit']-->
 
 <div class="mediashare-tabs">
     <ul>
         <!--[foreach from=$sources item=source]-->
-        <!--[pnmodurl modname=mediashare func="source_$source.name" func=view assign=url]-->
+        <!--[pnmodurl modname='mediashare' func="source_$source.name" func=view assign=url]-->
         <!--[capture name=link]-->
-        <a href="<!--[pnmodurl modname=mediashare type=edit func=addmedia source=$source.name aid=$album.id]-->"><!--[$source.title]--></a>
+        <a href="<!--[pnmodurl modname='mediashare' type='edit' func=addmedia source=$source.name aid=$album.id]-->"><!--[$source.title]--></a>
         <!--[/capture]-->
         <!--[if $source.name eq $selectedSource.name]-->
         <!--[mediashare_tab selected=1 content=$smarty.capture.link]-->
@@ -23,4 +23,4 @@
 
 <!--[$sourceHtml]-->
 
-<!--[include file="mediashare_footer.html"]-->
+<!--[include file='mediashare_footer.html']-->
