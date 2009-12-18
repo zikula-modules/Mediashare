@@ -6,7 +6,7 @@
 
 require_once 'modules/mediashare/common-edit.php';
 
-function mediashare_source_zipapi_getTitle($args)
+function mediashare_source_zipapi_getTitle()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     return __('Zip upload', $dom);
@@ -42,13 +42,11 @@ function mediashareSourceZipParseIni($ini)
     return intval($ini);
 }
 
-function mediashare_source_zipapi_getUploadInfo($args)
+function mediashare_source_zipapi_getUploadInfo()
 {
     if (!($userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo'))) {
         return false;
     }
-
-    $totalCapacityUsed = $userInfo['totalCapacityUsed'];
 
     $upload_max_filesize = mediashareSourceZipParseIni(ini_get('upload_max_filesize'));
     if ($userInfo['totalCapacityLeft'] < $upload_max_filesize) {

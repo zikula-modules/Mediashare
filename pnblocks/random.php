@@ -36,6 +36,8 @@ function mediashare_randomblock_display($blockinfo)
         return;
     }
 
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     // Get variables from content block
     $vars = pnBlockVarsFromContent($blockinfo['content']);
 

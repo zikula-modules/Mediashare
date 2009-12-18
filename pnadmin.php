@@ -42,8 +42,10 @@ function mediashareDirIsWritable($dir)
     return is_dir($dir) && is_writable($dir);
 }
 
-function mediashareAdminSettings($args)
+function mediashareAdminSettings()
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $settings = array(
         'tmpDirName'            => FormUtil::getPassedValue('tmpDirName'),
         'mediaDirName'          => FormUtil::getPassedValue('mediaDirName'),
@@ -71,8 +73,6 @@ function mediashareAdminSettings($args)
         }
     }
 
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     LogUtil::registerStatus(__('Done! Module configuration updated.', $dom));
 
     return pnRedirect(pnModURL('mediashare', 'admin', 'main'));
@@ -81,7 +81,7 @@ function mediashareAdminSettings($args)
 /**
  * Plugins
  */
-function mediashare_admin_plugins($args)
+function mediashare_admin_plugins()
 {
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
@@ -109,6 +109,8 @@ function mediashare_admin_plugins($args)
 
 function mediashareAdminScanPlugins()
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     if (!pnModAPIFunc('mediashare', 'admin', 'scanAllPlugins')) {
         return false;
     }
@@ -121,7 +123,7 @@ function mediashareAdminScanPlugins()
 /**
  * Recalculate images
  */
-function mediashare_admin_recalc($args)
+function mediashare_admin_recalc()
 {
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
@@ -137,7 +139,7 @@ function mediashare_admin_recalc($args)
     return $render->fetch('mediashare_admin_recalc.html');
 }
 
-function mediashare_admin_recalcitem($args)
+function mediashare_admin_recalcitem()
 {
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();

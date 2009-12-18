@@ -49,7 +49,7 @@ class MediashareSmugMugAlbum extends MediashareBaseAlbum
         return $images;
     }
 
-    function convertImage(&$image)
+    function convertImage($image)
     {
         return array(
             'id' => $image['id'],

@@ -62,7 +62,6 @@ class MediasharePicasaAlbum extends MediashareBaseAlbum
 
     function convertImage(&$image)
     {
-        $dom = ZLanguage::getModuleDomain('mediashare');
         $thumbUrlMap = $image->getThumbUrlMap();
 
         $image = array(

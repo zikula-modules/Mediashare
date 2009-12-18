@@ -54,8 +54,10 @@ function mediashare_invitationapi_sendInvitation(&$args)
     return true;
 }
 
-function mediashare_invitationapi_createInvitationId(&$args)
+function mediashare_invitationapi_createInvitationId($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     do {
         $key = mediashareCreateInvitationKey();
         
@@ -69,6 +71,7 @@ function mediashare_invitationapi_createInvitationId(&$args)
             'sender'  => $args['sender'],
             'expires' => !empty($args['expires']) ? $args['expires'] : null
         );
+
         $result = DBUtil::insertObject($record, 'mediashare_invitation', 'id');
 
         if ($result == false) {
@@ -188,7 +191,7 @@ function mediashare_invitationapi_updateViewCount($args)
     return true;
 }
 
-function mediashare_invitationapi_getInvitations(&$args)
+function mediashare_invitationapi_getInvitations($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -312,16 +315,19 @@ function mediashare_invitationapi_register(&$args)
                  'albumId' => $invitation['albumId']);
 }
 
-function mediashare_invitationapi_getInvitedAlbums($args)
+function mediashare_invitationapi_getInvitedAlbums()
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $invitedAlbums = SessionUtil::getVar('mediashareInvitedAlbums');
-    if ($invitedAlbums == null)
+    if ($invitedAlbums == null) {
         return $invitedAlbums;
+    }
 
     $keys = array();
     foreach ($invitedAlbums['keys'] as $key => $ok) {
         if ($ok) {
-            $keys[] = "'" . DataUtil::formatForStore($key) . "'";
+            $keys[] = DataUtil::formatForStore($key);
         }
     }
     $keys = "'".implode("','", $keys)."'";

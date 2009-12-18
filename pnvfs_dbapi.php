@@ -18,9 +18,6 @@ class mediashare_vfsHandlerDB
 
         $fileReference = "vfsdb/$args[baseFileRef]-$args[fileMode].$args[fileType]";
 
-        $pntable       = &pnDBGetTables();
-        $mediadbColumn = $pntable['mediashare_mediadb_column'];
-
         $data  = file_get_contents($filename);
         $bytes = count($data);
 
@@ -102,7 +99,7 @@ class mediashare_vfsHandlerDB
     }
 }
 
-function mediashare_vfs_dbapi_buildHandler($args)
+function mediashare_vfs_dbapi_buildHandler()
 {
     return new mediashare_vfsHandlerDB();
 }
@@ -153,4 +150,3 @@ function mediashare_vfs_dbapi_getMedia($args)
 
     return $info;
 }
-

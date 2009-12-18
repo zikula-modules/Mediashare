@@ -21,7 +21,7 @@ define('mediashareAccessRequirementViewSomething', mediashareAccessRequirementVi
 /**
  * URL helpers
  */
-function mediashareGetIntUrl($param, &$args, $default)
+function mediashareGetIntUrl($param, $args, $default)
 {
     $i = isset($args[$param]) ? $args[$param] : FormUtil::getPassedValue($param);
 
@@ -32,20 +32,20 @@ function mediashareGetIntUrl($param, &$args, $default)
     return (int)$i;
 }
 
-function mediashareGetBoolUrl($param, &$args, $default)
+function mediashareGetBoolUrl($param, $args, $default)
 {
     $i = isset($args[$param]) ? $args[$param] : FormUtil::getPassedValue($param);
 
     if ($i == '') {
         $i = $default;
     } else {
-        $i = ($i == '0' ? false : true);
+        $i = $i == '0' ? false : true;
     }
 
     return $i;
 }
 
-function mediashareGetStringUrl($param, &$args, $default = null)
+function mediashareGetStringUrl($param, $args, $default = null)
 {
     $s = isset($args[$param]) ? $args[$param] : FormUtil::getPassedValue($param);
 
@@ -93,21 +93,19 @@ function mediashareAccessUserRealName()
     return $accessApi->hasUserRealNameAccess();
 }
 
-function mediashareAddAccess(&$render, $album)
+function mediashareAddAccess($album)
 {
     $albumId = $album['id'];
 
     // Fetch access settings for this album
-    $access = pnModAPIFunc('mediashare', 'user', 'getAlbumAccess', array('albumId' => $albumId));
-    if ($access === false) {
+    if (($access = pnModAPIFunc('mediashare', 'user', 'getAlbumAccess', array('albumId' => $albumId))) === false) {
         return false;
     }
 
     // Fetch access settings for parent album
+    $parentAccess = 0;
     if ($albumId > 1) {
         $parentAccess = pnModAPIFunc('mediashare', 'user', 'getAlbumAccess', array('albumId' => $album['parentAlbumId']));
-    } else {
-        $parentAccess = 0;
     }
 
     if ($parentAccess === false) {
@@ -124,9 +122,7 @@ function mediashareAddAccess(&$render, $album)
         'hasParentAccess'     => ($parentAccess & mediashareAccessRequirementEditSomething) != 0
     );
 
-    $render->assign('access', $access);
-
-    return true;
+    return $access;
 }
 
 /**
@@ -139,6 +135,8 @@ function mediashareStripKeywords($keywords)
 
 function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     // End of recursion?
     if ($folderOffset == sizeof($folders) - 1) {
         return $parentFolderID;

@@ -71,7 +71,6 @@ class MediashareFlickrAlbum extends MediashareBaseAlbum
 
     function convertImage(&$image)
     {
-        $dom = ZLanguage::getModuleDomain('mediashare');
         $image = array(
             'id' => $image['id'],
             'ownerId' => null,

@@ -220,10 +220,11 @@ item_name=$result[mediaId]";
 
 function mediashare_remote_newalbum()
 {
-    if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementAddAlbum, '')) {
+    if (!mediashareAccessAlbum($_POST['set_albumName'], mediashareAccessRequirementAddAlbum, '')) {
         return LogUtil::registerPermissionError();
     }
 
+    // FIXME direct use of $_POST
     if (!($newAlbumID = pnModAPIFunc('mediashare', 'edit', 'addAlbum', array('title' => $_POST['newAlbumTitle'], 'keywords' => '', 'summary' => '', 'description' => $_POST['newAlbumDesc'], 'template' => null, 'parentAlbumId' => $_POST['set_albumName'])))) {
         return mediashareErrorAPIRemote();
     }

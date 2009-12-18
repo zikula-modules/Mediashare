@@ -4,7 +4,7 @@
 // Mediashare by Jorn Lind-Nielsen (C)
 //
 
-function mediashare_mediahandlerapi_getMediaHandlers($args)
+function mediashare_mediahandlerapi_getMediaHandlers()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -54,6 +54,8 @@ function mediashare_mediahandlerapi_getMediaHandlers($args)
 
 function mediashare_mediahandlerapi_getHandlerInfo($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $mimeType = strtolower($args['mimeType']);
     $filename = strtolower($args['filename']);
 
@@ -112,7 +114,7 @@ function mediashare_mediahandlerapi_loadHandler($args)
     return pnModAPIFunc('mediashare', "media_{$handlerName}", 'buildHandler');
 }
 
-function mediashare_mediahandlerapi_scanMediaHandlers($args)
+function mediashare_mediahandlerapi_scanMediaHandlers()
 {
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
@@ -159,6 +161,8 @@ function mediashare_mediahandlerapi_scanMediaHandlers($args)
 
 function mediashare_mediahandlerapi_addMediaHandler($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $handler = array(
         'mimeType'      => strtolower($args['mimeType']),
         'fileType'      => strtolower($args['fileType']),

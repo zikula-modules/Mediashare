@@ -55,7 +55,7 @@ function mediashare_invitation_send($args)
     return $render->fetch('mediashare_invitation_send.html');
 }
 
-function mediashareUpdateInvitation($args)
+function mediashareUpdateInvitation()
 {
     $input = array(
         'albumId' => FormUtil::getPassedValue('albumid'),
@@ -203,7 +203,7 @@ function mediashare_invitation_list($args)
     return $render->fetch('mediashare_invitation_list.html');
 }
 
-function mediashareExpireInvitations($args)
+function mediashareExpireInvitations()
 {
     $albumId = FormUtil::getPassedValue('albumid');
     $expires = FormUtil::getPassedValue('expires');
@@ -221,7 +221,7 @@ function mediashareExpireInvitations($args)
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
 }
 
-function mediashareDeleteInvitations($args)
+function mediashareDeleteInvitations()
 {
     $albumId     = FormUtil::getPassedValue('albumid');
     $invitations = FormUtil::getPassedValue('invitation');
@@ -229,7 +229,7 @@ function mediashareDeleteInvitations($args)
     if (!empty($invitations)) {
         if (!pnModAPIFunc('mediashare', 'invitation', 'deleteInvitations',
                            array('albumId' => $albumId,
-                           'invitations' => $invitations))) {
+                                 'invitations' => $invitations))) {
             return false;
         }
     }
@@ -237,11 +237,12 @@ function mediashareDeleteInvitations($args)
     return pnRedirect(pnModURL('mediashare', 'invitation', 'list', array('aid' => $albumId)));
 }
 
-function mediashare_invitation_open($args)
+function mediashare_invitation_open()
 {
     $key = FormUtil::getPassedValue('inv');
 
     $result = pnModAPIFunc('mediashare', 'invitation', 'register', array('key' => $key));
+
     if ($result === false) {
         return false;
     } else if (!$result['ok']) {

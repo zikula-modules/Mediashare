@@ -39,7 +39,7 @@ class mediashareItemSelector extends pnFormPlugin
         $this->enableAddAlbum = isset($params['enableAddAlbum']) ? $params['enableAddAlbum'] : true;
     }
 
-    function load(&$render, &$params)
+    function load(&$render, $params)
     {
         $this->loadValue($render, $render->get_template_vars());
     }

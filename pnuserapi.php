@@ -139,7 +139,7 @@ function mediashare_userapi_getAlbumData($args)
         return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumData'), $dom));
     }
 
-    $countSubAlbums = isset($args['countSubAlbums']) ? $args['countSubAlbums'] : false; // FIXME unused param
+    //$countSubAlbums = isset($args['countSubAlbums']) ? $args['countSubAlbums'] : false; // FIXME unused param
 
     $album = DBUtil::selectObjectByID('mediashare_albums', $args['albumId'], 'id');
 
@@ -259,10 +259,13 @@ function mediashare_userapi_getSubAlbumsData($args)
 
 function mediashare_userapi_getAlbumBreadcrumb($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     // Argument check
     if (!isset($args['albumId'])) {
         return LogUtil::registerError(__f('Missing [%1$s] in \'%2$s\'', array('albumId', 'userapi.getAlbumBreadcrumb'), $dom));
     }
+
     $albumId = (int)$args['albumId'];
 
     $pntable = &pnDBGetTables();
@@ -349,7 +352,10 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
     }
 
     $albumId = (int)$args['albumId'];
-    
+
+    $pntable     = &pnDBGetTables();
+    $mediaColumn = $pntable['mediashare_media_column'];
+
     $where   = "$mediaColumn[parentAlbumId] = '$albumId'";
     $orderby = "$mediaColumn[createdDate] DESC";
     $media   = DBUtil::selectFieldArray('mediashare_media', 'id', $where, $orderby);
@@ -456,8 +462,10 @@ function mediashare_userapi_getMediaItem($args)
     return $item;
 }
 
-function mediashare_userapi_getMediaUrl(&$args)
+function mediashare_userapi_getMediaUrl($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $mediaItem = null;
     $src = $args['src'];
 
@@ -497,7 +505,7 @@ function mediashare_userapi_getMediaItems($args)
 /*
     if (isset($args['albumId'])) {
         $album = mediashare_userapi_getAlbumObject($args);
-       return $album->getMediaItems();
+        return $album->getMediaItems();
     } else {
         return mediashareGetMediaItemsData($args);
     }
@@ -618,12 +626,12 @@ function mediashareGetMediaItemsData($args)
 /**
  * Latest, random and more
  */
-function mediashare_userapi_getLatestMediaItems($args)
+function mediashare_userapi_getLatestMediaItems()
 {
     return pnModAPIFunc('mediashare', 'user', 'getList', array('order' => 'created', 'orderDir' => 'desc'));
 }
 
-function mediashare_userapi_getLatestAlbums($args)
+function mediashare_userapi_getLatestAlbums()
 {
     return pnModAPIFunc('mediashare', 'user', 'getAlbumList');
 }
@@ -634,7 +642,6 @@ function mediashare_userapi_getRandomMediaItem($args)
 
     $albumId = (isset($args['albumId']) ? (int)$args['albumId'] : null);
     $mode    = (isset($args['mode']) ? $args['mode'] : 'all');
-    $latest  = (isset($args['latest']) ? $args['latest'] : false);
 
     $pntable = &pnDBGetTables();
 
@@ -709,7 +716,7 @@ function mediashare_userapi_getRandomMediaItem($args)
 /**
  * Settings
  */
-function mediashare_userapi_getSettings($args)
+function mediashare_userapi_getSettings()
 {
     $modvars = pnModGetVar('mediashare');
     $modvars['mediaSizeLimitSingle'] = (int)$modvars['mediaSizeLimitSingle']/1000;
@@ -746,8 +753,10 @@ function mediashare_userapi_getRelativeMediadir()
 /**
  * Most xxx
  */
-function mediashare_userapi_getMostActiveUsers($args)
+function mediashare_userapi_getMostActiveUsers()
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
     $pntable = &pnDBGetTables();
@@ -775,7 +784,7 @@ function mediashare_userapi_getMostActiveUsers($args)
     return DBUtil::marshallObjects($result, array('uname', 'count'));
 }
 
-function mediashare_userapi_getMostActiveKeywords($args)
+function mediashare_userapi_getMostActiveKeywords()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -837,8 +846,10 @@ function mediashare_userapi_getMostActiveKeywords($args)
     return $keywords;
 }
 
-function mediashare_userapi_getSummary($args)
+function mediashare_userapi_getSummary()
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $pntable = &pnDBGetTables();
 
     $mediaTable   = $pntable['mediashare_media'];
@@ -911,6 +922,8 @@ function mediashareAddKeywords(&$item)
 
 function mediashare_userapi_getByKeyword($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $keyword = $args['keyword'];
 
     $pntable = &pnDBGetTables();
@@ -1225,8 +1238,10 @@ function mediashare_userapi_getList($args)
 
 function mediashare_userapi_getListCount($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $keyword = isset($args['keyword']) ? $args['keyword'] : null;
-    $uname = isset($args['uname']) ? $args['uname'] : null;
+    $uname   = isset($args['uname']) ? $args['uname'] : null;
     $albumId = $args['albumId'];
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
@@ -1336,10 +1351,12 @@ function mediashare_userapi_getListCount($args)
  */
 function mediashare_userapi_search($args)
 {
-    $query = $args['query'];
-    $match = $args['match'];
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+    $query     = $args['query'];
+    $match     = $args['match'];
     $itemIndex = (int)$args['itemIndex'];
-    $pageSize = (int)$args['pageSize'];
+    $pageSize  = (int)$args['pageSize'];
 
     $pntable = &pnDBGetTables();
 
@@ -1412,7 +1429,7 @@ function mediashare_userapi_search($args)
 /**
  * Templates
  */
-function mediashare_userapi_getAllTemplates($args)
+function mediashare_userapi_getAllTemplates()
 {
     $templates = array();
 

@@ -4,7 +4,7 @@
 // Mediashare by Jorn Lind-Nielsen (C)
 //
 
-function mediashare_sourcesapi_getSources(&$args)
+function mediashare_sourcesapi_getSources()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -27,7 +27,7 @@ function mediashare_sourcesapi_getSources(&$args)
     return DBUtil::marshallObjects($result, array('name', 'title', 'formEncType'));
 }
 
-function mediashare_sourcesapi_scanSources($args)
+function mediashare_sourcesapi_scanSources()
 {
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
@@ -67,6 +67,8 @@ function mediashare_sourcesapi_scanSources($args)
 
 function mediashare_sourcesapi_addSource($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $title = $args['title'];
     $name  = $args['name'];
 

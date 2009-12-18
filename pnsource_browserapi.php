@@ -6,7 +6,7 @@
 
 require_once 'modules/mediashare/common-edit.php';
 
-function mediashare_source_browserapi_getTitle($args)
+function mediashare_source_browserapi_getTitle()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
     return __('Browser upload', $dom);
@@ -68,13 +68,11 @@ function mediashareSourceBrowserParseIni($ini)
     return intval($ini);
 }
 
-function mediashare_source_browserapi_getUploadInfo($args)
+function mediashare_source_browserapi_getUploadInfo()
 {
     if (!($userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo'))) {
         return false;
     }
-
-    $totalCapacityUsed = $userInfo['totalCapacityUsed'];
 
     $upload_max_filesize = mediashareSourceBrowserParseIni(ini_get('upload_max_filesize'));
     if ($userInfo['totalCapacityLeft'] < $upload_max_filesize) {

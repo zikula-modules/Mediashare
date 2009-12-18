@@ -49,7 +49,7 @@ function smarty_function_mediashare_albumSelector($params, &$smarty)
         $level = $album['nestedSetLevel'] - 1;
 
         $indent = '';
-        for ($i=0; $i<$level; ++$i) {
+        for ($i = 0; $i < $level; ++$i) {
             $indent .= '+ ';
         }
 

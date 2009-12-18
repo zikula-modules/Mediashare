@@ -57,7 +57,7 @@ function mediashare_init()
                       'summary'  => '',
                       'parentAlbumId' => 0);
 
-    if (!pnModAPIFunc('mediashare', 'edit', 'addAlbum', $topAlbum)) {
+    if (!($topId = pnModAPIFunc('mediashare', 'edit', 'addAlbum', $topAlbum))) {
         return false;
     }
     
@@ -100,8 +100,7 @@ function mediashareCreateMediashareUpdateNestedSetValues()
 {
     $pntable = &pnDBGetTables();
 
-    $table   = $pntable['mediashare_albums'];
-    $columns = &$pntable['mediashare_albums_column'];
+    $columns = $pntable['mediashare_albums_column'];
 
     $procSql = "CREATE PROCEDURE mediashareUpdateNestedSetValuesRec(albumId int, level int, inout count int)
                 BEGIN
@@ -112,7 +111,7 @@ function mediashareCreateMediashareUpdateNestedSetValues()
 
                     DECLARE albumsCur CURSOR FOR
                         SELECT $columns[id]
-                          FROM $table
+                          FROM $pntable[mediashare_albums]
                          WHERE $columns[parentAlbumId] = albumId
                       ORDER BY $columns[title];
 
@@ -137,7 +136,7 @@ function mediashareCreateMediashareUpdateNestedSetValues()
                     SET nright = count;
                     SET count = count + 1;
 
-                    UPDATE $table
+                    UPDATE $pntable[mediashare_albums]
                        SET $columns[nestedSetLeft] = nleft,
                            $columns[nestedSetRight] = nright,
                            $columns[nestedSetLevel] = level
@@ -166,8 +165,6 @@ function mediashareCreateMediashareUpdateNestedSetValues()
  */
 function mediashare_upgrade($oldVersion)
 {
-    $ok = true;
-
     // Upgrade dependent on old version number
     switch ($oldVersion)
     {
@@ -234,9 +231,9 @@ function mediashare_upgrade_to_1_0_2()
         return false;
     }
 
-    $pntable = &pnDBGetTables();
+    $pntable     = &pnDBGetTables();
     $albumTable  = $pntable['mediashare_albums'];
-    $albumColumn = &$pntable['mediashare_albums_column'];
+    $albumColumn = $pntable['mediashare_albums_column'];
 
     $sql = "UPDATE $albumTable
                SET $albumColumn[modifiedDate] = $albumColumn[createdDate]";
@@ -263,6 +260,7 @@ function mediashare_upgrade_to_2_1_1()
 function mediashare_upgrade_to_2_2_0()
 {
     $columns = array_keys(DBUtil::metaColumns('mediashare_mediastore', true));
+
     if (in_array('MSS_DATA', $columns) && !DBUtil::dropColumn('mediashare_mediastore', 'mss_data')) {
         return false;
     }

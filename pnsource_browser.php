@@ -65,13 +65,6 @@ function mediashareSourceBrowserUpload(&$args)
         return false;
     }
 
-    // Get user information
-    if (!($userInfo = pnModAPIFunc('mediashare', 'edit', 'getUserInfo'))) {
-        return false;
-    }
-
-    $totalCapacityUsed = $userInfo['totalCapacityUsed'];
-
     // Start fetching media items
     $imageNum = (int)FormUtil::getPassedValue('imagenum');
     $statusSet = array();

@@ -107,8 +107,8 @@ class mediashareAccessApi
                   FROM $accessTable
              LEFT JOIN $membershipTable
                     ON $membershipColumn[gid] = $accessColumn[groupId]
-                   AND $membershipColumn[uid] = $userId
-                 WHERE $accessColumn[albumId] = $albumId
+                   AND $membershipColumn[uid] = '$userId'
+                 WHERE $accessColumn[albumId] = '$albumId'
                    AND ($membershipColumn[gid] IS NOT NULL OR $accessColumn[groupId] = -1)";
 
         $result = DBUtil::executeSQL($sql);
@@ -124,8 +124,8 @@ class mediashareAccessApi
             $access |= (int)$result[$k]['access'];
         }
 
-        $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums', array());
-        if (is_array($invitedAlbums) && $invitedAlbums[$albumId]) {
+        $invitedAlbums = pnModAPIFunc('mediashare', 'invitation', 'getInvitedAlbums');
+        if (is_array($invitedAlbums) && isset($invitedAlbums[$albumId])) {
             $access |= mediashareAccessRequirementView;
         }
 

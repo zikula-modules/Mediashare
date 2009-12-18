@@ -14,17 +14,16 @@ function mediashare_edit_view($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
+    if (!pnUserLoggedIn()) {
+        return LogUtil::registerError(__('You must be logged in to use this feature', $dom));
+    }
+
     $albumId = mediashareGetIntUrl('aid', $args, 1);
-    $page    = mediashareGetIntUrl('page', $args, 0);
-    $showAll = mediashareGetBoolUrl('showall', $args, false);
+    // FIXME $page    = mediashareGetIntUrl('page', $args, 0);
 
     // Check access
     if (!mediashareAccessAlbum($albumId, mediashareAccessRequirementEditSomething, '')) {
         return LogUtil::registerPermissionError();
-    }
-
-    if (!pnUserLoggedIn()) {
-        return LogUtil::registerError(__('You must be logged in to use this feature', $dom));
     }
 
     // Check multi-edit buttons
@@ -125,12 +124,12 @@ function mediashareAddAlbum($args)
     $parentAlbumId = mediashareGetIntUrl('aid', $args, 1);
 
     $newAlbumID = pnModAPIFunc('mediashare', 'edit', 'addAlbum',
-                               array('title' => FormUtil::getPassedValue('title'),
-                                     'keywords' => FormUtil::getPassedValue('keywords'),
-                                     'summary' => FormUtil::getPassedValue('summary'),
-                                     'description' => FormUtil::getPassedValue('description'),
-                                     'template' => FormUtil::getPassedValue('template'),
-                                     'extappURL' => FormUtil::getPassedValue('extappURL'),
+                               array('title'         => FormUtil::getPassedValue('title'),
+                                     'keywords'      => FormUtil::getPassedValue('keywords'),
+                                     'summary'       => FormUtil::getPassedValue('summary'),
+                                     'description'   => FormUtil::getPassedValue('description'),
+                                     'template'      => FormUtil::getPassedValue('template'),
+                                     'extappURL'     => FormUtil::getPassedValue('extappURL'),
                                      'parentAlbumId' => $parentAlbumId));
 
     if ($newAlbumID === false) {
@@ -165,7 +164,7 @@ function mediashare_edit_editalbum($args)
     $render = & pnRender::getInstance('mediashare', false);
 
     $render->assign('album', $album);
-    $render->assign($album);
+    $render->assign($album); // FIXME duplicated
     $render->assign('disableTemplateOverride', pnModGetVar('mediashare', 'allowTemplateOverride') ? false : true);
 
     return $render->fetch('mediashare_edit_editalbum.html');
@@ -366,8 +365,6 @@ $mediashare_itemFields = array('title'       => array('type' => 'string'),
 
 function mediashare_edit_edititem($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
 
     if (!($item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
@@ -414,7 +411,7 @@ function mediashareUpdateItem($args, $backUrl)
         return LogUtil::registerAuthidError();
     }
 
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
+    //$albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaId = mediashareGetIntUrl('mid', $args, 0);
 
     // Check access
@@ -525,15 +522,15 @@ function mediashare_edit_multieditmedia($args)
     return $render->fetch('mediashare_edit_multieditmedia.html');
 }
 
-function mediashareMultiUpdateItems()
+function mediashareMultiUpdateItems($args)
 {
     if (!SecurityUtil::confirmAuthKey()) {
         return LogUtil::registerAuthidError();
     }
 
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
-
+    $albumId  = mediashareGetIntUrl('aid', $args, 1);
     $mediaIds = FormUtil::getPassedValue('mediaId');
+
     foreach ($mediaIds as $mediaId)
     {
         $mediaId = (int)$mediaId;
@@ -587,15 +584,15 @@ function mediashare_edit_multideletemedia($args)
     return $render->fetch('mediashare_edit_multideletemedia.html');
 }
 
-function mediashareMultiDeleteMedia()
+function mediashareMultiDeleteMedia($args)
 {
     if (!SecurityUtil::confirmAuthKey()) {
         return LogUtil::registerAuthidError();
     }
 
-    $albumId = mediashareGetIntUrl('aid', $args, 1);
-
+    $albumId  = mediashareGetIntUrl('aid', $args, 1);
     $mediaIds = FormUtil::getPassedValue('mediaId');
+
     foreach ($mediaIds as $mediaId)
     {
         $mediaId = (int)$mediaId;
@@ -645,15 +642,15 @@ function mediashare_edit_multimovemedia($args)
     return $render->fetch('mediashare_edit_multimovemedia.html');
 }
 
-function mediashareMultiMoveMedia()
+function mediashareMultiMoveMedia($args)
 {
     if (!SecurityUtil::confirmAuthKey()) {
         return LogUtil::registerAuthidError();
     }
 
-    $albumId = mediashareGetIntUrl('newalbumid', $args, 1);
-
+    $albumId  = mediashareGetIntUrl('newalbumid', $args, 1);
     $mediaIds = FormUtil::getPassedValue('mediaId');
+
     foreach ($mediaIds as $mediaId)
     {
         $mediaId = (int)$mediaId;

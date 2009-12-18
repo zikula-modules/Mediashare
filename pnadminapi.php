@@ -30,7 +30,7 @@ function mediashare_adminapi_getlinks()
 /**
  * Scan for all media
  */
-function mediashare_adminapi_scanAllPlugins($args)
+function mediashare_adminapi_scanAllPlugins()
 {
     // Force load - it is used during pninit
     pnModAPILoad('mediashare', 'mediahandler', true);
@@ -50,6 +50,8 @@ function mediashare_adminapi_scanAllPlugins($args)
  */
 function mediashare_adminapi_setTemplateGlobally($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $new = array('template' => DataUtil::formatForStore($args['template']));
 
     if (!DBUtil::updateObject($new, 'mediashare_albums', '1=1', 'id')) {

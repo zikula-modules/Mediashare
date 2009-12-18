@@ -48,6 +48,7 @@ function mediashare_editapi_addAlbum(&$args)
         'extappURL'     => $args['extappURL'],
         'extappData'    => $args['extappData']
     );
+
     $album = DBUtil::insertObject($album, 'mediashare_albums', 'id');
 
     if ($album === false) {
@@ -76,8 +77,11 @@ function mediashare_editapi_addAlbum(&$args)
 }
 
 // FIXME any parameter?
-function mediashare_editapi_updateNestedSetValues(&$args)
+function mediashare_editapi_updateNestedSetValues()
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+    // FIXME any method to detect MySQL version?
     // MySQL switch
     // MySQL 5 (true) - Use stored procedure mediashareUpdateNestedSetValues
     // MySQL 4 (false) - use PHP
@@ -100,6 +104,8 @@ function mediashare_editapi_updateNestedSetValues(&$args)
 
 function mediashareUpdateNestedSetValues_Rec($albumId, $level, &$count)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $pntable      = &pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
 
@@ -159,6 +165,7 @@ function mediashare_editapi_updateAlbum(&$args)
         'extappURL'   => isset($args['extappURL'])  ? $args['extappURL']  : '',
         'extappData'  => isset($args['extappData']) ? $args['extappData'] : ''
     );
+
     if (isset($args['template'])) {
         $album['template'] = $args['template'];
     }
@@ -180,7 +187,7 @@ function mediashare_editapi_updateAlbum(&$args)
     return true;
 }
 
-function mediashare_editapi_deleteAlbum(&$args)
+function mediashare_editapi_deleteAlbum($args)
 {
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
@@ -216,6 +223,8 @@ function mediashare_editapi_deleteAlbum(&$args)
 
 function mediashareDeleteAlbumRec($albumId)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     // Get album info
     if (!($album = pnModAPIFunc('mediashare', 'user', 'getAlbum', array('albumId' => $albumId)))) {
         return false;
@@ -246,7 +255,7 @@ function mediashareDeleteAlbumRec($albumId)
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('editapi.mediashareDeleteAlbumRec', 'Could not select the album.'), $dom));
     }
 
-    foreach ($mediaIds as $mediaId) {
+    foreach ($medias as $mediaId) {
         if (!pnModAPIFunc('mediashare', 'edit', 'deleteMediaItem', array('mediaId' => $mediaId))) {
             return false;
         }
@@ -267,7 +276,7 @@ function mediashareDeleteAlbumRec($albumId)
 /**
  * Move album
  */
-function mediashare_editapi_moveAlbum(&$args)
+function mediashare_editapi_moveAlbum($args)
 {
     // Check access
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_EDIT)) {
@@ -330,7 +339,7 @@ function mediashare_editapi_moveAlbum(&$args)
     return true;
 }
 
-function mediashare_editapi_isChildAlbum(&$args)
+function mediashare_editapi_isChildAlbum($args)
 {
     $albumId       = (int)$args['albumId'];
     $parentAlbumId = (int)$args['parentAlbumId'];
@@ -363,7 +372,7 @@ function mediashare_editapi_isChildAlbum(&$args)
  *
  * @return mixed Returns array on success and false on error.
  */
-function mediashare_editapi_addMediaItem(&$args)
+function mediashare_editapi_addMediaItem($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -435,7 +444,7 @@ function mediashare_editapi_addMediaItem(&$args)
               'isThumbnail'    => true),
         array('outputFilename' => $previewFilename,
               'imageSize'      => (int)pnModGetVar('mediashare', 'previewSize'),
-              'isThumbnail' => false)
+              'isThumbnail'    => false)
     );
 
     $previewResult = $handler->createPreviews($args, $previews);
@@ -479,7 +488,6 @@ function mediashare_editapi_addMediaItem(&$args)
 
     if (($originalFileRef = $vfsHandler->createFile($args['mediaFilename'], $previewResult[2])) === false) {
         $vfsHandler->deleteFile($thumbnailFileRef);
-        $vfsHandler->deleteFile($previewFileRef);
         @unlink($thumbnailFilename);
         @unlink($previewFilename);
         return false;
@@ -490,6 +498,8 @@ function mediashare_editapi_addMediaItem(&$args)
     if (!isset($previewResult[1]['useOriginal']) || !(bool)$previewResult[1]['useOriginal']) {
         if (($previewFileRef = $vfsHandler->createFile($previewFilename, $previewResult[1])) === false) {
             $vfsHandler->deleteFile($thumbnailFileRef);
+            $vfsHandler->deleteFile($originalFileRef);
+            $vfsHandler->deleteFile($previewFileRef);
             @unlink($thumbnailFilename);
             @unlink($previewFilename);
             return false;
@@ -500,15 +510,15 @@ function mediashare_editapi_addMediaItem(&$args)
     }
 
     $id = pnModAPIFunc('mediashare', 'edit', 'storeMediaItem',
-                       array('title' => $mediaTitle,
-                             'keywords' => $args['keywords'],
-                             'description' => $args['description'],
-                             'ownerId' => isset($args['ownerId']) ? $args['ownerId'] : pnUserGetVar('uid'),
-                             'albumId' => $albumId,
+                       array('title'        => $mediaTitle,
+                             'keywords'     => $args['keywords'],
+                             'description'  => $args['description'],
+                             'ownerId'      => isset($args['ownerId']) ? $args['ownerId'] : pnUserGetVar('uid'),
+                             'albumId'      => $albumId,
                              'mediaHandler' => $handlerName,
-                             'thumbnail' => $previewResult[0],
-                             'preview' => $previewResult[1],
-                             'original' => $previewResult[2]));
+                             'thumbnail'    => $previewResult[0],
+                             'preview'      => $previewResult[1],
+                             'original'     => $previewResult[2]));
 
     if ($id === false) {
         $vfsHandler->deleteFile($thumbnailFileRef);
@@ -537,6 +547,8 @@ function mediashare_editapi_addMediaItem(&$args)
 
 function mediashare_editapi_storeMediaItem(&$args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $albumId = (int)$args['albumId'];
 
     if (!isset($args['ownerId'])) {
@@ -572,6 +584,7 @@ function mediashare_editapi_storeMediaItem(&$args)
         'previewId'     => $previewId,
         'originalId'    => $originalId
     );
+
     $media = DBUtil::insertObject($media, 'mediashare_media', 'id');
 
     if ($media === false) {
@@ -585,8 +598,10 @@ function mediashare_editapi_storeMediaItem(&$args)
     return $media['id'];
 }
 
-function mediashare_editapi_registerMediaItem(&$args)
+function mediashare_editapi_registerMediaItem($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $media = array(
         'fileRef'  => $args['fileRef'],
         'mimeType' => $args['mimeType'],
@@ -594,6 +609,7 @@ function mediashare_editapi_registerMediaItem(&$args)
         'height'   => $args['height'],
         'bytes'    => $args['bytes']
     );
+
     $media = DBUtil::insertObject($media, 'mediashare_mediastore', 'id');
     
     if ($media === false) {
@@ -605,6 +621,8 @@ function mediashare_editapi_registerMediaItem(&$args)
 
 function mediashareGetNewPosition($albumId)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $pntable     = &pnDBGetTables();
     $mediaColumn = $pntable['mediashare_media_column'];
 
@@ -677,6 +695,7 @@ function mediashare_editapi_updateItem(&$args)
         'keywords'    => $args['keywords'],
         'description' => $args['description']
     );
+
     $media = DBUtil::updateObject($media, 'mediashare_media', '', 'id');
 
     if ($media === false) {
@@ -820,6 +839,7 @@ function mediashare_editapi_updateItemFileUpload(&$args)
 
     $vfsHandler = pnModAPIFunc('mediashare', $vfsHandlerApi, 'buildHandler');
 
+    // FIXME better step handling
     // Update thumbnail, preview, and original in virtual file system
     if ($vfsHandler === false) {
         @unlink($tmpFilename);
@@ -882,6 +902,7 @@ function mediashare_editapi_updateMediaStorage($args)
         'height' => (int)$args['height'],
         'bytes'  => (int)$args['bytes']
     );
+
     $storage = DBUtil::updateObject($storage, 'mediashare_mediastore', '', 'id');
 
     if ($storage === false) {
@@ -893,6 +914,8 @@ function mediashare_editapi_updateMediaStorage($args)
 
 function mediashare_editapi_recalcItem($args)
 {
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
     $mediaId = $args['mediaId'];
 
     if (!($item = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId)))) {
@@ -945,6 +968,7 @@ function mediashare_editapi_copyMediaData($args)
         }
         fwrite($f, $media['data']);
         fclose($f);
+
     } else {
         // Copy from disk
         $originalRef = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir').$originalRef;
@@ -959,7 +983,7 @@ function mediashare_editapi_copyMediaData($args)
 /**
  * Delete media item
  */
-function mediashare_editapi_deleteMediaItem(&$args)
+function mediashare_editapi_deleteMediaItem($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -1007,7 +1031,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
     $pntable     = &pnDBGetTables();
     $mediaColumn = $pntable['mediashare_media_column'];
 
-    $sql = "UPDATE $mediaTable
+    $sql = "UPDATE $pntable[mediashare_media]
                SET $mediaColumn[position] = $mediaColumn[position] - 1
              WHERE $mediaColumn[parentAlbumId] = '$albumId'
                AND $mediaColumn[position] > '$position'";
@@ -1049,7 +1073,7 @@ function mediashare_editapi_deleteMediaItem(&$args)
 /**
  * Move media item
  */
-function mediashare_editapi_moveMediaItem(&$args)
+function mediashare_editapi_moveMediaItem($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -1086,7 +1110,7 @@ function mediashare_editapi_moveMediaItem(&$args)
 /**
  * Main media item
  */
-function mediashare_editapi_setMainItem(&$args)
+function mediashare_editapi_setMainItem($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -1094,6 +1118,7 @@ function mediashare_editapi_setMainItem(&$args)
         'id'          => (int)$args['albumId'],
         'mainMediaId' => $args['mediaId']
     );
+
     $album = DBUtil::updateObject($album, 'mediashare_albums', '', 'id');
 
     if ($album === false) {
@@ -1106,7 +1131,7 @@ function mediashare_editapi_setMainItem(&$args)
 /**
  * Arrange items
  */
-function mediashare_editapi_arrangeAlbum(&$args)
+function mediashare_editapi_arrangeAlbum($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -1119,6 +1144,7 @@ function mediashare_editapi_arrangeAlbum(&$args)
             'parentAlbumId' => (int)$args['albumId'],
             'position'      => $k
         );
+
         $media = DBUtil::updateObject($media, 'mediashare_media', '', 'id');
 
         if ($media === false) {
@@ -1132,7 +1158,7 @@ function mediashare_editapi_arrangeAlbum(&$args)
 /**
  * User info
  */
-function mediashare_editapi_getUserInfo($args)
+function mediashare_editapi_getUserInfo()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -1173,7 +1199,7 @@ function mediashare_editapi_getUserInfo($args)
 /**
  * Keywords update
  */
-function mediashare_editapi_updateKeywords(&$args)
+function mediashare_editapi_updateKeywords($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -1205,6 +1231,7 @@ function mediashare_editapi_updateKeywords(&$args)
             'type'    => $type,
             'keyword' => $keyword
         );
+
         $keyword = DBUtil::insertObject($keyword, 'mediashare_keywords', 'itemId');
 
         if ($keyword === false) {
@@ -1218,7 +1245,7 @@ function mediashare_editapi_updateKeywords(&$args)
 /**
  * Access
  */
-function mediashare_editapi_getAccessSettings(&$args)
+function mediashare_editapi_getAccessSettings($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -1293,7 +1320,7 @@ function mediashare_editapi_getAccessSettings(&$args)
     return $groups;
 }
 
-function mediashare_editapi_updateAccessSettings(&$args)
+function mediashare_editapi_updateAccessSettings($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -1317,6 +1344,7 @@ function mediashare_editapi_updateAccessSettings(&$args)
             'albumId' => (int)$args['albumId'],
             'access' => $access
         );
+
         $result = DBUtil::insertObject($record, 'mediashare_access', 'id');
 
         if ($result === false) {
@@ -1327,7 +1355,7 @@ function mediashare_editapi_updateAccessSettings(&$args)
     return true;
 }
 
-function mediashare_editapi_getAccessGroups(&$args)
+function mediashare_editapi_getAccessGroups($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
@@ -1378,7 +1406,7 @@ function mediashare_editapi_setDefaultAccess($args)
 /**
  * External applications
  */
-function mediashare_editapi_extappGetApps(&$args)
+function mediashare_editapi_extappGetApps($args)
 {
     $apps = array();
 

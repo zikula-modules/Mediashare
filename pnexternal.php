@@ -81,11 +81,11 @@ function mediashare_external_pasteitem($args)
     }
 
     $mediaItem = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $mediaId));
-
+/*
     if (!($handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $mediaItem['mediaHandler'])))) {
         return false;
     }
-
+*/
     $render = & pnRender::getInstance('mediashare', false);
     mediashareExternalLoadTheme($render);
 

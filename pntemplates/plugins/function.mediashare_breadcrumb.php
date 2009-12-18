@@ -10,12 +10,10 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
         return false;
     }
 
-    $albumId = (int)$params['albumId'];
-
     $mode = isset($params['mode']) ? $params['mode'] : 'view';
 
     $breadcrumb = pnModAPIFunc('mediashare', 'user', 'getAlbumBreadcrumb',
-                               array('albumId' => $params['albumId']));
+                               array('albumId' => (int)$params['albumId']));
 
     if ($breadcrumb === false) {
         $smarty->trigger_error(LogUtil::getErrorMessagesText());
@@ -26,10 +24,11 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
     $url     = pnModUrl('mediashare', $urlType, 'view', array('aid' => 0));
     $result  = "<span class=\"mediashare-breadcrumb\">";
     $first   = true;
+
     foreach ($breadcrumb as $album)
     {
         $url = DataUtil::formatForDisplay(pnModUrl('mediashare', $urlType, 'view', array('aid' => $album['id'])));
-        $result .= ($first ? '' : ' :: ')
+        $result .= ($first ? '' : '  ')
                  . "<a href=\"$url\">$album[title]</a>";
         $first = false;
     }

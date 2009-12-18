@@ -25,8 +25,6 @@ function mediashare_user_view($args)
 
 function mediashare_user_browse($args)
 {
-    $dom = ZLanguage::getModuleDomain('mediashare');
-
     $albumId = mediashareGetIntUrl('aid', $args, 1);
     $mediaId = mediashareGetStringUrl('mid', $args, 0); // Ext apps. uses very long IDs, so int is not good
 
@@ -114,6 +112,7 @@ function mediashare_user_browse($args)
         $template = 'Standard';
     }
     // Add the template stylesheets
+    // FIXME, custom styles in config?
     if (file_exists("modules/mediashare/pntemplates/Frontend/$template/style.css")) {
         PageUtil::addVar('stylesheet', "modules/mediashare/pntemplates/Frontend/$template/style.css");
     }
