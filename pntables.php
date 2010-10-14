@@ -38,7 +38,7 @@ function mediashare_pntables()
         'extappData'     => 'ms_extappData'
     );
     $pntable['mediashare_albums_column_def'] = array(
-        'id'             => 'I NOTNULL AUTOINCREMENT KEY',
+        'id'             => 'I NOTNULL AUTO PRIMARY',
         'ownerId'        => 'I NOTNULL',
         'createdDate'    => 'T NOTNULL',
         'modifiedDate'   => 'T NOTNULL DEFTIMESTAMP',
@@ -79,7 +79,7 @@ function mediashare_pntables()
         'originalId'    => 'ms_originalid'
     );
     $pntable['mediashare_media_column_def'] = array(
-        'id'            => 'I NOTNULL AUTOINCREMENT KEY',
+        'id'            => 'I NOTNULL AUTO PRIMARY',
         'ownerId'       => 'I NOTNULL',
         'createdDate'   => 'T NOTNULL',
         'modifiedDate'  => 'T NOTNULL DEFTIMESTAMP',
@@ -123,7 +123,7 @@ function mediashare_pntables()
         'bytes'    => 'mss_bytes'
     );
     $pntable['mediashare_mediastore_column_def'] = array(
-        'id'       => 'I NOTNULL AUTOINCREMENT KEY',
+        'id'       => 'I NOTNULL AUTO PRIMARY',
         'fileRef'  => 'C(300) NOTNULL',
         'mimeType' => 'C(100) NOTNULL',
         'width'    => 'I2 NOTNULL',
@@ -144,7 +144,7 @@ function mediashare_pntables()
         'data'    => 'mdb_data'
     );
     $pntable['mediashare_mediadb_column_def'] = array(
-        'id'      => 'I NOTNULL AUTOINCREMENT KEY',
+        'id'      => 'I NOTNULL AUTO PRIMARY',
         'fileref' => 'C(50) NOTNULL',
         'mode'    => 'C(20) NOTNULL',
         'type'    => 'C(10) NOTNULL',
@@ -167,7 +167,7 @@ function mediashare_pntables()
       'active'        => 'ms_active'
     );
     $pntable['mediashare_mediahandlers_column_def'] = array(
-      'id'            => 'I NOTNULL AUTOINCREMENT KEY',
+      'id'            => 'I NOTNULL AUTO PRIMARY',
       'mimeType'      => 'C(50)',
       'fileType'      => 'C(10)',
       'foundMimeType' => 'C(50) NOTNULL',
@@ -189,7 +189,7 @@ function mediashare_pntables()
         'active'      => 'ms_active'
     );
     $pntable['mediashare_sources_column_def'] = array(
-        'id'          => 'I NOTNULL AUTOINCREMENT KEY',
+        'id'          => 'I NOTNULL AUTO PRIMARY',
         'name'        => 'C(50) NOTNULL',
         'title'       => "C(50) NOTNULL DEFAULT ''",
         'formEncType' => "C(50) NOTNULL DEFAULT 'multipart/form-data'",
@@ -207,7 +207,7 @@ function mediashare_pntables()
         'access'   => 'msa_access'    // access type
     );
     $pntable['mediashare_access_column_def'] = array(
-        'id'       => 'I NOTNULL AUTOINCREMENT KEY',
+        'id'       => 'I NOTNULL AUTO PRIMARY',
         'albumId'  => 'I NOTNULL',
         'groupId'  => 'I NOTNULL',
         'access'   => 'I NOTNULL'
@@ -225,7 +225,7 @@ function mediashare_pntables()
         'unitId'        => 'ms_unitid'        // User or group id this applies to
     );
     $pntable['mediashare_setup_column_def'] = array(
-        'id'            => 'I NOTNULL AUTOINCREMENT KEY',
+        'id'            => 'I NOTNULL AUTO PRIMARY',
         'kind'          => 'I1 NOTNULL',
         'storageLimit'  => 'I NOTNULL',
         'unitId'        => 'I NOTNULL'
@@ -248,7 +248,7 @@ function mediashare_pntables()
         'expires'    => 'msinv_expires'
     );
     $pntable['mediashare_invitation_column_def'] = array(
-        'id'         => 'I NOTNULL AUTOINCREMENT KEY',
+        'id'         => 'I NOTNULL AUTO PRIMARY',
         'created'    => 'T NOTNULL',
         'albumId'    => 'I NOTNULL',
         'key'        => "C(20) NOTNULL DEFAULT ''",

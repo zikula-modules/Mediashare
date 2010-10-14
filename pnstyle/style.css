@@ -675,12 +675,3 @@ span.mediashare-filmstrip-info
     color: #DDD;
     text-decoration: none;
 }
-
-/* Admin-Interface */
-
-div.pn-adminformrow .ms-adminhint {
-    margin-left:26em;
-}
-div.pn-adminformrow .ms-red {
-    color:red;
-}

@@ -39,9 +39,10 @@ function mediashare_init()
     pnModSetVar('mediashare', 'mediaSizeLimitSingle', 250000);
     pnModSetVar('mediashare', 'mediaSizeLimitTotal', 5000000);
     pnModSetVar('mediashare', 'defaultAlbumTemplate', 'standard');
-    pnModSetVar('mediashare', 'defaultSlideshowTemplate', 'standard');
+    pnModSetVar('mediashare', 'allowTemplateOverride', 0);
+    pnModSetVar('mediashare', 'enableSharpen', 0);
+    pnModSetVar('mediashare', 'enableThumbnailStart', 1);
     pnModSetVar('mediashare', 'vfs', 'fsdirect');
-    pnModSetVar('mediashare', 'enableSharpen', 1);
 
     // Scan for plugins
     pnModAPILoad('mediashare', 'admin', true);

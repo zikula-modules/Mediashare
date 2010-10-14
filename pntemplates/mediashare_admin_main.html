@@ -20,7 +20,7 @@
         <label for="mediaDirName"><!--[gt text='Media upload directory']--></label>
         <div><!--[elfisk_textInput id="mediaDirName" width="300px" maxLength="200"]--></div>
         <!--[if !$mediaDirIsWritable]-->
-        <strong class="ms-adminhint ms-red"><!--[gt text='Cannot write to this directory.']--></strong>
+        <p class="z-formnote z-errormsg"><!--[gt text='Cannot write to this directory.']--></p>
         <!--[/if]-->
         <div class="z-formnote z-informationmsg"><!--[gt text="This is where your media files are stored. Make sure it corresponds to a directory named 'mediashare' in Zikula's top directory, and make sure it is writable by the webserver."]--></div>
     </div>
@@ -28,7 +28,7 @@
         <label for="tmpDirName"><!--[gt text='Temporary directory']--></label>
         <div><!--[elfisk_textInput id="tmpDirName" width="300px" maxLength="200"]--></div>
         <!--[if !$tmpDirIsWritable]-->
-        <strong class="z-formnote ms-red"><!--[gt text='Cannot write to this directory.']--></strong>
+        <p class="z-formnote z-errormsg"><!--[gt text='Cannot write to this directory.']--></p>
         <!--[/if]-->
         <div class="z-formnote z-informationmsg"><!--[gt text="This is a directory that Mediashare uses for temporary storage when uploading files. Make sure it is writable by the webserver."]--></div>
     </div>
@@ -41,7 +41,7 @@
     </div>
     <div class="z-formrow">
         <label for="allowTemplateOverride"><!--[gt text='Allow template override in albums?']--></label>
-        <input type="checkbox" id="allowTemplateOverride" name="allowTemplateOverride" value="1"<!--[if $allowTemplateOverride]--> checked="checked"<!--[/if]-->/>
+        <input type="checkbox" id="allowTemplateOverride" name="allowTemplateOverride" value="1"<!--[if $allowTemplateOverride]--> checked="checked"<!--[/if]--> />
     </div>
     <div class="z-formrow">
         <label for="thumbnailSize"><!--[gt text='Thumbnail size']--></label>
@@ -61,22 +61,22 @@
     </div>
     <div class="z-formrow">
         <label for="fsdirect"><!--[gt text='Files on local file system']--></label>
-        <input type="radio" value="fsdirect" id="fsdirect" name="vfs" <!--[if $vfs eq 'fsdirect']--> checked="checked"<!--[/if]-->/>
+        <input type="radio" value="fsdirect" id="fsdirect" name="vfs" <!--[if $vfs eq 'fsdirect']--> checked="checked"<!--[/if]--> />
         <div class="z-formnote z-warningmsg"><!--[gt text='Storing files in the local file system improves performance at the cost of some security and the ability to use multiple web servers.']--></div>
     </div>
     <div class="z-formrow">
         <label for="vfsdb"><!--[gt text='Files in database']--></label>
-        <input type="radio" value="db" id="vfsdb" name="vfs" <!--[if $vfs eq 'db']--> checked="checked"<!--[/if]-->/>
+        <input type="radio" value="db" id="vfsdb" name="vfs" <!--[if $vfs eq 'db']--> checked="checked"<!--[/if]--> />
         <div class="z-formnote z-warningmsg"><!--[gt text="Storing files in the database increases security and makes it possible to use multiple web servers at the cost of performance."]--></div>
     </div>
     <div class="z-formrow">
         <label for="enableSharpen"><!--[gt text='Enable thumbnail sharpening']--></label>
-        <input type="checkbox" id="enableSharpen" name="enableSharpen" value="1"<!--[if $enableSharpen]--> checked="checked"<!--[/if]-->/>
+        <input type="checkbox" id="enableSharpen" name="enableSharpen" value="1"<!--[if $enableSharpen]--> checked="checked"<!--[/if]--> />
         <div class="z-formnote z-warningmsg"><!--[gt text="Sharpening of thumbnails and previews improves image quality but uses a lot of CPU resources"]--></div>
     </div>
     <div class="z-formrow">
         <label for="enableThumbnailStart"><!--[gt text='Show thumbnails']--></label>
-        <input type="checkbox" id="enableThumbnailStart" name="enableThumbnailStart" value="1"<!--[if $enableThumbnailStart]--> checked="checked"<!--[/if]-->/>
+        <input type="checkbox" id="enableThumbnailStart" name="enableThumbnailStart" value="1"<!--[if $enableThumbnailStart]--> checked="checked"<!--[/if]--> />
         <div class="z-formnote z-informationmsg"><!--[gt text="The default album display can either be a thumbnail overview or a one-picture display"]--></div>
     </div>
 </fieldset>
