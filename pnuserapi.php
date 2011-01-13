@@ -719,8 +719,9 @@ function mediashare_userapi_getRandomMediaItem($args)
 function mediashare_userapi_getSettings()
 {
     $modvars = pnModGetVar('mediashare');
+    // Make kBytes
     $modvars['mediaSizeLimitSingle'] = (int)$modvars['mediaSizeLimitSingle']/1000;
-    $modvars['mediaSizeLimitTotal']  = (int)$modvars['mediaSizeLimitTotal']/1000;
+    $modvars['mediaSizeLimitTotal']  = $modvars['mediaSizeLimitTotal']/1000;
     
 	return $modvars;
 }
@@ -735,6 +736,7 @@ function mediashare_userapi_getSettings()
  */
 function mediashare_userapi_setSettings($args)
 {
+    // Convert back to Bytes for the module var
     $args['mediaSizeLimitSingle'] = (int)$args['mediaSizeLimitSingle'] * 1000;
     $args['mediaSizeLimitTotal']  = (int)$args['mediaSizeLimitTotal'] * 1000;
 
