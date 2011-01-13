@@ -2,6 +2,10 @@
 <!--[pnajaxheader lightbox=true]-->
 <!--[pnpagesetvar name='title' value="`$album.title` :: `$mediaItem.title`"]-->
 
+<script type="text/javascript" src="modules/mediashare/pnjavascript/view.js"></script>
+<script type="text/javascript" src="javascript/ajax/prototype.js"></script>
+<script type="text/javascript" src="javascript/ajax/scriptaculous.js"></script>
+<script type="text/javascript" src="javascript/ajax/effects.js"></script>
 <script type="text/javascript" src="modules/mediashare/pntemplates/Frontend/Lightbox/slideshow.js"></script>
 
 <script type="text/javascript">
@@ -9,7 +13,7 @@
     var Slideshow = new MediashareSlideshow();
 
     <!--[foreach from=$mediaItems item=item]-->
-    Slideshow.AddItem(<!--[$item.id]-->, "<!--[mediashare_mediaUrl src='originalRef' mediaItem=$item]-->", "<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->", "<!--[$item.originalMimeType]-->", "<!--[$item.html|escape:javascript]-->", "<!--[$item.title|escape:"javascript"]-->. <!--[$item.description|escape:"javascript"]-->");
+    Slideshow.AddItem(<!--[$item.id]-->, "<!--[$baseurl]--><!--[mediashare_mediaUrl src=originalRef mediaItem=$item]-->", "<!--[$baseurl]--><!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->", "<!--[$item.originalMimeType]-->", "<!--[$item.html|escape:javascript]-->", "<!--[$item.title|escape:"javascript"]-->. <!--[$item.description|escape:"javascript"]-->");
     <!--[/foreach]-->
 
     var pnmlStart   = "<!--[gt text='Start']-->";
