@@ -16,10 +16,6 @@ function mediashare_admin_main($args)
         return LogUtil::registerPermissionError();
     }
 
-    if (FormUtil::getPassedValue('saveButton') || FormUtil::getPassedValue('templateButton')) {
-        return mediashareAdminSettings($args);
-    }
-
     if (!($settings = pnModAPIFunc('mediashare', 'user', 'getSettings'))) {
         return false;
     }
@@ -41,6 +37,16 @@ function mediashareDirIsWritable($dir)
 {
     return is_dir($dir) && is_writable($dir);
 }
+
+function mediashare_admin_savesettings($args)
+{
+    if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
+        return LogUtil::registerPermissionError();
+    }
+
+    return mediashareAdminSettings($args);
+}
+
 
 function mediashareAdminSettings()
 {
