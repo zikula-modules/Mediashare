@@ -93,7 +93,7 @@ function mediashareAccessUserRealName()
     return $accessApi->hasUserRealNameAccess();
 }
 
-function mediashareAddAccess($album)
+function mediashareAddAccess(&$render, $album)
 {
     $albumId = $album['id'];
 
@@ -122,7 +122,8 @@ function mediashareAddAccess($album)
         'hasParentAccess'     => ($parentAccess & mediashareAccessRequirementEditSomething) != 0
     );
 
-    return $access;
+    $render->assign('access', $access);
+    return true;
 }
 
 /**
