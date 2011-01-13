@@ -215,6 +215,7 @@ function mediashare_upgrade($oldVersion)
                 return '4.0.1';
             }
         case '4.0.2':
+        case '4.1':
             // future
     }
 

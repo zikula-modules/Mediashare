@@ -108,8 +108,7 @@ function mediashare_pntables()
         'type'    => 'C(5) NOTNULL',
         'keyword' => 'C(50) NOTNULL'
     );
-    $pntable['mediashare_keywords_column_idx'] = array('keywordsKeywordIdx' => array('keyword'));
-
+    $pntable['mediashare_keywords_column_idx'] = array('keywordIdx' => array('keyword'));
 
     // Media storage (image information)
     $pntable['mediashare_mediastore'] = DBUtil::getLimitedTablename('mediashare_mediastore');
@@ -212,7 +211,7 @@ function mediashare_pntables()
         'groupId'  => 'I NOTNULL',
         'access'   => 'I NOTNULL'
     );
-    $pntable['mediashare_access_column_idx'] = array('accessAlbumIdx' => array('albumId'));
+    $pntable['mediashare_access_column_idx'] = array('albumIdIdx' => array('albumId'));
 
 
     // Setup table setup
