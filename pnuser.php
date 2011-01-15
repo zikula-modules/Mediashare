@@ -430,25 +430,25 @@ function mediashare_user_displaygb($args)
  */
 function mediashare_user_latest($args)
 {
-    if (!($latestMediaItems = pnModAPIFunc('mediashare', 'user', 'getLatestMediaItems'))) {
-        return false;
-    }
+    	$latestMediaItems = pnModAPIFunc('mediashare', 'user', 'getLatestMediaItems');
+			if ($latestMediaItems === false)
+				return false;
 
-    if (!($latestAlbums = pnModAPIFunc('mediashare', 'user', 'getLatestAlbums'))) {
-        return false;
-    }
+			$latestAlbums = pnModAPIFunc('mediashare', 'user', 'getLatestAlbums');
+			if ($latestAlbums === false)
+				return false;
 
-    if (!($mostActiveUsers = pnModAPIFunc('mediashare', 'user', 'getMostActiveUsers'))) {
-        return false;
-    }
+			$mostActiveUsers = pnModAPIFunc('mediashare', 'user', 'getMostActiveUsers');
+			if ($mostActiveUsers === false)
+				return false;
 
-    if (!($mostActiveKeywords = pnModAPIFunc('mediashare', 'user', 'getMostActiveKeywords'))) {
-        return false;
-    }
+			$mostActiveKeywords = pnModAPIFunc('mediashare', 'user', 'getMostActiveKeywords');
+			if ($mostActiveKeywords === false)
+				return false;
 
-    if (!($summary = pnModAPIFunc('mediashare', 'user', 'getSummary'))) {
-        return false;
-    }
+			$summary = pnModAPIFunc('mediashare', 'user', 'getSummary');
+			if ($summary === false)
+				return false;
 
     // Build the output
     $render = & pnRender::getInstance('mediashare', false);
