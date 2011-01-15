@@ -555,21 +555,24 @@ function mediashare_editapi_storeMediaItem(&$args)
         $args['ownerId'] = pnUserGetVar('uid');
     }
 
-    if (!($position = mediashareGetNewPosition($albumId))) {
-        return false;
-    }
+		$position = mediashareGetNewPosition($albumId);
+  if ($position === false)
+    return false;
 
-    if (!($thumbnailId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['thumbnail']))) {
-        return false;
-    }
+  $thumbnailId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['thumbnail']);
+  if ($thumbnailId === false)
+    return false;
 
-    if (!($previewId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['preview']))) {
-        return false;
-    }
+  $previewId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['preview']);
+  if ($previewId === false)
+    return false;
 
-    if (!($originalId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['original']))) {
-        return false;
-    }
+  $originalId = pnModAPIFunc('mediashare', 'edit', 'registerMediaItem', $args['original']);
+  if ($originalId === false)
+    return false;
+		
+		
+
 
     $media = array(
         'ownerId'       => (int)$args['ownerId'],
