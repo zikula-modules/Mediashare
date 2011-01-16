@@ -317,7 +317,7 @@ function mediashare_edit_addmedia($args)
     }
 
     // Get media sources
-    if (!($sources = pnModAPIFunc('mediashare', 'sources', 'getSources'))) {
+    if (($sources = pnModAPIFunc('mediashare', 'sources', 'getSources', array('active' => 1))) === false) {
         return false;
     }
     if (count($sources) == 0) {

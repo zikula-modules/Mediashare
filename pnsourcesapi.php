@@ -4,29 +4,27 @@
 // Mediashare by Jorn Lind-Nielsen (C)
 //
 
-function mediashare_sourcesapi_getSources()
+function mediashare_sourcesapi_getSources($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $pntable = &pnDBGetTables();
-
-    $sourcesTable  = $pntable['mediashare_sources'];
+		$pntable = &pnDBGetTables();
+		
+		$sourcesTable  = $pntable['mediashare_sources'];
     $sourcesColumn = $pntable['mediashare_sources_column'];
-
-    $sql = "SELECT $sourcesColumn[name],
-                   $sourcesColumn[title],
-                   $sourcesColumn[formEncType],
-									 $sourcesColumn[id],
-									 $sourcesColumn[active]
-              FROM $sourcesTable";
-
-    $result = DBUtil::executeSQL($sql);
+		  		
+		$where = "";
+    if ($args['active']) {
+        $where = "WHERE $sourcesColumn[active] = '" . pnVarPrepForStore($args['active']) . "'";
+    } 
+					
+    $result = DBUtil::selectObjectArray('mediashare_sources', $where);
 
     if ($result === false) {
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('sourcesapi.getSources', 'Could not retrieve the sources.'), $dom));
     }
 
-    return DBUtil::marshallObjects($result, array('name', 'title', 'formEncType','id','active'));
+    return $result;
 }
 
 function mediashare_sourcesapi_scanSources()
