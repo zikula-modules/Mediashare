@@ -15,6 +15,9 @@ function mediashare_admin_main($args)
     if (!SecurityUtil::checkPermission('mediashare::', '::', ACCESS_ADMIN)) {
         return LogUtil::registerPermissionError();
     }
+		
+		 if (isset($_POST['saveButton'])  ||  isset($_POST['templateButton']))
+    return mediashareAdminSettings($args);
 
     if (!($settings = pnModAPIFunc('mediashare', 'user', 'getSettings'))) {
         return false;
