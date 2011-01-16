@@ -747,7 +747,7 @@ function mediashare_userapi_getRelativeMediadir()
 {
     $zkroot    = substr(pnServerGetVar('DOCUMENT_ROOT'), 0, -1).pnGetBaseURI();
     $mediaBase = str_replace($zkroot, '', pnModGetVar('mediashare', 'mediaDirName', 'mediashare'));
-    $mediaBase = substr($mediaBase, 1).'/';
+    $mediaBase = substr($mediaBase, 2).'/';
 
     return $mediaBase;
 }
@@ -1048,9 +1048,9 @@ function mediashare_userapi_getList($args)
     $join = array();
 
     if (!empty($uname)) {
-        $restriction[] = "$usersColumn[uname] = '" . DataUtil::formatForStore($uname) . "'";
-        $join[] = "INNER JOIN $usersTable
-                           ON $usersColumn[uid] = media.$mediaColumn[ownerId]";
+        $restriction[] = "users.$usersColumn[uname] = '" . DataUtil::formatForStore($uname) . "'";
+        $join[] = "INNER JOIN $usersTable users
+                           ON users.$usersColumn[uid] = media.$mediaColumn[ownerId]";
     }
 
     if (!empty($albumId)) {
@@ -1272,9 +1272,9 @@ function mediashare_userapi_getListCount($args)
     $join = array();
 
     if ($uname != null) {
-        $restriction[] = "$usersColumn[uname] = '" . DataUtil::formatForStore($uname) . "'";
-        $join[] = "INNER JOIN $usersTable
-                           ON $usersColumn[uid] = media.$mediaColumn[ownerId]";
+        $restriction[] = "users.$usersColumn[uname] = '" . DataUtil::formatForStore($uname) . "'";
+        $join[] = "INNER JOIN $usersTable users
+                           ON users.$usersColumn[uid] = media.$mediaColumn[ownerId]";
     }
 
     if ($albumId != null) {
@@ -1290,8 +1290,8 @@ function mediashare_userapi_getListCount($args)
             INNER JOIN $mediaTable media
                     ON media.$mediaColumn[id] = keyword.$keywordsColumn[itemId]
                    AND keyword.$keywordsColumn[type] = 'media'
-            INNER JOIN $usersTable
-                    ON $usersColumn[uid] = media.$mediaColumn[ownerId]
+            INNER JOIN $usersTable usersx
+                    ON usersx.$usersColumn[uid] = media.$mediaColumn[ownerId]
             INNER JOIN $albumsTable album
                     ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
                        $joinSql
@@ -1306,8 +1306,8 @@ function mediashare_userapi_getListCount($args)
                     AND keyword.$keywordsColumn[type] = 'album'
              INNER JOIN $mediaTable media
                      ON media.$mediaColumn[id] = album.$albumsColumn[mainMediaId]
-             INNER JOIN $usersTable
-                     ON $usersColumn[uid] = media.$mediaColumn[ownerId]
+             INNER JOIN $usersTable usersx
+                     ON usersx.$usersColumn[uid] = media.$mediaColumn[ownerId]
                         $joinSql
                   WHERE ($accessibleAlbumSql)
                     AND keyword.$keywordsColumn[keyword] = '" . DataUtil::formatForStore($keyword) . "'
@@ -1315,8 +1315,8 @@ function mediashare_userapi_getListCount($args)
     } else {
         $sql = "SELECT COUNT(*)
                   FROM $mediaTable media
-            INNER JOIN $usersTable
-                    ON $usersColumn[uid] = media.$mediaColumn[ownerId]
+            INNER JOIN $usersTable usersx
+                    ON usersx.$usersColumn[uid] = media.$mediaColumn[ownerId]
             INNER JOIN $albumsTable album
                     ON album.$albumsColumn[id] = media.$mediaColumn[parentAlbumId]
                        $joinSql
@@ -1434,25 +1434,14 @@ function mediashare_userapi_search($args)
 function mediashare_userapi_getAllTemplates()
 {
     $templates = array();
-    
-		$sets = FileUtil::getFiles('modules/mediashare/pntemplates/Frontend', false, true, null, 'd');
+
+    $sets = FileUtil::getFiles('modules/mediashare/pntemplates/Frontend', false, true, null, 'd');
 
     if (file_exists('config/templates/mediashare/Frontend')) {
         $add = FileUtil::getFiles('config/templates/mediashare/Frontend', false, true, null, 'd');
         $sets = array_merge($sets, $add);
     }
 
-	// get the theme
-    if ($GLOBALS['loadstages'] & PN_CORE_THEME) {
-        $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
-    }
-	
-	if (file_exists('themes/'.$theme['directory'].'/templates/modules/mediashare/Frontend')) {
-        $add = FileUtil::getFiles('themes/'.$theme['directory'].'/templates/modules/mediashare/Frontend', false, true, null, 'd');
-        $sets = array_merge($sets, $add);
-    }
-		
-		
     foreach ($sets as $set) {
         $templates[] = array('title' => $set,
                              'value' => $set);
