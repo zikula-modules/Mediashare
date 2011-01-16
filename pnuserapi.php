@@ -1434,14 +1434,25 @@ function mediashare_userapi_search($args)
 function mediashare_userapi_getAllTemplates()
 {
     $templates = array();
-
-    $sets = FileUtil::getFiles('modules/mediashare/pntemplates/Frontend', false, true, null, 'd');
+    
+		$sets = FileUtil::getFiles('modules/mediashare/pntemplates/Frontend', false, true, null, 'd');
 
     if (file_exists('config/templates/mediashare/Frontend')) {
         $add = FileUtil::getFiles('config/templates/mediashare/Frontend', false, true, null, 'd');
         $sets = array_merge($sets, $add);
     }
 
+	// get the theme
+    if ($GLOBALS['loadstages'] & PN_CORE_THEME) {
+        $theme = ThemeUtil::getInfo(ThemeUtil::getIDFromName(pnUserGetTheme()));
+    }
+	
+	if (file_exists('themes/'.$theme['directory'].'/templates/modules/mediashare/Frontend')) {
+        $add = FileUtil::getFiles('themes/'.$theme['directory'].'/templates/modules/mediashare/Frontend', false, true, null, 'd');
+        $sets = array_merge($sets, $add);
+    }
+		
+		
     foreach ($sets as $set) {
         $templates[] = array('title' => $set,
                              'value' => $set);
