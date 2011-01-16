@@ -12,7 +12,14 @@
         <dd>
             <ul>
                 <!--[foreach from=$handler.mediaTypes item=type]-->
-                <li><!--[$type.mimeType]--> - <!--[$type.fileType]--></li>
+                <li style="width:100%;"><!--[$type.mimeType]--> - <!--[$type.fileType]-->
+								<span style="float:right;">
+								<!--[if $type.active == 1]-->
+								 <a href="<!--[pnmodurl modname='mediashare' type='admin' func='onoffplugins' active=0 id=$type.id]-->"><!--[pnimg modname='core' src='greenled.gif' set='icons/extrasmall' alt='_EDIT' altml=true]--></a>&nbsp;
+								<!--[else ]-->
+								 <a href="<!--[pnmodurl modname='mediashare' type='admin' func='onoffplugins' active=1 id=$type.id]-->"><!--[pnimg modname='core' src='redled.gif' set='icons/extrasmall' alt='_EDIT' altml=true]--></a>&nbsp;
+								<!--[/if]-->
+								</span></li>
                 <!--[/foreach]-->
             </ul>
         </dd>
@@ -25,7 +32,14 @@
     <p><!--[gt text="The list below shows the available media sources. These plugins implements the various ways you can add media to your albums."]--></p>
     <ul>
         <!--[foreach from=$sources item=source]-->
-        <li><!--[$source.title]--></li>
+        <li style="width:100%;"><!--[$source.title]-->
+								<span style="float:right;">
+								<!--[if $source.active == 1]-->
+								 <a href="<!--[pnmodurl modname='mediashare' type='admin' func='onoffsources' active=0 id=$source.id]-->"><!--[pnimg modname='core' src='greenled.gif' set='icons/extrasmall' alt='_EDIT' altml=true]--></a>&nbsp;
+								<!--[else ]-->
+								 <a href="<!--[pnmodurl modname='mediashare' type='admin' func='onoffsources' active=1 id=$source.id]-->"><!--[pnimg modname='core' src='redled.gif' set='icons/extrasmall' alt='_EDIT' altml=true]--></a>&nbsp;
+								<!--[/if]-->
+								</span></li>
         <!--[/foreach]-->
     </ul>
 </fieldset>

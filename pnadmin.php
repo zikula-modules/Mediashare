@@ -129,6 +129,7 @@ function mediashareAdminScanPlugins()
     return pnRedirect(pnModURL('mediashare', 'admin', 'plugins'));
 }
 
+
 /**
  * Recalculate images
  */
@@ -171,3 +172,43 @@ function mediashare_admin_recalcitem()
     $render->display('mediashare_admin_recalcitem.html');
     return true;
 }
+
+
+function mediashare_admin_OnOffplugins()
+{
+    $dom = ZLanguage::getModuleDomain('mediashare');
+		
+		if (FormUtil::getPassedValue('id')) {
+         
+				 if (!pnModAPIFunc('mediashare', 'mediahandler', 'OnOffMediaHandler',
+														array('id' => FormUtil::getPassedValue('id'),
+																	'active' => FormUtil::getPassedValue('active')))) {
+        return false;
+    }
+    }
+	
+		LogUtil::registerStatus(__('Done!', $dom));
+
+    return pnRedirect(pnModURL('mediashare', 'admin', 'plugins'));
+}
+
+
+function mediashare_admin_onoffsources()
+{
+    $dom = ZLanguage::getModuleDomain('mediashare');
+		
+		if (FormUtil::getPassedValue('id')) {
+         
+				 if (!pnModAPIFunc('mediashare', 'sources', 'OnOffSources',
+														array('id' => FormUtil::getPassedValue('id'),
+																	'active' => FormUtil::getPassedValue('active')))) {
+        return false;
+    }
+    }
+	
+		LogUtil::registerStatus(__('Done!', $dom));
+
+    return pnRedirect(pnModURL('mediashare', 'admin', 'plugins'));
+}
+
+

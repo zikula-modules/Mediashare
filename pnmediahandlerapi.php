@@ -34,7 +34,9 @@ function mediashare_mediahandlerapi_getMediaHandlers()
         $sql = "SELECT $handlersColumn[mimeType],
                        $handlersColumn[fileType],
                        $handlersColumn[foundMimeType],
-                       $handlersColumn[foundFileType]
+                       $handlersColumn[foundFileType],
+											 $handlersColumn[active],
+											 $handlersColumn[id]
                   FROM $handlersTable
                  WHERE $handlersColumn[handler] = '$handler'";
 
@@ -44,7 +46,7 @@ function mediashare_mediahandlerapi_getMediaHandlers()
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('mediahandlerapi.getMediaHandlers', "Could not load the types for the handler '$handler'."), $dom));
         }
 
-        $colArray = array('mimeType', 'fileType', 'foundMimeType', 'foundFileType');
+        $colArray = array('mimeType', 'fileType', 'foundMimeType', 'foundFileType', 'active', 'id');
 
         $handlers[$k]['mediaTypes'] = DBUtil::marshallObjects($result, $colArray);
     }
@@ -80,7 +82,8 @@ function mediashare_mediahandlerapi_getHandlerInfo($args)
                             $handlersColumn[foundFileType]
                        FROM $handlersTable
                       WHERE $handlersColumn[mimeType] = '" . DataUtil::formatForStore($mimeType) . "'
-                         OR $handlersColumn[fileType] = '" . DataUtil::formatForStore($fileType) . "'";
+                         OR $handlersColumn[fileType] = '" . DataUtil::formatForStore($fileType) . "'
+												AND $handlersColumn[active] =	1 ";
 
     $result = DBUtil::executeSQL($sql);
 
@@ -169,8 +172,7 @@ function mediashare_mediahandlerapi_addMediaHandler($args)
         'foundMimeType' => strtolower($args['foundMimeType']),
         'foundFileType' => strtolower($args['foundFileType']),
         'handler'       => $args['handler'],
-        'title'         => $args['title']
-    );
+        'title'         => $args['title']);
 
     $result = DBUtil::insertObject($handler, 'mediashare_mediahandlers', 'id');
 
@@ -180,3 +182,38 @@ function mediashare_mediahandlerapi_addMediaHandler($args)
 
     return true;
 }
+
+
+function mediashare_mediahandlerapi_OnOffMediaHandler($args)
+{
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+		if ($args['id'] === false) {
+        return false;    
+		}
+		
+		$handler = DBUtil::selectObjectByID('mediashare_mediahandlers', $args['id']);
+		
+		
+		if ($args['active'] === flase) {
+				$handler['active'] = 0;
+    }else {
+				$handler['active'] = $args['active'];
+				// todo turn off same mimeTypes
+
+		}
+				
+		$result = DBUTil::updateObject($handler, 'mediashare_mediahandlers');
+		
+		if ($result === false) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('mediahandlerapi.addHandler', 'Could not change handler status.'), $dom));
+    }
+
+		
+		//turn off same mimeTypes
+		
+		
+    return true;
+}
+
+

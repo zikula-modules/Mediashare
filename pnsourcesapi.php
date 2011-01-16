@@ -15,7 +15,9 @@ function mediashare_sourcesapi_getSources()
 
     $sql = "SELECT $sourcesColumn[name],
                    $sourcesColumn[title],
-                   $sourcesColumn[formEncType]
+                   $sourcesColumn[formEncType],
+									 $sourcesColumn[id],
+									 $sourcesColumn[active]
               FROM $sourcesTable";
 
     $result = DBUtil::executeSQL($sql);
@@ -24,7 +26,7 @@ function mediashare_sourcesapi_getSources()
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('sourcesapi.getSources', 'Could not retrieve the sources.'), $dom));
     }
 
-    return DBUtil::marshallObjects($result, array('name', 'title', 'formEncType'));
+    return DBUtil::marshallObjects($result, array('name', 'title', 'formEncType','id','active'));
 }
 
 function mediashare_sourcesapi_scanSources()
@@ -87,5 +89,38 @@ function mediashare_sourcesapi_addSource($args)
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('sourcesapi.addSource', 'Could not add a source.'), $dom));
     }
 
+    return true;
+}
+
+
+function mediashare_sourcesapi_OnOffsources($args)
+{
+    $dom = ZLanguage::getModuleDomain('mediashare');
+
+		if ($args['id'] === false) {
+        return false;    
+		}
+		
+		$source = DBUtil::selectObjectByID('mediashare_sources', $args['id']);
+		
+		
+		if ($args['active'] === flase) {
+				$source['active'] = 0;
+    }else {
+				$source['active'] = $args['active'];
+				// todo turn off same mimeTypes
+
+		}
+				
+		$result = DBUTil::updateObject($source, 'mediashare_sources');
+		
+		if ($result === false) {
+        return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('mediahandlerapi.addHandler', 'Could not change source status.'), $dom));
+    }
+
+		
+		//turn off same mimeTypes
+		
+		
     return true;
 }
