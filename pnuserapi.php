@@ -218,14 +218,14 @@ function mediashare_userapi_getSubAlbumsData($args)
             return false;
         }
 
-        $excludeRestriction = " AND (album.$albumsColumn[nestedSetLeft] < $excludeAlbum[nestedSetLeft]
-                                  OR album.$albumsColumn[nestedSetRight] > $excludeAlbum[nestedSetRight]) ";
+        $excludeRestriction = " AND ($albumsColumn[nestedSetLeft] < $excludeAlbum[nestedSetLeft]
+                                  OR $albumsColumn[nestedSetRight] > $excludeAlbum[nestedSetRight]) ";
     }
 
     $mineSql = '';
     if ($onlyMine) {
         $uid     = (int)pnUserGetVar('uid');
-        $mineSql = " AND album.$albumsColumn[ownerId] = '$uid'";
+        $mineSql = " AND $albumsColumn[ownerId] = '$uid'";
     }
 
     $where = "($accessibleAlbumSql) $excludeRestriction $mineSql";
