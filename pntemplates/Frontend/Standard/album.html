@@ -17,7 +17,7 @@
     <!--[if $mediaItem.id > 0]-->
     <!--[pnmodurl modname='mediashare' type=user func=display mid=$mediaItem.id assign=url]-->
     <div class="mediashare-item">
-        <a href="<!--[$url|escape:'html']-->" ><!--[mediashare_mediaItem src=$mediaItem.previewRef title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler class="media" width=$mediaItem.previewWidth height=$mediaItem.previewHeight]--></a>
+       <!--[mediashare_mediaItem src=$mediaItem.previewRef title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler class="media" width=$mediaItem.previewWidth height=$mediaItem.previewHeight]-->
         <br class="z-clearer" />
             <!--[if !$mediaItem.originalIsImage]-->
             <div class="mediashare-zoom">
