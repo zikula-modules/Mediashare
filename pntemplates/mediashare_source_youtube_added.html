@@ -1,0 +1,41 @@
+<!--[* $Id: mediashare_source_zip_uploadet.html 152 2009-12-10 07:29:00Z mateo $ *]-->
+<ul class="mediashare-upload-list">
+    <!--[foreach from=$statusSet item=status]-->
+    <li>
+        <!--[$status.message]-->
+        <!--[if $status.ok]-->
+        <!--[pnimg modname='core' src='button_ok.gif' set='icons/small' __alt='Ok' __title='Ok']-->
+        <!--[else]-->
+        <!--[pnimg modname='core' src='button_cancel.gif' set='icons/small' alt=$status.message title=$status.message]-->
+        <!--[/if]-->
+    </li>
+    <!--[/foreach]-->
+</ul>
+
+<!--[foreach from=$items item=item]-->
+<fieldset>
+    <legend><!--[$item.title]--></legend>
+    <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
+    <div class="z-formrow">
+        <label><!--[gt text="Thumbnail"]--></label>
+        <div><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></div>
+    </div>
+    <div class="z-formrow">
+        <label for="title-<!--[$item.id]-->"><!--[gt text="Title"]--></label>
+        <!--[elfisk_textInput id="title-`$item.id`" maxLength="255" text=$item.title]-->
+    </div>
+    <div class="z-formrow">
+        <label for="keywords-<!--[$item.id]-->"><!--[gt text="Keywords"]--></label>
+        <!--[elfisk_textInput id="keywords-`$item.id`" maxLength="255" text=$item.keywords]-->
+    </div>
+    <div class="z-formrow">
+        <label for="description-<!--[$item.id]-->"><!--[gt text="Description"]--></label>
+        <!--[elfisk_textArea id="description-`$item.id`" height="100px" text=$item.description]-->
+    </div>
+</fieldset>
+<!--[/foreach]-->
+
+<div class="z-formbuttons">
+    <!--[elfisk_button name="continueButton" __text="Continue"]-->
+    <!--[elfisk_button name="moreButton" __text="Add more"]-->
+</div>
