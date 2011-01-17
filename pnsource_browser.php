@@ -31,7 +31,7 @@ function mediashare_source_browser_view(&$args)
     }
 
     // FIXME Required for globals??
-    pnModAPILoad('mediashare', 'edit');
+//    pnModAPILoad('mediashare', 'edit');
 
     $uploadInfo = pnModAPIFunc('mediashare', 'source_browser', 'getUploadInfo');
 
