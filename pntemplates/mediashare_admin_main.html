@@ -60,12 +60,12 @@
     </div>
     <div class="z-formrow">
         <label for="fsdirect"><!--[gt text='Files on local file system']--></label>
-        <input type="radio" value="fsdirect" id="fsdirect" name="vfs" <!--[if $vfs eq 'fsdirect']--> checked="checked"<!--[/if]--> />
+        <span><input type="radio" value="fsdirect" id="fsdirect" name="vfs" <!--[if $vfs eq 'fsdirect']--> checked="checked"<!--[/if]--> /></span>
         <div class="z-formnote z-warningmsg"><!--[gt text='Storing files in the local file system improves performance at the cost of some security and the ability to use multiple web servers.']--></div>
     </div>
     <div class="z-formrow">
         <label for="vfsdb"><!--[gt text='Files in database']--></label>
-        <input type="radio" value="db" id="vfsdb" name="vfs" <!--[if $vfs eq 'db']--> checked="checked"<!--[/if]--> />
+        <span><input type="radio" value="db" id="vfsdb" name="vfs" <!--[if $vfs eq 'db']--> checked="checked"<!--[/if]--> /></span>
         <div class="z-formnote z-warningmsg"><!--[gt text="Storing files in the database increases security and makes it possible to use multiple web servers at the cost of performance."]--></div>
     </div>
     <div class="z-formrow">
