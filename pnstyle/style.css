@@ -19,6 +19,7 @@ div.mediashare-clear {
 input.mediashare-readonly {
     border: none;
     border-bottom: 1px solid #DDD;
+    background-color: #ddd;
 }
 
 .mediashare-inputhelp {

@@ -13,7 +13,7 @@
     <!--[/if]-->
     <div class="z-formrow">
         <label><!--[gt text='Current module directory']--></label>
-        <div><!--[$currentDir|escape]--></div>
+        <input value="<!--[$currentDir|escape]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
     </div>
     <div class="z-formrow">
         <label for="mediaDirName"><!--[gt text='Media upload directory']--></label>
@@ -21,7 +21,7 @@
         <!--[if !$mediaDirIsWritable]-->
         <p class="z-formnote z-errormsg"><!--[gt text='Cannot write to this directory.']--></p>
         <!--[/if]-->
-        <div class="z-formnote z-informationmsg"><!--[gt text="This is where your media files are stored. Make sure it corresponds to a directory named 'mediashare' in Zikula's top directory, and make sure it is writable by the webserver."]--></div>
+        <div class="z-formnote z-informationmsg"><!--[gt text="This is the absolute path to the directory where your media files are stored. Make sure it is writable by the webserver."]--></div>
     </div>
     <div class="z-formrow">
         <label for="tmpDirName"><!--[gt text='Temporary directory']--></label>
@@ -29,7 +29,7 @@
         <!--[if !$tmpDirIsWritable]-->
         <p class="z-formnote z-errormsg"><!--[gt text='Cannot write to this directory.']--></p>
         <!--[/if]-->
-        <div class="z-formnote z-informationmsg"><!--[gt text="This is a directory that Mediashare uses for temporary storage when uploading files. Make sure it is writable by the webserver."]--></div>
+        <div class="z-formnote z-informationmsg"><!--[gt text="This is the absolute path to the directory that is used for temporary storage during uploading files. Make sure it is writable by the webserver."]--></div>
     </div>
     <div class="z-formrow">
         <label for="defaultAlbumTemplate"><!--[gt text='Default album template']--></label>
