@@ -15,7 +15,7 @@ function mediashare_sourcesapi_getSources($args)
 		  		
 		$where = "";
     if ($args['active']) {
-        $where = "WHERE $sourcesColumn[active] = '" . pnVarPrepForStore($args['active']) . "'";
+        $where = "WHERE $sourcesColumn[active] = '" . DataUtil::formatForStore($args['active']) . "'";
     } 
 					
     $result = DBUtil::selectObjectArray('mediashare_sources', $where);
