@@ -425,12 +425,13 @@ function mediashare_editapi_addMediaItem($args)
     $handlerApi = "media_{$handlerName}";
     $handler    = pnModAPIFunc('mediashare', $handlerApi, 'buildHandler');
 
-    // Ask media handler to generate thumbnail and preview images
+    // Ask media handler to generate thumbnail (with unique filename) and preview images
     $tmpDir = pnModGetVar('mediashare', 'tmpDirName');
     if (($thumbnailFilename = tempnam($tmpDir, 'Preview')) === false) {
         return LogUtil::registerError(__f("Failed to create the thumbnail file in '%s'.", 'editapi.addMediaItem', $dom));
     }
 
+    // Create the unique filename for the preview with tempnam
     if (($previewFilename = tempnam($tmpDir, 'Preview')) === false) {
         @unlink($thumbnailFilename);
         return LogUtil::registerError(__f("Failed to create the preview file in '%s'.", 'editapi.addMediaItem', $dom));
