@@ -56,9 +56,9 @@ class mediashare_vfsHandlerFSDirect
 
         $id = $chars[mt_rand(0, $charLen-1)] . $chars[mt_rand(0, $charLen-1)];
 
-        $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
-        if (!file_exists($mediadir.$id)) {
-            FileUtil::mkdirs($mediadir.$id, 0777);
+        $mediadir = $this->storageDir;
+        if (!file_exists($mediadir.'/'.$id)) {
+            FileUtil::mkdirs($mediadir.'/'.$id, 0777);
         }
 
         $id .= '/';

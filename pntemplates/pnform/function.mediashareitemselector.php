@@ -64,6 +64,8 @@ class mediashareItemSelector extends pnFormPlugin
         $thumbnailSize = (int)pnModGetVar('mediashare', 'thumbnailSize') + 10;
         $html = "<div class=\"mediashareItemSelector\">\n<table><tr>\n";
 
+        $mediadir = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir');
+
         if (!($albums = pnModAPIFunc('mediashare', 'user', 'getAllAlbums', array('albumId' => 1)))) {
             return false;
         }
@@ -94,7 +96,7 @@ class mediashareItemSelector extends pnFormPlugin
                 }
 
                 if ($selectedMediaId == $item['id']) {
-                    $imgSrc = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir') . $item['thumbnailRef'];
+                    $imgSrc = $mediadir . $item['thumbnailRef'];
                     $selected = ' selected="selected"';
                 } else {
                     $selected = '';
@@ -117,7 +119,7 @@ class mediashareItemSelector extends pnFormPlugin
         $html .= "<td class=\"selector\">\n";
 
         $html .= "<label for=\"{$this->id}_album\">" . __('Album', $dom) . "</label><br/>";
-        $html .= "<select id=\"{$this->id}_album\" name=\"{$this->inputName}_album\" onchange=\"mediashare.itemSelector.albumChanged(this,'{$this->id}')\">\n";
+        $html .= "<select id=\"{$this->id}_album\" name=\"{$this->inputName}_album\" onchange=\"mediashare.itemSelector.albumChanged(this,'{$this->id}', '".$mediadir."')\">\n";
 
         foreach ($albums as $album)
         {
@@ -135,7 +137,7 @@ class mediashareItemSelector extends pnFormPlugin
         $html .= "</select><br/>\n";
 
         $html .= "<label for=\"{$this->id}_item\">" . __('Media item', $dom) . "</label><br/> ";
-        $html .= "<select id=\"{$this->id}_item\" name=\"$this->inputName\" onchange=\"mediashare.itemSelector.itemChanged(this,'{$this->id}')\">\n";
+        $html .= "<select id=\"{$this->id}_item\" name=\"$this->inputName\" onchange=\"mediashare.itemSelector.itemChanged(this,'{$this->id}', '".$mediadir."')\">\n";
 
         if ($selectedAlbumId != null) {
             $items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $selectedAlbumId));

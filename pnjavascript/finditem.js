@@ -169,7 +169,7 @@ mediashare.itemSelector.uploadClick = function()
 }
 
 
-mediashare.itemSelector.albumChanged = function(albumSelector, baseId)
+mediashare.itemSelector.albumChanged = function(albumSelector, baseId, mediadir)
 {
   var selectedAlbumId = $F(albumSelector);
   var pars = "aid=" + selectedAlbumId;
@@ -180,12 +180,12 @@ mediashare.itemSelector.albumChanged = function(albumSelector, baseId)
   
   new Ajax.Request(url, { method: "post", 
                           parameters: pars, 
-                          onSuccess: function(response) { mediashare.itemSelector.gotItems(response,baseId,false); },
+                          onSuccess: function(response) { mediashare.itemSelector.gotItems(response,baseId,false, mediadir); },
                           onFailure: mediashare.itemSelector.handleError});
 }
 
 
-mediashare.itemSelector.gotItems = function(response, baseId, updateListOnly)
+mediashare.itemSelector.gotItems = function(response, baseId, updateListOnly, mediadir)
 {
   var result = pndejsonize(response.responseText);
 
@@ -207,8 +207,7 @@ mediashare.itemSelector.gotItems = function(response, baseId, updateListOnly)
       if (result.mediaItems[0].isExternal)
         $(baseId+'_img').src = result.mediaItems[0].thumbnailRef;
       else
-        $(baseId+'_img').src = 'mediashare/' + result.mediaItems[0].thumbnailRef;
-
+        $(baseId+'_img').src = mediadir + '/' + result.mediaItems[0].thumbnailRef;
       $(baseId+'_img').show();
     }
     else
@@ -225,11 +224,11 @@ mediashare.itemSelector.handleError = function(response)
 }
 
 
-mediashare.itemSelector.itemChanged = function(itemSelector, baseId)
+mediashare.itemSelector.itemChanged = function(itemSelector, baseId, mediadir)
 {
   var selectedItemRef = $F(itemSelector);
   if (mediashare.itemSelector.items[baseId][itemSelector.selectedIndex].isExternal)
     $(baseId+'_img').src = mediashare.itemSelector.items[baseId][itemSelector.selectedIndex].thumbnailRef;
   else
-    $(baseId+'_img').src = 'mediashare/' + mediashare.itemSelector.items[baseId][itemSelector.selectedIndex].thumbnailRef;
+    $(baseId+'_img').src = mediadir + '/' + mediashare.itemSelector.items[baseId][itemSelector.selectedIndex].thumbnailRef;
 }
