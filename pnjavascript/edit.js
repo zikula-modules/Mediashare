@@ -204,6 +204,14 @@ contextmenu.menuClosed = function(context)
   context.currentId = null;
 }
 
+function selectMedia(mark) 
+{
+  var checkboxes = document.getElementsByName('selectedMediaId[]'); 
+  for (var i=checkboxes.length-1; i>=0; --i) 
+  {
+    checkboxes[i].checked = mark;
+  }
+}
 
 /**
  * Dragging utilities
