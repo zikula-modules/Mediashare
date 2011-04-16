@@ -145,7 +145,7 @@ mediashare.itemSelector.onLoad = function(baseId)
   var albumSelector = $(baseId+"_album");
   var selectedAlbumId = $F(albumSelector);
   var pars = "aid=" + selectedAlbumId;
-  var url = "ajax.php?module=mediashare&func=getitems";
+  var url = document.location.pnbaseURL+"ajax.php?module=mediashare&func=getitems";
   
   new Ajax.Request(url, { method: "post", 
                           parameters: pars, 
@@ -173,7 +173,7 @@ mediashare.itemSelector.albumChanged = function(albumSelector, baseId, mediadir)
 {
   var selectedAlbumId = $F(albumSelector);
   var pars = "aid=" + selectedAlbumId;
-  var url = "ajax.php?module=mediashare&func=getitems";
+  var url = document.location.pnbaseURL+"ajax.php?module=mediashare&func=getitems";
   
   $(baseId+'_img').src = 'images/ajax/rotating_arrow.gif';
   $(baseId+'_img').show();
