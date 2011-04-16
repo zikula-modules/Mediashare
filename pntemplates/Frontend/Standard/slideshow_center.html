@@ -21,7 +21,7 @@
                     <a href="<!--[$nextUrl]-->" target="mediadisplay"><!--[gt text='Next']--></a>
                     <select onchange="onchangeSlideshowIndex(this, '<!--[$selectUrl|pnvarprepfordisplay]-->', '<!--[$delay]-->')" style="width: 200px">
                         <!--[foreach from=$mediaItems item=item]-->
-                        <option value="<!--[$item.id]-->" <!--[if $item.id eq $mediaItem.id]-->selected="selected"<!--[/if]-->><!--[$item.title]--></option>
+                        <option value="<!--[$item.id]-->" <!--[if $item.id eq $mediaItem.id]-->selected="selected"<!--[/if]-->><!--[$item.title|pnvarprepfordisplay]--></option>
                         <!--[/foreach]-->
                     </select>
                     <button type="button" onclick="slideshowStop()" id="slideshowStopButton"<!--[if $mode!="running"]--> disabled="disabled"<!--[/if]-->><!--[gt text='Stop']--></button>

@@ -13,7 +13,7 @@
     var Slideshow = new MediashareSlideshow();
 
     <!--[foreach from=$mediaItems item=item]-->
-    Slideshow.AddItem(<!--[$item.id]-->, "<!--[$baseurl]--><!--[mediashare_mediaUrl src=originalRef mediaItem=$item]-->", "<!--[$baseurl]--><!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->", "<!--[$item.originalMimeType]-->", "<!--[$item.html|escape:javascript]-->", "<!--[$item.title|escape:"javascript"]-->. <!--[$item.description|escape:"javascript"]-->");
+    Slideshow.AddItem(<!--[$item.id]-->, "<!--[$baseurl]--><!--[mediashare_mediaUrl src=originalRef mediaItem=$item]-->", "<!--[$baseurl]--><!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->", "<!--[$item.originalMimeType]-->", "<!--[$item.html|escape:javascript]-->", "<!--[$item.title|pnvarprepfordisplay]-->. <!--[$item.description|pnvarprepfordisplay]-->");
     <!--[/foreach]-->
 
     var pnmlStart   = "<!--[gt text='Start']-->";

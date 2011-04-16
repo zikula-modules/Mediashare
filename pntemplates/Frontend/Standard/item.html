@@ -24,11 +24,11 @@
                 <a href="<!--[$url|escape:'html']-->" ><!--[gt text='View fullscreen']--></a>
             </div>
             <!--[/if]-->
-            <div style="width: <!--[$mediaItem.previewWidth]-->px;"><!--[$mediaItem.title]-->
-                <!--[if !empty($mediaItem.description)]--><span class="description"><!--[$mediaItem.description]--></span><!--[/if]-->
+            <div style="width: <!--[$mediaItem.previewWidth]-->px;"><!--[$mediaItem.title|pnvarprepfordisplay]-->
+                <!--[if !empty($mediaItem.description)]--><span class="description"><!--[$mediaItem.description|pnvarprepfordisplay]--></span><!--[/if]-->
                 <!--[if $mediaItem.hasKeywords > 0]-->
                 <!--[gt text='Keywords:']-->
-                <!--[foreach from=$mediaItem.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname='mediashare' func='list' key=$keyword]-->"><!--[$keyword]--></a>
+                <!--[foreach from=$mediaItem.keywordsArray item=keyword]--><a href="<!--[pnmodurl modname='mediashare' func='list' key=$keyword]-->"><!--[$keyword|pnvarprepfordisplay]--></a>
                 <!--[/foreach]-->
                 <!--[/if]-->
                 <!--[if $access.hasEditMediaAccess]-->
@@ -48,32 +48,32 @@
             <!--[/if]-->
 
             <!--[if $itemCount > 0]-->
-            <h3><a href="<!--[$slideshowUrl|escape]-->"><!--[$album.title]--></a></h3>
+            <h3><a href="<!--[$slideshowUrl|escape]-->"><!--[$album.title|pnvarprepfordisplay]--></a></h3>
             <!--[else]-->
-            <h3><!--[$album.title]--></h3>
+            <h3><!--[$album.title|pnvarprepfordisplay]--></h3>
             <!--[/if]-->
 
             <!--[mediashare_username userId=$album.ownerId assign='ownerName']-->
             <div class="author">
-                <!--[gt text='By']--> <a href="<!--[pnmodurl modname='mediashare' func='list' uname=$ownerName]-->" title="<!--[gt text='Show items from this person']-->"><!--[$ownerName]--></a>
+                <!--[gt text='By']--> <a href="<!--[pnmodurl modname='mediashare' func='list' uname=$ownerName]-->" title="<!--[gt text='Show items from this person']-->"><!--[$ownerName|pnvarprepfordisplay]--></a>
             </div>
 
             <div class="summary">
                 <!--[if $album.summary != '']-->
-                <!--[$album.summary]-->
+                <!--[$album.summary|pnvarprepfordisplay]-->
                 <!--[else]-->
-                <!--[$album.description]-->
+                <!--[$album.description|pnvarprepfordisplay]-->
                 <!--[/if]-->
             </div>
 
             <!--[if $album.summary != '']-->
-            <div class="description"><!--[$album.description]--></div>
+            <div class="description"><!--[$album.description|pnvarprepfordisplay]--></div>
             <!--[/if]-->
 
             <!--[if $album.hasKeywords > 0]-->
             <!--[gt text='Keywords:']-->
             <!--[foreach from=$album.keywordsArray item=keyword]-->
-            <a href="<!--[pnmodurl modname='mediashare' func='list' key=$keyword]-->"><!--[$keyword]--></a>
+            <a href="<!--[pnmodurl modname='mediashare' func='list' key=$keyword]-->"><!--[$keyword|pnvarprepfordisplay]--></a>
             <!--[/foreach]-->
             <!--[/if]-->
         </div>

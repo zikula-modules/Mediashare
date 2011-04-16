@@ -29,7 +29,7 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
     {
         $url = DataUtil::formatForDisplay(pnModUrl('mediashare', $urlType, 'view', array('aid' => $album['id'])));
         $result .= ($first ? '' : ' &raquo; ')
-                 . "<a href=\"$url\">$album[title]</a>";
+                 . "<a href=\"$url\">".htmlspecialchars($album['title'])."</a>";
         $first = false;
     }
 

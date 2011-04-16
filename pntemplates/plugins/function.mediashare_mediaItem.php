@@ -33,7 +33,7 @@ function smarty_function_mediashare_mediaItem($params, &$smarty)
         $styleHtml       = $style == null ? '' : " style=\"$style\"";
         $idHtml          = isset($params['id']) ? " id=\"$params[id]\"" : '';
 
-        $result = "<img src=\"$src\" alt=\"$title\"$idHtml$widthHtml$heightHtml$classHtml$styleHtml$onclickHtml$onmousedownHtml/>";
+        $result = "<img src=\"$src\" alt=\"".htmlspecialchars($title)."\"$idHtml$widthHtml$heightHtml$classHtml$styleHtml$onclickHtml$onmousedownHtml/>";
 
     } else {
         $handler = pnModAPIFunc('mediashare', 'mediahandler', 'loadHandler', array('handlerName' => $params['mediaHandler']));
