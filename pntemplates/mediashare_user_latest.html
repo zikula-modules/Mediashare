@@ -11,7 +11,7 @@
 
 <div class="mediashare-thumbnails z-clearfix">
     <!--[foreach from=$latestMediaItems item='item']-->
-    <div class="mediashare-float"><div class="dropshadow">
+    <div class="mediashare-float">
         <div class="content" style="width: <!--[$thumbnailSize+30]-->px; height: <!--[$thumbnailSize+60]-->px">
             <div class="thumbnail">
                 <a href="<!--[pnmodurl modname='mediashare' func='view' aid=$item.album.id mid=$item.media.id]-->"><!--[mediashare_mediaItem src=$item.media.thumbnailRef title=$item.media.title mediaHandler=$item.media.mediaHandler isThumbnail="1" id="media-`$item.media.id`" class='thumbnail']--></a>
@@ -20,7 +20,7 @@
             <!--[$item.album.title]--><br/>
             <!--[$item.media.createdDate|pndate_format]-->
         </div>
-    </div></div>
+    </div>
     <!--[/foreach]-->
 </div>
 

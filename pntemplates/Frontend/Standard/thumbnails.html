@@ -12,7 +12,7 @@
 
     <!--[foreach from=$mediaItems item=item]-->
     <!--[pnmodurl modname='mediashare' type='user' func='displaygb' mid=$item.id popup=1 assign='displayUrl']-->
-    <div class="mediashare-float"><div class="dropshadow">
+    <div class="mediashare-float">
         <div class="content" style="width: <!--[$album.thumbnailSize+20]-->px; height: <!--[$album.thumbnailSize+60]-->px">
             <div class="thumbnail">
                 <a href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id mid=$item.id]-->"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.captionLong mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class='thumbnail']--></a>
@@ -21,7 +21,7 @@
 			<!--[else]--><a href="<!--[$displayUrl]-->" rel="gb_page_center[<!--[$item.originalWidth]-->,<!--[$item.originalHeight]-->]" title="<!--[$item.captionLong]-->"><img src="modules/mediashare/pnimages/magnify.gif" alt=""/></a>
 			<!--[/if]--> <!--[$item.caption]-->
         </div>
-    </div></div>
+    </div>
     <!--[/foreach]-->
 
     <!--[include file='mediashare_subalbumlist.html' mode='view']-->
