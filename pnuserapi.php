@@ -745,12 +745,9 @@ function mediashare_userapi_setSettings($args)
 
 function mediashare_userapi_getRelativeMediadir()
 {
-    // TODO: this is not ok for all setups!
     $zkroot    = substr(pnServerGetVar('DOCUMENT_ROOT'), 0, -1).pnGetBaseURI();
-    $mediaBase = str_replace($zkroot, '', pnModGetVar('mediashare', 'mediaDirName', 'mediashare'));
-    $mediaBase = substr($mediaBase, 2).'/';
-
-    return $mediaBase;
+    $mediaBase = substr(str_replace('\\','/',realpath(pnModGetVar('mediashare', 'mediaDirName', 'mediashare'))),strlen($zkroot)+2);
+    return $mediaBase.'/';
 }
 
 /**
