@@ -200,7 +200,7 @@ function mediashare_userapi_getSubAlbumsData($args)
     $onlyMine        = isset($args['onlyMine']) ? $args['onlyMine'] : false;
     $includeMainItem = isset($args['includeMainItem']) ? (bool)$args['includeMainItem'] : true; // FIXME rework this to default false
 
-    $pntable      = &pnDBGetTables();
+    $pntable      = pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
 
     $accessibleAlbumSql = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
@@ -268,7 +268,7 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
 
     $albumId = (int)$args['albumId'];
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = $pntable['mediashare_albums_column'];
@@ -305,7 +305,7 @@ function mediashare_userapi_getAlbumList($args)
     $access          = isset($args['access']) ? $args['access'] : mediashareAccessRequirementView;
     $includeMainItem = isset($args['includeMainItem']) ? (bool)$args['includeMainItem'] : true; // FIXME rework this to default false
 
-    $pntable      = &pnDBGetTables();
+    $pntable      = pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
 
     $where = pnModAPIFunc('mediashare', 'user', 'getAccessibleAlbumsSql',
@@ -353,7 +353,7 @@ function mediashare_userapi_getFirstItemIdInAlbum($args)
 
     $albumId = (int)$args['albumId'];
 
-    $pntable     = &pnDBGetTables();
+    $pntable     = pnDBGetTables();
     $mediaColumn = $pntable['mediashare_media_column'];
 
     $where   = "$mediaColumn[parentAlbumId] = '$albumId'";
@@ -389,7 +389,7 @@ function mediashare_userapi_getMediaItem($args)
 
     $mediaId = (int)$args['mediaId'];
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable    = $pntable['mediashare_media'];
     $mediaColumn   = $pntable['mediashare_media_column'];
@@ -525,7 +525,7 @@ function mediashareGetMediaItemsData($args)
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable    = $pntable['mediashare_media'];
     $mediaColumn   = $pntable['mediashare_media_column'];
@@ -643,7 +643,7 @@ function mediashare_userapi_getRandomMediaItem($args)
     $albumId = (isset($args['albumId']) ? (int)$args['albumId'] : null);
     $mode    = (isset($args['mode']) ? $args['mode'] : 'all');
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $albumsTable  = $pntable['mediashare_albums'];
     $albumsColumn = $pntable['mediashare_albums_column'];
@@ -759,7 +759,7 @@ function mediashare_userapi_getMostActiveUsers()
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable  = $pntable['mediashare_media'];
     $mediaColumn = $pntable['mediashare_media_column'];
@@ -790,7 +790,7 @@ function mediashare_userapi_getMostActiveKeywords()
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $usersTable     = $pntable['users'];
     $usersColumn    = $pntable['users_column'];
@@ -850,7 +850,7 @@ function mediashare_userapi_getSummary()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable   = $pntable['mediashare_media'];
     $mediaColumn  = $pntable['mediashare_media_column'];
@@ -926,7 +926,7 @@ function mediashare_userapi_getByKeyword($args)
 
     $keyword = $args['keyword'];
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable     = $pntable['mediashare_media'];
     $mediaColumn    = $pntable['mediashare_media_column'];
@@ -1020,7 +1020,7 @@ function mediashare_userapi_getList($args)
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable     = $pntable['mediashare_media'];
     $mediaColumn    = $pntable['mediashare_media_column'];
@@ -1246,7 +1246,7 @@ function mediashare_userapi_getListCount($args)
 
     pnModDBInfoLoad('User'); // Ensure DB table info is available
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable     = $pntable['mediashare_media'];
     $mediaColumn    = $pntable['mediashare_media_column'];
@@ -1358,7 +1358,7 @@ function mediashare_userapi_search($args)
     $itemIndex = (int)$args['itemIndex'];
     $pageSize  = (int)$args['pageSize'];
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable   = $pntable['mediashare_media'];
     $mediaColumn  = $pntable['mediashare_media_column'];
