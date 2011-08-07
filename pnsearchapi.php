@@ -37,7 +37,7 @@ function mediashare_searchapi_search($args)
 
     pnModDBInfoLoad('mediashare');
     pnModDBInfoLoad('Search');
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable   = $pntable['mediashare_media'];
     $mediaColumn  = $pntable['mediashare_media_column'];

@@ -106,7 +106,7 @@ function mediashareUpdateNestedSetValues_Rec($albumId, $level, &$count)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $pntable      = &pnDBGetTables();
+    $pntable      = pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
 
     $left = $count++;
@@ -230,7 +230,7 @@ function mediashareDeleteAlbumRec($albumId)
         return false;
     }
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $albumsColumn = $pntable['mediashare_albums_column'];
     $mediaColumn  = $pntable['mediashare_media_column'];
@@ -627,7 +627,7 @@ function mediashareGetNewPosition($albumId)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $pntable     = &pnDBGetTables();
+    $pntable     = pnDBGetTables();
     $mediaColumn = $pntable['mediashare_media_column'];
 
     $where = "$mediaColumn[parentAlbumId] = $albumId";
@@ -659,7 +659,7 @@ function mediashare_editapi_ensureMainAlbumId($args)
 
     $forceUpdate = isset($args['forceUpdate']) && $args['forceUpdate'] ? true : false;
 
-    $pntable      = &pnDBGetTables();
+    $pntable      = pnDBGetTables();
     $albumsColumn = $pntable['mediashare_albums_column'];
 
     $where = '';
@@ -786,7 +786,7 @@ function mediashare_editapi_updateItemFileUpload(&$args)
     } else {
         if (!copy($uploadFilename, $tmpFilename)) {
             unlink($tmpFilename);
-            return LogUtil::registerError(__f('Unable to copy the file from \'%1$s\' to \'%2$s\'', array($uploadFilename, $tmpFilename), $dom).' - '.__('(adding image)', $dom));
+            return LogUtil::registerError(__f('editapi_updateItemFileUpload Unable to copy the file from \'%1$s\' to \'%2$s\'', array($uploadFilename, $tmpFilename), $dom).' - '.__('(adding image)', $dom));
         }
     }
 
@@ -977,7 +977,7 @@ function mediashare_editapi_copyMediaData($args)
         // Copy from disk
         $originalRef = pnModAPIFunc('mediashare', 'user', 'getRelativeMediadir').$originalRef;
         if (!copy($originalRef, $dstFilename)) {
-            return LogUtil::registerError(__f('Unable to copy the file from \'%1$s\' to \'%2$s\'', array($originalRef, $dstFilename), $dom));
+            return LogUtil::registerError(__f('editapi_copyMediaData Unable to copy the file from \'%1$s\' to \'%2$s\'', array($originalRef, $dstFilename), $dom));
         }
     }
 
@@ -1032,7 +1032,7 @@ function mediashare_editapi_deleteMediaItem($args)
     pnModCallHooks('item', 'delete', "media-$mediaId", array('module' => 'mediashare', 'mediaId' => $mediaId));
 
     // Ensure correct position of the remaining items
-    $pntable     = &pnDBGetTables();
+    $pntable     = pnDBGetTables();
     $mediaColumn = $pntable['mediashare_media_column'];
 
     $sql = "UPDATE $pntable[mediashare_media]
@@ -1168,7 +1168,7 @@ function mediashare_editapi_getUserInfo()
 
     $user = (int)pnUserGetVar('uid');
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable    = $pntable['mediashare_media'];
     $mediaColumn   = $pntable['mediashare_media_column'];
@@ -1211,7 +1211,7 @@ function mediashare_editapi_updateKeywords($args)
     $type     = DataUtil::formatForStore($args['type']);
     $keywords = mediashareStripKeywords($args['keywords']);
 
-    $pntable        = &pnDBGetTables();
+    $pntable        = pnDBGetTables();
     $keywordsColumn = $pntable['mediashare_keywords_column'];
 
     // First remove existing keywords
@@ -1255,7 +1255,7 @@ function mediashare_editapi_getAccessSettings($args)
 
     $albumId = (int)$args['albumId'];
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $accessTable      = $pntable['mediashare_access'];
     $accessColumn     = $pntable['mediashare_access_column'];

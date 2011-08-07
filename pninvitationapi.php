@@ -151,7 +151,7 @@ function mediashare_invitationapi_getByKey($args)
 
     $key = DataUtil::formatForStore($args['key']);
 
-    $pntable          = &pnDBGetTables();
+    $pntable          = pnDBGetTables();
     $invitationColumn = $pntable['mediashare_invitation_column'];
 
     $where = "     $invitationColumn[key] = '$key'
@@ -195,7 +195,7 @@ function mediashare_invitationapi_getInvitations($args)
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $pntable          = &pnDBGetTables();
+    $pntable          = pnDBGetTables();
     $invitationColumn = $pntable['mediashare_invitation_column'];
 
     $where   = "$invitationColumn[albumId] = '".(int)$args['albumId']."'";
@@ -222,7 +222,7 @@ function mediashare_invitationapi_expireInvitations(&$args)
     $expires     = $args['expires'];
     $invitations = $args['invitations'];
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $invitationTable  = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];
@@ -260,7 +260,7 @@ function mediashare_invitationapi_deleteInvitations(&$args)
     $albumId = (int)$args['albumId'];
     $invitations = $args['invitations'];
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $invitationTable  = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];
@@ -332,7 +332,7 @@ function mediashare_invitationapi_getInvitedAlbums()
     }
     $keys = "'".implode("','", $keys)."'";
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $invitationTable  = $pntable['mediashare_invitation'];
     $invitationColumn = $pntable['mediashare_invitation_column'];

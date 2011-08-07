@@ -8,7 +8,7 @@ function mediashare_mediahandlerapi_getMediaHandlers()
 {
     $dom = ZLanguage::getModuleDomain('mediashare');
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     // Get handlers
     if (!($result = DBUtil::selectFieldArray('mediashare_mediahandlers', 'handler', '', '', true, 'title'))) {
@@ -72,7 +72,7 @@ function mediashare_mediahandlerapi_getHandlerInfo($args)
         $fileType = '';
     }
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $handlersTable  = $pntable['mediashare_mediahandlers'];
     $handlersColumn = $pntable['mediashare_mediahandlers_column'];

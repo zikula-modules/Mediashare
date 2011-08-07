@@ -23,7 +23,7 @@ function mediashare_source_browserapi_addMediaItem($args)
     $uploadFilename = $args['uploadFilename'];
 
     // FIXME Required because the globals??
-    pnModAPILoad('mediashare', 'edit');
+    //pnModAPILoad('mediashare', 'edit');
 
     // For OPEN_BASEDIR reasons we move the uploaded file as fast as possible to an accessible place
     // MUST remember to remove it afterwards!!!

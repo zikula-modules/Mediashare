@@ -42,7 +42,7 @@ class mediashare_vfsHandlerDB
     {
         $dom = ZLanguage::getModuleDomain('mediashare');
 
-        $pntable       = &pnDBGetTables();
+        $pntable       = pnDBGetTables();
         $mediadbColumn = $pntable['mediashare_mediadb_column'];
 
         $fileReference = DataUtil::formatForStore($fileReference);
@@ -61,7 +61,7 @@ class mediashare_vfsHandlerDB
     {
         $dom = ZLanguage::getModuleDomain('mediashare');
 
-        $pntable = &pnDBGetTables();
+        $pntable = pnDBGetTables();
 
         $mediadbTable  = $pntable['mediashare_mediadb'];
         $mediadbColumn = $pntable['mediashare_mediadb_column'];
@@ -110,7 +110,7 @@ function mediashare_vfs_dbapi_getMedia($args)
 
     $fileref = DataUtil::formatForStore($args['fileref']);
 
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $mediaTable    = $pntable['mediashare_media'];
     $mediaColumn   = $pntable['mediashare_media_column'];

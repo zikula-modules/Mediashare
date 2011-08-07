@@ -146,7 +146,7 @@ function mediashareEnsureFolderExists($parentFolderID, $folders, $folderOffset)
     $folderTitle = $folders[$folderOffset];
 
     // Get ID of existing folder
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $foldersTable  = $pntable['mediashare_albums'];
     $foldersColumn = $pntable['mediashare_albums_column'];

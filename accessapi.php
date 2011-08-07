@@ -40,7 +40,7 @@ class mediashareAccessApi
 
         pnModDBInfoLoad('Groups'); // Make sure groups database info is available
 
-        $pntable = &pnDBGetTables();
+        $pntable = pnDBGetTables();
 
         $accessTable      = $pntable['mediashare_access'];
         $accessColumn     = $pntable['mediashare_access_column'];
@@ -96,7 +96,7 @@ class mediashareAccessApi
         // Make sure groups database info is available
         pnModDBInfoLoad('Groups');
 
-        $pntable = &pnDBGetTables();
+        $pntable = pnDBGetTables();
 
         $accessTable      = $pntable['mediashare_access'];
         $accessColumn     = $pntable['mediashare_access_column'];
@@ -148,7 +148,7 @@ class mediashareAccessApi
         // Make sure groups database info is available
         pnModDBInfoLoad('Groups');
 
-        $pntable = &pnDBGetTables();
+        $pntable = pnDBGetTables();
 
         $albumsTable      = $pntable['mediashare_albums'];
         $albumsColumn     = $pntable['mediashare_albums_column'];

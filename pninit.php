@@ -99,7 +99,7 @@ function mediashareCreateInvitationTable()
 
 function mediashareCreateMediashareUpdateNestedSetValues()
 {
-    $pntable = &pnDBGetTables();
+    $pntable = pnDBGetTables();
 
     $columns = $pntable['mediashare_albums_column'];
 
@@ -233,7 +233,7 @@ function mediashare_upgrade_to_1_0_2()
         return false;
     }
 
-    $pntable     = &pnDBGetTables();
+    $pntable     = pnDBGetTables();
     $albumTable  = $pntable['mediashare_albums'];
     $albumColumn = $pntable['mediashare_albums_column'];
 
