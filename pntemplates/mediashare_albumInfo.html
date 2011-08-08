@@ -1,7 +1,5 @@
-<!--[* $Id$ *]-->
-
 <div class="mediashare-albumInfo z-clearfix">
-    <img src="modules/mediashare/pnimages/album.gif" alt="" />
+    <!--[pnimg modname='mediashare' src='album.gif' __alt='Mediashare']-->
     <h3><!--[$album.title]--></h3>
-    <span><!--[gt text='By']--> <!--[mediashare_username userId=$album.ownerId]--></span>
+    <span><!--[gt text='By %1$s' tag1=$album.ownerId|userprofilelink]--></span>
 </div>

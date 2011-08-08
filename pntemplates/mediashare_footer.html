@@ -1,10 +1,10 @@
-<!--[* $Id$ *]-->
-    <div class="mediashare-footer">
-        <!--[mediashare_userinfo]-->
-        <!--[gt text='By']--> <!--[mediashare_username userId=$album.ownerId]-->,
-        <!--[$album.createdDate|pndate_format]-->
-        (<!--[gt text="Last modified"]--> <!--[$album.modifiedDate|pndate_format]-->)
-    </div>
+<div class="mediashare-footer">
+    <!--[mediashare_userinfo]-->
+    <span class="z-sub">
+        <!--[gt text='By %1$s on %2$s.' tag1=$album.ownerId|userprofilelink tag2=$album.createdDate|pndate_format]-->
+        <!--[gt text="Last modified on %s" tag1=$album.modifiedDate|pndate_format]-->
+    </span>
+</div>
 
-    </div>
+</div>
 </form>

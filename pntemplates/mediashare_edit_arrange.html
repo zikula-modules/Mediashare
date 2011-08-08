@@ -4,7 +4,7 @@
 
 <p class="z-informationmsg"><!--[gt text="Arrange items by draging them on top of each other. When satisfied with the result click save."]--></p>
 
-<div class="mediashare-block">
+<fieldset>
     <h3><!--[gt text="Arrange items"]--></h3>
     <div class="mediashare-body">
         <table id="mediashare-arrange-table">
@@ -20,10 +20,11 @@
 
         <input type="hidden" id="mediashare-arrange-seqinput" name="seq" />
     </div>
-    <div class="z-formbuttons">
-        <!--[elfisk_button name="saveButton" __text="Save" onclick="mediashare.drag.submit()"]-->
-        <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
-    </div>
+</fieldset>
+
+<div class="z-formbuttons">
+    <!--[elfisk_button name="saveButton" __text="Save" onclick="mediashare.drag.submit()"]-->
+    <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
 </div>
 
 <!--[include file='mediashare_footer.html']-->
