@@ -1,40 +1,33 @@
 <!--[pnajaxheader lightbox=true]-->
-
-<form method="post" action="<!--[pnmodurl modname='mediashare' type='edit' func='multimovemedia' aid=$albumId]-->">
+<form class="z-form" method="post" action="<!--[pnmodurl modname='mediashare' type='edit' func='multimovemedia' aid=$albumId]-->">
     <div>
         <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='mediashare']-->" />
-
-        <div class="mediashare">
-
-            <h2><!--[gt text="Move selected items"]--></h2>
-
-            <div class="mediashare-block">
-                <div class="mediashare-body">
-
-                    <div class="mediashare-thumbnails z-clearfix">
-                        <!--[foreach from=$items item=item]-->
-                        <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
-                        <div class="mediashare-float"><div class="dropshadow">
-                            <div class="content" style="width: <!--[$thumbnailSize+20]-->px; height: <!--[$thumbnailSize+30]-->px">
-                                <div class="thumbnail">
-                                    <a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->" rel="lightbox1"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></a>
-                                </div>
-                                <!--[$item.title]-->
-                            </div>
-                        </div></div>
-                        <!--[/foreach]-->
+        <h2><!--[gt text="Move selected items"]--></h2>
+        <div class="mediashare-body">
+            <div class="mediashare-thumbnails z-clearfix">
+                <!--[foreach from=$items item=item]-->
+                <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
+                <div class="mediashare-float"><div class="dropshadow">
+                    <div class="content" style="width: <!--[$thumbnailSize+20]-->px; height: <!--[$thumbnailSize+30]-->px">
+                        <div class="thumbnail">
+                            <a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->" rel="lightbox1"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></a>
+                        </div>
+                        <!--[$item.title]-->
                     </div>
-
-                    <label for="newalbumid"><!--[gt text="Select new album for the above items"]--></label><br/>
-                    <!--[mediashare_albumSelector albumId=1 name=newalbumid id=newalbumid access="mediashareAccessRequirementAddMedia"]-->
-
-                </div>
-                <div class="z-formbuttons">
-                    <!--[elfisk_button name="saveButton" __text="Move"]-->
-                    <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
-                </div>
+                </div></div>
+                <!--[/foreach]-->
             </div>
-
+        </div>
+        <fieldset>
+            <legend><!--[gt text="New album"]--></legend>
+            <div class="z-formrow">
+                <label for="newalbumid"><!--[gt text="Select new album for the above items"]--></label>
+                <!--[mediashare_albumSelector albumId=1 name=newalbumid id=newalbumid access="mediashareAccessRequirementAddMedia"]-->
+            </div>
+        </fieldset>
+        <div class="z-formbuttons">
+            <!--[elfisk_button name="saveButton" __text="Move"]-->
+            <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
         </div>
     </div>
 </form>

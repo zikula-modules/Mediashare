@@ -1,18 +1,15 @@
-<!--[* $Id$ *]-->
 <!--[elfisk_setInitialFocus inputId="title"]-->
 <!--[gt text="Move album" assign=mltitle]-->
-
 <!--[include file='mediashare_editheader.html' albumId=$album.id title=$mltitle mode='edit']-->
 
 <fieldset>
     <legend><!--[gt text="Move album"]--></legend>
-
     <div class="z-formrow">
         <label><!--[gt text="Album"]--></label>
         <span><!--[$album.title]--></span>
     </div>
     <div class="z-formrow">
-        <label for="keywords"><!--[gt text="Move to album"]--></label>
+        <label><!--[gt text="Move to album"]--></label>
         <!--[mediashare_albumSelector albumId=1 name=daid excludeAlbumId=$album.id]-->
     </div>
 </fieldset>

@@ -10,10 +10,6 @@ div.mediashare span.rss a {
     text-decoration: none;
 }
 
-div.mediashare-clear {
-    clear: both;
-}
-
 input.mediashare-readonly {
     border: none;
     border-bottom: 1px solid #DDD;
@@ -90,83 +86,70 @@ div.mediashare-tabs ul {
     list-style: none;
 }
 
-div.mediashare-tabs li
-{
+div.mediashare-tabs li {
     float: left;
     margin: 0px;
     padding: 2px 4px;
 }
 
-div.mediashare-tabs li.link
-{
+div.mediashare-tabs li.link {
     background-color: #EEE;
     border-top: 1px solid black;
     border-left: 1px solid black;
     border-right: 1px solid black;
 }
 
-div.mediashare-tabs li.selected
-{
+div.mediashare-tabs li.selected {
     background-color: #FFF;
 }
 
-div.mediashare-tabs a
-{
+div.mediashare-tabs a {
     display: block;
     text-decoration: none;
 }
 
-div.mediashare-tabs a:hover
-{
+div.mediashare-tabs a:hover {
     text-decoration: underline;
 }
 
-div.mediashare-tabs li.selected a
-{
+div.mediashare-tabs li.selected a {
     padding-bottom: 1px;
 }
 
-div.mediashare-tabback
-{
+div.mediashare-tabback {
     float: right;
 }
 
-div.mediashare-tabback a
-{
+div.mediashare-tabback a {
     text-decoration: none;
 }
 
 /* Album info box (small box with album and it's data - for use with delete and such like) */
 
-div.mediashare-albumInfo
-{
+div.mediashare-albumInfo {
     padding: 0px;
     margin: 0px 0px 4px 0px;
 }
 
-div.mediashare-albumInfo img
-{
+div.mediashare-albumInfo img {
     float: left;
     margin: 0px 10px 0px 0px;
 }
 
-div.mediashare-albumInfo h3
-{
+div.mediashare-albumInfo h3 {
     margin: 0px 10px 0px 0px;
 }
 
 /* Editing block */
 
-div.mediashare-block
-{
+div.mediashare-block {
     border: 1px solid black;
     width: auto;
     margin-top: 10px;
 }
 
 
-div.mediashare-block td
-{
+div.mediashare-block td {
     vertical-align: top;
 }
 
@@ -625,4 +608,8 @@ span.mediashare-filmstrip-info
     background-color: #333;
     color: #DDD;
     text-decoration: none;
+}
+
+#mseditheader {
+    min-height: 40px;
 }
