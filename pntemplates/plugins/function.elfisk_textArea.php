@@ -26,7 +26,7 @@ function smarty_function_elfisk_textArea($params, &$smarty)
         $text = htmlspecialchars($smarty->get_template_vars($id));
     }
 
-    $result = "<textarea{$idHtml}{$nameHtml}{$styleHtml}>$text</textarea>";
+    $result = "<textarea{$idHtml}{$nameHtml}{$styleHtml} cols=\"40\" rows=\"5\">$text</textarea>";
 
     if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $result);

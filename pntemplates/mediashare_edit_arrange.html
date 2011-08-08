@@ -1,37 +1,29 @@
-<!--[* $Id$ *]-->
 <script type="text/javascript" src="modules/mediashare/pnjavascript/edit.js"></script>
-
 <!--[gt text="Mediashare" assign=mltitle]-->
 <!--[include file='mediashare_editheader.html' albumId=$album.id title=$mltitle mode="edit" includeMenu=0]-->
 
-<div class="mediashare-info">
-    <!--[gt text="Arrange items by draging them on top of each other. When satisfied with the result click save."]-->
+<p class="z-informationmsg"><!--[gt text="Arrange items by draging them on top of each other. When satisfied with the result click save."]--></p>
+
+<div class="mediashare-block">
+    <h3><!--[gt text="Arrange items"]--></h3>
+    <div class="mediashare-body">
+        <table id="mediashare-arrange-table">
+            <!--[foreach from=$mediaItems item=item name=i]-->
+            <tr class="mr">
+                <td><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail" onmousedown="mediashare.drag.dragPress(event)"]--></td>
+                <td>
+                    <!--[$item.title]-->
+                </td>
+            </tr>
+            <!--[/foreach]-->
+        </table>
+
+        <input type="hidden" id="mediashare-arrange-seqinput" name="seq" />
+    </div>
+    <div class="z-formbuttons">
+        <!--[elfisk_button name="saveButton" __text="Save" onclick="mediashare.drag.submit()"]-->
+        <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
+    </div>
 </div>
-
-<!--[mediashare_block]-->
-<!--[mediashare_header]-->
-<!--[gt text="Arrange items"]-->
-<!--[/mediashare_header]-->
-<!--[mediashare_body]-->
-
-<table id="mediashare-arrange-table">
-    <!--[foreach from=$mediaItems item=item name=i]-->
-    <tr class="mr">
-        <td><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail" onmousedown="mediashare.drag.dragPress(event)"]--></td>
-        <td>
-            <!--[$item.title]-->
-        </td>
-    </tr>
-    <!--[/foreach]-->
-</table>
-
-<input type="hidden" id="mediashare-arrange-seqinput" name="seq"/>
-
-<!--[/mediashare_body]-->
-<!--[mediashare_buttons]-->
-<!--[elfisk_button name="saveButton" __text="Save" onclick="mediashare.drag.submit()"]-->
-<!--[elfisk_button name="cancelButton" __text="Cancel"]-->
-<!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
 
 <!--[include file='mediashare_footer.html']-->

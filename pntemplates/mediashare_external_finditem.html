@@ -1,97 +1,82 @@
-<!--[* $Id$ *]-->
 <html>
+    <head>
+        <title><!--[gt text="Mediashare - Find item"]--></title>
+        <!--[if $modCssURL != '']-->
+        <link rel="StyleSheet" href="<!--[$modCssURL]-->" type="text/css"/>
+        <!--[/if]-->
+        <!--[if $themeCssURL != '']-->
+        <link rel="StyleSheet" href="<!--[$themeCssURL]-->" type="text/css"/>
+        <!--[/if]-->
+        <script src="modules/mediashare/pnjavascript/finditem.js" type="text/javascript"></script>
+        <style>
+            body
+            {
+                margin: 10px;
+            }
+        </style>
+    </head>
 
-<head>
-<title><!--[gt text="Mediashare - Find item"]--></title>
-<!--[if $modCssURL != '']-->
-<link rel="StyleSheet" href="<!--[$modCssURL]-->" type="text/css"/>
-<!--[/if]-->
-<!--[if $themeCssURL != '']-->
-<link rel="StyleSheet" href="<!--[$themeCssURL]-->" type="text/css"/>
-<!--[/if]-->
-<script src="modules/mediashare/pnjavascript/finditem.js" type="text/javascript"></script>
+    <body>
+        <form class="z-form" method="post" action="<!--[pngetcurrenturi]-->" id="selectorForm" enctype="multipart/form-data"">
+            <div>
+                <input type="hidden" value="ok" id="commandInput" name="cmd"/>
+                <input type="hidden" value="<!--[$albumId]-->" id="albumIdInput" name="aid"/>
+                <input type="hidden" value="<!--[$mediaId]-->" id="mediaIdInput" name="mid"/>
+                <input type="hidden" value="<!--[$mode]-->" name="mode"/>
 
-<style>
-body
-{
-  margin: 10px;
-}
-</style>
-
-
-</head>
-
-<body>
-
-<form method="post" action="<!--[pngetcurrenturi]-->" id="selectorForm" enctype="multipart/form-data"">
-
-<input type="hidden" value="ok" id="commandInput" name="cmd"/>
-<input type="hidden" value="<!--[$albumId]-->" id="albumIdInput" name="aid"/>
-<input type="hidden" value="<!--[$mediaId]-->" id="mediaIdInput" name="mid"/>
-<input type="hidden" value="<!--[$mode]-->" name="mode"/>
-
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[gt text="Select item"]-->
-  <!--[/mediashare_header]-->
-  <!--[mediashare_body]-->
-
-<table>
- <tr>
-  <td>
-   <label for="keywords"><!--[gt text="Album"]--></label>
-  </td>
-  <td>
-    <!--[mediashare_albumSelector albumId=$albumId onchange="mediashare.find.onFolderChanged(this)" onlyMine=$onlyMine]-->
-  </td>
- </tr>
- <tr>
-  <td>
-   <label for="keywords"><!--[gt text="Media item"]--></label>
-  </td>
-  <td>
-    <!--[mediashare_itemSelector albumId=$albumId mediaId=$mediaId onchange="mediashare.find.onItemChanged(this)" fetchSelectedInto=mediaItem]-->
-  </td>
- </tr>
- <tr>
-  <td colspan="2">
-   <div style="height: 120px; overflow: auto;">
-    <br/>
-    <!--[mediashare_mediaItem src=$mediaItem.thumbnailRef isThumbnail=1 title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler]-->
-   </div>
-  </td>
- </tr>
-<!--[if isset($uploadErrorMessage)]-->
- <tr>
-  <td colspan="2">
-   <strong><!--[$uploadErrorMessage]--></strong>
-  </span>
- </tr>
-<!--[/if]-->
- <tr>
-  <td>
- <!--[if $hasEditAccess]-->
-   <label for="upload"><!--[gt text="Upload"]--></label>
-  </td>
-  <td>
-    <input type="file" id="upload" name="upload" style="width: 400px;"/>
- <!--[else]-->
-   &nbsp;
- <!--[/if]-->
-  </td>
- </tr>
-</table>
-
-  <!--[/mediashare_body]-->
-  <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="selectButton" text="Select"]-->
-    <!--[elfisk_button name="cancelButton" text="Cancel" onclick="mediashare.find.handleCancel()"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
-
-</form>
-
-</body>
-
-
+                <fieldset>
+                    <legend><!--[gt text="Select item"]--></legend>
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="keywords"><!--[gt text="Album"]--></label>
+                            </td>
+                            <td>
+                                <!--[mediashare_albumSelector albumId=$albumId onchange="mediashare.find.onFolderChanged(this)" onlyMine=$onlyMine]-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="keywords"><!--[gt text="Media item"]--></label>
+                            </td>
+                            <td>
+                                <!--[mediashare_itemSelector albumId=$albumId mediaId=$mediaId onchange="mediashare.find.onItemChanged(this)" fetchSelectedInto=mediaItem]-->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div style="height: 120px; overflow: auto;">
+                                    <br/>
+                                    <!--[mediashare_mediaItem src=$mediaItem.thumbnailRef isThumbnail=1 title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler]-->
+                                </div>
+                            </td>
+                        </tr>
+                        <!--[if isset($uploadErrorMessage)]-->
+                        <tr>
+                            <td colspan="2">
+                                <strong><!--[$uploadErrorMessage]--></strong>
+                            </span>
+                        </tr>
+                        <!--[/if]-->
+                        <tr>
+                            <td>
+                                <!--[if $hasEditAccess]-->
+                                <label for="upload"><!--[gt text="Upload"]--></label>
+                            </td>
+                            <td>
+                                <input type="file" id="upload" name="upload" style="width: 400px;"/>
+                                <!--[else]-->
+                                &nbsp;
+                                <!--[/if]-->
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="z-formbuttons">
+                        <!--[elfisk_button name="selectButton" text="Select"]-->
+                        <!--[elfisk_button name="cancelButton" text="Cancel" onclick="mediashare.find.handleCancel()"]-->
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+    </body>
 </html>

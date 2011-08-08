@@ -1,7 +1,11 @@
-<!--[* $Id$ *]-->
-
-<div class="mediashare-albumInfo z-clearfix">
+<div class="z-formnote">
     <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail=1]-->
-    <h3><!--[$item.title|escape]--></h3>
-    <span><!--[gt text='By']--> <!--[mediashare_username userId=$item.ownerId]--></span>
+</div>
+<div class="z-formrow">
+    <label><!--[gt text='Current title']--></label>
+    <span><!--[$item.title|escape]--></span>
+</div>
+<div class="z-formrow">
+    <label><!--[gt text='By']--></label>
+    <span><!--[mediashare_username userId=$item.ownerId]--></span>
 </div>

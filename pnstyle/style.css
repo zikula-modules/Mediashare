@@ -1,5 +1,3 @@
-/* $Id$ */
-
 div.mediashare td.top {
     vertical-align: top;
 }
@@ -27,15 +25,6 @@ input.mediashare-readonly {
     font-style: italic;
 }
 
-/* Header */
-
-div.mediashare-header img {
-    border:1px solid #CCCCCC;
-    float:right;
-    height:45px;
-    margin:0 0 10px 10px;
-    padding:2px;
-}
 
 /* Menu */
 
@@ -166,17 +155,6 @@ div.mediashare-albumInfo h3
     margin: 0px 10px 0px 0px;
 }
 
-
-/* Info text (a box with text that introduces what is going on on the page) */
-
-div.mediashare-info
-{
-    margin: 10px 50px;
-    padding: 1px 10px;
-    border: 1px solid #AAA;
-}
-
-
 /* Editing block */
 
 div.mediashare-block
@@ -192,27 +170,9 @@ div.mediashare-block td
     vertical-align: top;
 }
 
-
-div.mediashare-block div.mediashare-header
-{
-    border: none;
-    border-bottom: 1px solid black;
-}
-
-
-div.mediashare-body
-{
+div.mediashare-body {
     padding: 4px;
 }
-
-
-div.mediashare-buttons
-{
-    text-align: right;
-    background-color: #AAA;
-    border-top: 1px solid black;
-}
-
 
 /* Floating block with media item in it */
 

@@ -1,7 +1,5 @@
-<!--[* $Id$ *]-->
 <!--[elfisk_setInitialFocus inputId="title"]-->
 <!--[gt text="Edit item" assign=mltitle]-->
-
 <!--[include file='mediashare_editheader.html' albumId=$album.id title=$mltitle formEncType="multipart/form-data" mode='edit']-->
 
 <fieldset>
@@ -23,17 +21,22 @@
     </div>
     <div class="z-formrow">
         <label for="upload"><!--[gt text="Optional new media file"]--></label>
-        <!--[elfisk_upload id="upload"]--><br/>
-        <em class="z-formnote"><!--[gt text="You may have to force a reload of the next page when replacing media item!"]--></em>
+        <!--[elfisk_upload id="upload"]-->
+        <em class="z-formnote z-sub"><!--[gt text="You may have to force a reload of the next page when replacing media item!"]--></em>
     </div>
     <div class="z-formrow">
         <label for="width"><!--[gt text="Width"]--></label>
-        <!--[elfisk_intInput id="width" width="4em" intValue=""]-->
+        <span>
+            <!--[elfisk_intInput id="width" intValue=""]-->
+            <em class="z-sub"><!--[gt text="Only required for video formats"]--></em>
+        </span>
     </div>
     <div class="z-formrow">
         <label for="height"><!--[gt text="Height"]--></label>
-        <!--[elfisk_intInput id="height" width="4em" intValue=""]-->
-        <em class="z-formnote"(<!--[gt text="Only required for video formats"]-->)</em>
+        <span>
+            <!--[elfisk_intInput id="height" intValue=""]-->
+            <em class="z-sub"><!--[gt text="Only required for video formats"]--></em>
+        </span>
     </div>
 </fieldset>
 

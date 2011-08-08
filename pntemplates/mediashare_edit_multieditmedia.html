@@ -1,62 +1,59 @@
-<!--[* $Id$ *]-->
 <form method="post" action="<!--[pnmodurl modname='mediashare' type='edit' func=multieditmedia aid=$albumId]-->">
     <div>
         <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='mediashare' ]-->" />
 
         <div class="mediashare">
 
-            <div class="mediashare-header">
-                <h2><!--[gt text="Edit multiple items"]--></h2>
+            <h2><!--[gt text="Edit multiple items"]--></h2>
+
+            <div class="mediashare-block">
+                <div class="mediashare-body">
+
+                    <table>
+                        <!--[foreach from=$items item=item]-->
+                        <tr>
+                            <td>
+                                <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
+                                <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail $class"]-->
+                            </td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label for="title-<!--[$item.id]-->"><!--[gt text="Title"]--></label>
+                                        </td>
+                                        <td>
+                                            <!--[elfisk_textInput id="title-`$item.id`" width="400px" maxLength="255" text=$item.title]-->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="keywords-<!--[$item.id]-->"><!--[gt text="Keywords"]--></label>
+                                        </td>
+                                        <td>
+                                            <!--[elfisk_textInput id="keywords-`$item.id`" width="400px" maxLength="255" text=$item.keywords]-->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="description-<!--[$item.id]-->"><!--[gt text="Description"]--></label>
+                                        </td>
+                                        <td>
+                                            <!--[elfisk_textArea id="description-`$item.id`" width="400px" height="100px" text=$item.description]-->
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <!--[/foreach]-->
+                    </table>
+
+                </div>
+                <div class="z-formbuttons">
+                    <!--[elfisk_button name="saveButton" __text="Save"]-->
+                    <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
+                </div>>
             </div>
-
-            <!--[mediashare_block]-->
-            <!--[mediashare_body]-->
-
-            <table>
-                <!--[foreach from=$items item=item]-->
-                <tr>
-                    <td>
-                        <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
-                        <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail $class"]-->
-                    </td>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    <label for="title-<!--[$item.id]-->"><!--[gt text="Title"]--></label>
-                                </td>
-                                <td>
-                                    <!--[elfisk_textInput id="title-`$item.id`" width="400px" maxLength="255" text=$item.title]-->
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="keywords-<!--[$item.id]-->"><!--[gt text="Keywords"]--></label>
-                                </td>
-                                <td>
-                                    <!--[elfisk_textInput id="keywords-`$item.id`" width="400px" maxLength="255" text=$item.keywords]-->
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label for="description-<!--[$item.id]-->"><!--[gt text="Description"]--></label>
-                                </td>
-                                <td>
-                                    <!--[elfisk_textArea id="description-`$item.id`" width="400px" height="100px" text=$item.description]-->
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <!--[/foreach]-->
-            </table>
-
-            <!--[/mediashare_body]-->
-            <!--[mediashare_buttons]-->
-            <!--[elfisk_button name="saveButton" __text="Save"]-->
-            <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
-            <!--[/mediashare_buttons]-->
-            <!--[/mediashare_block]-->
 
         </div>
     </div>

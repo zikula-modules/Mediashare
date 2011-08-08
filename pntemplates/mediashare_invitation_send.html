@@ -1,9 +1,6 @@
-<!--[* $Id$ *]-->
 <!--[elfisk_setInitialFocus inputId="emails"]-->
 <!--[gt text="Invitations" assign=title]-->
-
 <!--[include file='mediashare_editheader.html' albumId=$album.id title=$title mode='edit']-->
-
 <!--[include file='mediashare_invitationtabs.html']-->
 
 <h2><!--[gt text="Send invitation"]--></h2>
@@ -15,49 +12,47 @@
 <input type="hidden" name="albumid" value="<!--[$album.id]-->"/>
 
 <div class="mediashare-invitations">
-<!--[mediashare_block]-->
-  <!--[mediashare_header]-->
-    <!--[gt text="Invitation"]-->
-  <!--[/mediashare_header]-->
+    <div class="mediashare-block">
+        <h3><!--[gt text="Invitation"]--></h3>
 
-  <!--[mediashare_body]-->
-    <div class="row">
-      <label for="emails"><!--[gt text="E-mails"]--></label> <!--[gt text="(separate with comma, semicolon, newline or whitespace)"]--><br/>
-      <textarea id="emails" name="emails" cols="50" rows="4"><!--[$invitation.email]--></textarea>
+        <div class="mediashare-body">
+            <div class="row">
+                <label for="emails"><!--[gt text="E-mails"]--></label> <!--[gt text="(separate with comma, semicolon, newline or whitespace)"]--><br/>
+                <textarea id="emails" name="emails" cols="50" rows="4"><!--[$invitation.email]--></textarea>
+            </div>
+
+            <div class="row">
+                <label for="subject"><!--[gt text="Subject"]--></label><br/>
+                <input id="subject" name="subject" class="txt" value="<!--[$invitation.subject]-->"/>
+            </div>
+
+            <div class="row">
+                <label for="text"><!--[gt text="Invitation text"]--></label> <!--[gt text="(this will be included in the e-mail invitation)"]--><br/>
+                <textarea id="text" name="text" cols="50" rows="10"><!--[$invitation.text]--></textarea>
+            </div>
+
+            <!--[gt text="The text below will be appended to your invitation"]-->
+
+            <div class="row mediashare-invtext">
+                <!--[gt text='<p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%1$s">%1$s</a></p>' tag1='']-->
+            </div>
+
+            <div class="row">
+                <label for="sender"><!--[gt text="Sender"]--></label><br/>
+                <input id="sender" name="sender" value="<!--[$invitation.sender]-->" class="txt"/>
+            </div>
+
+            <div class="row">
+                <label for="expires"><!--[gt text="Expire date"]--></label> <!--[gt text="(yyyy-mm-dd)"]--><br/>
+                <input id="expires" name="expires" value="<!--[$invitation.expires]-->"/>
+            </div>
+        </div>
+
+        <div class="z-formbuttons">
+            <!--[elfisk_button name="saveButton" text="Send"]-->
+            <!--[elfisk_button name="cancelButton" text="Cancel"]-->
+        </div>
     </div>
-
-    <div class="row">
-      <label for="subject"><!--[gt text="Subject"]--></label><br/>
-      <input id="subject" name="subject" class="txt" value="<!--[$invitation.subject]-->"/>
-    </div>
-
-    <div class="row">
-      <label for="text"><!--[gt text="Invitation text"]--></label> <!--[gt text="(this will be included in the e-mail invitation)"]--><br/>
-      <textarea id="text" name="text" cols="50" rows="10"><!--[$invitation.text]--></textarea>
-    </div>
-
-    <!--[gt text="The text below will be appended to your invitation"]-->
-
-    <div class="row mediashare-invtext">
-      <!--[gt text='<p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%1$s">%1$s</a></p>' tag1='']-->
-    </div>
-
-    <div class="row">
-      <label for="sender"><!--[gt text="Sender"]--></label><br/>
-      <input id="sender" name="sender" value="<!--[$invitation.sender]-->" class="txt"/>
-    </div>
-
-    <div class="row">
-      <label for="expires"><!--[gt text="Expire date"]--></label> <!--[gt text="(yyyy-mm-dd)"]--><br/>
-      <input id="expires" name="expires" value="<!--[$invitation.expires]-->"/>
-    </div>
-  <!--[/mediashare_body]-->
-
-  <!--[mediashare_buttons]-->
-    <!--[elfisk_button name="saveButton" text="Send"]-->
-    <!--[elfisk_button name="cancelButton" text="Cancel"]-->
-  <!--[/mediashare_buttons]-->
-<!--[/mediashare_block]-->
 </div>
 
 <!--[include file='mediashare_footer.html']-->

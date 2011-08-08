@@ -1,6 +1,4 @@
-<!--[* $Id$ *]-->
 <!--[elfisk_setInitialFocus inputId="upload1"]-->
-
 <div class="z-informationmsg"><!--[gt text='<p>Here you can upload media items from your browser.</p><p>You can upload up to %1$s KBytes at one time, but no single file can be bigger than %2$s KBytes. But these are only the raw upload restrictions - memory limits may further restrict how big a single file can be.</p><p>You will be asked to write descriptions, keywords and such like on the next page.</p>' tag1=$post_max_size tag2=$upload_max_filesize]--></div>
 
 <input type="hidden" name="imagenum" value="<!--[$imageNum]-->" />
@@ -14,13 +12,17 @@
     </div>
     <div class="z-formrow">
         <label for="width<!--[$fieldId]-->"><!--[gt text="Width"]--></label>
-        <!--[elfisk_intInput id="width$fieldId" width="4em" intValue=""]-->
-        <em class="z-sub">(<!--[gt text="Only required for video formats"]-->)</em>
+        <span>
+            <!--[elfisk_intInput id="width$fieldId" intValue=""]-->
+            <em class="z-sub"><!--[gt text="Only required for video formats"]--></em>
+        </span>
     </div>
     <div class="z-formrow">
         <label for="height<!--[$fieldId]-->"><!--[gt text="Height"]--></label>
-        <!--[elfisk_intInput id="height$fieldId" width="4em" intValue=""]-->
-        <em class="z-sub">(<!--[gt text="Only required for video formats"]-->)</em>
+        <span>
+            <!--[elfisk_intInput id="height$fieldId" intValue=""]-->
+            <em class="z-sub"><!--[gt text="Only required for video formats"]--></em>
+        </span>
     </div>
 </fieldset>
 <!--[/foreach]-->

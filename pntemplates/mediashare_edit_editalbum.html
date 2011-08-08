@@ -1,7 +1,5 @@
-<!--[* $Id$ *]-->
 <!--[elfisk_setInitialFocus inputId="title"]-->
 <!--[gt text="Edit album" assign=mltitle]-->
-
 <!--[include file='mediashare_editheader.html' albumId=$album.id title=$mltitle mode='edit']-->
 
 <fieldset>
@@ -27,17 +25,17 @@
         <label for="template"><!--[gt text="Template"]--></label>
         <!--[mediashare_templateSelector id="template" readonly=$disableTemplateOverride]-->
     </div>
-    <p class="z-formnote">
-        <!--[gt text="Here you can insert a link to external photo albums from Flickr, Picasa and SmugMug."]-->
-        <a href="<!--[pnmodurl modname='mediashare' func='extapphelp']-->" target="_blank"><!--[gt text='Click here to read more.']--></a>
-    </p>
     <div class="z-formrow">
         <label for="extappURL"><!--[gt text="External album URL"]--></label>
         <!--[elfisk_textInput id="extappURL" width="400px"]-->
+        <span class="z-sub z-formnote">
+            <!--[gt text="Here you can insert a link to external photo albums from Flickr, Picasa and SmugMug."]-->
+            <a href="<!--[pnmodurl modname='mediashare' func='extapphelp']-->"><!--[gt text='Click here to read more.']--></a>
+        </span>
     </div>
 </fieldset>
 
-<div class="z-formrow">
+<div class="z-formbuttons">
     <!--[elfisk_button name="saveButton" __text="Save"]-->
     <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
 </div>

@@ -9,18 +9,22 @@
 <fieldset>
     <legend><!--[gt text="Upload"]--> <!--[$fieldId]--></legend>
     <div class="z-formrow">
-        <label for="upload<!--[$fieldId]-->"><!--[gt text="Filename"]--></label>
+        <label for="videoytcode<!--[$fieldId]-->"><!--[gt text="Filename"]--></label>
         <!--[elfisk_intInput id="videoytcode$fieldId"]-->
     </div>
     <div class="z-formrow">
         <label for="width<!--[$fieldId]-->"><!--[gt text="Width"]--></label>
-        <!--[elfisk_intInput id="width$fieldId" width="4em" intValue=""]-->
-        <em class="z-sub">(<!--[gt text="Only required for video formats"]-->)</em>
+        <span>
+            <!--[elfisk_intInput id="width$fieldId" intValue=""]-->
+            <em class="z-sub"><!--[gt text="Only required for video formats"]--></em>
+        </span>
     </div>
     <div class="z-formrow">
         <label for="height<!--[$fieldId]-->"><!--[gt text="Height"]--></label>
-        <!--[elfisk_intInput id="height$fieldId" width="4em" intValue=""]-->
-        <em class="z-sub">(<!--[gt text="Only required for video formats"]-->)</em>
+        <span>
+            <!--[elfisk_intInput id="height$fieldId" intValue=""]-->
+            <em class="z-sub"><!--[gt text="Only required for video formats"]--></em>
+        </span>
     </div>
 </fieldset>
 <!--[/foreach]-->
