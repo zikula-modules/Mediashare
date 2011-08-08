@@ -21,7 +21,7 @@
         <br class="z-clearer" />
             <!--[if !$mediaItem.originalIsImage]-->
             <div class="mediashare-zoom">
-                <a href="<!--[$url|escape:'html']-->" ><!--[gt text='View fullscreen']--></a>
+                <a href="<!--[$url|pnvarprephtmldisplay]-->" ><!--[gt text='View fullscreen']--></a>
             </div>
             <!--[/if]-->
             <div style="width: <!--[$mediaItem.previewWidth]-->px;"><!--[$mediaItem.title|pnvarprepfordisplay]-->
@@ -32,7 +32,7 @@
                 <!--[/foreach]-->
                 <!--[/if]-->
                 <!--[if $access.hasEditMediaAccess]-->
-                <a href="<!--[$editItemUrl|escape]-->"><img src="modules/mediashare/pnimages/edit.gif" alt="<!--[gt text='Edit']-->" /></a>
+                <a href="<!--[$editItemUrl|pnvarprephtmldisplay]-->"><img src="modules/mediashare/pnimages/edit.gif" alt="<!--[gt text='Edit']-->" /></a>
                 <!--[/if]-->
             </div>
         </div>
@@ -42,13 +42,13 @@
             <!--[if $itemCount > 1]-->
             <div class="navigation">
                 [<!--[$mediaItemPos]-->/<!--[$itemCount]-->]
-                <a href="<!--[$prevUrl|escape]-->"><img src="modules/mediashare/pnimages/agt_back.gif" alt="<!--[gt text='Previous']-->" /></a>
-                <a href="<!--[$nextUrl|escape]-->"><img src="modules/mediashare/pnimages/agt_forward.gif" alt="<!--[gt text='Next']-->" /></a>
+                <a href="<!--[$prevUrl|pnvarprephtmldisplay]-->"><img src="modules/mediashare/pnimages/agt_back.gif" alt="<!--[gt text='Previous']-->" /></a>
+                <a href="<!--[$nextUrl|pnvarprephtmldisplay]-->"><img src="modules/mediashare/pnimages/agt_forward.gif" alt="<!--[gt text='Next']-->" /></a>
             </div>
             <!--[/if]-->
 
             <!--[if $itemCount > 0]-->
-            <h3><a href="<!--[$slideshowUrl|escape]-->"><!--[$album.title|pnvarprepfordisplay]--></a></h3>
+            <h3><a href="<!--[$slideshowUrl|pnvarprephtmldisplay]-->"><!--[$album.title|pnvarprepfordisplay]--></a></h3>
             <!--[else]-->
             <h3><!--[$album.title|pnvarprepfordisplay]--></h3>
             <!--[/if]-->

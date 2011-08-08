@@ -31,17 +31,17 @@ function mediashare_paste_getStandardHtml(htmlFormat, mode)
     break;
     case 'fullItemURL':
       if (mode == 'html')
-        html = "<a href=\"" + originalUrl + "\">" + "<!--[$mediaItem.title|escape:javascript]-->" + "</a>";
+        html = "<a href=\"" + originalUrl + "\">" + "<!--[$mediaItem.title|pnvarprephtmldisplay:javascript]-->" + "</a>";
       else
         html = originalUrl;
     break;
     case 'fullItemURLPopup':
       if (mode == 'html')
-        html = "<a href=\"javascript:popupMediaViewer('" + displayItemUrl + "')\">" + "<!--[$mediaItem.title|escape:javascript]-->" + "</a>";
+        html = "<a href=\"javascript:popupMediaViewer('" + displayItemUrl + "')\">" + "<!--[$mediaItem.title|pnvarprephtmldisplay:javascript]-->" + "</a>";
     break;
     case 'albumUrl':
       if (mode == 'html')
-        html = "<a href=\"" + albumUrl + "\">" + "<!--[$mediaItem.title|escape:javascript]-->" + "</a>";
+        html = "<a href=\"" + albumUrl + "\">" + "<!--[$mediaItem.title|pnvarprephtmldisplay:javascript]-->" + "</a>";
     break;
     case 'albumThumbnailURL':
       if (mode == 'html')
@@ -49,7 +49,7 @@ function mediashare_paste_getStandardHtml(htmlFormat, mode)
     break;
     case 'albumUrlpopup':
       if (mode == 'html')
-        html = "<a href=\"javascript:popupMediaViewer('" + albumUrl + "')\">" + "<!--[$mediaItem.title|escape:javascript]-->" + "</a>";
+        html = "<a href=\"javascript:popupMediaViewer('" + albumUrl + "')\">" + "<!--[$mediaItem.title|pnvarprephtmldisplay:javascript]-->" + "</a>";
     break;
     case 'albumThumbnailURLpopup':
       if (mode == 'html')

@@ -5,15 +5,15 @@
 
 <channel>
 <title><!--[gt text='Mediashare albums']--></title>
-<link><!--[pngetbaseurl|escape:'html']--></link>
+<link><!--[pngetbaseurl|pnvarprephtmldisplay]--></link>
 <description><!--[gt text='RSS feed for albums']--></description>
-<webMaster><!--[pnconfiggetvar name="adminmail"|escape:'html']--></webMaster>
+<webMaster><!--[pnconfiggetvar name="adminmail"|pnvarprephtmldisplay]--></webMaster>
 
 <!--[foreach from=$albums item='album']-->
 <!--[pnmodurl modname='mediashare' func='view' aid=$album.id assign='albumUrl']-->
 <item>
 <title><!--[$album.title]--></title>
-<link><!--[$albumUrl|escape]--></link>
+<link><!--[$albumUrl|pnvarprephtmldisplay]--></link>
 <description><!--[if empty($album.summary)]--><!--[$album.description]--><!--[else]--><!--[$album.summary]--><!--[/if]--></description>
 </item>
 <!--[/foreach]-->

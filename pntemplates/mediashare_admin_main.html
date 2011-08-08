@@ -8,12 +8,12 @@
     <!--[if $openBaseDir != '']-->
     <div class="z-formrow">
         <label><!--[gt text='Open-base dir (PHP restriction)']--></label>
-        <input value="<!--[$openBaseDir|escape]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
+        <input value="<!--[$openBaseDir|pnvarprephtmldisplay]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
     </div>
     <!--[/if]-->
     <div class="z-formrow">
         <label><!--[gt text='Current module directory']--></label>
-        <input value="<!--[$currentDir|escape]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
+        <input value="<!--[$currentDir|pnvarprephtmldisplay]-->" readonly="readonly" style="width:300px" class="mediashare-readonly"/>
     </div>
     <div class="z-formrow">
         <label for="mediaDirName"><!--[gt text='Media upload directory']--></label>
