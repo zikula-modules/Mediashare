@@ -1,19 +1,35 @@
-<!--[* $Id$ *]-->
-
 <!--[if empty($mediaItem)]-->
 <!--[pnmodurl modname='mediashare' func='slideshow' aid=$album.id back=1 assign='slideshowUrl']-->
 <!--[else]-->
 <!--[pnmodurl modname='mediashare' func='slideshow' aid=$album.id mid=$mediaItem.id back=1 assign='slideshowUrl']-->
 <!--[/if]-->
 
-<div class="mediashare-browseicons">
-    <!--[if $itemCount > 0]-->
-    <a href="<!--[$slideshowUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/slideshow.gif" alt="" /><!--[gt text="Slideshow"]--></a>
-    <a href="<!--[pnmodurl modname='mediashare' func=thumbnails aid=$album.id]-->"><img src="modules/mediashare/pnimages/thumbnails.gif" alt="" /><!--[gt text="Thumbnails"]--></a>
-    <!--[/if]-->
-    <a href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id]-->"><img src="modules/mediashare/pnimages/browse.gif" alt="" /><!--[gt text="Browse"]--></a>
-    <a href="<!--[pnmodurl modname='mediashare' func=latest]-->"><img src="modules/mediashare/pnimages/new.gif" alt="" /><!--[gt text="Latest"]--></a>
-    <!--[if $access.hasAnyEditAccess]-->
-    <!--[include file='mediashare_browseicons_menu.html']-->
-    <!--[/if]-->
+<div class="z-menu">
+    <span class="z-menuitem-title">
+        [
+        <!--[if $itemCount > 0]-->
+        <span>
+            <a href="<!--[$slideshowUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/slideshow.gif" alt="" /> <!--[gt text="Slideshow"]--></a>
+            |
+        </span>
+        <span>
+            <a href="<!--[pnmodurl modname='mediashare' func=thumbnails aid=$album.id]-->"><img src="modules/mediashare/pnimages/thumbnails.gif" alt="" /> <!--[gt text="Thumbnails"]--></a>
+            |
+        </span>
+        <!--[/if]-->
+        <span>
+            <a href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id]-->"><img src="modules/mediashare/pnimages/browse.gif" alt="" /> <!--[gt text="Browse"]--></a>
+            |
+        </span>
+        <span>
+            <a href="<!--[pnmodurl modname='mediashare' func=latest]-->"><img src="modules/mediashare/pnimages/new.gif" alt="" /> <!--[gt text="Latest"]--></a>
+            |
+        </span>
+        <!--[if $access.hasAnyEditAccess]-->
+        <span>
+            <!--[include file='mediashare_browseicons_menu.html']-->
+        </span>
+        <!--[/if]-->
+        ]
+    </span>
 </div>
