@@ -5,53 +5,60 @@
 
 <h2><!--[gt text="Send invitation"]--></h2>
 
-<p><!--[gt text="Please enter the e-mail address of the people you want to invite to this album. When you press "Send" they will receive an e-mail with a link that grants them access to view this album without logging in to the website. You can optionally set an expires date for this invitation. After this date the link won't be valid any more."]--></p>
-
-<p><a href="<!--[pnmodurl modname='mediashare' type='invitation' func=link aid=$album.id]-->"><!--[gt text="If you want to send the link yourself then click here to generate it"]--></a>.</p>
+<div class="z-informationmsg">
+    <p><!--[gt text='Please enter the e-mail address of the people you want to invite to this album. When you press "Send" they will receive an e-mail with a link that grants them access to view this album without logging in to the website. You can optionally set an expires date for this invitation. After this date the link won\'t be valid any more.']--></p>
+    <p><a href="<!--[pnmodurl modname='mediashare' type='invitation' func=link aid=$album.id]-->"><!--[gt text="If you want to send the link yourself then click here to generate it"]--></a>.</p>
+</div>
 
 <input type="hidden" name="albumid" value="<!--[$album.id]-->"/>
 
 <div class="mediashare-invitations">
-    <div class="mediashare-block">
-        <h3><!--[gt text="Invitation"]--></h3>
+    <fieldset>
+        <legend><!--[gt text="Invitation"]--></legend>
 
         <div class="mediashare-body">
-            <div class="row">
-                <label for="emails"><!--[gt text="E-mails"]--></label> <!--[gt text="(separate with comma, semicolon, newline or whitespace)"]--><br/>
+            <div class="z-formrow">
+                <label for="emails"><!--[gt text="E-mails"]--></label>
                 <textarea id="emails" name="emails" cols="50" rows="4"><!--[$invitation.email]--></textarea>
+                <em class="z-sub z-formnote"><!--[gt text="(separate with comma, semicolon, newline or whitespace)"]--></em>
             </div>
 
-            <div class="row">
-                <label for="subject"><!--[gt text="Subject"]--></label><br/>
+            <div class="z-formrow">
+                <label for="subject"><!--[gt text="Subject"]--></label>
                 <input id="subject" name="subject" class="txt" value="<!--[$invitation.subject]-->"/>
             </div>
 
-            <div class="row">
-                <label for="text"><!--[gt text="Invitation text"]--></label> <!--[gt text="(this will be included in the e-mail invitation)"]--><br/>
+            <div class="z-formrow">
+                <label for="text"><!--[gt text="Invitation text"]--></label>
                 <textarea id="text" name="text" cols="50" rows="10"><!--[$invitation.text]--></textarea>
+                <em class="z-sub z-formnote"><!--[gt text="(this will be included in the e-mail invitation)"]--></em>
             </div>
 
-            <!--[gt text="The text below will be appended to your invitation"]-->
-
-            <div class="row mediashare-invtext">
-                <!--[gt text='<p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%1$s">%1$s</a></p>' tag1='']-->
+            <div class="z-formnote">
+                <p>
+                    <!--[gt text="This text will be appended to your invitation:"]-->
+                    <br />
+                    <em><!--[gt text='Just follow the link below (click on it or copy it to your webbrowser) <a href="%1$s">%1$s</a>' tag1='']--></em>                </p>
             </div>
 
-            <div class="row">
-                <label for="sender"><!--[gt text="Sender"]--></label><br/>
-                <input id="sender" name="sender" value="<!--[$invitation.sender]-->" class="txt"/>
+            <div class="z-formrow">
+                <label for="sender"><!--[gt text="Sender"]--></label>
+                <input id="sender" name="sender" value="<!--[$invitation.sender]-->" class="txt" />
             </div>
 
-            <div class="row">
-                <label for="expires"><!--[gt text="Expire date"]--></label> <!--[gt text="(yyyy-mm-dd)"]--><br/>
-                <input id="expires" name="expires" value="<!--[$invitation.expires]-->"/>
+            <div class="z-formrow">
+                <label for="expires"><!--[gt text="Expire date"]--></label>
+                <div>
+                    <input id="expires" name="expires" value="<!--[$invitation.expires]-->"/>
+                    <!--[gt text="(yyyy-mm-dd)"]-->
+                </div>
             </div>
         </div>
+    </fieldset>
 
-        <div class="z-formbuttons">
-            <!--[elfisk_button name="saveButton" text="Send"]-->
-            <!--[elfisk_button name="cancelButton" text="Cancel"]-->
-        </div>
+    <div class="z-formbuttons">
+        <!--[elfisk_button name="saveButton" text="Send"]-->
+        <!--[elfisk_button name="cancelButton" text="Cancel"]-->
     </div>
 </div>
 

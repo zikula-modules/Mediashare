@@ -1,8 +1,5 @@
-<!--[* $Id$ *]-->
 <!--[gt text='Invitations' assign='title']-->
-
 <!--[include file='mediashare_editheader.html' albumId=$album.id title=$title mode='edit']-->
-
 <!--[include file='mediashare_invitationtabs.html']-->
 
 <h2><!--[gt text="Invitation list"]--></h2>
@@ -11,34 +8,39 @@
 
 <input type="hidden" name="albumid" value="<!--[$album.id]-->"/>
 
-<table class="mediashare-grid">
-  <tr>
-    <th></th>
-    <th><!--[gt text="Created"]--></th>
-    <th><!--[gt text="Name"]--></th>
-    <th><!--[gt text="Expires"]--></th>
-    <th><!--[gt text="Views"]--></th>
-  </tr>
-<!--[foreach from=$invitations item='invitation']-->
-  <tr>
-    <td><input type="checkbox" name="invitation[]" value="<!--[$invitation.id]-->"/></td>
-    <td><!--[$invitation.created|date_format]--></td>
-    <td><!--[if !empty($invitation.email)]--><!--[$invitation.email]--> (<a href="<!--[pnmodurl modname='mediashare' type='invitation' func='send' iid=$invitation.id]-->"><!--[gt text="send again"]--></a>)<!--[else]--><!--[if !empty($invitation.subject)]--><!--[$invitation.subject]--><!--[else]--><!--[gt text="Link only"]--><!--[/if]--> (<a href="<!--[pnmodurl modname='mediashare' type='invitation' func=viewlink iid=$invitation.id]-->"><!--[gt text="show link"]--></a>)<!--[/if]--></td>
-    <td><!--[if !empty($invitation.expires)]--><!--[$invitation.expires|date_format]--><!--[/if]--></td>
-    <td><!--[$invitation.viewCount]--></td>
-  </tr>
-<!--[/foreach]-->
+<table class="z-datatable">
+    <thead>
+        <tr>
+            <th>&nbsp;</th>
+            <th><!--[gt text="Created"]--></th>
+            <th><!--[gt text="Name"]--></th>
+            <th><!--[gt text="Expires"]--></th>
+            <th><!--[gt text="Views"]--></th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--[foreach from=$invitations item='invitation']-->
+        <tr class="<!--[cycle values="z-odd,z-even"]-->">
+            <td><input type="checkbox" name="invitation[]" value="<!--[$invitation.id]-->"/></td>
+            <td><!--[$invitation.created|pndate_format]--></td>
+            <td><!--[if !empty($invitation.email)]--><!--[$invitation.email]--> (<a href="<!--[pnmodurl modname='mediashare' type='invitation' func='send' iid=$invitation.id]-->"><!--[gt text="send again"]--></a>)<!--[else]--><!--[if !empty($invitation.subject)]--><!--[$invitation.subject]--><!--[else]--><!--[gt text="Link only"]--><!--[/if]--> (<a href="<!--[pnmodurl modname='mediashare' type='invitation' func=viewlink iid=$invitation.id]-->"><!--[gt text="show link"]--></a>)<!--[/if]--></td>
+            <td><!--[if !empty($invitation.expires)]--><!--[$invitation.expires|pndate_format]--><!--[/if]--></td>
+            <td><!--[$invitation.viewCount]--></td>
+        </tr>
+        <!--[/foreach]-->
+    </tbody>
 </table>
+
 <!--[gt text="Possible actions:"]-->
 <ul>
-  <li>
-    <!--[gt text="Set expire date on selected invitations to"]-->
-    <input type="text" name="expires"/> <!--[gt text="(yyyy-mm-dd)"]-->
-    <input type="submit" name="expireButton" value="<!--[gt text='OK']-->"/>
-  </li>
-  <li>
-    <input type="submit" name="deleteButton" value="<!--[gt text='Delete']-->"/> <!--[gt text="selected invitations"]-->
-  </li>
+    <li>
+        <!--[gt text="Set expire date on selected invitations to"]-->
+        <input type="text" name="expires"/> <!--[gt text="(yyyy-mm-dd)"]-->
+        <input type="submit" name="expireButton" value="<!--[gt text='OK']-->"/>
+    </li>
+    <li>
+        <input type="submit" name="deleteButton" value="<!--[gt text='Delete']-->"/> <!--[gt text="selected invitations"]-->
+    </li>
 </ul>
 
 <!--[include file='mediashare_footer.html']-->

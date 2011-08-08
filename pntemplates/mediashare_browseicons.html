@@ -9,20 +9,20 @@
         [
         <!--[if $itemCount > 0]-->
         <span>
-            <a href="<!--[$slideshowUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/slideshow.gif" alt="" /> <!--[gt text="Slideshow"]--></a>
+            <a href="<!--[$slideshowUrl|pnvarprepfordisplay]-->"><!--[pnimg modname='mediashare' src='slideshow.gif' __alt='Slideshow']--> <!--[gt text="Slideshow"]--></a>
             |
         </span>
         <span>
-            <a href="<!--[pnmodurl modname='mediashare' func=thumbnails aid=$album.id]-->"><img src="modules/mediashare/pnimages/thumbnails.gif" alt="" /> <!--[gt text="Thumbnails"]--></a>
+            <a href="<!--[pnmodurl modname='mediashare' func=thumbnails aid=$album.id]-->"><!--[pnimg modname='mediashare' src='thumbnails.gif' __alt='Thumbnails']--> <!--[gt text="Thumbnails"]--></a>
             |
         </span>
         <!--[/if]-->
         <span>
-            <a href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id]-->"><img src="modules/mediashare/pnimages/browse.gif" alt="" /> <!--[gt text="Browse"]--></a>
+            <a href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id]-->"><!--[pnimg modname='mediashare' src='browse.gif' __alt='Browse']--> <!--[gt text="Browse"]--></a>
             |
         </span>
         <span>
-            <a href="<!--[pnmodurl modname='mediashare' func=latest]-->"><img src="modules/mediashare/pnimages/new.gif" alt="" /> <!--[gt text="Latest"]--></a>
+            <a href="<!--[pnmodurl modname='mediashare' func=latest]-->"><!--[pnimg modname='mediashare' src='new.gif' __alt='Latest']--> <!--[gt text="Latest"]--></a>
             |
         </span>
         <!--[if $access.hasAnyEditAccess]-->
