@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 function smarty_function_mediashare_breadcrumb($params, &$smarty)
 {
@@ -22,7 +21,7 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
 
     $urlType = $mode == 'edit' ? 'edit' : 'user';
     $url     = pnModUrl('mediashare', $urlType, 'view', array('aid' => 0));
-    $result  = "<span class=\"mediashare-breadcrumb\">";
+    $result  = "<div class=\"mediashare-breadcrumb\">";
     $first   = true;
 
     foreach ($breadcrumb as $album)
@@ -33,7 +32,7 @@ function smarty_function_mediashare_breadcrumb($params, &$smarty)
         $first = false;
     }
 
-    $result .= "</span>";
+    $result .= "</div>";
 
     if (isset($params['assign'])) {
         $smarty->assign($params['assign'], $result);

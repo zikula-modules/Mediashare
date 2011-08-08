@@ -1,3 +1,11 @@
+#mediashare .mediashare-breadcrumb {
+    background: none repeat scroll 0 0 #FAFAFA;
+    border: 1px solid #DDDDDD;
+    display: block;
+    margin: 10px 0;
+    padding: 2px;
+}
+
 div.mediashare td.top {
     vertical-align: top;
 }
