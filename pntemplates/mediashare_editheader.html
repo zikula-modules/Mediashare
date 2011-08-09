@@ -1,27 +1,23 @@
 <!--[if isset($formEncType)  &&  $formEncType!='']-->
 <form method="post" class="z-form" action="<!--[pngetcurrenturi]-->" enctype="<!--[$formEncType]-->">
-<!--[else]-->
-<form method="post" class="z-form" action="<!--[pngetcurrenturi]-->">
-<!--[/if]-->
-
-<div class="mediashare" id="mediashare">
-    <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='mediashare']-->" />
-
-    <div id="mseditheader" class="z-clearfix">
-        <!--[if $album.mainMediaItem != null]-->
-        <div class="z-floatright">
-            <!--[mediashare_mediaItem src=$album.mainMediaItem.thumbnailRef title=$album.title mediaHandler=$album.mainMediaItem.mediaHandler width=32 isThumbnail=1]-->
-        </div>
+    <!--[else]-->
+    <form method="post" class="z-form" action="<!--[pngetcurrenturi]-->">
         <!--[/if]-->
-        <h2><!--[$title]--></h2>
-    </div>
 
-    <div class="z-menu">
-        <span class="z-menuitem-title">
-            [ <!--[mediashare_breadcrumb albumId=$albumId mode=$mode]--> ]
-        </span>
-    </div>
+        <div class="mediashare" id="mediashare">
+            <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='mediashare']-->" />
 
-    <!--[if isset($includeMenu)  &&  $includeMenu eq 1]-->
-    <!--[include file=mediashare_editmenu.html]-->
-    <!--[/if]-->
+            <div id="mseditheader" class="z-clearfix">
+                <!--[if $album.mainMediaItem != null]-->
+                <div class="z-floatright">
+                    <!--[mediashare_mediaItem src=$album.mainMediaItem.thumbnailRef title=$album.title mediaHandler=$album.mainMediaItem.mediaHandler width=32 isThumbnail=1]-->
+                </div>
+                <!--[/if]-->
+                <h2><!--[$title]--></h2>
+            </div>
+
+            <!--[mediashare_breadcrumb albumId=$albumId mode=$mode]-->
+
+            <!--[if isset($includeMenu)  &&  $includeMenu eq 1]-->
+            <!--[include file=mediashare_editmenu.html]-->
+            <!--[/if]-->

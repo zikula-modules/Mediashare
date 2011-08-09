@@ -64,7 +64,7 @@ div.mediashare-browseicons a {
 /* Toolbar */
 
 div.mediashare-toolbar {
-margin:10px 0;
+    margin:10px 0;
 }
 
 div.mediashare-toolbar input {
@@ -350,8 +350,7 @@ div.mediashare-album div.mediashare-item
 
 /* Media thumbnail list */
 
-div.mediashare-medialist ul.sortkeys
-{
+div.mediashare-medialist ul.sortkeys {
     list-style: none;
     display: inline;
     margin: 0px;
@@ -560,8 +559,7 @@ span.mediashare-filmstrip-info
 /* Menu handling */
 
 /* Surrounding DIV tag */
-#mediashare div.psmenu
-{
+#mediashare div.psmenu {
     position: absolute;
     visibility: hidden;
     font: arial, sans-serif;
@@ -581,29 +579,27 @@ span.mediashare-filmstrip-info
     padding: 0px;
 }
 
-#mediashare div.psmenu ul li
-{
-    margin: 0px;
-    padding: 0px;
+#mediashare div.psmenu ul li {
     display: inline;
+    font-size: 12px;
+    line-height: 14px;
+    margin: 2px 0;
+    padding: 2px 0;
     white-space: nowrap;
 }
 
 /* IE hack */
-* html #mediashare div.psmenu ul li
-{
+* html #mediashare div.psmenu ul li {
     display: inline;
 }
 
-#mediashare div.psmenu li img
-{
+#mediashare div.psmenu li img {
     margin: 4px 0px 0px 4px;
     float: left;
     vertical-align: bottom;
 }
 
-#mediashare div.psmenu li a
-{
+#mediashare div.psmenu li a {
     display: block;
     text-decoration: none;
     margin: 0px 0px 0px 20px;
@@ -611,8 +607,7 @@ span.mediashare-filmstrip-info
     color: #000;
 }
 
-#mediashare div.psmenu li a:hover
-{
+#mediashare div.psmenu li a:hover {
     background-color: #333;
     color: #DDD;
     text-decoration: none;
@@ -620,4 +615,61 @@ span.mediashare-filmstrip-info
 
 #mseditheader {
     min-height: 40px;
+}
+
+
+
+.ms-grid {
+}
+
+.ms-item {
+    display: block;
+    float: left;
+    margin: 0 5px 5px 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.ms-item-borderbox {
+    border: 1px solid #E0E0E0;
+    text-align: center;
+}
+.ms-item-borderbox:hover {
+    border: 1px solid #aaa;
+}
+
+.ms-item-content {
+    background: none repeat scroll 0 0 #F0F0F0;
+    border-top: 1px solid #E0E0E0;
+    display: block;
+    font-size: 12px;
+    height: 19px;
+    line-height: 19px;
+    overflow: hidden;
+    width: 100%;
+}
+
+ul.ms-item-options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+}
+
+ul.ms-item-options li {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.ms-item-thumbnail {
+    margin: 5px;
+}
+
+.ms-item-caption {
+    overflow: hidden;
+}
+
+.ms-item-thumblink {
+    display: block;
 }
