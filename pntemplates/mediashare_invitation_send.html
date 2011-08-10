@@ -37,27 +37,30 @@
             <p>
                 <!--[gt text="This text will be appended to your invitation:"]-->
                 <br />
-            <em><!--[gt text='Just follow the link below (click on it or copy it to your webbrowser) <a href="%1$s">%1$s</a>' tag1='']--></em>                </p>
-            </div>
-
-            <div class="z-formrow">
-                <label for="sender"><!--[gt text="Sender"]--></label>
-                <input id="sender" name="sender" value="<!--[$invitation.sender]-->" class="txt" />
-            </div>
-
-            <div class="z-formrow">
-                <label for="expires"><!--[gt text="Expire date"]--></label>
-                <div>
-                    <input id="expires" name="expires" value="<!--[$invitation.expires]-->"/>
-                    <!--[gt text="(yyyy-mm-dd)"]-->
-                </div>
-            </div>
-        </fieldset>
-
-        <div class="z-formbuttons ms-buttons">
-            <!--[elfisk_button name="saveButton" text="Send"]-->
-            <!--[elfisk_button name="cancelButton" text="Cancel"]-->
+                <em><!--[gt text='Just follow the link below (click on it or copy it to your webbrowser) <a href="%1$s">%1$s</a>' tag1=$baseurl]--></em>
+                <br />
+                <em class="z-sub"><!--[gt text="(The link above is just an example.)"]--></em>
+            </p>
         </div>
-    </div>
 
-    <!--[include file='mediashare_footer.html']-->
+        <div class="z-formrow">
+            <label for="sender"><!--[gt text="Sender"]--></label>
+            <input id="sender" name="sender" value="<!--[$invitation.sender]-->" class="txt" />
+        </div>
+
+        <div class="z-formrow">
+            <label for="expires"><!--[gt text="Expire date"]--></label>
+            <div>
+                <input id="expires" name="expires" value="<!--[$invitation.expires]-->"/>
+                <!--[gt text="(yyyy-mm-dd)"]-->
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="z-formbuttons ms-buttons">
+        <!--[elfisk_button name="saveButton" text="Send"]-->
+        <!--[elfisk_button name="cancelButton" text="Cancel"]-->
+    </div>
+</div>
+
+<!--[include file='mediashare_footer.html']-->

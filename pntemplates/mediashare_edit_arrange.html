@@ -2,24 +2,23 @@
 <!--[gt text="Mediashare" assign=mltitle]-->
 <!--[include file='mediashare_editheader.html' albumId=$album.id title=$mltitle mode="edit" includeMenu=0]-->
 
-<p class="z-informationmsg"><!--[gt text="Arrange items by draging them on top of each other. When satisfied with the result click save."]--></p>
+<p class="z-informationmsg"><!--[gt text="Arrange items by draging the images on top of each other. When satisfied with the result click save."]--></p>
 
-<fieldset>
-    <h3><!--[gt text="Arrange items"]--></h3>
-    <table id="mediashare-arrange-table">
-        <!--[foreach from=$mediaItems item=item name=i]-->
-        <tr class="mr">
-            <td><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail" onmousedown="mediashare.drag.dragPress(event)"]--></td>
-            <td>
-                <!--[$item.title]-->
-            </td>
-        </tr>
-        <!--[/foreach]-->
-    </table>
-    <input type="hidden" id="mediashare-arrange-seqinput" name="seq" />
-</fieldset>
+<h3><!--[gt text="Arrange items"]--></h3>
+<table id="mediashare-arrange-table">
+    <!--[foreach from=$mediaItems item=item name=i]-->
+    <tr class="mr">
+        <td>
+            <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail" onmousedown="mediashare.drag.dragPress(event)"]-->
+            <br />
+            <!--[$item.title]-->
+        </td>
+    </tr>
+    <!--[/foreach]-->
+</table>
+<input type="hidden" id="mediashare-arrange-seqinput" name="seq" />
 
-<div class="z-formbuttons ms-buttons">
+<div class="z-center ms-buttons">
     <!--[elfisk_button name="saveButton" __text="Save" onclick="mediashare.drag.submit()"]-->
     <!--[elfisk_button name="cancelButton" __text="Cancel"]-->
 </div>
