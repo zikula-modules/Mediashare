@@ -1,35 +1,41 @@
-<!--[* $Id$ *]-->
-<div class="mediashare-albumlist">
 <!--[foreach from=$subAlbums item='subAlbum']-->
-  <!--[if $mode eq 'edit']-->
-  <!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$subAlbum.id assign=viewUrl]-->
-  <!--[else]-->
-  <!--[pnmodurl modname='mediashare' func='view' aid=$subAlbum.id assign=viewUrl]-->
-  <!--[/if]-->
-  <div class="mediashare-float" style="width: <!--[$thumbnailSize+40]-->px; height: <!--[$thumbnailSize+60]-->px">
-    <table>
-        <tr>
-            <td>
-                <!--[if !$subAlbum.mainMediaItem]-->
-                <a href="<!--[$viewUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/album.gif" alt="" id="album-<!--[$subAlbum.id]-->"/></a>
-                <!--[else]-->
-                <a href="<!--[$viewUrl|pnvarprepfordisplay]-->" class="album"><!--[mediashare_mediaItem src=$subAlbum.mainMediaItem.thumbnailRef title=$subAlbum.title mediaHandler=$subAlbum.mainMediaItem.mediaHandler isThumbnail="1" id="album-`$subAlbum.id`" class="thumbnail" width=$thumbnailSize height=$thumbnailSize]--></a>
-                <!--[/if]-->
-            </td>
+<!--[if $mode eq 'edit']-->
+<!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$subAlbum.id assign=viewUrl]-->
+<!--[else]-->
+<!--[pnmodurl modname='mediashare' func='view' aid=$subAlbum.id assign=viewUrl]-->
+<!--[/if]-->
+
+<div class="ms-item ms-albumitem">
+    <div class="ms-item-box">
+        <!--[if !$subAlbum.mainMediaItem]-->
+        <a class="ms-item-thumblink" href="<!--[$viewUrl|pnvarprepfordisplay]-->">
+            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=64 format="%d" assign=gapHeight]-->
+            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=64 format="%d" assign=gapWidth]-->
+            <!--[if $gapHeight < 0]--><!--[assign var='gapHeight' value=0]--><!--[/if]-->
+            <!--[if $gapWidth < 0]--><!--[assign var='gapWidth' value=0]--><!--[/if]-->
+            <img style="padding: <!--[$gapHeight]-->px <!--[$gapWidth]-->px;" src="modules/mediashare/pnimages/album.gif" alt="" id="album-<!--[$subAlbum.id]-->"/>
+        </a>
+        <!--[else]-->
+        <a class="ms-item-thumblink" href="<!--[$viewUrl|pnvarprepfordisplay]-->">
+            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$subAlbum.mainMediaItem.thumbnailHeight format="%d" assign=gapHeight]-->
+            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$subAlbum.mainMediaItem.thumbnailWidth format="%d" assign=gapWidth]-->
+            <!--[if $gapHeight < 0]--><!--[assign var='gapHeight' value=0]--><!--[/if]-->
+            <!--[if $gapWidth < 0]--><!--[assign var='gapWidth' value=0]--><!--[/if]-->
+            <!--[mediashare_mediaItem style="padding: `$gapHeight`px `$gapWidth`px;" src=$subAlbum.mainMediaItem.thumbnailRef title=$subAlbum.title mediaHandler=$subAlbum.mainMediaItem.mediaHandler isThumbnail="1" id="album-`$subAlbum.id`" class="thumbnail" width=$thumbnailSize height=$thumbnailSize]-->
+        </a>
+        <!--[/if]-->
+    </div>
+    <div class="ms-item-content">
+        <span class="ms-item-caption">
             <!--[if $mode eq 'edit']-->
-            <td>
-                <div style="position: relative">
-                    <img src="modules/mediashare/pnimages/imagemenuicon.gif"
-                    class="mediashare-clickable"
-                    onclick="contextmenu.album.onClick(this,'album-<!--[$subAlbum.id]-->', event, 'psmenu-album')"
-                    onmouseover="this.src='modules/mediashare/pnimages/imagemenuicon_hover.gif'"
-                    onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'" alt=""/>
-                </div>
-            </td>
+            <img src="modules/mediashare/pnimages/imagemenuicon.gif"
+            class="mediashare-clickable"
+            onclick="contextmenu.album.onClick(this,'album-<!--[$subAlbum.id]-->', event, 'psmenu-album')"
+            onmouseover="this.src='modules/mediashare/pnimages/imagemenuicon_hover.gif'"
+            onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'" alt=""/>
             <!--[/if]-->
-        </tr>
-    </table>
-    <a href="<!--[$viewUrl|pnvarprepfordisplay]-->"><!--[$subAlbum.title|pnvarprepfordisplay]--></a>
-  </div>
-<!--[/foreach]-->
+            <a href="<!--[$viewUrl|pnvarprepfordisplay]-->"><!--[$subAlbum.title|pnvarprepfordisplay]--></a>
+        </span>
+    </div>
 </div>
+<!--[/foreach]-->

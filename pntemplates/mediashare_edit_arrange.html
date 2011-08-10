@@ -6,20 +6,17 @@
 
 <fieldset>
     <h3><!--[gt text="Arrange items"]--></h3>
-    <div class="mediashare-body">
-        <table id="mediashare-arrange-table">
-            <!--[foreach from=$mediaItems item=item name=i]-->
-            <tr class="mr">
-                <td><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail" onmousedown="mediashare.drag.dragPress(event)"]--></td>
-                <td>
-                    <!--[$item.title]-->
-                </td>
-            </tr>
-            <!--[/foreach]-->
-        </table>
-
-        <input type="hidden" id="mediashare-arrange-seqinput" name="seq" />
-    </div>
+    <table id="mediashare-arrange-table">
+        <!--[foreach from=$mediaItems item=item name=i]-->
+        <tr class="mr">
+            <td><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail" onmousedown="mediashare.drag.dragPress(event)"]--></td>
+            <td>
+                <!--[$item.title]-->
+            </td>
+        </tr>
+        <!--[/foreach]-->
+    </table>
+    <input type="hidden" id="mediashare-arrange-seqinput" name="seq" />
 </fieldset>
 
 <div class="z-formbuttons ms-buttons">

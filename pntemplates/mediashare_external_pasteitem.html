@@ -23,11 +23,9 @@
                 <input type="hidden" value="<!--[$mediaId]-->" name="mid"/>
                 <fieldset>
                     <legend><!--[gt text="Select format"]--></legend>
-                    <div class="mediashare-body">
-                        <!--[mediashare_mediaItem src=$mediaItem.thumbnailRef isThumbnail=1 title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler]-->
-                        <br/>
-                        <!--[include file="mediashare_media_`$mediaItem.mediaHandler`_paste.html"]-->
-                    </div>
+                    <!--[mediashare_mediaItem src=$mediaItem.thumbnailRef isThumbnail=1 title=$mediaItem.title mediaHandler=$mediaItem.mediaHandler]-->
+                    <br/>
+                    <!--[include file="mediashare_media_`$mediaItem.mediaHandler`_paste.html"]-->
                     <div class="z-formbuttons ms-buttons">
                         <!--[elfisk_button name="selectButton" text="Select" onclick="mediashare.find.selectItem()]-->
                         <!--[elfisk_button name="backButton" text="Back"]-->

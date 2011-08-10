@@ -16,62 +16,69 @@
 <!--[/capture]-->
 <!--[pnpageaddvar name='rawtext' value=$boxsize]-->
 
-<!--[if $album.id != 1  &&  $access.hasParentAccess]-->
-<div class="mediashare-float" style="width: <!--[$album.thumbnailSize+40]-->px; height: <!--[$album.thumbnailSize+40]-->px">
+<div class="ms-grid z-clearfix">
+    <!--[if $album.id != 1  &&  $access.hasParentAccess]-->
     <!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$album.parentAlbumId assign=parentUrl]-->
-    <a href="<!--[$parentUrl|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/album_up.gif" alt="<!--[gt text='One level up']-->" /></a>
+    <div class="ms-item ms-albumitem">
+        <div class="ms-item-box">
+            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=64 format="%d" assign=gapHeight]-->
+            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=64 format="%d" assign=gapWidth]-->
+            <!--[if $gapHeight < 0]--><!--[assign var='gapHeight' value=0]--><!--[/if]-->
+            <!--[if $gapWidth < 0]--><!--[assign var='gapWidth' value=0]--><!--[/if]-->
+            <a class="ms-item-thumblink" href="<!--[$parentUrl|pnvarprepfordisplay]-->">
+                <img src="modules/mediashare/pnimages/album_up.gif" style="padding: <!--[$gapHeight]-->px <!--[$gapWidth]-->px;" alt="<!--[gt text='One level up']-->" />
+            </a>
+        </div>
+        <div class="ms-item-content">
+            <span class="ms-item-caption"><!--[gt text='One level up']--></span>
+        </div>
+    </div>
+    <!--[/if]-->
+    <!--[include file='mediashare_subalbumlist.html' mode='edit']-->
 </div>
-<!--[/if]-->
-
-<!--[include file='mediashare_subalbumlist.html' mode='edit']-->
-
-<br class="z-clearer" />
 
 <div class="ms-grid z-clearfix">
     <!--[foreach from=$mediaItems item=item]-->
     <!--[strip]-->
     <!--[pnmodurl modname='mediashare' type='user' func='displaygb' mid=$item.id popup=1 assign='displayUrl']-->
     <div class="ms-item">
-        <div class="ms-item-borderbox">
-            <div class="ms-item-box">
-                <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailHeight format="%d" assign=gapHeight]-->
-                <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailWidth format="%d" assign=gapWidth]-->
-                <!--[if $gapHeight < 0]--><!--[assign var='gapHeight' value=0]--><!--[/if]-->
-                <!--[if $gapWidth < 0]--><!--[assign var='gapWidth' value=0]--><!--[/if]-->
-                <a class="ms-item-thumblink" href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id mid=$item.id]-->">
-                    <!--[mediashare_mediaItem src=$item.thumbnailRef style="padding: `$gapHeight`px `$gapWidth`px;" title=$item.captionLong mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="ms-item-thumbnail"]-->
-                </a>
-            </div>
-            <div class="ms-item-content">
-                <span class="ms-item-zoom">
-                    <!--[if $item.originalIsImage]-->
-                    <a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->" rel="lightbox1" title="<!--[$item.captionLong|pnvarprephtmldisplay]-->" class="zoom"><img src="modules/mediashare/pnimages/magnify.gif" alt="" /></a>
-                    <!--[else]-->
-                    <a href="<!--[$displayUrl]-->" rel="gb_page_center[<!--[$item.originalWidth]-->,<!--[$item.originalHeight]-->]" title="<!--[$item.captionLong|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/magnify.gif" alt="" /></a>
-                    <!--[/if]-->
-                </span>
-                &nbsp;
-                <span class="ms-item-caption">
-                    <!--[$item.caption|truncate:20|pnvarprepfordisplay]-->
-                </span>
-                <br />
-                <span>
-                    <img src="modules/mediashare/pnimages/imagemenuicon.gif"
-                    class="mediashare-clickable"
-                    onclick="contextmenu.media.onClick(this,'media-<!--[$item.id]-->', event, 'psmenu-media')"
-                    onmouseover="this.src='modules/mediashare/pnimages/imagemenuicon_hover.gif'"
-                    onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'" alt="" />
-                </span>
-                <span>
-                    <input type="checkbox" name="selectedMediaId[]" value="<!--[$item.id]-->" />
-                </span>
-                <!--[if $item.id eq $album.mainMediaId]-->
-                <span>
-                    <img style="margin: 2px 0;" src="modules/mediashare/pnimages/greendot.gif" alt="" title="<!--[gt text='Main item in album']-->" />
-                </span>
+        <div class="ms-item-box">
+            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailHeight format="%d" assign=gapHeight]-->
+            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailWidth format="%d" assign=gapWidth]-->
+            <!--[if $gapHeight < 0]--><!--[assign var='gapHeight' value=0]--><!--[/if]-->
+            <!--[if $gapWidth < 0]--><!--[assign var='gapWidth' value=0]--><!--[/if]-->
+            <a class="ms-item-thumblink" href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id mid=$item.id]-->">
+                <!--[mediashare_mediaItem src=$item.thumbnailRef style="padding: `$gapHeight`px `$gapWidth`px;" title=$item.captionLong mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="ms-item-thumbnail"]-->
+            </a>
+        </div>
+        <div class="ms-item-content">
+            <span class="ms-item-zoom">
+                <!--[if $item.originalIsImage]-->
+                <a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->" rel="lightbox1" title="<!--[$item.captionLong|pnvarprephtmldisplay]-->" class="zoom"><img src="modules/mediashare/pnimages/magnify.gif" alt="" /></a>
+                <!--[else]-->
+                <a href="<!--[$displayUrl]-->" rel="gb_page_center[<!--[$item.originalWidth]-->,<!--[$item.originalHeight]-->]" title="<!--[$item.captionLong|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/magnify.gif" alt="" /></a>
                 <!--[/if]-->
-
-            </div>
+            </span>
+            &nbsp;
+            <span class="ms-item-caption">
+                <!--[$item.caption|truncate:20|pnvarprepfordisplay]-->
+            </span>
+            <br />
+            <span>
+                <img src="modules/mediashare/pnimages/imagemenuicon.gif"
+                class="mediashare-clickable"
+                onclick="contextmenu.media.onClick(this,'media-<!--[$item.id]-->', event, 'psmenu-media')"
+                onmouseover="this.src='modules/mediashare/pnimages/imagemenuicon_hover.gif'"
+                onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'" alt="" />
+            </span>
+            <span>
+                <input type="checkbox" name="selectedMediaId[]" value="<!--[$item.id]-->" />
+            </span>
+            <!--[if $item.id eq $album.mainMediaId]-->
+            <span>
+                <img style="margin: 2px 0;" src="modules/mediashare/pnimages/greendot.gif" alt="" title="<!--[gt text='Main item in album']-->" />
+            </span>
+            <!--[/if]-->
         </div>
     </div>
     <!--[/strip]-->

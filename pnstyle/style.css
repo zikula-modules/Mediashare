@@ -155,20 +155,14 @@ div.mediashare-block td {
     vertical-align: top;
 }
 
-div.mediashare-body {
-    padding: 4px;
-}
-
 /* Floating block with media item in it */
 
-div.mediashare-float
-{
+div.mediashare-float {
     float: left;
     text-align: center;
 }
 
-div.mediashare-float table td
-{
+div.mediashare-float table td {
     vertical-align: top;
     text-align: left;
 }
@@ -400,37 +394,6 @@ tr.mediashare-sizerow td
 }
 
 
-div.mediashare-thumbnails
-{
-    padding: 5px 0px 0px 5px;
-}
-
-div.mediashare-thumbnails div.mediashare-float
-{
-    padding: 0px;
-    margin: 0px 20px 15px 0px;
-}
-
-div.mediashare-thumbnails div.content
-{
-    box-shadow: 2px 2px 2px #666;
-    -moz-box-shadow: 2px 2px 2px #666;
-    -webkit-box-shadow: 2px 2px 2px #666;
-    border: 1px outset #ccc;
-    font-size: 90%;
-    overflow: hidden;
-    padding: 5px 2px 2px 2px;
-}
-
-div.mediashare-thumbnails div.thumbnail
-{
-}
-
-div.mediashare-thumbnails a.zoom img
-{
-    vertical-align: middle;
-}
-
 /* Latest items */
 table.mediashare-mostactive td
 {
@@ -611,6 +574,12 @@ span.mediashare-filmstrip-info
     float: left;
     margin: 0 5px 5px 0;
     padding: 0;
+    border: 1px solid #E0E0E0;
+    text-align: center;
+}
+
+.ms-item:hover {
+    border: 1px solid #aaa;
 }
 
 .ms-item-box {
@@ -619,12 +588,12 @@ span.mediashare-filmstrip-info
     width: 0;   /* value will be changed in the templates */
 }
 
-.ms-item-borderbox {
-    border: 1px solid #E0E0E0;
-    text-align: center;
+.ms-item.ms-albumitem {
+    border: 1px solid #666666;
 }
-.ms-item-borderbox:hover {
-    border: 1px solid #aaa;
+
+.ms-item.ms-albumitem:hover {
+    border: 1px solid #000;
 }
 
 .ms-item-content {
@@ -637,6 +606,11 @@ span.mediashare-filmstrip-info
     position: relative;
 }
 
+.ms-albumitem .ms-item-content {
+    background: none repeat scroll 0 0 #DADADA;
+    border-top: 1px solid #666666;
+}
+
 .ms-item-caption {
     overflow: hidden;
 }
@@ -645,13 +619,14 @@ span.mediashare-filmstrip-info
     display: inline;
 }
 
-
 .ms-item-thumbnail {
     display: block;
     margin: 5px;
 }
 
-
+.ms-item-caption img {
+    vertical-align: text-bottom;
+}
 
 
 
@@ -709,3 +684,4 @@ span.mediashare-filmstrip-info
     background: url("../pnimages/delete.gif") 5px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../pnimages/delete.gif") 5px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
 }
+
