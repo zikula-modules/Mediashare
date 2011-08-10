@@ -1,5 +1,4 @@
 <?php
-// $Id$
 //
 // Mediashare by Jorn Lind-Nielsen (C)
 //
@@ -746,7 +745,7 @@ function mediashare_userapi_setSettings($args)
 function mediashare_userapi_getRelativeMediadir()
 {
     $zkroot    = substr(pnServerGetVar('DOCUMENT_ROOT'), 0, -1).pnGetBaseURI();
-    $mediaBase = substr(str_replace('\\','/',realpath(pnModGetVar('mediashare', 'mediaDirName', 'mediashare'))),strlen($zkroot)+2);
+    $mediaBase = substr(str_replace('\\','/',realpath(pnModGetVar('mediashare', 'mediaDirName', 'mediashare'))),strlen($zkroot)+1);
     return $mediaBase.'/';
 }
 
