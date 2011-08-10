@@ -619,14 +619,19 @@ span.mediashare-filmstrip-info
 
 
 
-.ms-grid {
-}
+
 
 .ms-item {
     display: block;
     float: left;
     margin: 0 5px 5px 0;
     padding: 0;
+}
+
+.ms-item-box {
+    overflow: hidden;
+    height: 0;  /* value will be changed in the templates */
+    width: 0;   /* value will be changed in the templates */
 }
 
 .ms-item-borderbox {
@@ -647,14 +652,16 @@ span.mediashare-filmstrip-info
     position: relative;
 }
 
-.ms-item-thumbnail {
-    overflow: hidden;
-}
-
 .ms-item-caption {
     overflow: hidden;
 }
 
 .ms-item-thumblink {
+    display: inline;
+}
+
+
+.ms-item-thumbnail {
     display: block;
+    margin: 5px;
 }

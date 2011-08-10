@@ -33,13 +33,13 @@
     <!--[pnmodurl modname='mediashare' type='user' func='displaygb' mid=$item.id popup=1 assign='displayUrl']-->
     <div class="ms-item">
         <div class="ms-item-borderbox">
-            <div class="ms-item-thumbnail ms-item-box">
+            <div class="ms-item-box">
                 <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailHeight format="%d" assign=gapHeight]-->
                 <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailWidth format="%d" assign=gapWidth]-->
                 <!--[if $gapHeight < 0]--><!--[assign var='gapHeight' value=0]--><!--[/if]-->
                 <!--[if $gapWidth < 0]--><!--[assign var='gapWidth' value=0]--><!--[/if]-->
-                <a class="ms-item-thumblink" style="padding: <!--[$gapHeight]-->px <!--[$gapWidth]-->px;" href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id mid=$item.id]-->">
-                    <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.captionLong mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]-->
+                <a class="ms-item-thumblink" href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id mid=$item.id]-->">
+                    <!--[mediashare_mediaItem src=$item.thumbnailRef style="padding: `$gapHeight`px `$gapWidth`px;" title=$item.captionLong mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="ms-item-thumbnail"]-->
                 </a>
             </div>
             <div class="ms-item-content">
