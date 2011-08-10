@@ -67,12 +67,6 @@ div.mediashare-toolbar {
     margin:10px 0;
 }
 
-div.mediashare-toolbar input {
-    border: 1px outset #dde;
-    background-color: #dde;
-    padding: 5px;
-}
-
 /* Album list */
 
 div.mediashare-albumlist {
@@ -460,15 +454,7 @@ table.mediashare-mostactive td.right a
     padding-right: 5px;
 }
 
-
-div.mediashare-invitations textarea,
-div.mediashare-invitations input.txt
-{
-    width: 400px;
-}
-
-div.mediashare-invitations div.row
-{
+div.mediashare-invitations div.row {
     margin: 0px 0px 20px 0px;
 }
 
@@ -519,8 +505,7 @@ div.mediashareItemSelector td.img
     text-align: center;
 }
 
-div.mediashareItemSelector td.selector input.file
-{
+div.mediashareItemSelector td.selector input.file {
     width: 400px;
 }
 
@@ -664,4 +649,63 @@ span.mediashare-filmstrip-info
 .ms-item-thumbnail {
     display: block;
     margin: 5px;
+}
+
+
+
+
+
+
+
+.ms-buttons input {
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    line-height: 130%;
+    font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+    text-decoration: none !important;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 5px 0 0;
+    padding: 2px 5px;
+    color: #444;
+    border-color: #CCCCCC #B9B9B9 #B9B9B9 #CCCCCC;
+    border-style: solid;
+    border-width: 1px;
+    background: #dfdfdf; /*non-CSS3 browsers*/
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)); /*webkit*/
+    background: -moz-linear-gradient(top, #ffffff, #dfdfdf); /*gecko*/
+    background: linear-gradient(#FFFFFF, #dfdfdf); /*CSS3*/
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.ms-buttons .ms-button-edit {
+    padding: 2px 2px 2px 20px;
+    background: url("../pnimages/edit.gif") #dfdfdf 5px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../pnimages/edit.gif") 5px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../pnimages/edit.gif") 5px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../pnimages/edit.gif") 5px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
+}
+
+.ms-buttons .ms-button-move {
+    padding: 2px 2px 2px 20px;
+    background: url("../pnimages/move.gif") #dfdfdf 5px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../pnimages/move.gif") 5px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../pnimages/move.gif") 5px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../pnimages/move.gif") 5px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
+}
+
+.ms-buttons .ms-button-delete {
+    padding: 2px 2px 2px 20px;
+    background: url("../pnimages/delete.gif") #dfdfdf 5px 50% no-repeat; /*non-CSS3 browsers*/
+    background: url("../pnimages/delete.gif") 5px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../pnimages/delete.gif") 5px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
+    background: url("../pnimages/delete.gif") 5px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
 }

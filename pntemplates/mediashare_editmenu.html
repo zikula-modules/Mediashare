@@ -1,4 +1,3 @@
-<!--[* $Id$ *]-->
 <div class="z-menu">
     <span class="z-menuitem-title">
         [
@@ -27,11 +26,11 @@
 </div>
 
 <!--[if $access.hasEditMediaAccess]-->
-<div class="mediashare-toolbar">
-    <input type="image" name="multiedit" src="modules/mediashare/pnimages/edit.gif" alt="<!--[gt text='Edit selected items']-->" title="<!--[gt text='Edit selected items']-->" />
-    <input type="image" name="multimove" src="modules/mediashare/pnimages/move.gif" alt="<!--[gt text='Move selected items']-->" title="<!--[gt text='Move selected items']-->" />
-    <input type="image" name="multidelete" src="modules/mediashare/pnimages/delete.gif" alt="<!--[gt text='Delete selected items']-->" title="<!--[gt text='Delete selected items']-->" />
-    <input type="button" name="selectall" value="Select all" onclick="selectMedia(true)" />
-    <input type="button" name="unselectall" value="Unselect all" onclick="selectMedia(false)" />
+<div class="mediashare-toolbar ms-buttons">
+    <input class="ms-button-edit" type="submit" name="multiedit" title="<!--[gt text='Edit selected items']-->" value="<!--[gt text='Edit']-->" />
+    <input class="ms-button-move" type="submit" name="multimove" title="<!--[gt text='Move selected items']-->" value="<!--[gt text='Move']-->" />
+    <input class="ms-button-delete" type="submit" name="multidelete" title="<!--[gt text='Delete selected items']-->" value="<!--[gt text='Delete']-->" />
+    <input class="ms-button-selectall" type="button" name="selectall" value="Select all" onclick="selectMedia(true)" />
+    <input class="ms-button-deselectall" type="button" name="unselectall" value="Unselect all" onclick="selectMedia(false)" />
 </div>
 <!--[/if]-->

@@ -1,4 +1,3 @@
-// $Id$
 //
 // Stand alone file selector for Mediashare
 // (C) Jorn Wildt

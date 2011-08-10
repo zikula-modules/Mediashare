@@ -1,5 +1,4 @@
 <?php
-// $Id$
 //
 // Mediashare by Jorn Lind-Nielsen (C)
 //
@@ -28,11 +27,11 @@ function mediashare_edit_view($args)
 
     // Check multi-edit buttons
     $selectedMediaId = FormUtil::getPassedValue('selectedMediaId');
-    if ((isset($_POST['multiedit_x']) || isset($_POST['multidelete_x']) || isset($_POST['multimove_x'])) && count($selectedMediaId) > 0) {
+    if ((isset($_POST['multiedit']) || isset($_POST['multidelete']) || isset($_POST['multimove'])) && count($selectedMediaId) > 0) {
         $mediaIdList = implode(',', $selectedMediaId);
-        if (isset($_POST['multiedit_x'])) {
+        if (isset($_POST['multiedit'])) {
             $func = 'multieditmedia';
-        } else if (isset($_POST['multidelete_x'])) {
+        } else if (isset($_POST['multidelete'])) {
             $func = 'multideletemedia';
         } else {
             $func = 'multimovemedia';

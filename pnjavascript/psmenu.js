@@ -1,5 +1,3 @@
-// $Id$
-
 /**
  * Some utility functions
  */
