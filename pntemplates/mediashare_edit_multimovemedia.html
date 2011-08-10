@@ -1,25 +1,14 @@
 <!--[pnajaxheader lightbox=true]-->
+
 <form class="z-form" method="post" action="<!--[pnmodurl modname='mediashare' type='edit' func='multimovemedia' aid=$albumId]-->">
     <div>
         <input type="hidden" name="authid" value="<!--[insert name='generateauthkey' module='mediashare']-->" />
         <h2><!--[gt text="Move selected items"]--></h2>
-        <div class="mediashare-thumbnails z-clearfix">
-            <!--[foreach from=$items item=item]-->
-            <input type="hidden" name="mediaId[]" value="<!--[$item.id]-->"/>
-            <div class="mediashare-float"><div class="dropshadow">
-                <div class="content" style="width: <!--[$thumbnailSize+20]-->px; height: <!--[$thumbnailSize+30]-->px">
-                    <div class="thumbnail">
-                        <a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->" rel="lightbox1"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="thumbnail"]--></a>
-                    </div>
-                    <!--[$item.title]-->
-                </div>
-            </div></div>
-            <!--[/foreach]-->
-        </div>
+        <!--[include file='mediashare_thumbnails.html' thumbnails=$items]-->
         <fieldset>
-            <legend><!--[gt text="New album"]--></legend>
+            <legend><!--[gt text="Select new album for the above items"]--></legend>
             <div class="z-formrow">
-                <label for="newalbumid"><!--[gt text="Select new album for the above items"]--></label>
+                <label for="newalbumid"><!--[gt text="New album"]--></label>
                 <!--[mediashare_albumSelector albumId=1 name=newalbumid id=newalbumid access="mediashareAccessRequirementAddMedia"]-->
             </div>
         </fieldset>

@@ -4,49 +4,7 @@
 <!--[pnmodurl modname='mediashare' type='edit' func='view' aid=$album.id assign='editAlbumUrl']-->
 <!--[include file='mediashare_viewheader.html' albumId=$album.id title=$album.title]-->
 <!--[include file='mediashare_browseicons.html']-->
-
-<!--[capture assign=boxsize]-->
-<style type="text/css">
-    .ms-item-box {
-        height: <!--[math equation="x + y" x=$thumbnailSize y=10]-->px;
-        width: <!--[math equation="x + y" x=$thumbnailSize y=10]-->px;
-    }
-</style>
-<!--[/capture]-->
-<!--[pnpageaddvar name='rawtext' value=$boxsize]-->
-
-<div class="ms-grid z-clearfix">
-    <!--[foreach from=$mediaItems item=item]-->
-    <!--[strip]-->
-    <!--[pnmodurl modname='mediashare' type='user' func='displaygb' mid=$item.id popup=1 assign='displayUrl']-->
-    <div class="ms-item">
-        <div class="ms-item-box">
-            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailHeight format="%d" assign=gapHeight]-->
-            <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailWidth format="%d" assign=gapWidth]-->
-            <!--[if $gapHeight < 0]--><!--[assign var='gapHeight' value=0]--><!--[/if]-->
-            <!--[if $gapWidth < 0]--><!--[assign var='gapWidth' value=0]--><!--[/if]-->
-            <a class="ms-item-thumblink" href="<!--[pnmodurl modname='mediashare' func='browse' aid=$album.id mid=$item.id]-->">
-                <!--[mediashare_mediaItem src=$item.thumbnailRef style="padding: `$gapHeight`px `$gapWidth`px;" title=$item.captionLong mediaHandler=$item.mediaHandler isThumbnail="1" id="media-`$item.id`" class="ms-item-thumbnail"]-->
-            </a>
-        </div>
-        <div class="ms-item-content">
-            <span class="ms-item-zoom">
-                <!--[if $item.originalIsImage]-->
-                <a href="<!--[mediashare_mediaUrl src=previewRef mediaItem=$item]-->" rel="lightbox1" title="<!--[$item.captionLong|pnvarprephtmldisplay]-->" class="zoom"><img src="modules/mediashare/pnimages/magnify.gif" alt="" /></a>
-                <!--[else]-->
-                <a href="<!--[$displayUrl]-->" rel="gb_page_center[<!--[$item.originalWidth]-->,<!--[$item.originalHeight]-->]" title="<!--[$item.captionLong|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/magnify.gif" alt="" /></a>
-                <!--[/if]-->
-            </span>
-            &nbsp;
-            <span class="ms-item-caption">
-                <!--[$item.caption|truncate:20|pnvarprepfordisplay]-->
-            </span>
-        </div>
-    </div>
-    <!--[/strip]-->
-    <!--[/foreach]-->
-</div>
-
+<!--[include file='mediashare_thumbnails.html' thumbnails=$mediaItems]-->
 <!--[include file='mediashare_subalbumlist.html' mode='view']-->
 
 <div class="mediashare-data">
@@ -61,7 +19,6 @@
 
     <div class="author">
         <!--[gt text='By']--> <a href="<!--[pnmodurl modname='mediashare' func='list' uname=$ownerName]-->" title="<!--[gt text='Show items from this person']-->"><!--[$ownerName|pnvarprepfordisplay]--></a>.
-
         <!--[if $album.hasKeywords > 0]-->
         <!--[gt text='Keywords:']-->
         <!--[foreach from=$album.keywordsArray item=keyword]-->
@@ -70,6 +27,5 @@
         <!--[/if]-->
     </div>
 </div>
-
 
 <!--[include file='mediashare_viewfooter.html']-->

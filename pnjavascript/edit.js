@@ -204,7 +204,7 @@ contextmenu.menuClosed = function(context)
 
 function selectMedia(mark) 
 {
-  var checkboxes = document.getElementsByName('selectedMediaId[]'); 
+  var checkboxes = document.getElementsByName('mediaId[]'); 
   for (var i=checkboxes.length-1; i>=0; --i) 
   {
     checkboxes[i].checked = mark;

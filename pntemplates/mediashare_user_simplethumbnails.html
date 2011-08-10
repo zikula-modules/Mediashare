@@ -1,11 +1,3 @@
 <!--[pnajaxheader lightbox=true]-->
 <!--[pnpageaddvar name='stylesheet' value='modules/mediashare/pnstyle/style.css']-->
-
-<div class="mediashare-thumbnails z-clearfix">
-    <!--[foreach from=$mediaItems item='item']-->
-    <!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail=1 id="media-`$item.id`" class='thumbnail' assign='mediaHtml']-->
-    <div class="thumbnail mediashare-float">
-        <a href="<!--[pnmodurl modname='mediashare' func='slideshow' aid=$item.parentAlbumId mid=$item.id back=1]-->"><!--[mediashare_mediaItem src=$item.thumbnailRef title=$item.title mediaHandler=$item.mediaHandler isThumbnail=1 id="media-`$item.id`" class='thumbnail']--></a>
-    </div>
-    <!--[/foreach]-->
-</div>
+<!--[include file='mediashare_thumbnails.html' thumbnails=$mediaItems]-->

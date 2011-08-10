@@ -345,58 +345,49 @@ div.mediashare-medialist ul.sortkeys {
     padding: 0px;
 }
 
-div.mediashare-medialist ul.sortkeys li
-{
+div.mediashare-medialist ul.sortkeys li {
     display: inline;
     margin: 0px 4px 0px 4px;
 }
 
-div.mediashare-medialist ul.sortkeys li.selected
-{
+div.mediashare-medialist ul.sortkeys li.selected {
     font-weight: bold;
 }
 
-div.mediashare-medialist h3
-{
+div.mediashare-medialist h3 {
     clear: both;
     margin: 0px;
     padding: 20px 0px 0px 0px;
 }
 
-div.mediashare-medialist div.data
-{
+div.mediashare-medialist div.data {
     display: block;
     float: left;
     width: 400px
 }
 
-div.mediashare-medialist p
-{
+div.mediashare-medialist p {
     margin: 0px 0px 1ex 0px;
 }
 
-div.mediashare-medialist img
-{
+div.mediashare-medialist img {
     float: left;
     vertical-align: top;
     margin-right: 10px;
 }
 
 
-ul.mediashare-upload-list img
-{
+ul.mediashare-upload-list img {
     vertical-align: middle;
 }
 
-tr.mediashare-sizerow td
-{
+tr.mediashare-sizerow td {
     padding-bottom: 1em;
 }
 
 
 /* Latest items */
-table.mediashare-mostactive td
-{
+table.mediashare-mostactive td {
     vertical-align: top;
     padding: 5px;
     width: 50%;

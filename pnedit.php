@@ -26,7 +26,7 @@ function mediashare_edit_view($args)
     }
 
     // Check multi-edit buttons
-    $selectedMediaId = FormUtil::getPassedValue('selectedMediaId');
+    $selectedMediaId = FormUtil::getPassedValue('mediaId');
     if ((isset($_POST['multiedit']) || isset($_POST['multidelete']) || isset($_POST['multimove'])) && count($selectedMediaId) > 0) {
         $mediaIdList = implode(',', $selectedMediaId);
         if (isset($_POST['multiedit'])) {
