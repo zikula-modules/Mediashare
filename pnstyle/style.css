@@ -641,3 +641,8 @@ span.mediashare-filmstrip-info {
 #mediashare-arrange-table img {
     cursor: pointer;
 }
+
+
+.z-menu img {
+    vertical-align: middle;
+}

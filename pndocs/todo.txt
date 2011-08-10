@@ -44,7 +44,6 @@
     Make the userapi BIG SQL query more flexible.
     Javascript with fixed 'mediaattach/'
     Move the extapp help to localized template?
-    missing param in: <p>Just follow the link below (click on it or copy it to your webbrowser)</p> <p><a href="%1$s">%1$s</a></p>
 
     $startnum     = isset($args['startnum']) ? (int)$args['startnum'] : -1;
     $numitems     = isset($args['numitems']) ? (int)$args['numitems'] : -1;

@@ -1,5 +1,4 @@
 <?php
-// $Id$
 //
 // Mediashare by Jorn Wildt (C)
 //
