@@ -29,7 +29,6 @@ input.mediashare-readonly {
     font-style: italic;
 }
 
-
 /* Menu */
 
 div.mediashare-menu {
@@ -44,7 +43,6 @@ div.mediashare-menu a {
     color: #FFF;
     margin: 0px 6px;
 }
-
 
 /* Browse icons */
 
@@ -64,7 +62,7 @@ div.mediashare-browseicons a {
 /* Toolbar */
 
 div.mediashare-toolbar {
-    margin:10px 0;
+    margin: 10px 0;
 }
 
 /* Album list */
@@ -79,7 +77,7 @@ div.mediashare-tabs {
     float: left;
     width: 100%;
     background: url("../pnimages/tabs_background.gif") repeat-x bottom;
-    margin-bottom:1em;
+    margin-bottom: 1em;
 }
 
 div.mediashare-tabs ul {
@@ -150,7 +148,6 @@ div.mediashare-block {
     margin-top: 10px;
 }
 
-
 div.mediashare-block td {
     vertical-align: top;
 }
@@ -167,13 +164,11 @@ div.mediashare-float table td {
     text-align: left;
 }
 
-div.mediashare-float div.thumbnail
-{
+div.mediashare-float div.thumbnail {
     padding: 0px 0px 2px 0px;
 }
 
-div.mediashare-float img.thumbnail
-{
+div.mediashare-float img.thumbnail {
     border: 1px solid black;
     /*
     background-image: url("../pnimages/album_top.gif");
@@ -184,8 +179,7 @@ div.mediashare-float img.thumbnail
     cursor: pointer;
 }
 
-div.mediashare-float a.album
-{
+div.mediashare-float a.album {
     padding-top: 9px;
     display: block;
     float: left;
@@ -194,59 +188,47 @@ div.mediashare-float a.album
     background-position: top left;
 }
 
-div.mediashare-float img
-{
+div.mediashare-float img {
     vertical-align: top;
 }
 
-div.mediashare-float a
-{
+div.mediashare-float a {
     margin: 1px;
 }
 
-
 /* Album or media item informational area */
 
-div.mediashare-data
-{
+div.mediashare-data {
 }
 
-div.mediashare-data h3
-{
+div.mediashare-data h3 {
     margin: 0px 0px 5px 0px;
     color: #000;
 }
 
-div.mediashare-data h3 a
-{
+div.mediashare-data h3 a {
     text-decoration: none;
     color: #000;
 }
 
-div.mediashare-data a:hover
-{
+div.mediashare-data a:hover {
     text-decoration: underline;
 }
 
-div.mediashare-data div.summary
-{
+div.mediashare-data div.summary {
     font-style: italic;
     margin: 5px 0px 10px 0px;
 }
 
-div.mediashare-data div.description
-{
+div.mediashare-data div.description {
     margin: 5px 0px 10px 0px;
 }
 
-div.mediashare-data div.author
-{
+div.mediashare-data div.author {
     font-size: 90%;
 }
 
-
-div.mediashare-item
-{
+div.mediashare-item {
     float: left;
     padding: 0px;
     width: auto;
@@ -254,85 +236,70 @@ div.mediashare-item
 
 div.mediashare-item img.media,
 div.mediashare-item object.media,
-div.mediashare-item embed.media
-{
+div.mediashare-item embed.media {
     border: 5px solid #000;
     margin: 0px;
     cursor: hand;
     cursor: pointer;
 }
 
-div.mediashare-item div.mediashare-zoom
-{
+div.mediashare-item div.mediashare-zoom {
     text-align: center;
 }
 
-div.mediashare-item div.mediashare-zoom a
-{
+div.mediashare-item div.mediashare-zoom a {
     display: block;
     background-color: #444;
     color: #FFF;
     text-decoration: none;
 }
 
-div.mediashare-item div.mediashare-zoom a:hover
-{
+div.mediashare-item div.mediashare-zoom a:hover {
     display: block;
     background-color: #777;
     text-decoration: none;
 }
 
-div.mediashare-item span.description
-{
+div.mediashare-item span.description {
     font-style: italic;
 }
 
-
-div.mediashare-data div.navigation
-{
+div.mediashare-data div.navigation {
     float: right;
     margin: 0px;
     padding: 0px;
 }
 
-div.mediashare-data div.navigation img
-{
+div.mediashare-data div.navigation img {
     vertical-align: middle;
 }
 
-
-div.mediashare-footer
-{
+div.mediashare-footer {
     text-align: center;
     margin-top: 30px;
     font-size: 80%;
 }
 
-div.mediashare-footer a
-{
+div.mediashare-footer a {
     color: #777;
     text-decoration: none;
 }
 
-div.mediashare-userinfo
-{
+div.mediashare-userinfo {
     margin-bottom: 0.5em;
 }
 
-div.mediashare-userinfo *
-{
+div.mediashare-userinfo * {
     vertical-align: middle;
 }
 
 /* Album frontpage */
 
-div.mediashare-album
-{
+div.mediashare-album {
     margin: 0px 0px 0px 0px;
 }
 
-div.mediashare-album div.mediashare-item
-{
+div.mediashare-album div.mediashare-item {
     margin: 0px 20px 20px 0px;
 }
 
@@ -376,7 +343,6 @@ div.mediashare-medialist img {
     margin-right: 10px;
 }
 
-
 ul.mediashare-upload-list img {
     vertical-align: middle;
 }
@@ -385,7 +351,6 @@ tr.mediashare-sizerow td {
     padding-bottom: 1em;
 }
 
-
 /* Latest items */
 table.mediashare-mostactive td {
     vertical-align: top;
@@ -393,18 +358,15 @@ table.mediashare-mostactive td {
     width: 50%;
 }
 
-table.mediashare-mostactive td.left
-{
+table.mediashare-mostactive td.left {
     padding: 5px 10px 0px 0px;
 }
 
-table.mediashare-mostactive td.right
-{
+table.mediashare-mostactive td.right {
     padding: 5px 0px 0px 10px;
 }
 
-table.mediashare-mostactive td.right a
-{
+table.mediashare-mostactive td.right a {
     padding-right: 5px;
 }
 
@@ -412,15 +374,13 @@ div.mediashare-invitations div.row {
     margin: 0px 0px 20px 0px;
 }
 
-div.mediashare-invitations div.mediashare-invtext
-{
+div.mediashare-invitations div.mediashare-invtext {
     margin: 0px 0px 0px 20px;
     width: 400px;
     font-style: italic;
 }
 
-div.mediashare-invlink
-{
+div.mediashare-invlink {
     text-align: center;
     font-weight: bold;
     font-size: 110%;
@@ -428,16 +388,14 @@ div.mediashare-invlink
     padding: 6px;
 }
 
-table.mediashare-grid
-{
+table.mediashare-grid {
     width: 90%;
     margin-bottom: 10px;
 }
 
 /* Recalculating */
 
-div.mediashare-recalc iframe
-{
+div.mediashare-recalc iframe {
     width: 200px;
     height: 50px;
     float: right;
@@ -447,14 +405,12 @@ div.mediashare-recalc iframe
 
 /* pnForms itemselector */
 
-div.mediashareItemSelector td.selector
-{
+div.mediashareItemSelector td.selector {
     padding: 5px 20px 5px 5px;
     vertical-align: top;
 }
 
-div.mediashareItemSelector td.img
-{
+div.mediashareItemSelector td.img {
     vertical-align: middle;
     text-align: center;
 }
@@ -463,34 +419,28 @@ div.mediashareItemSelector td.selector input.file {
     width: 400px;
 }
 
-
 /* Simplefied pages using microformat ideas */
 
-dl.figure
-{
+dl.figure {
     list-style: none;
     margin: 0;
 }
 
-dl.figure dd
-{
+dl.figure dd {
     margin: 0;
 }
 
-div.mediashare-filmstrip
-{
+div.mediashare-filmstrip {
     border: 1px solid #777;
     padding: 2px 10px;
     width: 100%;
 }
 
-div.mediashare-filmstrip table
-{
+div.mediashare-filmstrip table {
     margin: auto;
 }
 
-span.mediashare-filmstrip-info
-{
+span.mediashare-filmstrip-info {
     color: #444;
     font-size: 90%;
 }
@@ -503,10 +453,10 @@ span.mediashare-filmstrip-info
     visibility: hidden;
     font: arial, sans-serif;
     z-index: 100;
-    border-top:       1px solid #D0D0D0;
-    border-left:      1px solid #D0D0D0;
-    border-right:     1px solid black;
-    border-bottom:    1px solid black;
+    border-top: 1px solid #D0D0D0;
+    border-left: 1px solid #D0D0D0;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
     background-color: #dde;
     width: 140px;
     text-align: left;
@@ -556,10 +506,6 @@ span.mediashare-filmstrip-info
     min-height: 40px;
 }
 
-
-
-
-
 .ms-item {
     display: block;
     float: left;
@@ -575,8 +521,8 @@ span.mediashare-filmstrip-info
 
 .ms-item-box {
     overflow: hidden;
-    height: 0;  /* value will be changed in the templates */
-    width: 0;   /* value will be changed in the templates */
+    height: 0; /* value will be changed in the templates */
+    width: 0; /* value will be changed in the templates */
 }
 
 .ms-item.ms-albumitem {
@@ -619,10 +565,6 @@ span.mediashare-filmstrip-info
     vertical-align: text-bottom;
 }
 
-
-
-
-
 .ms-buttons input {
     display: inline-block;
     outline: none;
@@ -655,7 +597,7 @@ span.mediashare-filmstrip-info
 .ms-buttons .ms-button-edit {
     padding: 2px 2px 2px 20px;
     background: url("../pnimages/edit.gif") #dfdfdf 5px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../pnimages/edit.gif") 5px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../pnimages/edit.gif") 5px 50% no-repeat, -moz-linear-gradient(center top, #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../pnimages/edit.gif") 5px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../pnimages/edit.gif") 5px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
 }
@@ -663,7 +605,7 @@ span.mediashare-filmstrip-info
 .ms-buttons .ms-button-move {
     padding: 2px 2px 2px 20px;
     background: url("../pnimages/move.gif") #dfdfdf 5px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../pnimages/move.gif") 5px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../pnimages/move.gif") 5px 50% no-repeat, -moz-linear-gradient(center top, #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../pnimages/move.gif") 5px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../pnimages/move.gif") 5px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
 }
@@ -671,7 +613,7 @@ span.mediashare-filmstrip-info
 .ms-buttons .ms-button-delete {
     padding: 2px 2px 2px 20px;
     background: url("../pnimages/delete.gif") #dfdfdf 5px 50% no-repeat; /*non-CSS3 browsers*/
-    background: url("../pnimages/delete.gif") 5px 50% no-repeat, -moz-linear-gradient(center top , #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
+    background: url("../pnimages/delete.gif") 5px 50% no-repeat, -moz-linear-gradient(center top, #ffffff, #dfdfdf) repeat scroll 0 0 transparent; /*gecko*/
     background: url("../pnimages/delete.gif") 5px 50% no-repeat, -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf)) repeat scroll 0 0 transparent; /*webkit*/
     background: url("../pnimages/delete.gif") 5px 50% no-repeat, linear-gradient(#ffffff, #dfdfdf); /*CSS3*/
 }
