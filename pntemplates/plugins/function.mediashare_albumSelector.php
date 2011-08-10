@@ -53,7 +53,7 @@ function smarty_function_mediashare_albumSelector($params, &$smarty)
             $indent .= '+ ';
         }
 
-        $selectedHtml = ($id == $albumId ? ' selected="1"' : '');
+        $selectedHtml = ($id == $albumId ? ' selected="selected"' : '');
 
         $html .= "<option value=\"$id\"$selectedHtml>$indent$title</option>\n";
     }

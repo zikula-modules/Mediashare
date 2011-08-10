@@ -40,7 +40,7 @@ function smarty_function_mediashare_itemSelector($params, &$smarty)
         $title = $item['title'];
         $id    = (int)$item['id'];
 
-        $selectedHtml = ($id == $mediaId ? ' selected="1"' : '');
+        $selectedHtml = ($id == $mediaId ? ' selected="selected"' : '');
 
         $html .= "<option value=\"$id\"$selectedHtml>$title</option>\n";
     }
