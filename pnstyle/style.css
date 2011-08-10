@@ -570,10 +570,10 @@ span.mediashare-filmstrip-info
     border-bottom:    1px solid black;
     background-color: #dde;
     width: 140px;
+    text-align: left;
 }
 
-#mediashare div.psmenu ul
-{
+#mediashare div.psmenu ul {
     list-style: none;
     margin: 0px;
     padding: 0px;
@@ -626,7 +626,6 @@ span.mediashare-filmstrip-info
     display: block;
     float: left;
     margin: 0 5px 5px 0;
-    overflow: hidden;
     padding: 0;
 }
 
@@ -643,27 +642,13 @@ span.mediashare-filmstrip-info
     border-top: 1px solid #E0E0E0;
     display: block;
     font-size: 12px;
-    height: 19px;
+    min-height: 19px;
     line-height: 19px;
-    overflow: hidden;
-    width: 100%;
-}
-
-ul.ms-item-options {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-}
-
-ul.ms-item-options li {
-    display: inline;
-    margin: 0;
-    padding: 0;
+    position: relative;
 }
 
 .ms-item-thumbnail {
-    margin: 5px;
+    overflow: hidden;
 }
 
 .ms-item-caption {

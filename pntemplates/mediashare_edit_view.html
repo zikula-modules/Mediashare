@@ -9,8 +9,8 @@
 <!--[capture assign=boxsize]-->
 <style type="text/css">
     .ms-item-box {
-        height: <!--[math equation="x + y" x=$thumbnailSize y=60]-->px;
-        width: <!--[math equation="x + y" x=$thumbnailSize y=30]-->px;
+        height: <!--[math equation="x + y" x=$thumbnailSize y=10]-->px;
+        width: <!--[math equation="x + y" x=$thumbnailSize y=10]-->px;
     }
 </style>
 <!--[/capture]-->
@@ -31,9 +31,9 @@
     <!--[foreach from=$mediaItems item=item]-->
     <!--[strip]-->
     <!--[pnmodurl modname='mediashare' type='user' func='displaygb' mid=$item.id popup=1 assign='displayUrl']-->
-    <div class="ms-item ms-item-box">
+    <div class="ms-item">
         <div class="ms-item-borderbox">
-            <div class="ms-item-thumbnail">
+            <div class="ms-item-thumbnail ms-item-box">
                 <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailHeight format="%d" assign=gapHeight]-->
                 <!--[math equation="(( x - y ) / 2 )" x=$thumbnailSize y=$item.thumbnailWidth format="%d" assign=gapWidth]-->
                 <!--[if $gapHeight < 0]--><!--[assign var='gapHeight' value=0]--><!--[/if]-->
@@ -50,28 +50,32 @@
                     <a href="<!--[$displayUrl]-->" rel="gb_page_center[<!--[$item.originalWidth]-->,<!--[$item.originalHeight]-->]" title="<!--[$item.captionLong|pnvarprepfordisplay]-->"><img src="modules/mediashare/pnimages/magnify.gif" alt="" /></a>
                     <!--[/if]-->
                 </span>
+                &nbsp;
                 <span class="ms-item-caption">
                     <!--[$item.caption|truncate:20|pnvarprepfordisplay]-->
                 </span>
+                <br />
+                <span>
+                    <img src="modules/mediashare/pnimages/imagemenuicon.gif"
+                    class="mediashare-clickable"
+                    onclick="contextmenu.media.onClick(this,'media-<!--[$item.id]-->', event, 'psmenu-media')"
+                    onmouseover="this.src='modules/mediashare/pnimages/imagemenuicon_hover.gif'"
+                    onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'" alt="" />
+                </span>
+                <span>
+                    <input type="checkbox" name="selectedMediaId[]" value="<!--[$item.id]-->" />
+                </span>
+                <!--[if $item.id eq $album.mainMediaId]-->
+                <span>
+                    <img style="margin: 2px 0;" src="modules/mediashare/pnimages/greendot.gif" alt="" title="<!--[gt text='Main item in album']-->" />
+                </span>
+                <!--[/if]-->
+
             </div>
         </div>
-        <ul class="ms-item-options">
-            <li>
-                <img src="modules/mediashare/pnimages/imagemenuicon.gif"
-                class="mediashare-clickable"
-                onclick="contextmenu.media.onClick(this,'media-<!--[$item.id]-->', event, 'psmenu-media')"
-                onmouseover="this.src='modules/mediashare/pnimages/imagemenuicon_hover.gif'"
-                onmouseout="this.src='modules/mediashare/pnimages/imagemenuicon.gif'" alt="" />
-            </li>
-            <li><input type="checkbox" name="selectedMediaId[]" value="<!--[$item.id]-->" /></li>
-            <!--[if $item.id eq $album.mainMediaId]-->
-            <li><img style="margin: 2px 0;" src="modules/mediashare/pnimages/greendot.gif" alt="" title="<!--[gt text='Main item in album']-->" /></li>
-            <!--[/if]-->
-        </ul>
     </div>
     <!--[/strip]-->
     <!--[/foreach]-->
 </div>
 
 <!--[include file='mediashare_footer.html']-->
-
