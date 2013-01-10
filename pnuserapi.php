@@ -245,7 +245,8 @@ function mediashare_userapi_getSubAlbumsData($args)
     {
         $subalbums[$k]['mainMediaItem'] = null;
         if ($includeMainItem && (int)$subalbums[$k]['mainMediaId'] > 0) {
-            $subalbums[$k]['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $subalbums[$k]['mainMediaId']));
+			$subalbums[$k]['mainMediaItem'] = pnModAPIFunc('mediashare', 'user', 'getMediaItem', array('mediaId' => $subalbums[$k]['mainMediaId']));
+			//die();
         }
 
         $subalbums[$k]['extappData'] = unserialize($subalbums[$k]['extappData']);
@@ -287,7 +288,17 @@ function mediashare_userapi_getAlbumBreadcrumb($args)
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getAlbumBreadcrumb', 'Could not retrieve the breadcrumb information.'), $dom));
     }
 
-    return DBUtil::marshallObjects($result, array('id', 'title'));
+	$cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$objArray[$cont]['id'] = $result->fields[0];
+		$objArray[$cont]['title'] = $result->fields[1];
+
+		$result->MoveNext();
+		$cont++;
+	}
+	return $objArray;
+    //return DBUtil::marshallObjects($result, array('id', 'title'));
 }
 
 function mediashare_userapi_getAlbumList($args)
@@ -448,9 +459,43 @@ function mediashare_userapi_getMediaItem($args)
                       'thumbnailRef', 'thumbnailMimeType', 'thumbnailWidth', 'thumbnailHeight', 'thumbnailBytes',
                       'previewRef', 'previewMimeType', 'previewWidth', 'previewHeight', 'previewBytes',
                       'originalRef', 'originalMimeType', 'originalWidth', 'originalHeight', 'originalBytes');
+//print_r($colArray);die();
+    //list($item) = DBUtil::marshallObjects($result, $colArray);
+	$cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$item[$cont]['id'] = $result->fields[0];
+		$item[$cont]['ownerId'] = $result->fields[1];
+		$item[$cont]['createdDate'] = $result->fields[2];
+		$item[$cont]['modifiedDate'] = $result->fields[3];
+		$item[$cont]['title'] = $result->fields[4];
+		$item[$cont]['keywords'] = $result->fields[5];
+		$item[$cont]['description'] = $result->fields[6];
+		$item[$cont]['parentAlbumId'] = $result->fields[7];
+		$item[$cont]['position'] = $result->fields[8];
+		$item[$cont]['mediaHandler'] = $result->fields[9];
+		$item[$cont]['thumbnailId'] = $result->fields[10];
+		$item[$cont]['previewId'] = $result->fields[11];
+		$item[$cont]['originalId'] = $result->fields[12];
+		$item[$cont]['thumbnailRef'] = $result->fields[13];
+		$item[$cont]['thumbnailMimeType'] = $result->fields[14];
+		$item[$cont]['thumbnailWidth'] = $result->fields[15];
+		$item[$cont]['thumbnailHeight'] = $result->fields[16];
+		$item[$cont]['thumbnailBytes'] = $result->fields[17];
+		$item[$cont]['previewRef'] = $result->fields[18];
+		$item[$cont]['previewMimeType'] = $result->fields[19];
+		$item[$cont]['previewWidth'] = $result->fields[20];
+		$item[$cont]['previewHeight'] = $result->fields[21];
+		$item[$cont]['previewBytes'] = $result->fields[22];
+		$item[$cont]['originalRef'] = $result->fields[23];
+		$item[$cont]['originalMimeType'] = $result->fields[24];
+		$item[$cont]['originalWidth'] = $result->fields[25];
+		$item[$cont]['originalHeight'] = $result->fields[26];
+		$item[$cont]['originalBytes'] = $result->fields[27];
 
-    list($item) = DBUtil::marshallObjects($result, $colArray);
-
+		$result->MoveNext();
+		$cont++;
+	}
     // select post process
     $item['caption'] = empty($item['title']) ? $item['description'] : $item['title'];
     $item['captionLong'] = empty($item['description']) ? $item['title'] : $item['description'];
@@ -606,7 +651,45 @@ function mediashareGetMediaItemsData($args)
                       'previewRef', 'previewMimeType', 'previewWidth', 'previewHeight', 'previewBytes',
                       'originalRef', 'originalMimeType', 'originalWidth', 'originalHeight', 'originalBytes');
 
-    $items = DBUtil::marshallObjects($result, $colArray);
+	$cont = 0;
+	$items = array();
+	$result->MoveNext();
+	while (!$result->EOF) {
+		if ($result->fields[0] != ''){
+		$items[$cont]['id'] = $result->fields[0];
+		$items[$cont]['ownerId'] = $result->fields[1];
+		$items[$cont]['createdDate'] = $result->fields[2];
+		$items[$cont]['modifiedDate'] = $result->fields[3];
+		$items[$cont]['title'] = $result->fields[4];
+		$items[$cont]['keywords'] = $result->fields[5];
+		$items[$cont]['description'] = $result->fields[6];
+		$items[$cont]['parentAlbumId'] = $result->fields[7];
+		$items[$cont]['mediaHandler'] = $result->fields[8];
+		$items[$cont]['thumbnailId'] = $result->fields[9];
+		$items[$cont]['previewId'] = $result->fields[10];
+		$items[$cont]['originalId'] = $result->fields[11];
+		$items[$cont]['thumbnailRef'] = $result->fields[12];
+		$items[$cont]['thumbnailMimeType'] = $result->fields[13];
+		$items[$cont]['thumbnailWidth'] = $result->fields[14];
+		$items[$cont]['thumbnailHeight'] = $result->fields[15];
+		$items[$cont]['thumbnailBytes'] = $result->fields[16];
+		$items[$cont]['previewRef'] = $result->fields[17];
+		$items[$cont]['previewMimeType'] = $result->fields[18];
+		$items[$cont]['previewWidth'] = $result->fields[19];
+		$items[$cont]['previewHeight'] = $result->fields[20];
+		$items[$cont]['previewBytes'] = $result->fields[21];
+		$items[$cont]['originalRef'] = $result->fields[22];
+		$items[$cont]['originalMimeType'] = $result->fields[23];
+		$items[$cont]['originalWidth'] = $result->fields[24];
+		$items[$cont]['originalHeight'] = $result->fields[25];
+		$items[$cont]['originalBytes'] = $result->fields[26];
+
+		$cont++;
+		}
+		$result->MoveNext();
+		
+	}
+    //$items = DBUtil::marshallObjects($result, $colArray);
 
     // select post process
     foreach (array_keys($items) as $id)
@@ -668,7 +751,15 @@ function mediashare_userapi_getRandomMediaItem($args)
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
         }
 
-        $albumId = DBUtil::marshallObjects($result, array('id'));
+		$cont = 0;
+		$result->MoveNext();
+		while (!$result->EOF) {
+			$albumId[$cont]['id'] = $result->fields[0];
+
+			$result->MoveNext();
+			$cont++;
+		}
+        //$albumId = DBUtil::marshallObjects($result, array('id'));
         $albumId = (int)$albumId[0]['id'];
 
         $accessibleAlbumSql = "album.$albumsColumn[id] = '$albumId'";
@@ -690,7 +781,15 @@ function mediashare_userapi_getRandomMediaItem($args)
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
     }
 
-    $count = DBUtil::marshallObjects($result, array('count'));
+	$cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$count[$cont]['count'] = $result->fields[0];
+
+		$result->MoveNext();
+		$cont++;
+	}
+    //$count = DBUtil::marshallObjects($result, array('count'));
     $count = (int)$count[0]['count'];
 
     $sql = "SELECT media.$mediaColumn[id],
@@ -706,7 +805,16 @@ function mediashare_userapi_getRandomMediaItem($args)
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getRandomMediaItem', 'Could not retrieve the random media item.'), $dom));
     }
 
-    $media = DBUtil::marshallObjects($result, array('mediaId', 'albumId'));
+	$cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$media[$cont]['mediaId'] = $result->fields[0];
+		$media[$cont]['albumId'] = $result->fields[1];
+
+		$result->MoveNext();
+		$cont++;
+	}
+    //$media = DBUtil::marshallObjects($result, array('mediaId', 'albumId'));
     $media = $media[0];
 
     return $media;
@@ -745,7 +853,8 @@ function mediashare_userapi_setSettings($args)
 function mediashare_userapi_getRelativeMediadir()
 {
     $zkroot    = substr(pnServerGetVar('DOCUMENT_ROOT'), 0, -1).pnGetBaseURI();
-    $mediaBase = substr(str_replace('\\','/',realpath(pnModGetVar('mediashare', 'mediaDirName', 'mediashare'))),strlen($zkroot)+1);
+    //$mediaBase = substr(str_replace('\\','/',realpath(pnModGetVar('mediashare', 'mediaDirName', 'mediashare'))),strlen($zkroot)+1);
+	$mediaBase = pnModGetVar('mediashare', 'mediaDirName', 'mediashare');
     return $mediaBase.'/';
 }
 
@@ -780,7 +889,17 @@ function mediashare_userapi_getMostActiveUsers()
     }
 
     // FIXME uname as index, count as values?
-    return DBUtil::marshallObjects($result, array('uname', 'count'));
+    $cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$objArray[$cont]['uname'] = $result->fields[0];
+		$objArray[$cont]['count'] = $result->fields[1];
+
+		$result->MoveNext();
+		$cont++;
+	}
+	return $objArray;
+	//return DBUtil::marshallObjects($result, array('uname', 'count'));
 }
 
 function mediashare_userapi_getMostActiveKeywords()
@@ -809,7 +928,16 @@ function mediashare_userapi_getMostActiveKeywords()
     }
 
     // FIXME keyword as index, count as values?
-    $keywords = DBUtil::marshallObjects($result, array('keyword', 'count'));
+    $cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$keywords[$cont]['keyword'] = $result->fields[0];
+		$keywords[$cont]['count'] = $result->fields[1];
+
+		$result->MoveNext();
+		$cont++;
+	}
+	//$keywords = DBUtil::marshallObjects($result, array('keyword', 'count'));
 
     // counters calculation
     $max = -1;
@@ -876,7 +1004,15 @@ function mediashare_userapi_getSummary()
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getSummary', 'Could not count the media table.'), $dom));
     }
 
-    $count = DBUtil::marshallObjects($result, array('count'));
+	$cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$count[$cont]['count'] = $result->fields[0];
+
+		$result->MoveNext();
+		$cont++;
+	}
+    //$count = DBUtil::marshallObjects($result, array('count'));
     $summary['mediaCount'] = (int)$count[0]['count'];
 
     // Find accessible albums (album count)
@@ -897,7 +1033,15 @@ function mediashare_userapi_getSummary()
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getSummary', 'Could not count the albums table.'), $dom));
     }
 
-    $count = DBUtil::marshallObjects($result, array('count'));
+	$cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$count[$cont]['count'] = $result->fields[0];
+
+		$result->MoveNext();
+		$cont++;
+	}
+    //$count = DBUtil::marshallObjects($result, array('count'));
     $summary['albumCount'] = (int)$count[0]['count'];
 
     return $summary;
@@ -991,7 +1135,21 @@ function mediashare_userapi_getByKeyword($args)
 
     $colArray = array('albumId', 'albumTitle', 'mediaId', 'mediaTitle', 'captionLong', 'mediaHandler', 'thumbnailRef');
 
-    $media = DBUtil::marshallObjects($result, $colArray);
+	$cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$media[$cont]['albumId'] = $result->fields[0];
+		$media[$cont]['albumTitle'] = $result->fields[1];
+		$media[$cont]['mediaId'] = $result->fields[2];
+		$media[$cont]['mediaTitle'] = $result->fields[3];
+		$media[$cont]['captionLong'] = $result->fields[4];
+		$media[$cont]['mediaHandler'] = $result->fields[5];
+		$media[$cont]['thumbnailRef'] = $result->fields[6];
+
+		$result->MoveNext();
+		$cont++;
+	}
+    //$media = DBUtil::marshallObjects($result, $colArray);
 
     foreach (array_keys($media) as $k)
     {
@@ -1203,7 +1361,37 @@ function mediashare_userapi_getList($args)
                       'previewRef', 'previewMimeType', 'previewWidth', 'previewHeight', 'previewBytes',
                       'originalRef', 'originalMimeType', 'originalWidth', 'originalHeight', 'originalBytes');
 
-    $media = DBUtil::marshallObjects($result, $colArray);
+	$cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$media[$cont]['albumId'] = $result->fields[0];
+		$media[$cont]['albumTitle'] = $result->fields[1];
+		$media[$cont]['albumKeywords'] = $result->fields[2];
+		$media[$cont]['id'] = $result->fields[3];
+		$media[$cont]['ownerId'] = $result->fields[4];
+		$media[$cont]['createdDate'] = $result->fields[5];
+		$media[$cont]['modifiedDate'] = $result->fields[6];
+		$media[$cont]['title'] = $result->fields[7];
+		$media[$cont]['keywords'] = $result->fields[8];
+		$media[$cont]['description'] = $result->fields[9];
+		$media[$cont]['mediaHandler'] = $result->fields[10];
+		$media[$cont]['position'] = $result->fields[11];
+		$media[$cont]['thumbnailRef'] = $result->fields[12];
+		$media[$cont]['previewRef'] = $result->fields[13];
+		$media[$cont]['previewMimeType'] = $result->fields[14];
+		$media[$cont]['previewWidth'] = $result->fields[15];
+		$media[$cont]['previewHeight'] = $result->fields[16];
+		$media[$cont]['previewBytes'] = $result->fields[17];
+		$media[$cont]['originalRef'] = $result->fields[18];
+		$media[$cont]['originalMimeType'] = $result->fields[19];
+		$media[$cont]['originalWidth'] = $result->fields[20];
+		$media[$cont]['originalHeight'] = $result->fields[21];
+		$media[$cont]['originalBytes'] = $result->fields[22];
+
+		$result->MoveNext();
+		$cont++;
+	}
+    //$media = DBUtil::marshallObjects($result, $colArray);
 
     $result = array();
     foreach (array_keys($media) as $k)
@@ -1329,7 +1517,16 @@ function mediashare_userapi_getListCount($args)
         return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getListCount', 'Could not retrieve the list count.'), $dom));
     }
 
-    $result = DBUtil::marshallObjects($result, array('count'));
+    $cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$count[$cont]['count'] = $result->fields[0];
+
+		$result->MoveNext();
+		$cont++;
+	}
+	$result = $count;
+	//$result = DBUtil::marshallObjects($result, array('count'));
     $count  = (int)$result[0]['count'];
 
     if ($sql2 != null) {
@@ -1338,7 +1535,16 @@ function mediashare_userapi_getListCount($args)
             return LogUtil::registerError(__f('Error in %1$s: %2$s.', array('userapi.getListCount', 'Could not retrieve the second list count.'), $dom));
         }
 
-        $result = DBUtil::marshallObjects($result, array('count'));
+		$cont = 0;
+		$result->MoveNext();
+		while (!$result->EOF) {
+			$count[$cont]['count'] = $result->fields[0];
+
+			$result->MoveNext();
+			$cont++;
+		}
+		$result = $count;
+        //$result = DBUtil::marshallObjects($result, array('count'));
         $count += (int)$result[0]['count'];
     }
 
@@ -1413,7 +1619,19 @@ function mediashare_userapi_search($args)
 
     $colArray = array('albumId', 'albumTitle', 'mediaId', 'mediaTitle', 'mediaCaptionLong');
 
-    $items = DBUtil::marshallObjects($result, $colArray);
+	$cont = 0;
+	$result->MoveNext();
+	while (!$result->EOF) {
+		$items[$cont]['albumId'] = $result->fields[0];
+		$items[$cont]['albumTitle'] = $result->fields[1];
+		$items[$cont]['mediaId'] = $result->fields[2];
+		$items[$cont]['mediaTitle'] = $result->fields[3];
+		$items[$cont]['mediaCaptionLong'] = $result->fields[4];
+
+		$result->MoveNext();
+		$cont++;
+	}
+    //$items = DBUtil::marshallObjects($result, $colArray);
 
     // select post process
     foreach (array_keys($items) as $k)

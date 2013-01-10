@@ -260,12 +260,12 @@ function mediashare_user_thumbnails($args)
 
     // Fetch media items
     if (($items = pnModAPIFunc('mediashare', 'user', 'getMediaItems', array('albumId' => $albumId))) === false) {
-        return false;
+		return false;
     }
 
     // Fetch subalbums
     if (($subAlbums = pnModAPIFunc('mediashare', 'user', 'getSubAlbums', array('albumId' => $albumId, 'access' => mediashareAccessRequirementViewSomething))) === false) {
-        return false;
+		return false;
     }
 
     // Build the output
